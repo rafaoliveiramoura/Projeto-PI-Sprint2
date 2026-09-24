@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Calculadora Financeira - Colmeia Conectada</title>
+  </head>
+  <body>
+    <div class="header">
+      <img
+        src="src/tetria-logo-transparente.png"
+        alt="Logo Tetria"
+        class="img"
+      />
+      <h1>Calculadora Financeira</h1>
+    </div>
+
+    <div id="calculo">
+      <label for="ipt_qntcolmeias">Quantidade de Colmeias</label><br />
+      <input type="text" id="ipt_qntcolmeias" /> <br /><br />
+
+      <label for="ipt_qntmel">Quantos ml cada Colmeia produz</label><br />
+      <input type="text" id="ipt_qntmel" /> <br /><br />
+
+      <label for="ipt_enxame">Quanto custa o enxame de Jataí</label><br />
+      <input type="text" id="ipt_enxame" />
+    </div>
+
+    <button onclick="calcular()">Calcular</button>
+    <div id="div_exibir"></div>
+  </body>
+</html>
+
+<script>
+  function calcular() {
+    let qtdColmeias = Number(ipt_qntcolmeias.value);
+    let mlPorColmeia = Number(ipt_qntmel.value);
+
+    let total = qtdColmeias * mlPorColmeia;
+
+    div_exibir.innerHTML = `Caso você tenha ${qtdColmeias} colmeias e cada uma delas produzem
+     ${mlPorColmeia}ml de mel por dia, ao todo seram produzidos ${total}ml de mel.`
+
+  }
+</script>
