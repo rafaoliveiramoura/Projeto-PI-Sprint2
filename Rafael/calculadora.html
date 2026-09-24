@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <title>Calculadora Financeira - Colmeia Conectada</title>
 </head>
 <body>
@@ -13,16 +19,64 @@
         <h1>Calculadora Financeira</h1>
     </div>
 
-    <div id="calculo">
-        <label for="ipt_qntcolmeias">Quantidade de Colmeias</label><br>
-        <input type="text" id="ipt_qntcolmeias"> <br><br>
-        
-        <label for="ipt_qntmel">Quantos ml cada Colmeia produz</label><br>
-        <input type="text" id="ipt_qntmel"> <br><br>
-        
-        <label for="ipt_enxame">Quanto custa o enxame de Jataí</label><br>
-        <input type="text" id="ipt_enxame">
+    <!-- CONTAINER QUE CENTRALIZA AS DUAS LADO A LADO -->
+    <div class="container-calculadoras">
+
+        <!-- CALCULADORA 1 -->
+        <div class="calculo">
+            <div class="campo">
+                <label for="ipt_qntcolmeias">Quantidade de Colmeias </label>
+                <input type="number" id="ipt_qntcolmeias">
+            </div>
+            
+            <div class="campo">
+                <label for="ipt_qntmel">Quantos ml cada Colmeia produz</label>
+                <input type="number" id="ipt_qntmel">
+            </div>
+            
+            <div class="campo">
+                <label for="ipt_enxame">Quanto custa o enxame de Jataí</label>
+                <input type="text" id="ipt_enxame">
+            </div>
+
+            <div class="campo">
+                <label for="ipt_colmeiaperdida">Quantas Colmeias perde no mês</label>
+                <input type="text" id="ipt_colmeiaperdida">
+            </div>
+
+            <div class="btn">
+                <button>Calcular</button>
+            </div>
+        </div>
+
+        <!-- CALCULADORA 2 -->
+        <div class="calculo">
+            <div class="campo">
+                <label for="ipt_qntcolmeias2">Quantidade de Colmeias</label>
+                <input type="number" id="ipt_qntcolmeias2">
+            </div>
+            
+            <div class="campo">
+                <label for="ipt_qntmel2">Quantos ml cada Colmeia produz</label>
+                <input type="text" id="ipt_qntmel2">
+            </div>
+            
+            <div class="campo">
+                <label for="ipt_enxame2">Quanto custa o enxame de Jataí</label>
+                <input type="text" id="ipt_enxame2">
+            </div>
+
+            <div class="campo">
+                <label for="ipt_colmeiaperdida2">Quantas Colmeias perde no mês</label>
+                <input type="text" id="ipt_colmeiaperdida2">
+            </div>
+
+            <div class="btn">
+                <button>Calcular</button>
+            </div>
+        </div>
+
     </div>
 
 </body>
-</html>
+</html>f9f9f9
