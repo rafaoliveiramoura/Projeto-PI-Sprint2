@@ -1,0 +1,40 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #FFF6DC;
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    position: relative; 
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 30px;
+}
+
+.img {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;  
+    height: 100px;
+    object-fit: contain;
+}
+
+.header h1 {
+    margin: 0;
+    text-align: center;
+}
+
+.calculo{
+    
+}
