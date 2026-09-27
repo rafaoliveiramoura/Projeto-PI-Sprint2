@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+     background: linear-gradient(135deg, #FFF9E6 0%, #F5F0E6 100%);
+}
+
+.header{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.header img {
+    margin-top: 20px;
+    width: 150px;
+}
+
+.header h1{
+   font-family: 'Montserrat', sans-serif;
+   font-size: 50px;
+}
+.acesse{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    margin-right: 180px;
+}
+
+.campo{
+     display: flex;
+  flex-direction: column;
+  gap: 3px; 
+}
+
+.campo input{
+    width: 530px;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    padding-left: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+}
+
+.campo label{
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+
+}
+
+.esqueci-senha {
+  color: #E5A823;         
+  text-decoration: none;  
+  font-size: 15px;       
+  font-weight: 600; 
+  text-decoration: underline;       
+   margin-left: 250px;
+   font-family: 'Poppins', sans-serif;
+}
+
+.esqueci-senha input{
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+}
+
+.btn button{
+    height: 70px;
+    width: 480px;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #2b1e17;
+    color: white;
+}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="cadastro.css">
+      <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="header">
+        <img src="../src/tetria-logo-transparente.png" alt="">
+       <div class="conta">
+         <h1>
+            Crie sua conta
+        </h1>
+       </div>
+
+       <div class="cadastro">
+        <span>Cadastre-se para começar a acompanhar as suas colmeias.</span>
+       </div>
+
+       <div class="info">
+    
+        <div class="campo">
+            <label for="nome">Nome completo</label>
+            <input type="text" placeholder="Seu nome completo" id="nome">
+        </div>
+
+        <div class="campo">
+            <label for="user">Usuário</label>
+            <input type="text" id="user" placeholder="@usuario">
+        </div>
+        </div>
+        <div class="email">
+            <label for="emaill">E-mail</label>
+            <input type="email"  id="emaill" placeholder="seu@gmail.com">
+
+            <label for="tel">Telefone</label>
+            <input type="text"  id="tel" placeholder="(00) 00000-0000">
+        </div>
+        <div class="senha" > 
+            <label for="senha">Senha</label>
+            <input type="password"  id="ipt_senha" oninput="Vsenha()" placeholder="******">
+        </div>
+         <div class="validacoes-senha">
+    <div id="exibir" class="vsenha" style="color: red;">Pelo menos 8 caracteres</div>
+    <div id="exibir2" class="vsenha" style="color: red;">Deve conter uma letra Maiúscula</div>
+    <div id="exibir3" class="vsenha" style="color: red;">Deve conter uma letra Minúscula</div>
+    <div id="exibir4" class="vsenha" style="color: red;">Uma caracteres espeial</div>
+    <div id="exibir5" class="vsenha" style="color: red;">Insegura</div>
+</div>
+
+        <div class="termos-container">
+        <input type="checkbox" id="termos" name="termos" required>
+        <label for="termos">
+        Aceito os <a href="#">termos de uso</a> e a <a href="#">política de privacidade</a>.
+    </label>
+        </div>
+    <div class="btn">
+            <button>
+                Criar conta
+            </button>
+        </div>
+        <div class="jconta">
+            <span>Já possui uma conta</span>
+            <button>
+                Entrar
+            </button>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+   function Vsenha() {
+        let senha = ipt_senha.value;
+        let tamanho = senha.length;
+        let criterio = 0;
+        
+
+        // 1. Validação de Tamanho (8 caracteres ou mais)
+        if (tamanho >= 8) {
+            exibir.innerHTML = `<span style="color: green;">✓ Senha com 8 caracteres</span>`;
+            criterio++;
+        } else {
+            exibir.innerHTML = `<span style="color: red;">Pelo menos 8 caracteres</span>`;
+        }
+
+        // 2. Validação de Letra Maiúscula
+        
+        if (/[A-Z]/.test(senha)) {
+            exibir2.innerHTML = `<span style="color: green;">✓ Contém letra maiúscula</span>`;
+            criterio++;
+        } else {
+            exibir2.innerHTML = `<span style="color: red;">Deve conter uma letra Maiúscula</span>`;
+        }
+
+        // 3. Validação de Letra Minúscula
+        
+        if (/[a-z]/.test(senha)) {
+            exibir3.innerHTML = `<span style="color: green;">✓ Contém letra minúscula</span>`;
+            criterio++;
+        } else {
+            exibir3.innerHTML = `<span style="color: red;">Deve conter uma letra Minúscula</span>`;
+        }
+
+        // 4. Avaliação do Nível da Senha
+        if (senha === "") {
+            exibir5.innerHTML = `<span style="color: red;">Insegura</span>`;
+        } else if (criterio === 3) {
+            exibir5.innerHTML = `<span style="color: green;">Forte</span>`;
+        } else if (criterio === 2) {
+            exibir5.innerHTML = `<span style="color: #E5A823;">Média</span>`;
+        } else {
+            exibir5.innerHTML = `<span style="color: red;">Fraca</span>`;
+        }
+
+        if(senha == "!" || senha == "@" || senha == "#" || senha == "$" || senha == "&" || senha == "*" ){
+            exibir4.innerHTML = `<span style="color: green;">✓ Contém caracter especial</span>`
+        }else{
+          exibir4.innerHTML = `<span style="color: red;">Uma caracteres espeial</span>`  
+        }
+    }
+</script>
