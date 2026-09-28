@@ -108,10 +108,10 @@ flowchart LR
 
 | Camada | Tecnologia |
 | --- | --- |
-| Sensoriamento | _a definir_ |
-| Banco de dados | _a definir_ |
-| Back-end / API | _a definir_ |
-| Dashboard (front-end) | _a definir_ |
+| Sensoriamento | _Sensor DHT11_ |
+| Banco de dados | _MY SQL_ |
+| Back-end / API | _Web-Data-Viz e Dat-acqu-ino_ |
+| Dashboard (front-end) | _HTML, CSS e JS_ |
 
 ---
 
