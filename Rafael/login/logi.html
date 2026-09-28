@@ -11,36 +11,58 @@
     <title>Login</title>
 </head>
 <body>
-    <div class="header">
-        <img src="../src/tetria-logo-transparente.png" alt="">
-        <div class="Boasvindas">
-            <h1>
-                Bem-Vindo ao TETRIA
-            </h1>
+    <div class="main-wrapper">
+        
+        <div class="login-container">
+            <div class="header">
+                <img src="../src/tetria-logo-transparente.png" alt="">
+                <div class="Boasvindas">
+                    <h1>
+                        Bem-Vindo ao TETRIA
+                    </h1>
 
+                </div>
+                <div class="acesse">
+                    <span>Acesse sua conta para acompanhar as colmeias.</span>
+                </div>
+                <div class="campo">
+                    <label for="ipt_email">E-mail</label>
+                    <input type="email" id="ipt_email" placeholder="seu@gmail.com">
+                </div>
+                <div class="campo">
+                    <label for="ipt_senha">Senha</label>
+                    <input type="password" id="ipt_senha" placeholder="*******">
+                </div>
+                <div class="esqueci">
+                    <input type="checkbox" id="lembrar">
+                    <label for="lembrar">Lembre de mim</label>
+                    <a href="#" class="esqueci-senha">Esqueci minha senha</a>
+                </div>
+                <div class="btn">
+                    <button>
+                        Entrar
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="acesse">
-            <span>Acesse sua conta para acompanhar as colmeias.</span>
-        </div>
-         <div class="campo">
-                <label for="ipt_email">E-mail</label>
-                <input type="email" id="ipt_email" placeholder="seu@gmail.com">
+
+        <aside class="imagem-container">
+            <img src="../src/colmeia2.jpg" alt="Imagem Base">
+            <div class="painel-conteudo">
+                <div class="painel-topo">
+                    <h2>Bom te ver de volta.</h2>
+                    <p>Acompanhe suas colmeias em tempo real, de qualquer lugar.</p>
+                </div>
+
+                <div class="destaque">
+                    <h3>Destaque da plataforma</h3>
+                    <p>Monitore temperatura, umidade e a saúde das suas colmeias com dados atualizados e alertas automáticos.</p>
+                    <div class="progresso">
+                        <span class="ativo"></span><span></span><span></span><span></span>
+                    </div>
+                </div>
             </div>
-         <div class="campo">
-                <label for="ipt_senha">Senha</label>
-                <input type="password" id="ipt_senha" placeholder="*******">
-            </div>
-         <div class="esqueci">
-            <input type="checkbox" id="lembrar">
-                <label for="lembrar">Lembre de mim</label>
-                <a href="#" class="esqueci-senha">Esqueci minha senha</a>
-            </div>
-            <div class="btn">
-                <button>
-                    Entrar
-                </button>
-            </div>
+        </aside>
     </div>
-    
 </body>
-</html> 
+</html>
