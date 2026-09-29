@@ -15,7 +15,7 @@
 <body>
     
     <div class="header">
-        <img src="src/tetria-logo-transparente.png" alt="Logo Tetria" class="img">
+        <img src="../src/tetria-logo-transparente.png" alt="Logo Tetria" class="img">
         <h1>CALCULADORA FINANCEIRA</h1>
     </div>
 
@@ -29,24 +29,24 @@
             </div>
             
             <div class="campo">
-                <label for="ipt_qntmel">Quantos ml cada Colmeia produz</label>
-                <input type="number" id="ipt_qntmel">
+                <label for="ipt_qntmel">Valor médio de cada colmeia</label>
+                <input type="number" id="ipt_valorcolmeia">
             </div>
             
             <div class="campo">
-                <label for="ipt_enxame">Quanto custa o enxame de Jataí</label>
-                <input type="text" id="ipt_enxame">
-            </div>
-
-            <div class="campo">
-                <label for="ipt_colmeiaperdida">Quantas Colmeias perde no mês</label>
-                <input type="text" id="ipt_colmeiaperdida">
+                <label for="ipt_enxame">Quantidade perdida por ano</label>
+                <input type="text" id="ipt_perdida">
             </div>
 
             <div class="btn">
-                <button>Calcular</button>
+                <button onclick="Calculo1()">Calcular</button>
+            </div>
+
+            <div class="mensagem">
+                <div id="div_mensagem"></div>
             </div>
         </div>
+        
 
         <!-- CALCULADORA 2 -->
         <div class="calculo">
@@ -65,16 +65,37 @@
                 <input type="text" id="ipt_enxame2">
             </div>
 
-            <div class="campo">
-                <label for="ipt_colmeiaperdida2">Quantas Colmeias perde no mês</label>
-                <input type="text" id="ipt_colmeiaperdida2">
-            </div>
-
             <div class="btn">
                 <button>Calcular</button>
+            </div>
+
+            <div class="mensagem2">
+                <div id="div_mensagem2"></div>
             </div>
         </div>
 
     </div>
 </body>
 </html>
+
+<script>
+    function Calculo1(){
+        let qtdColmeias = Number(ipt_qntcolmeias.value);
+        let valorPorColmeia = Number(ipt_valorcolmeia.value);
+        let perdaPorAno = Number(ipt_perdida.value);
+
+        // valor total das colmeias por ano 
+        let valorPorAno = qtdColmeias * valorPorColmeia;
+
+        // valor perdido por ano
+        let valorPerdido = perdaPorAno * valorPorColmeia;
+
+        // Percentual de perdas
+        let percentualPerda = ( perdaPorAno / qtdColmeias) * 100
+
+        div_mensagem.innerHTML = `<span style: "font-family: 'Montserrat', sans-serif; font-size: 30px"> Valor total de colmeias por ano é de R$${valorPorAno.toFixed(2)}<br> <br>
+        Valor perdido é de R$${valorPerdido.toFixed(2)}<br> <br>
+        Com um percentual de perda de aproximadamente ${percentualPerda.toFixed(2)}%</span>`
+
+    }
+</script>
