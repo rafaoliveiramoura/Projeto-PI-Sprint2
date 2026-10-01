@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <title>Calculadora Financeira - Colmeia Conectada</title>
+</head>
+<body>
+    
+    <div class="header">
+        <img src="../src/tetria-logo-transparente.png" alt="Logo Tetria" class="img">
+        <h1>CALCULADORA FINANCEIRA</h1>
+    </div>
+
+    <!-- CONTAINER QUE CENTRALIZA AS DUAS LADO A LADO -->
+    <div class="container-calculadoras">
+        <!-- CALCULADORA 1 -->
+        <div class="calculo">
+            <div class="campo">
+                <label for="ipt_qtd_colmeia">Quantidade de Colmeias: </label>
+                <input type="number" value="125" id="ipt_qtd_colmeia">
+            </div>
+            
+            <div class="campo">
+                <label for="ipt_enxame_Jatai">Valor médio do enxame de abelha Jataí: </label>
+                <input type="number" value="275.00" id="ipt_enxame_Jatai">
+            </div>
+            
+            <div class="campo">
+                <label for="ipt_qtd_Mel">Quantos (ml) de mel é produzido por colmeia no mês?</label>
+                <input type="text" value="1000" id="ipt_qtd_Mel">
+
+            </div>
+
+            <div class="campo">
+                <label for="ipt_valor_mel">Valor do mel por por ml: </label>
+                <input type="text" value="0.79" id="ipt_valor_mel">
+
+            </div>
+
+            <div class="campo">
+                <label for="input_colmeia_perdida">Quantidade de colmeias perdidas ao ano: </label>
+                <input type="text" value="" id="input_colmeia_perdida">
+                <span><b><i>*Por temperatura e umidade</i></b></span>
+
+            </div>
+            
+
+            <div class="btn">
+                <button onclick="Calculo1()">Calcular</button>
+            </div>
+
+            <div class="mensagem">
+                <div id="div_mensagem"></div>
+            </div>
+        </div>
+        
+
+        <!-- CALCULADORA 2 -->
+        <div class="calculo">
+            <div class="campo">
+                <label for="ipt_qtd_colmeia2">Quantidade de Colmeias</label>
+                <input type="number" id="ipt_qtd_colmeia2">
+            </div>
+            
+            <div class="campo">
+                <label for="ipt_qntmel2">Quantos ml cada Colmeia produz</label>
+                <input type="text" id="ipt_qntmel2">
+            </div>
+            
+            <div class="campo">
+                <label for="ipt_enxame2">Quanto custa o enxame de Jataí</label>
+                <input type="text" id="ipt_enxame2">
+            </div>
+
+            <div class="btn">
+                <button>Calcular</button>
+            </div>
+
+            <div class="mensagem2">
+                <div id="div_mensagem2"></div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+
+<script>
+    function Calculo1(){
+
+        let qtdColmeias = Number(ipt_qtd_colmeia.value);
+        let valorEnxame = Number(ipt_enxame_Jatai.value);
+        let qtdMelMes = Number(ipt_qtd_Mel.value);
+        let valorMel = Number(ipt_valor_mel.value);
+        let colmeiaPerdida = Number(input_colmeia_perdida.value);
+
+
+        //valor total do mel ao mes
+        let valorMelMes = qtdMelMes * valorMel
+
+        //valor total do mel ao ano 
+        let valorMelAno = valorMelMes * 12
+
+
+        let valorPerdidoColmeia = (qtdColmeias - colmeiaPerdida) * 
+
+
+
+        // valor total das colmeias por ano 
+        let valotTotalEnxame = qtdColmeias * valorEnxame
+
+        //valor da perda 
+
+        let valorPerda =    
+        
+
+        // valor perdido por ano
+        let valorPerdido = perdaPorAno * valorPorColmeia;
+
+        // Percentual de perdas
+        let percentualPerda = ( perdaPorAno / qtdColmeias) * 100
+
+        div_mensagem.innerHTML = `<span style: "font-family: 'Montserrat', sans-serif; font-size: 30px"> 
+        Valor total de colmeias por ano é de R$${valorPorAno.toFixed(2)}<br> <br>
+        Valor perdido é de R$${valorPerdido.toFixed(2)}<br> <br>
+        Com um percentual de perda de aproximadamente ${percentualPerda.toFixed(2)}%</span>`
+
+    }
+</script>
