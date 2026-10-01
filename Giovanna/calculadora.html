@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style1.css">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,13 +34,13 @@
             </div>
             
             <div class="campo">
-                <label for="ipt_qtd_Mel">Quantos (ml) de mel é produzido por colmeia no mês?</label>
-                <input type="text" value="1000" id="ipt_qtd_Mel">
+                <label for="ipt_qtd_mel_ano">Quantos (kg) de mel é produzido por colmeia ao ano?</label>
+                <input type="text" value="1000" id="ipt_qtd _mel_ano">
 
             </div>
 
             <div class="campo">
-                <label for="ipt_valor_mel">Valor do mel por por ml: </label>
+                <label for="ipt_valor_mel">Valor do mel por kg: </label>
                 <input type="text" value="0.79" id="ipt_valor_mel">
 
             </div>
@@ -49,9 +49,7 @@
                 <label for="input_colmeia_perdida">Quantidade de colmeias perdidas ao ano: </label>
                 <input type="text" value="" id="input_colmeia_perdida">
                 <span><b><i>*Por temperatura e umidade</i></b></span>
-
             </div>
-            
 
             <div class="btn">
                 <button onclick="Calculo1()">Calcular</button>
@@ -64,7 +62,7 @@
         
 
         <!-- CALCULADORA 2 -->
-        <div class="calculo">
+   <!--   <div class="calculo">
             <div class="campo">
                 <label for="ipt_qtd_colmeia2">Quantidade de Colmeias</label>
                 <input type="number" id="ipt_qtd_colmeia2">
@@ -89,7 +87,7 @@
             </div>
         </div>
 
-    </div>
+     </div> --> 
 </body>
 </html>
 
@@ -98,25 +96,28 @@
 
         let qtdColmeias = Number(ipt_qtd_colmeia.value);
         let valorEnxame = Number(ipt_enxame_Jatai.value);
-        let qtdMelMes = Number(ipt_qtd_Mel.value);
-        let valorMel = Number(ipt_valor_mel.value);
-        let colmeiaPerdida = Number(input_colmeia_perdida.value);
+        let MelColmeia = Number(ipt_qtd_mel_ano.value);
+        let valorMelKg = Number(ipt_valor_mel.value);
+        let colmeiaPerdidaAno = Number(input_colmeia_perdida.value);
 
+        //quantidade total do mel ao ano 
+        let melAno = MelColmeia * qtdColmeias
+        
+        //valor total do mel ao ano
+        let valorAoAno = melAno * valorMelKg
 
-        //valor total do mel ao mes
-        let valorMelMes = qtdMelMes * valorMel
+        let perdamel = valorAoAno / 12
 
-        //valor total do mel ao ano 
-        let valorMelAno = valorMelMes * 12
+        //valor da reconstituição
+        let custoReposicao = colmeiaPerdidaAno * valorEnxame
 
+        let valorAoMes = valorAoAno / 12
 
-        let valorPerdidoColmeia = (qtdColmeias - colmeiaPerdida) 
+        let custoPerda = valorAoMes * 6
 
+        let perdacolmeia = custoPerda * colmeiaPerdidaAno
 
-
-        // valor total das colmeias por ano 
-        let valotTotalEnxame = qtdColmeias * valorEnxame
-
+        // valor total das colmeias por a
         //valor da perda 
 
         let valorPerda 
@@ -133,5 +134,7 @@
         Valor perdido é de R$${valorPerdido.toFixed(2)}<br> <br>
         Com um percentual de perda de aproximadamente ${percentualPerda.toFixed(2)}%</span>`
 
-    }
+        console.log(melAno, valo)
+
+  }
 </script>
