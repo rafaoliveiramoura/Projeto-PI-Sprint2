@@ -1,3 +1,6 @@
 node_modules/
 .env
 .sql
+.env
+*.env
+Rafael/backend/.env
