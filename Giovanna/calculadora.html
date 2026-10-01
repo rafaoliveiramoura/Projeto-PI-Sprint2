@@ -25,7 +25,7 @@
         <div class="calculo">
             <div class="campo">
                 <label for="ipt_qtd_colmeia">Quantidade de Colmeias: </label>
-                <input type="number" value="125" id="ipt_qtd_colmeia">
+                <input type="number" value="150" id="ipt_qtd_colmeia">
             </div>
             
             <div class="campo">
@@ -35,19 +35,19 @@
             
             <div class="campo">
                 <label for="ipt_qtd_mel_ano">Quantos (kg) de mel é produzido por colmeia ao ano?</label>
-                <input type="text" value="1000" id="ipt_qtd_mel_ano">
+                <input type="text" value="1" id="ipt_qtd_mel_ano">
 
             </div>
 
             <div class="campo">
                 <label for="ipt_valor_mel">Valor do mel por kg: </label>
-                <input type="text" value="0.79" id="ipt_valor_mel">
+                <input type="text" value="300" id="ipt_valor_mel">
 
             </div>
 
             <div class="campo">
                 <label for="input_colmeia_perdida">Quantidade de colmeias perdidas ao ano: </label>
-                <input type="text" value="" id="input_colmeia_perdida">
+                <input type="text" value="40" id="input_colmeia_perdida">
                 <span><b><i>*Por temperatura e umidade</i></b></span>
             </div>
 
@@ -60,34 +60,7 @@
             </div>
         </div>
         
-
-        <!-- CALCULADORA 2 -->
-   <!--   <div class="calculo">
-            <div class="campo">
-                <label for="ipt_qtd_colmeia2">Quantidade de Colmeias</label>
-                <input type="number" id="ipt_qtd_colmeia2">
-            </div>
-            
-            <div class="campo">
-                <label for="ipt_qntmel2">Quantos ml cada Colmeia produz</label>
-                <input type="text" id="ipt_qntmel2">
-            </div>
-            
-            <div class="campo">
-                <label for="ipt_enxame2">Quanto custa o enxame de Jataí</label>
-                <input type="text" id="ipt_enxame2">
-            </div>
-
-            <div class="btn">
-                <button>Calcular</button>
-            </div>
-
-            <div class="mensagem2">
-                <div id="div_mensagem2"></div>
-            </div>
-        </div>
-
-     </div> --> 
+ 
 </body>
 </html>
 
@@ -106,25 +79,28 @@
         //valor total do mel ao ano
         let valorAoAno = melAno * valorMelKg
 
+        //valor ao mes
+        let valorAoMes = valorAoAno / 12
+
         //valor da reconstituição
         let custoReposicao = colmeiaPerdidaAno * valorEnxame
 
-        let valorAoMes = valorAoAno / 12
-
-        let custoPerda = valorAoMes * 6
-
-        let perdacolmeia = custoPerda * colmeiaPerdidaAno
-
         //valor da perda 
-        let valorPerda = valorAoAno - perdacolmeia
-        
-        
-        // valor perdido por ano
+        let  valorPerdido = (valorAoAno / qtdColmeias) / 12 * 6 * colmeiaPerdidaAno
 
-        // Percentual de perdas
-        let percentualPerda = ( perdacolmeia / qtdColmeias) * 100
+        // estimativa de aumento de produção
 
-        div_mensagem.innerHTML = `${perdacolmeia.toFixed(2)}, ${valorPerda.toFixed(2)}, ${custoPerda.toFixed(2)}`
+        let aumentoProducao = valorAoAno * 1.10
+
+
+        div_mensagem.innerHTML = `
+        <b> PERDA </B> <br>
+        Valor ao ano sem perdas: ${valorAoAno.toFixed(2)} <br>
+        Valor com a perda de ${colmeiaPerdidaAno} colmeias por temperatura e umidade: ${valorPerdido.toFixed(2)} <br> <br>
+        <b> ECONOMIA <b> <br>
+        Valor da reconstrução das colmeias perdidas: ${custoReposicao.toFixed(2)} <br>
+        Aumento de produção com o sistema de monitoramento: ${aumentoProducao.toFixed(2)}
+        `
 
   }
 </script>
