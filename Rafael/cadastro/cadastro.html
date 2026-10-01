@@ -48,24 +48,29 @@
             <div class="info">
                 <div class="campo">
                     <label for="nome">Nome completo</label>
-                    <input type="text" placeholder="Seu nome completo" id="nome">
+                    <input type="text" placeholder="Seu nome completo" id="nome_input">
                 </div>
 
                 <div class="campo">
                     <label for="user">Usuário</label>
-                    <input type="text" id="user" placeholder="@usuario">
+                    <input type="text" id="usario_input" placeholder="@usuario">
+                </div>
+
+                <div class="campo">
+                    <label for="cpf">CPF</label>
+                    <input type="text" id="cpf_input" placeholder="000.000.000-00">
                 </div>
             </div>
             <div class="email">
                 <label for="emaill">E-mail</label>
-                <input type="email"  id="emaill" placeholder="seu@gmail.com">
+                <input type="email"  id="email_input" placeholder="seu@gmail.com">
 
                 <label for="tel">Telefone</label>
-                <input type="text"  id="tel" placeholder="(00) 00000-0000">
+                <input type="text"  id="tel_input" placeholder="(00) 00000-0000">
             </div>
             <div class="senha" >
                 <label for="senha">Senha</label>
-                <input type="password"  id="ipt_senha" oninput="Vsenha()" placeholder="******">
+                <input type="password"  id="senha_input" oninput="Vsenha()" placeholder="******">
             </div>
              <div class="validacoes-senha">
                 <div id="exibir" class="vsenha" style="color: red;">Pelo menos 8 caracteres</div>
@@ -82,13 +87,13 @@
             </label>
             </div>
         <div class="btn">
-                <button>
+                <button onclick="cadastrar()">
                     Criar conta
                 </button>
             </div>
             <div class="jconta">
                 <span>Já possui uma conta</span>
-                <button>
+                <button onclick="window.location.href='../login/logi.html'">
                     Entrar
                 </button>
             </div>
@@ -98,7 +103,7 @@
 
     <script>
        function Vsenha() {
-            let senha = ipt_senha.value;
+            let senha = senha_input.value;
             let tamanho = senha.length;
             let criterio = 0;
 
@@ -148,3 +153,69 @@
     </script>
 </body>
 </html>
+<script>
+
+  // Array para armazenar empresas cadastradas para validação de código de ativação 
+  let listaEmpresasCadastradas = [];
+
+  function cadastrar() {
+
+    //Recupere o valor da nova input pelo nome do id
+    var nomeVar = nome_input.value;
+    var emailVar = email_input.value;
+    var senhaVar = senha_input.value;
+    var telefoneVar = tel_input.value;
+    var usuarioVar = usario_input.value;
+    var cpfVar = cpf_input.value;
+
+    // Verificando se há algum campo em branco
+    if (
+      nomeVar == "" ||
+      emailVar == "" ||
+      senhaVar == "" ||
+      usuarioVar == "" ||
+      telefoneVar == "" ||
+      cpfVar == ""
+    ) {
+      alert("Por favor, preencha todos os campos!");
+      return false;
+    }
+
+    // Enviando o valor da nova input
+    fetch("http://127.0.0.1:3333/usuarios/cadastrar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nomeServer: nomeVar,
+        emailServer: emailVar,
+        senhaServer: senhaVar,
+        cpfServer: cpfVar,
+        usuarioServer: usuarioVar,
+        telefoneServer: telefoneVar
+      }),
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          alert("Cadastro realizado com sucesso! Redirecionando...");
+          setTimeout(() => {
+            window.location = "../login/logi.html";
+          }, 2000);
+        } else {
+          throw new Error("Houve um erro ao tentar realizar o cadastro!");
+        }
+      })
+      .catch(function (erro) {
+        console.log(`#ERRO: ${erro}`);
+        alert(erro.message);
+      });
+
+    return false;
+  }
+
+
+  function sumirMensagem() {
+    cardErro.style.display = "none";
+  }
+</script>

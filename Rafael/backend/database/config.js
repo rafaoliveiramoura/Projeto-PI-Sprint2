@@ -1,4 +1,4 @@
-const mysql = require("mysql")
+const mysql = require("mysql2")
 
 const mysqlconfig = {
     host: process.env.DBHOST,
@@ -16,7 +16,7 @@ function executar(instrucao) {
     }
 
     return new Promise(function (resolve, reject) {
-        var conexao = mysql.createConnection(mySqlConfig);
+        var conexao = mysql.createConnection(mysqlconfig);
         conexao.connect();
         conexao.query(instrucao, function (erro, resultados) {
             conexao.end();
