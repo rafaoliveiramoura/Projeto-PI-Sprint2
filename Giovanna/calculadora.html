@@ -35,7 +35,7 @@
             
             <div class="campo">
                 <label for="ipt_qtd_mel_ano">Quantos (kg) de mel é produzido por colmeia ao ano?</label>
-                <input type="text" value="1000" id="ipt_qtd _mel_ano">
+                <input type="text" value="1000" id="ipt_qtd_mel_ano">
 
             </div>
 
@@ -106,8 +106,6 @@
         //valor total do mel ao ano
         let valorAoAno = melAno * valorMelKg
 
-        let perdamel = valorAoAno / 12
-
         //valor da reconstituição
         let custoReposicao = colmeiaPerdidaAno * valorEnxame
 
@@ -117,24 +115,16 @@
 
         let perdacolmeia = custoPerda * colmeiaPerdidaAno
 
-        // valor total das colmeias por a
         //valor da perda 
-
-        let valorPerda 
+        let valorPerda = valorAoAno - perdacolmeia
         
-
+        
         // valor perdido por ano
-        let valorPerdido = perdaPorAno * valorPorColmeia;
 
         // Percentual de perdas
-        let percentualPerda = ( perdaPorAno / qtdColmeias) * 100
+        let percentualPerda = ( perdacolmeia / qtdColmeias) * 100
 
-        div_mensagem.innerHTML = `<span style: "font-family: 'Montserrat', sans-serif; font-size: 30px"> 
-        Valor total de colmeias por ano é de R$${valorPorAno.toFixed(2)}<br> <br>
-        Valor perdido é de R$${valorPerdido.toFixed(2)}<br> <br>
-        Com um percentual de perda de aproximadamente ${percentualPerda.toFixed(2)}%</span>`
-
-        console.log(melAno, valo)
+        div_mensagem.innerHTML = `${perdacolmeia.toFixed(2)}, ${valorPerda.toFixed(2)}, ${custoPerda.toFixed(2)}`
 
   }
 </script>
