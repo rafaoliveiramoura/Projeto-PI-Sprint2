@@ -25,7 +25,7 @@
         <div class="calculo">
             <div class="campo">
                 <label for="ipt_qtd_colmeia">Quantidade de Colmeias: </label>
-                <input type="number" value="125" id="ipt_qtd_colmeia">
+                <input type="number" value="150" id="ipt_qtd_colmeia">
             </div>
             
             <div class="campo">
@@ -35,19 +35,19 @@
             
             <div class="campo">
                 <label for="ipt_qtd_mel_ano">Quantos (kg) de mel é produzido por colmeia ao ano?</label>
-                <input type="text" value="1000" id="ipt_qtd _mel_ano">
+                <input type="text" value="1" id="ipt_qtd_mel_ano">
 
             </div>
 
             <div class="campo">
                 <label for="ipt_valor_mel">Valor do mel por kg: </label>
-                <input type="text" value="0.79" id="ipt_valor_mel">
+                <input type="text" value="300" id="ipt_valor_mel">
 
             </div>
 
             <div class="campo">
                 <label for="input_colmeia_perdida">Quantidade de colmeias perdidas ao ano: </label>
-                <input type="text" value="" id="input_colmeia_perdida">
+                <input type="text" value="40" id="input_colmeia_perdida">
                 <span><b><i>*Por temperatura e umidade</i></b></span>
             </div>
 
@@ -59,35 +59,8 @@
                 <div id="div_mensagem"></div>
             </div>
         </div>
-        
-
-        <!-- CALCULADORA 2 -->
-   <!--   <div class="calculo">
-            <div class="campo">
-                <label for="ipt_qtd_colmeia2">Quantidade de Colmeias</label>
-                <input type="number" id="ipt_qtd_colmeia2">
-            </div>
-            
-            <div class="campo">
-                <label for="ipt_qntmel2">Quantos ml cada Colmeia produz</label>
-                <input type="text" id="ipt_qntmel2">
-            </div>
-            
-            <div class="campo">
-                <label for="ipt_enxame2">Quanto custa o enxame de Jataí</label>
-                <input type="text" id="ipt_enxame2">
-            </div>
-
-            <div class="btn">
-                <button>Calcular</button>
-            </div>
-
-            <div class="mensagem2">
-                <div id="div_mensagem2"></div>
-            </div>
-        </div>
-
-     </div> --> 
+    </div> 
+ 
 </body>
 </html>
 
@@ -96,45 +69,57 @@
 
         let qtdColmeias = Number(ipt_qtd_colmeia.value);
         let valorEnxame = Number(ipt_enxame_Jatai.value);
-        let MelColmeia = Number(ipt_qtd_mel_ano.value);
+        let MelPorColmeia = Number(ipt_qtd_mel_ano.value);
         let valorMelKg = Number(ipt_valor_mel.value);
         let colmeiaPerdidaAno = Number(input_colmeia_perdida.value);
 
         //quantidade total do mel ao ano 
-        let melAno = MelColmeia * qtdColmeias
+        let melAno = MelPorColmeia * qtdColmeias
         
         //valor total do mel ao ano
         let valorAoAno = melAno * valorMelKg
 
-        let perdamel = valorAoAno / 12
-
-        //valor da reconstituição
+        //valor da reconstituição enxame
         let custoReposicao = colmeiaPerdidaAno * valorEnxame
 
-        let valorAoMes = valorAoAno / 12
+        //sem o sensor: produção com perda e gasto para repor as colmeias
+        let valorPerdido = (valorAoAno / qtdColmeias) / 12 * 6 * colmeiaPerdidaAno
+        let totalComPerda = valorAoAno - valorPerdido
+        let totalSemSensor = totalComPerda - custoReposicao
 
-        let custoPerda = valorAoMes * 6
 
-        let perdacolmeia = custoPerda * colmeiaPerdidaAno
+        //com o sensor: sem perdas e com estimativa de aumento de até 10%
+        let aumentoProducao = valorAoAno * 0.10
+        let totalComSensor = valorAoAno + aumentoProducao
 
-        // valor total das colmeias por a
-        //valor da perda 
+        //porcentagem de colmeias perdidas
+        let porcentagemColmeiaPerd =  colmeiaPerdidaAno / qtdColmeias  * 100
 
-        let valorPerda 
-        
+        //vantagem: diferença entre os dois cenários
+        let vantagemTotal = totalComSensor - totalSemSensor
 
-        // valor perdido por ano
-        let valorPerdido = perdaPorAno * valorPorColmeia;
 
-        // Percentual de perdas
-        let percentualPerda = ( perdaPorAno / qtdColmeias) * 100
+       div_mensagem.innerHTML = `
+        <b>SEM O SENSOR</b> <br>
+        Colmeias perdidas ao ano: ${colmeiaPerdidaAno} (${porcentagemColmeiaPerd.toFixed(1)}%) <br>
+        Valor ao ano sem perdas: R$ ${valorAoAno.toFixed(2)} <br>
+        Valor perdido com as colmeias: R$ ${valorPerdido.toFixed(2)} <br>
+        Custo para repor as colmeias: R$ ${custoReposicao.toFixed(2)} <br>
+        Resultado final no ano: R$ ${totalSemSensor.toFixed(2)} <br> <br>
 
-        div_mensagem.innerHTML = `<span style: "font-family: 'Montserrat', sans-serif; font-size: 30px"> 
-        Valor total de colmeias por ano é de R$${valorPorAno.toFixed(2)}<br> <br>
-        Valor perdido é de R$${valorPerdido.toFixed(2)}<br> <br>
-        Com um percentual de perda de aproximadamente ${percentualPerda.toFixed(2)}%</span>`
+        <b>COM O SENSOR</b> <br>
+        Colmeias perdidas ao ano: 0 <br>
+        Valor ao ano sem perdas: R$ ${valorAoAno.toFixed(2)} <br>
+        Aumento de produção (até 10%): R$ ${aumentoProducao.toFixed(2)} <br>
+        Resultado final no ano (valor + aumento): R$ ${totalComSensor.toFixed(2)} <br> <br>
 
-        console.log(melAno, valo)
-
-  }
+        <b>VANTAGEM DE TER O SENSOR</b> <br>
+        Perda evitada: R$ ${valorPerdido.toFixed(2)} <br>
+        Reposição evitada: R$ ${custoReposicao.toFixed(2)} <br>
+        Aumento de produção: R$ ${aumentoProducao.toFixed(2)} <br>
+        <b>Ganho total ao ano: R$ ${vantagemTotal.toFixed(2)}</b>
+        `
+    }
 </script>
+
+  
