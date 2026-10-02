@@ -59,7 +59,7 @@
                 <div id="div_mensagem"></div>
             </div>
         </div>
-        
+    </div> 
  
 </body>
 </html>
@@ -69,38 +69,57 @@
 
         let qtdColmeias = Number(ipt_qtd_colmeia.value);
         let valorEnxame = Number(ipt_enxame_Jatai.value);
-        let MelColmeia = Number(ipt_qtd_mel_ano.value);
+        let MelPorColmeia = Number(ipt_qtd_mel_ano.value);
         let valorMelKg = Number(ipt_valor_mel.value);
         let colmeiaPerdidaAno = Number(input_colmeia_perdida.value);
 
         //quantidade total do mel ao ano 
-        let melAno = MelColmeia * qtdColmeias
+        let melAno = MelPorColmeia * qtdColmeias
         
         //valor total do mel ao ano
         let valorAoAno = melAno * valorMelKg
 
-        //valor ao mes
-        let valorAoMes = valorAoAno / 12
-
-        //valor da reconstituição
+        //valor da reconstituição enxame
         let custoReposicao = colmeiaPerdidaAno * valorEnxame
 
-        //valor da perda 
-        let  valorPerdido = (valorAoAno / qtdColmeias) / 12 * 6 * colmeiaPerdidaAno
-
-        // estimativa de aumento de produção
-
-        let aumentoProducao = valorAoAno * 1.10
+        //sem o sensor: produção com perda e gasto para repor as colmeias
+        let valorPerdido = (valorAoAno / qtdColmeias) / 12 * 6 * colmeiaPerdidaAno
+        let totalComPerda = valorAoAno - valorPerdido
+        let totalSemSensor = totalComPerda - custoReposicao
 
 
-        div_mensagem.innerHTML = `
-        <b> PERDA </B> <br>
-        Valor ao ano sem perdas: ${valorAoAno.toFixed(2)} <br>
-        Valor com a perda de ${colmeiaPerdidaAno} colmeias por temperatura e umidade: ${valorPerdido.toFixed(2)} <br> <br>
-        <b> ECONOMIA <b> <br>
-        Valor da reconstrução das colmeias perdidas: ${custoReposicao.toFixed(2)} <br>
-        Aumento de produção com o sistema de monitoramento: ${aumentoProducao.toFixed(2)}
+        //com o sensor: sem perdas e com estimativa de aumento de até 10%
+        let aumentoProducao = valorAoAno * 0.10
+        let totalComSensor = valorAoAno + aumentoProducao
+
+        //porcentagem de colmeias perdidas
+        let porcentagemColmeiaPerd =  colmeiaPerdidaAno / qtdColmeias  * 100
+
+        //vantagem: diferença entre os dois cenários
+        let vantagemTotal = totalComSensor - totalSemSensor
+
+
+       div_mensagem.innerHTML = `
+        <b>SEM O SENSOR</b> <br>
+        Colmeias perdidas ao ano: ${colmeiaPerdidaAno} (${porcentagemColmeiaPerd.toFixed(1)}%) <br>
+        Valor ao ano sem perdas: R$ ${valorAoAno.toFixed(2)} <br>
+        Valor perdido com as colmeias: R$ ${valorPerdido.toFixed(2)} <br>
+        Custo para repor as colmeias: R$ ${custoReposicao.toFixed(2)} <br>
+        Resultado final no ano: R$ ${totalSemSensor.toFixed(2)} <br> <br>
+
+        <b>COM O SENSOR</b> <br>
+        Colmeias perdidas ao ano: 0 <br>
+        Valor ao ano sem perdas: R$ ${valorAoAno.toFixed(2)} <br>
+        Aumento de produção (até 10%): R$ ${aumentoProducao.toFixed(2)} <br>
+        Resultado final no ano (valor + aumento): R$ ${totalComSensor.toFixed(2)} <br> <br>
+
+        <b>VANTAGEM DE TER O SENSOR</b> <br>
+        Perda evitada: R$ ${valorPerdido.toFixed(2)} <br>
+        Reposição evitada: R$ ${custoReposicao.toFixed(2)} <br>
+        Aumento de produção: R$ ${aumentoProducao.toFixed(2)} <br>
+        <b>Ganho total ao ano: R$ ${vantagemTotal.toFixed(2)}</b>
         `
-
-  }
+    }
 </script>
+
+  
