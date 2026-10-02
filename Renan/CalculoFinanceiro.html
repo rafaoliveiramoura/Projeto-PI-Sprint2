@@ -1,321 +1,199 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
 
-    <link rel="stylesheet" href="style.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap"
-        rel="stylesheet"
-    >
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <title>Calculadora Financeira - Colmeia Conectada</title>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <!-- ============================= -->
     <!-- HEADER -->
     <!-- ============================= -->
 
     <header class="mainheader">
+      <div class="header">
+        <img
+          src="../Renan/src/tetria-logo-transparente.png"
+          alt="Logo Tetria"
+          class="img"
+        />
 
-        <div class="header">
+        <h1>CALCULADORA FINANCEIRA</h1>
 
-            <img
-                src="../Renan/src/tetria-logo-transparente.png"
-                alt="Logo Tetria"
-                class="img"
-            >
-
-            <h1>CALCULADORA FINANCEIRA</h1>
-
-            <p>
-                Calcule os resultados financeiros das suas colmeias
-            </p>
-
-        </div>
-
+        <p>Calcule os resultados financeiros das suas colmeias</p>
+      </div>
     </header>
-
 
     <!-- ============================= -->
     <!-- ÁREA PRINCIPAL -->
     <!-- ============================= -->
 
     <main class="mainbody">
+      <div class="container-calculadoras">
+        <!-- ============================= -->
+        <!-- CALCULADORA 1 -->
+        <!-- ============================= -->
 
-        <div class="container-calculadoras">
+        <div class="calculo">
+          <h2>🐝 Dados das Colmeias</h2>
 
+          <p class="descricao">Informe os dados das suas colmeias.</p>
 
-            <!-- ============================= -->
-            <!-- CALCULADORA 1 -->
-            <!-- ============================= -->
+          <div class="campo">
+            <label for="ipt_qtd_colmeia"> Quantidade de Colmeias: </label>
 
-            <div class="calculo">
+            <input type="number" value="125" id="ipt_qtd_colmeia" />
+          </div>
 
-                <h2>🐝 Dados das Colmeias</h2>
+          <div class="campo">
+            <label for="ipt_enxame_Jatai">
+              Valor médio do enxame de abelha Jataí:
+            </label>
 
-                <p class="descricao">
-                    Informe os dados das suas colmeias.
-                </p>
+            <input
+              type="number"
+              step="0.01"
+              value="275.00"
+              id="ipt_enxame_Jatai"
+            />
+          </div>
 
+          <div class="campo">
+            <label for="ipt_qtd_Mel">
+              Quantos (ml) de mel é produzido por colmeia no mês?
+            </label>
 
-                <div class="campo">
+            <input type="number" value="1000" id="ipt_qtd_Mel" />
+          </div>
 
-                    <label for="ipt_qtd_colmeia">
-                        Quantidade de Colmeias:
-                    </label>
+          <div class="campo">
+            <label for="ipt_valor_mel"> Valor do mel por ml: </label>
 
-                    <input
-                        type="number"
-                        value="125"
-                        id="ipt_qtd_colmeia"
-                    >
+            <input type="number" step="0.01" value="0.79" id="ipt_valor_mel" />
+          </div>
 
-                </div>
+          <div class="campo campo-perda">
+            <label for="input_colmeia_perdida">
+              Quantidade de colmeias perdidas ao ano:
+            </label>
 
+            <input type="number" value="0" id="input_colmeia_perdida" />
 
-                <div class="campo">
+            <span> *Por temperatura e umidade </span>
+          </div>
 
-                    <label for="ipt_enxame_Jatai">
-                        Valor médio do enxame de abelha Jataí:
-                    </label>
+          <div class="btn">
+            <button onclick="Calculo1()">CALCULAR</button>
+          </div>
 
-                    <input
-                        type="number"
-                        step="0.01"
-                        value="275.00"
-                        id="ipt_enxame_Jatai"
-                    >
+          <!-- RESULTADO -->
 
-                </div>
+          <div class="mensagem">
+            <h3>RESULTADO</h3>
 
-
-                <div class="campo">
-
-                    <label for="ipt_qtd_Mel">
-                        Quantos (ml) de mel é produzido por colmeia no mês?
-                    </label>
-
-                    <input
-                        type="number"
-                        value="1000"
-                        id="ipt_qtd_Mel"
-                    >
-
-                </div>
-
-
-                <div class="campo">
-
-                    <label for="ipt_valor_mel">
-                        Valor do mel por ml:
-                    </label>
-
-                    <input
-                        type="number"
-                        step="0.01"
-                        value="0.79"
-                        id="ipt_valor_mel"
-                    >
-
-                </div>
-
-
-                <div class="campo campo-perda">
-
-                    <label for="input_colmeia_perdida">
-                        Quantidade de colmeias perdidas ao ano:
-                    </label>
-
-                    <input
-                        type="number"
-                        value="0"
-                        id="input_colmeia_perdida"
-                    >
-
-                    <span>
-                        *Por temperatura e umidade
-                    </span>
-
-                </div>
-
-
-                <div class="btn">
-
-                    <button onclick="Calculo1()">
-                        CALCULAR
-                    </button>
-
-                </div>
-
-
-                <!-- RESULTADO -->
-
-                <div class="mensagem">
-
-                    <h3>RESULTADO</h3>
-
-                    <div id="div_mensagem"></div>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- ============================= -->
-            <!-- CALCULADORA 2 -->
-            <!-- ============================= -->
-
-            <div class="calculo">
-
-                <h2>💰 Projeção Financeira</h2>
-
-                <p class="descricao">
-                    Simule os resultados da sua produção.
-                </p>
-
-
-                <div class="campo">
-
-                    <label for="ipt_qtd_colmeia2">
-                        Quantidade de Colmeias:
-                    </label>
-
-                    <input
-                        type="number"
-                        id="ipt_qtd_colmeia2"
-                    >
-
-                </div>
-
-
-                <div class="campo">
-
-                    <label for="ipt_qntmel2">
-                        Quantos ml cada Colmeia produz:
-                    </label>
-
-                    <input
-                        type="number"
-                        id="ipt_qntmel2"
-                    >
-
-                </div>
-
-
-                <div class="campo">
-
-                    <label for="ipt_enxame2">
-                        Quanto custa o enxame de Jataí:
-                    </label>
-
-                    <input
-                        type="number"
-                        step="0.01"
-                        id="ipt_enxame2"
-                    >
-
-                </div>
-
-
-                <div class="btn">
-
-                    <button onclick="Calculo2()">
-                        CALCULAR
-                    </button>
-
-                </div>
-
-
-                <!-- RESULTADO -->
-
-                <div class="mensagem">
-
-                    <h3>RESULTADO</h3>
-
-                    <div id="div_mensagem2"></div>
-
-                </div>
-
-            </div>
-
+            <div id="div_mensagem"></div>
+          </div>
         </div>
 
+        <!-- ============================= -->
+        <!-- CALCULADORA 2 -->
+        <!-- ============================= -->
+
+        <div class="calculo">
+          <h2>💰 Projeção Financeira</h2>
+
+          <p class="descricao">Simule os resultados da sua produção.</p>
+
+          <div class="campo">
+            <label for="ipt_qtd_colmeia2"> Quantidade de Colmeias: </label>
+
+            <input type="number" id="ipt_qtd_colmeia2" />
+          </div>
+
+          <div class="campo">
+            <label for="ipt_qntmel2"> Quantos ml cada Colmeia produz: </label>
+
+            <input type="number" id="ipt_qntmel2" />
+          </div>
+
+          <div class="campo">
+            <label for="ipt_enxame2"> Quanto custa o enxame de Jataí: </label>
+
+            <input type="number" step="0.01" id="ipt_enxame2" />
+          </div>
+
+          <div class="btn">
+            <button onclick="Calculo2()">CALCULAR</button>
+          </div>
+
+          <!-- RESULTADO -->
+
+          <div class="mensagem">
+            <h3>RESULTADO</h3>
+
+            <div id="div_mensagem2"></div>
+          </div>
+        </div>
+      </div>
     </main>
-
-
 
     <!-- ============================= -->
     <!-- JAVASCRIPT -->
     <!-- ============================= -->
 
     <script>
+      function Calculo1() {
+        // Pegando os valores diretamente pelos IDs
 
-        function Calculo1() {
+        let qtdColmeias = Number(ipt_qtd_colmeia.value);
 
-            // Pegando os valores diretamente pelos IDs
+        let valorEnxame = Number(ipt_enxame_Jatai.value);
 
-            let qtdColmeias =
-                Number(ipt_qtd_colmeia.value);
+        let qtdMelMes = Number(ipt_qtd_Mel.value);
 
-            let valorEnxame =
-                Number(ipt_enxame_Jatai.value);
+        let valorMel = Number(ipt_valor_mel.value);
 
-            let qtdMelMes =
-                Number(ipt_qtd_Mel.value);
+        let colmeiaPerdida = Number(input_colmeia_perdida.value);
 
-            let valorMel =
-                Number(ipt_valor_mel.value);
+        // =============================
+        // CÁLCULOS
+        // =============================
 
-            let colmeiaPerdida =
-                Number(input_colmeia_perdida.value);
+        let valorMelMes = qtdMelMes * valorMel;
 
+        let valorMelAno = valorMelMes * 12;
 
-            // =============================
-            // CÁLCULOS
-            // =============================
+        let valorTotalEnxame = qtdColmeias * valorEnxame;
 
-            let valorMelMes =
-                qtdMelMes * valorMel;
+        let valorPerdido = colmeiaPerdida * valorEnxame;
 
-            let valorMelAno =
-                valorMelMes * 12;
+        // =============================
+        // PERCENTUAL DE PERDA
+        // =============================
 
-            let valorTotalEnxame =
-                qtdColmeias * valorEnxame;
+        let percentualPerda = 0;
 
-            let valorPerdido =
-                colmeiaPerdida * valorEnxame;
+        if (qtdColmeias > 0) {
+          percentualPerda = (colmeiaPerdida / qtdColmeias) * 100;
+        }
 
+        // =============================
+        // MOSTRAR RESULTADO
+        // =============================
 
-            // =============================
-            // PERCENTUAL DE PERDA
-            // =============================
-
-            let percentualPerda = 0;
-
-            if (qtdColmeias > 0) {
-
-                percentualPerda =
-                    (colmeiaPerdida / qtdColmeias) * 100;
-
-            }
-
-
-            // =============================
-            // MOSTRAR RESULTADO
-            // =============================
-
-            div_mensagem.innerHTML = `
+        div_mensagem.innerHTML = `
 
                 <p>
                     Valor total dos enxames:
@@ -353,44 +231,32 @@
                 </p>
 
             `;
+      }
 
-        }
+      function Calculo2() {
+        // Pegando os valores diretamente pelos IDs
 
+        let qtdColmeias = Number(ipt_qtd_colmeia2.value);
 
+        let qtdMel = Number(ipt_qntmel2.value);
 
-        function Calculo2() {
+        let valorEnxame = Number(ipt_enxame2.value);
 
-            // Pegando os valores diretamente pelos IDs
+        // =============================
+        // CÁLCULOS
+        // =============================
 
-            let qtdColmeias =
-                Number(ipt_qtd_colmeia2.value);
+        let producaoTotal = qtdColmeias * qtdMel;
 
-            let qtdMel =
-                Number(ipt_qntmel2.value);
+        let producaoAnual = producaoTotal * 12;
 
-            let valorEnxame =
-                Number(ipt_enxame2.value);
+        let valorTotalEnxames = qtdColmeias * valorEnxame;
 
+        // =============================
+        // MOSTRAR RESULTADO
+        // =============================
 
-            // =============================
-            // CÁLCULOS
-            // =============================
-
-            let producaoTotal =
-                qtdColmeias * qtdMel;
-
-            let producaoAnual =
-                producaoTotal * 12;
-
-            let valorTotalEnxames =
-                qtdColmeias * valorEnxame;
-
-
-            // =============================
-            // MOSTRAR RESULTADO
-            // =============================
-
-            div_mensagem2.innerHTML = `
+        div_mensagem2.innerHTML = `
 
                 <p>
                     Produção mensal:
@@ -414,11 +280,7 @@
                 </p>
 
             `;
-
-        }
-
+      }
     </script>
-
-</body>
-
+  </body>
 </html>
