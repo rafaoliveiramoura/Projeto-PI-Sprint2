@@ -1,12 +1,145 @@
-/* ================================= */ /* CONFIGURAÇÕES GERAIS */ /* ================================= */ * { box-sizing: border-box; margin: 0; padding: 0; } body { font-family: 'Poppins', sans-serif; /* FUNDO MARROM */ background-color: #221E19; width: 100%; min-height: 100vh; color: #221E19; } /* ================================= */ /* ÁREA PRINCIPAL */ /* ================================= */ .mainbody { background-color: #221E19; min-height: 100vh; } /* ================================= */ /* HEADER */ /* ================================= */ .header { text-align: center; /* BRANCO MEIO BEGE */ background-color: #F5F0E6; padding: 25px 20px 30px; margin: 0 0 35px; width: 100%; } .header .img { width: 100px; margin-bottom: 8px; } .header h1 { font-family: 'Montserrat', sans-serif; font-weight: 800; /* MARROM */ color: #221E19; font-size: 30px; } .header p { margin-top: 5px; /* MARROM MAIS CLARO */ color: #6B6257; font-size: 14px; } /* ================================= */ /* CONTAINER DAS CALCULADORAS */ /* ================================= */ .container-calculadoras { display: flex; justify-content: center; align-items: flex-start; gap: 30px; flex-wrap: wrap; width: 100%; max-width: 900px; margin: 20px auto; padding: 0 20px; } /* ================================= */ /* CALCULADORA */ /* ================================= */ .calculo { width: 100%; max-width: 400px; padding: 25px; background-color: #FFCB05; border-radius: 20px; border: none; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); display: flex; flex-direction: column; gap: 5px; transition: 0.2s; }
+/* ================================= */
+/* CONFIGURAÇÕES GERAIS */
+/* ================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+    min-height: 100vh;
+
+    color: #221E19;
+    background-color: #221E19;
+}
 
 
-.calculo:hover {
+/* ================================= */
+/* HEADER */
+/* ================================= */
+
+.mainheader {
+    width: 100%;
+     background: linear-gradient(135deg, #FFF9E6 0%, #F5F0E6 100%);
+     background-attachment: fixed;
+}
+
+.header {
+    width: 100%;
+    min-height: 220px;
+
+    padding: 30px 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+.header .img {
+    width: 95px;
+    margin-bottom: 12px;
+}
+
+.header h1 {
+    font-family: 'Montserrat', sans-serif;
+
+    font-size: 30px;
+    font-weight: 800;
+
+    color: #221E19;
+
+    letter-spacing: 1px;
+}
+
+.header p {
+    margin-top: 8px;
+
+    font-size: 14px;
+
+    color: #514A41;
+}
+
+
+/* ================================= */
+/* ÁREA PRINCIPAL */
+/* ================================= */
+
+.mainbody {
+    width: 100%;
+
+    min-height: calc(100vh - 220px);
+
+    /* MARROM */
+    background-color: #221E19;
+
+    padding: 45px 20px 60px;
+}
+
+
+/* ================================= */
+/* CONTAINER DAS CALCULADORAS */
+/* ================================= */
+
+.container-calculadoras {
+    width: 100%;
+
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: flex-start;
+
+    gap: 30px;
+
+    flex-wrap: wrap;
+}
+
+
+/* ================================= */
+/* CALCULADORA */
+/* ================================= */
+
+.calculo {
+    width: 100%;
+
+    max-width: 400px;
+
+    padding: 25px;
+
+    /* AMARELO */
+    background-color: #FFCB05;
+
+    border-radius: 18px;
+
+    border: none;
 
     box-shadow:
-        0 10px 25px rgba(34, 30, 25, 0.18);
+        0 8px 20px rgba(0, 0, 0, 0.30);
 
-    transform: translateY(-2px);
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    transition: 0.2s;
+}
+
+.calculo:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 25px rgba(0, 0, 0, 0.40);
 }
 
 
@@ -15,7 +148,6 @@
 /* ================================= */
 
 .calculo h2 {
-
     font-family: 'Montserrat', sans-serif;
 
     font-size: 19px;
@@ -24,9 +156,24 @@
 
     color: #221E19;
 
-    margin-bottom: 15px;
-
     text-align: center;
+
+    margin-bottom: 3px;
+}
+
+
+/* ================================= */
+/* DESCRIÇÃO */
+/* ================================= */
+
+.descricao {
+    text-align: center;
+
+    font-size: 12px;
+
+    color: #514A41;
+
+    margin-bottom: 18px;
 }
 
 
@@ -35,18 +182,15 @@
 /* ================================= */
 
 .calculo .campo {
-
     display: flex;
-
-    flex-direction: row;
 
     align-items: center;
 
     justify-content: space-between;
 
-    gap: 12px;
+    gap: 15px;
 
-    margin-bottom: 12px;
+    margin-bottom: 13px;
 }
 
 
@@ -55,18 +199,15 @@
 /* ================================= */
 
 .calculo .campo label {
-
     flex: 1;
-
-    font-family: 'Poppins', sans-serif;
-
-    color: #000000;
 
     font-size: 14px;
 
     font-weight: 600;
 
-    line-height: 1.3;
+    line-height: 1.35;
+
+    color: #221E19;
 }
 
 
@@ -75,7 +216,6 @@
 /* ================================= */
 
 .calculo .campo input {
-
     width: 95px;
 
     min-width: 95px;
@@ -84,63 +224,72 @@
 
     padding: 5px 8px;
 
+    /* BRANCO */
     background-color: #FFFFFF;
 
-    border: 1px solid #D5D5D5;
+    border: none;
 
     border-radius: 7px;
 
+    font-family: 'Poppins', sans-serif;
+
     font-size: 14px;
 
-    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
 
     color: #221E19;
 
-    outline: none;
-
     text-align: center;
 
+    outline: none;
+
     box-shadow:
-        0 2px 5px rgba(0, 0, 0, 0.08);
+        0 2px 5px rgba(0, 0, 0, 0.15);
 
     transition: 0.2s;
 }
 
 
-/* INPUT SELECIONADO */
+/* ================================= */
+/* INPUT AO CLICAR */
+/* ================================= */
 
 .calculo .campo input:focus {
-
-    border: 1px solid #221E19;
+    border: none;
 
     box-shadow:
-        0 0 0 3px rgba(34, 30, 25, 0.12);
-
-    outline: none;
+        0 0 0 3px rgba(34, 30, 25, 0.25);
 }
 
 
 /* ================================= */
-/* TEXTO DE TEMPERATURA E UMIDADE */
+/* SETAS DO INPUT NUMBER */
+/* ================================= */
+
+.calculo input[type="number"]::-webkit-inner-spin-button,
+.calculo input[type="number"]::-webkit-outer-spin-button {
+    opacity: 0.5;
+}
+
+
+/* ================================= */
+/* CAMPO DE PERDAS */
 /* ================================= */
 
 .campo-perda {
-
     flex-wrap: wrap;
 }
 
-
 .campo-perda span {
-
     width: 100%;
+
+    margin-top: -6px;
 
     font-size: 11px;
 
     font-style: italic;
 
     color: #514A41;
-
-    margin-top: -5px;
 }
 
 
@@ -149,28 +298,25 @@
 /* ================================= */
 
 .btn {
-
     display: flex;
 
     justify-content: center;
 
     margin-top: 8px;
 
-    margin-bottom: 5px;
+    margin-bottom: 7px;
 }
 
-
 .btn button {
-
-    border: 2px solid #221E19;
-
     width: 100%;
 
-    max-width: 230px;
+    max-width: 220px;
 
     height: 45px;
 
-    border-radius: 10px;
+    border: 2px solid #221E19;
+
+    border-radius: 9px;
 
     background-color: #221E19;
 
@@ -178,23 +324,25 @@
 
     font-family: 'Montserrat', sans-serif;
 
-    font-weight: 800;
-
     font-size: 15px;
+
+    font-weight: 800;
 
     cursor: pointer;
 
     transition: 0.2s;
 }
 
-
 .btn button:hover {
-
     background-color: #FFFFFF;
 
     color: #221E19;
 
     transform: translateY(-2px);
+}
+
+.btn button:active {
+    transform: translateY(0);
 }
 
 
@@ -203,22 +351,20 @@
 /* ================================= */
 
 .mensagem {
-
-    background-color: #FFF9E6;
-
-    border-radius: 10px;
-
-    border-left: 5px solid #221E19;
-
-    padding: 15px;
-
-    margin-top: 12px;
-
     width: 100%;
 
     min-height: 80px;
 
-    font-family: 'Poppins', sans-serif;
+    margin-top: 10px;
+
+    padding: 15px;
+
+    /* BRANCO */
+    background-color: #FFFFFF;
+
+    border-radius: 10px;
+
+    border-left: 4px solid #221E19;
 
     color: #221E19;
 
@@ -231,25 +377,23 @@
 /* ================================= */
 
 .mensagem h3 {
-
     font-family: 'Montserrat', sans-serif;
 
-    font-size: 13px;
+    font-size: 12px;
 
     font-weight: 800;
 
-    margin-bottom: 10px;
+    letter-spacing: 1px;
 
-    letter-spacing: 0.5px;
+    margin-bottom: 10px;
 }
 
 
 /* ================================= */
-/* PARÁGRAFOS DO RESULTADO */
+/* RESULTADOS */
 /* ================================= */
 
 .mensagem p {
-
     margin: 6px 0;
 
     font-size: 13px;
@@ -257,9 +401,7 @@
     line-height: 1.4;
 }
 
-
 .mensagem strong {
-
     font-family: 'Montserrat', sans-serif;
 
     font-weight: 800;
@@ -272,16 +414,19 @@
 
 @media (max-width: 700px) {
 
-    .container-calculadoras {
+    .mainbody {
+        padding: 30px 15px 50px;
+    }
 
+    .container-calculadoras {
         flex-direction: column;
 
         align-items: center;
+
+        gap: 25px;
     }
 
-
     .calculo {
-
         max-width: 450px;
     }
 
@@ -289,49 +434,58 @@
 
 
 /* ================================= */
-/* CELULARES PEQUENOS */
+/* CELULARES */
 /* ================================= */
 
 @media (max-width: 450px) {
 
-    .header h1 {
+    .header {
+        min-height: 190px;
 
-        font-size: 24px;
+        padding: 25px 15px;
     }
 
+    .header .img {
+        width: 80px;
+    }
+
+    .header h1 {
+        font-size: 23px;
+
+        line-height: 1.2;
+    }
 
     .header p {
-
         font-size: 12px;
     }
 
-
-    .calculo {
-
-        padding: 20px 15px;
+    .mainbody {
+        padding: 25px 12px 40px;
     }
 
+    .calculo {
+        padding: 20px 15px;
+
+        border-radius: 15px;
+    }
 
     .calculo h2 {
-
         font-size: 17px;
     }
 
+    .descricao {
+        font-size: 11px;
+    }
 
     .calculo .campo {
-
         gap: 8px;
     }
 
-
     .calculo .campo label {
-
         font-size: 12px;
     }
 
-
     .calculo .campo input {
-
         width: 80px;
 
         min-width: 80px;
@@ -341,10 +495,12 @@
         font-size: 13px;
     }
 
-
-    .btn button {       
-
+    .btn button {
         max-width: 200px;
+    }
+
+    .mensagem p {
+        font-size: 12px;
     }
 
 }
