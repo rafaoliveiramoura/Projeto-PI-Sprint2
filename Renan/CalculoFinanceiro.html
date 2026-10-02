@@ -20,275 +20,288 @@
 
   <body>
     <!-- CABEÇALHO -->
-    <div class="mainheader">
-      <div class="mainbody">
+    <header class="mainheader">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <img src="../Renan/src/tetria-logo-transparente.png" alt="Logo Tetria" class="nav-img" />
+          </div>
+          <ul class="nav-links">
+            <li><a href="../Rafael/home/home.html">Início</a></li>
+            <li><a href="#">Calculadoras</a></li>
+            <li><a href="#">Sobre</a></li>
+            <li><a href="#">Contato</a></li>
+          </ul>
+        </div>
+      </nav>
+
       <div class="header">
-      <img
-        src="../Renan/src/tetria-logo-transparente.png"
-        alt="Logo Tetria"
-        class="img"
-      />
-
-      <h1>CALCULADORA FINANCEIRA</h1>
-
-      <p>Calcule os resultados financeiros das suas colmeias</p>
-    </div>
-    </div>
+        <div class="header-text">
+          <h1>CALCULADORA FINANCEIRA</h1>
+          <p>Calcule os resultados financeiros das suas colmeias</p>
+        </div>
+      </div>
+    </header>
 
     <!-- CONTAINER DAS CALCULADORAS -->
-    <div class="container-calculadoras">
-      <!-- ========================= -->
-      <!-- CALCULADORA 1 -->
-      <!-- ========================= -->
+    <main class="mainbody">
+      <div class="container-calculadoras">
+        <!-- ========================= -->
+        <!-- CALCULADORA 1 -->
+        <!-- ========================= -->
 
-      <div class="calculo">
-        <h2>🐝 Dados das Colmeias</h2>
+        <div class="calculo" id="calc1">
+          <h2>🐝 Dados das Colmeias</h2>
 
-        <!-- QUANTIDADE DE COLMEIAS -->
-        <div class="campo">
-          <label for="ipt_qtd_colmeia"> Quantidade de Colmeias: </label>
+          <!-- QUANTIDADE DE COLMEIAS -->
+          <div class="campo">
+            <label for="ipt_qtd_colmeia"> Quantidade de Colmeias: </label>
+            <input type="number" value="125" id="ipt_qtd_colmeia" />
+            <span class="error-message" id="err_ipt_qtd_colmeia"></span>
+          </div>
 
-          <input type="number" value="125" id="ipt_qtd_colmeia" />
+          <!-- VALOR DO ENXAME -->
+          <div class="campo">
+            <label for="ipt_enxame_Jatai">
+              Valor médio do enxame de abelha Jataí:
+            </label>
+            <input type="text" value="R$ 275,00" id="ipt_enxame_Jatai" class="money-input" />
+            <span class="error-message" id="err_ipt_enxame_Jatai"></span>
+          </div>
+
+          <!-- PRODUÇÃO DE MEL -->
+          <div class="campo">
+            <label for="ipt_qtd_Mel">
+              Quantos (ml) de mel é produzido por colmeia no mês?
+            </label>
+            <input type="number" value="1000" id="ipt_qtd_Mel" />
+            <span class="error-message" id="err_ipt_qtd_Mel"></span>
+          </div>
+
+          <!-- VALOR DO MEL -->
+          <div class="campo">
+            <label for="ipt_valor_mel"> Valor do mel por ml: </label>
+            <input type="text" value="R$ 0,79" id="ipt_valor_mel" class="money-input" />
+            <span class="error-message" id="err_ipt_valor_mel"></span>
+          </div>
+
+          <!-- COLMEIAS PERDIDAS -->
+          <div class="campo campo-perda">
+            <label for="input_colmeia_perdida">
+              Quantidade de colmeias perdidas ao ano:
+            </label>
+            <input type="number" value="0" id="input_colmeia_perdida" />
+            <span class="error-message" id="err_input_colmeia_perdida"></span>
+            <span class="info-perda"> *Por temperatura e umidade </span>
+          </div>
+
+          <!-- BOTÕES -->
+          <div class="btn-group">
+            <button onclick="Calculo1()" id="btn_calc1">CALCULAR</button>
+            <button class="btn-clear" onclick="limparCampos('calc1')">LIMPAR</button>
+          </div>
+
+          <!-- RESULTADO -->
+          <div class="mensagem">
+            <h3>RESULTADO</h3>
+            <div id="div_mensagem"></div>
+          </div>
         </div>
 
-        <!-- VALOR DO ENXAME -->
-        <div class="campo">
-          <label for="ipt_enxame_Jatai">
-            Valor médio do enxame de abelha Jataí:
-          </label>
+        <!-- ========================= -->
+        <!-- CALCULADORA 2 -->
+        <!-- ========================= -->
 
-          <input
-            type="number"
-            step="0.01"
-            value="275.00"
-            id="ipt_enxame_Jatai"
-          />
-        </div>
+        <div class="calculo" id="calc2">
+          <h2>💰 Projeção Financeira</h2>
 
-        <!-- PRODUÇÃO DE MEL -->
-        <div class="campo">
-          <label for="ipt_qtd_Mel">
-            Quantos (ml) de mel é produzido por colmeia no mês?
-          </label>
+          <!-- QUANTIDADE DE COLMEIAS -->
+          <div class="campo">
+            <label for="ipt_qtd_colmeia2"> Quantidade de Colmeias: </label>
+            <input type="number" id="ipt_qtd_colmeia2" />
+            <span class="error-message" id="err_ipt_qtd_colmeia2"></span>
+          </div>
 
-          <input type="number" value="1000" id="ipt_qtd_Mel" />
-        </div>
+          <!-- PRODUÇÃO DE MEL -->
+          <div class="campo">
+            <label for="ipt_qntmel2"> Quantos ml cada Colmeia produz: </label>
+            <input type="number" id="ipt_qntmel2" />
+            <span class="error-message" id="err_ipt_qntmel2"></span>
+          </div>
 
-        <!-- VALOR DO MEL -->
-        <div class="campo">
-          <label for="ipt_valor_mel"> Valor do mel por ml: </label>
+          <!-- VALOR DO ENXAME -->
+          <div class="campo">
+            <label for="ipt_enxame2"> Quanto custa o enxame de Jataí: </label>
+            <input type="text" id="ipt_enxame2" class="money-input" />
+            <span class="error-message" id="err_ipt_enxame2"></span>
+          </div>
 
-          <input type="number" step="0.01" value="0.79" id="ipt_valor_mel" />
-        </div>
+          <!-- BOTÕES -->
+          <div class="btn-group">
+            <button onclick="Calculo2()" id="btn_calc2">CALCULAR</button>
+            <button class="btn-clear" onclick="limparCampos('calc2')">LIMPAR</button>
+          </div>
 
-        <!-- COLMEIAS PERDIDAS -->
-        <div class="campo campo-perda">
-          <label for="input_colmeia_perdida">
-            Quantidade de colmeias perdidas ao ano:
-          </label>
-
-          <input type="number" value="0" id="input_colmeia_perdida" />
-
-          <span> *Por temperatura e umidade </span>
-        </div>
-
-        <!-- BOTÃO -->
-        <div class="btn">
-          <button onclick="Calculo1()">CALCULAR</button>
-        </div>
-
-        <!-- RESULTADO -->
-        <div class="mensagem">
-          <h3>RESULTADO</h3>
-
-          <div id="div_mensagem"></div>
-        </div>
-      </div>
-
-      <!-- ========================= -->
-      <!-- CALCULADORA 2 -->
-      <!-- ========================= -->
-
-      <div class="calculo">
-        <h2>💰 Projeção Financeira</h2>
-
-        <!-- QUANTIDADE DE COLMEIAS -->
-        <div class="campo">
-          <label for="ipt_qtd_colmeia2"> Quantidade de Colmeias: </label>
-
-          <input type="number" id="ipt_qtd_colmeia2" />
-        </div>
-
-        <!-- PRODUÇÃO DE MEL -->
-        <div class="campo">
-          <label for="ipt_qntmel2"> Quantos ml cada Colmeia produz: </label>
-
-          <input type="number" id="ipt_qntmel2" />
-        </div>
-
-        <!-- VALOR DO ENXAME -->
-        <div class="campo">
-          <label for="ipt_enxame2"> Quanto custa o enxame de Jataí: </label>
-
-          <input type="number" step="0.01" id="ipt_enxame2" />
-        </div>
-
-        <!-- BOTÃO -->
-        <div class="btn">
-          <button onclick="Calculo2()">CALCULAR</button>
-        </div>
-
-        <!-- RESULTADO -->
-        <div class="mensagem">
-          <h3>RESULTADO</h3>
-
-          <div id="div_mensagem2"></div>
+          <!-- RESULTADO -->
+          <div class="mensagem">
+            <h3>RESULTADO</h3>
+            <div id="div_mensagem2"></div>
+          </div>
         </div>
       </div>
-    </div>
-    </div>
+    </main>
 
     <!-- ========================= -->
     <!-- JAVASCRIPT -->
-    <!-- ========================= -->
+    <!-- ================================= -->
 
     <script>
-      function Calculo1() {
-        // Pegando os valores dos inputs
-        let qtdColmeias = Number(
-          document.getElementById("ipt_qtd_colmeia").value,
-        );
+      /* ================================= */
+      /* UTILITÁRIOS DE MÁSCARA E VALIDAÇÃO */
+      /* ================================= */
 
-        let valorEnxame = Number(
-          document.getElementById("ipt_enxame_Jatai").value,
-        );
-
-        let qtdMelMes = Number(document.getElementById("ipt_qtd_Mel").value);
-
-        let valorMel = Number(document.getElementById("ipt_valor_mel").value);
-
-        let colmeiaPerdida = Number(
-          document.getElementById("input_colmeia_perdida").value,
-        );
-
-        // =========================
-        // CÁLCULOS
-        // =========================
-
-        // Valor do mel produzido por mês
-        let valorMelMes = qtdMelMes * valorMel;
-
-        // Valor do mel produzido por ano
-        let valorMelAno = valorMelMes * 12;
-
-        // Valor total dos enxames
-        let valorTotalEnxame = qtdColmeias * valorEnxame;
-
-        // Valor das colmeias perdidas
-        let valorPerdido = colmeiaPerdida * valorEnxame;
-
-        // Percentual de perdas
-        let percentualPerda = 0;
-
-        if (qtdColmeias > 0) {
-          percentualPerda = (colmeiaPerdida / qtdColmeias) * 100;
-        }
-
-        // =========================
-        // MOSTRAR RESULTADO
-        // =========================
-
-        document.getElementById("div_mensagem").innerHTML = `
-
-                <p>
-                    Valor total dos enxames:
-                    <strong>
-                        R$ ${valorTotalEnxame.toFixed(2)}
-                    </strong>
-                </p>
-
-                <p>
-                    Receita do mel por mês:
-                    <strong>
-                        R$ ${valorMelMes.toFixed(2)}
-                    </strong>
-                </p>
-
-                <p>
-                    Receita do mel por ano:
-                    <strong>
-                        R$ ${valorMelAno.toFixed(2)}
-                    </strong>
-                </p>
-
-                <p>
-                    Valor perdido:  
-                    <strong>
-                        R$ ${valorPerdido.toFixed(2)}
-                    </strong>
-                </p>
-
-                <p>
-                    Percentual de perda:
-                    <str    ong>
-                        ${percentualPerda.toFixed(2)}%
-                    </strong>
-                </p>
-
-            `;
+      var moneyInputs = document.getElementsByClassName('money-input');
+      var iMoney = 0;
+      while (iMoney < moneyInputs.length) {
+        moneyInputs[iMoney].addEventListener('input', function() {
+          var inputElement = event.target;
+          var value = inputElement.value.replace(/\D/g, '');
+          if (value === '') {
+            inputElement.value = '';
+            return;
+          }
+          value = (value / 100).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+          });
+          inputElement.value = value;
+        });
+        iMoney++;
       }
 
+      function parseMoney() {
+        var value = arguments[0];
+        if (!value) return 0;
+        var cleanValue = value.replace(/R\$\s?|[\.\s]/g, '').replace(',', '.');
+        return parseFloat(cleanValue) || 0;
+      }
+
+      function validateField() {
+        var id = arguments[0];
+        var value = arguments[1];
+        var input = document.getElementById(id);
+        var errorSpan = document.getElementById('err_' + id);
+
+        if (value === '' || isNaN(value) || (typeof value === 'number' && value < 0)) {
+          input.classList.add('input-error');
+          errorSpan.innerText = 'Valor inválido ou vazio';
+          return false;
+        } else {
+          input.classList.remove('input-error');
+          errorSpan.innerText = '';
+          return true;
+        }
+      }
+
+      function limparCampos() {
+        var calcId = arguments[0];
+        var container = document.getElementById(calcId);
+        var inputs = container.getElementsByTagName('input');
+        var jInput = 0;
+        while (jInput < inputs.length) {
+          inputs[jInput].value = inputs[jInput].defaultValue || '';
+          inputs[jInput].classList.remove('input-error');
+          jInput++;
+        }
+
+        var errors = container.getElementsByClassName('error-message');
+        var jError = 0;
+        while (jError < errors.length) {
+          errors[jError].innerText = '';
+          jError++;
+        }
+
+        container.querySelector('.mensagem div').innerHTML = '';
+      }
+
+      /* ================================= */
+      /* LÓGICA DA CALCULADORA 1 */
+      /* ================================= */
+      function Calculo1() {
+        var v_qtd = document.getElementById("ipt_qtd_colmeia").value;
+        var v_enxame = document.getElementById("ipt_enxame_Jatai").value;
+        var v_mel = document.getElementById("ipt_qtd_Mel").value;
+        var v_preco_mel = document.getElementById("ipt_valor_mel").value;
+        var v_perda = document.getElementById("input_colmeia_perdida").value;
+
+        var qtdColmeias = Number(v_qtd);
+        var valorEnxame = parseMoney(v_enxame);
+        var qtdMelMes = Number(v_mel);
+        var valorMel = parseMoney(v_preco_mel);
+        var colmeiaPerdida = Number(v_perda);
+
+        var isValid = true;
+        if (!validateField("ipt_qtd_colmeia", qtdColmeias)) isValid = false;
+        if (!validateField("ipt_enxame_Jatai", valorEnxame)) isValid = false;
+        if (!validateField("ipt_qtd_Mel", qtdMelMes)) isValid = false;
+        if (!validateField("ipt_valor_mel", valorMel)) isValid = false;
+        if (!validateField("input_colmeia_perdida", colmeiaPerdida)) isValid = false;
+
+        if (!isValid) return;
+
+        var valorMelMes = qtdMelMes * valorMel;
+        var valorMelAno = valorMelMes * 12;
+        var valorTotalEnxame = qtdColmeias * valorEnxame;
+        var valorPerdido = colmeiaPerdida * valorEnxame;
+        var percentualPerda = qtdColmeias > 0 ? (colmeiaPerdida / qtdColmeias) * 100 : 0;
+
+        document.getElementById("div_mensagem").innerHTML = `
+                <p>Valor total dos enxames: <strong>R$ ${valorTotalEnxame.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong></p>
+                <p>Receita do mel por mês: <strong>R$ ${valorMelMes.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong></p>
+                <p>Receita do mel por ano: <strong>R$ ${valorMelAno.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong></p>
+                <p>Valor perdido: <strong style="color: #d9534f;">R$ ${valorPerdido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong></p>
+                <p>Percentual de perda: <strong>${percentualPerda.toFixed(2)}%</strong></p>
+            `;
+
+        var container = document.getElementById("div_mensagem").closest('.mensagem');
+        container.style.animation = 'none';
+        container.offsetHeight;
+        container.style.animation = null;
+      }
+
+      /* ================================= */
+      /* LÓGICA DA CALCULADORA 2 */
+      /* ================================= */
       function Calculo2() {
-        // Pegando os valores
-        let qtdColmeias = Number(
-          document.getElementById("ipt_qtd_colmeia2").value,
-        );
+        var v_qtd2 = document.getElementById("ipt_qtd_colmeia2").value;
+        var v_mel2 = document.getElementById("ipt_qntmel2").value;
+        var v_enxame2 = document.getElementById("ipt_enxame2").value;
 
-        let qtdMel = Number(document.getElementById("ipt_qntmel2").value);
+        var qtdColmeias = Number(v_qtd2);
+        var qtdMel = Number(v_mel2);
+        var valorEnxame = parseMoney(v_enxame2);
 
-        let valorEnxame = Number(document.getElementById("ipt_enxame2").value);
+        var isValid = true;
+        if (!validateField("ipt_qtd_colmeia2", qtdColmeias)) isValid = false;
+        if (!validateField("ipt_qntmel2", qtdMel)) isValid = false;
+        if (!validateField("ipt_enxame2", valorEnxame)) isValid = false;
 
-        // =========================
-        // CÁLCULOS
-        // =========================
+        if (!isValid) return;
 
-        // Produção total mensal
-        let producaoTotal = qtdColmeias * qtdMel;
-
-        // Produção anual
-        let producaoAnual = producaoTotal * 12;
-
-        // Valor total dos enxames
-        let valorTotalEnxames = qtdColmeias * valorEnxame;
-
-        // =========================
-        // MOSTRAR RESULTADO
-        // =========================
+        var producaoTotal = qtdColmeias * qtdMel;
+        var producaoAnual = producaoTotal * 12;
+        var valorTotalEnxames = qtdColmeias * valorEnxame;
 
         document.getElementById("div_mensagem2").innerHTML = `
-
-                <p>
-                    Produção mensal:
-                    <strong>
-                        ${producaoTotal.toFixed(0)} ml
-                    </strong>
-                </p>
-
-                <p>
-                    Produção anual:
-                    <strong>
-                        ${producaoAnual.toFixed(0)} ml
-                    </strong>
-                </p>
-
-                <p>
-                    Valor dos enxames:
-                    <strong>
-                        R$ ${valorTotalEnxames.toFixed(2)}
-                    </strong>
-                </p>
-
+                <p>Produção mensal: <strong>${producaoTotal.toLocaleString('pt-BR')} ml</strong></p>
+                <p>Produção anual: <strong>${producaoAnual.toLocaleString('pt-BR')} ml</strong></p>
+                <p>Valor dos enxames: <strong>R$ ${valorTotalEnxames.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</strong></p>
             `;
+
+        var container = document.getElementById("div_mensagem2").closest('.mensagem');
+        container.style.animation = 'none';
+        container.offsetHeight;
+        container.style.animation = null;
       }
     </script>
   </body>
