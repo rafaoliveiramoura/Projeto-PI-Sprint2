@@ -43,7 +43,6 @@ function cadastrar(req, res) {
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
     var cpf = req.body.cpfServer || ""; // Se vier undefined, vira string vazia
-    var usuario = req.body.usuarioServer;
     let telefone = req.body.telefoneServer;
 
     if (nome == undefined) {
@@ -52,13 +51,11 @@ function cadastrar(req, res) {
         res.status(400).send("Seu email está undefined!");
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está undefined!");
-    } else if (usuario == undefined) {
-        res.status(400).send("Sue usuario está undefined!");
     } else if (telefone == undefined) {
         res.status(400).send("Sua telefone está undefined!");
     } else {
         // Removida a validação obrigatória de CPF pois não existe no HTML
-        usuarioModel.cadastrar(nome, email, senha, cpf, usuario, telefone)
+        usuarioModel.cadastrar(nome, email, senha, cpf, telefone)
             .then(
                 function (resultado) {
                     res.json(resultado);

@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" href="style.css" />
 
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
@@ -18,84 +19,121 @@
   </head>
 
   <body>
-    <!-- ============================= -->
-    <!-- HEADER -->
-    <!-- ============================= -->
-
     <header class="mainheader">
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <img
+              src="../Renan/src/tetria-logo-transparente.png"
+              alt="Logo Tetria"
+              class="nav-img"
+            />
+          </div>
+
+          <ul class="nav-links">
+            <li>
+              <a href="../Rafael/home/home.html"> Início </a>
+            </li>
+
+            <li>
+              <a href="#"> Calculadoras </a>
+            </li>
+
+            <li>
+              <a href="#"> Sobre </a>
+            </li>
+
+            <li>
+              <a href="#"> Contato </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
       <div class="header">
-        <img
-          src="../Renan/src/tetria-logo-transparente.png"
-          alt="Logo Tetria"
-          class="img"
-        />
+        <div class="header-text">
+          <h1>CALCULADORA FINANCEIRA</h1>
 
-        <h1>CALCULADORA FINANCEIRA</h1>
-
-        <p>Calcule os resultados financeiros das suas colmeias</p>
+          <p>Calcule os resultados financeiros das suas colmeias</p>
+        </div>
       </div>
     </header>
 
-    <!-- ============================= -->
-    <!-- ÁREA PRINCIPAL -->
-    <!-- ============================= -->
+    <!-- CONTAINER DAS CALCULADORAS -->
 
     <main class="mainbody">
       <div class="container-calculadoras">
-        <!-- ============================= -->
+        <!-- ========================= -->
         <!-- CALCULADORA 1 -->
-        <!-- ============================= -->
+        <!-- ========================= -->
 
-        <div class="calculo">
+        <div class="calculo" id="calc1">
           <h2>🐝 Dados das Colmeias</h2>
 
-          <p class="descricao">Informe os dados das suas colmeias.</p>
+          <!-- QUANTIDADE DE COLMEIAS -->
 
           <div class="campo">
             <label for="ipt_qtd_colmeia"> Quantidade de Colmeias: </label>
 
-            <input type="number" value="125" id="ipt_qtd_colmeia" />
+            <input type="" value="125" id="ipt_qtd_colmeia" />
+
+            <span class="error-message" id="err_ipt_qtd_colmeia"> </span>
           </div>
+
+          <!-- VALOR DO ENXAME -->
 
           <div class="campo">
             <label for="ipt_enxame_Jatai">
               Valor médio do enxame de abelha Jataí:
             </label>
 
-            <input
-              type="number"
-              step="0.01"
-              value="275.00"
-              id="ipt_enxame_Jatai"
-            />
+            <input type="" value="275" id="ipt_enxame_Jatai" />
+
+            <span class="error-message" id="err_ipt_enxame_Jatai"> </span>
           </div>
+
+          <!-- PRODUÇÃO DE MEL -->
 
           <div class="campo">
             <label for="ipt_qtd_Mel">
               Quantos (ml) de mel é produzido por colmeia no mês?
             </label>
 
-            <input type="number" value="1000" id="ipt_qtd_Mel" />
+            <input type="" value="1000" id="ipt_qtd_Mel" />
+
+            <span class="error-message" id="err_ipt_qtd_Mel"> </span>
           </div>
+
+          <!-- VALOR DO MEL -->
 
           <div class="campo">
             <label for="ipt_valor_mel"> Valor do mel por ml: </label>
 
-            <input type="number" step="0.01" value="0.79" id="ipt_valor_mel" />
+            <input type="" value="0.79" step="0.01" id="ipt_valor_mel" />
+
+            <span class="error-message" id="err_ipt_valor_mel"> </span>
           </div>
+
+          <!-- COLMEIAS PERDIDAS -->
 
           <div class="campo campo-perda">
             <label for="input_colmeia_perdida">
               Quantidade de colmeias perdidas ao ano:
             </label>
 
-            <input type="number" value="0" id="input_colmeia_perdida" />
+            <input type="" value="0" id="input_colmeia_perdida" />
 
-            <span> *Por temperatura e umidade </span>
+            <span class="error-message" id="err_input_colmeia_perdida"> </span>
+
+            <span class="info-perda"> *Por temperatura e umidade </span>
           </div>
 
-          <div class="btn">
-            <button onclick="Calculo1()">CALCULAR</button>
+          <!-- BOTÕES -->
+
+          <div class="btn-group">
+            <button onclick="Calculo1()" id="btn_calc1">CALCULAR</button>
+
+            <button class="btn-clear" onclick="limparCampos1()">LIMPAR</button>
           </div>
 
           <!-- RESULTADO -->
@@ -107,35 +145,49 @@
           </div>
         </div>
 
-        <!-- ============================= -->
+        <!-- ========================= -->
         <!-- CALCULADORA 2 -->
-        <!-- ============================= -->
+        <!-- ========================= -->
 
-        <div class="calculo">
+        <div class="calculo" id="calc2">
           <h2>💰 Projeção Financeira</h2>
 
-          <p class="descricao">Simule os resultados da sua produção.</p>
+          <!-- QUANTIDADE DE COLMEIAS -->
 
           <div class="campo">
             <label for="ipt_qtd_colmeia2"> Quantidade de Colmeias: </label>
 
-            <input type="number" id="ipt_qtd_colmeia2" />
+            <input type="" id="ipt_qtd_colmeia2" />
+
+            <span class="error-message" id="err_ipt_qtd_colmeia2"> </span>
           </div>
+
+          <!-- PRODUÇÃO DE MEL -->
 
           <div class="campo">
             <label for="ipt_qntmel2"> Quantos ml cada Colmeia produz: </label>
 
-            <input type="number" id="ipt_qntmel2" />
+            <input type="" id="ipt_qntmel2" />
+
+            <span class="error-message" id="err_ipt_qntmel2"> </span>
           </div>
+
+          <!-- VALOR DO ENXAME -->
 
           <div class="campo">
             <label for="ipt_enxame2"> Quanto custa o enxame de Jataí: </label>
 
-            <input type="number" step="0.01" id="ipt_enxame2" />
+            <input type="" step="0.01" id="ipt_enxame2" />
+
+            <span class="error-message" id="err_ipt_enxame2"> </span>
           </div>
 
-          <div class="btn">
-            <button onclick="Calculo2()">CALCULAR</button>
+          <!-- BOTÕES -->
+
+          <div class="btn-group">
+            <button onclick="Calculo2()" id="btn_calc2">CALCULAR</button>
+
+            <button class="btn-clear" onclick="limparCampos2()">LIMPAR</button>
           </div>
 
           <!-- RESULTADO -->
@@ -143,143 +195,233 @@
           <div class="mensagem">
             <h3>RESULTADO</h3>
 
-            <div id="div_mensagem2"></div>
+          <div id="div_mensagem2"></div>
           </div>
         </div>
       </div>
     </main>
-
-    <!-- ============================= -->
-    <!-- JAVASCRIPT -->
-    <!-- ============================= -->
-
     <script>
+      
+      // CALCULADORA 1
       function Calculo1() {
-        // Pegando os valores diretamente pelos IDs
-
+        // Pegando os valores dos campos
         let qtdColmeias = Number(ipt_qtd_colmeia.value);
-
         let valorEnxame = Number(ipt_enxame_Jatai.value);
-
         let qtdMelMes = Number(ipt_qtd_Mel.value);
-
         let valorMel = Number(ipt_valor_mel.value);
-
         let colmeiaPerdida = Number(input_colmeia_perdida.value);
 
-        // =============================
-        // CÁLCULOS
-        // =============================
+        // Variável para verificar se todos os campos estão corretos
+        let valido = true;
 
-        let valorMelMes = qtdMelMes * valorMel;
+        // VALIDAÇÃO DA QUANTIDADE DE COLMEIAS
 
-        let valorMelAno = valorMelMes * 12;
+        if (qtdColmeias == "") {
+          err_ipt_qtd_colmeia.innerHTML = "Digite a quantidade de colmeias.";
+          valido = false;
 
-        let valorTotalEnxame = qtdColmeias * valorEnxame;
+        } else if (qtdColmeias < 0) {
+          err_ipt_qtd_colmeia.innerHTML = "A quantidade não pode ser negativa.";
+          valido = false;
 
-        let valorPerdido = colmeiaPerdida * valorEnxame;
+        } else {
+          err_ipt_qtd_colmeia.innerHTML = "";
+        }
+        // VALIDAÇÃO DO VALOR DO ENXAME
 
-        // =============================
-        // PERCENTUAL DE PERDA
-        // =============================
+        if (valorEnxame == "") {
+          err_ipt_enxame_Jatai.innerHTML = "Digite o valor do enxame.";
+          valido = false;
 
-        let percentualPerda = 0;
+        } else if (valorEnxame < 0) {
+          err_ipt_enxame_Jatai.innerHTML = "O valor não pode ser negativo.";
+          valido = false;
 
-        if (qtdColmeias > 0) {
-          percentualPerda = (colmeiaPerdida / qtdColmeias) * 100;
+        } else {
+          err_ipt_enxame_Jatai.innerHTML = "";
         }
 
-        // =============================
-        // MOSTRAR RESULTADO
-        // =============================
+        // VALIDAÇÃO DA PRODUÇÃO DE MEL
 
-        div_mensagem.innerHTML = `
+        if (qtdMelMes == "") {
+          err_ipt_qtd_Mel.innerHTML = "Digite a quantidade de mel.";
+          valido = false;
 
-                <p>
-                    Valor total dos enxames:
-                    <strong>
-                        R$ ${valorTotalEnxame.toFixed(2)}
-                    </strong>
-                </p>
+        } else if (qtdMelMes < 0) {
+          err_ipt_qtd_Mel.innerHTML = "A quantidade não pode ser negativa.";
+          valido = false;
 
-                <p>
-                    Receita do mel por mês:
-                    <strong>
-                        R$ ${valorMelMes.toFixed(2)}
-                    </strong>
-                </p>
+        } else {
+          err_ipt_qtd_Mel.innerHTML = "";
+        }
 
-                <p>
-                    Receita do mel por ano:
-                    <strong>
-                        R$ ${valorMelAno.toFixed(2)}
-                    </strong>
-                </p>
+        // VALIDAÇÃO DO VALOR DO MEL
 
-                <p>
-                    Valor perdido:
-                    <strong>
-                        R$ ${valorPerdido.toFixed(2)}
-                    </strong>
-                </p>
+        if (valorMel == "") {
+          err_ipt_valor_mel.innerHTML = "Digite o valor do mel.";
+          valido = false;
 
-                <p>
-                    Percentual de perda:
-                    <strong>
-                        ${percentualPerda.toFixed(2)}%
-                    </strong>
-                </p>
+        } else if (valorMel < 0) {
+          err_ipt_valor_mel.innerHTML = "O valor não pode ser negativo.";
+          valido = false;
 
-            `;
+        } else {
+          err_ipt_valor_mel.innerHTML = "";
+        }
+
+        // VALIDAÇÃO DAS COLMEIAS PERDIDAS
+
+        if (colmeiaPerdida == "") {
+          err_input_colmeia_perdida.innerHTML =
+            "Digite a quantidade de colmeias perdidas.";
+
+          valido = false;
+        } else if (colmeiaPerdida < 0) {
+          err_input_colmeia_perdida.innerHTML =
+            "A quantidade não pode ser negativa.";
+
+          valido = false;
+        } else if (colmeiaPerdida > qtdColmeias) {
+          err_input_colmeia_perdida.innerHTML =
+            "As colmeias perdidas não podem ser maiores que a quantidade total.";
+
+          valido = false;
+        } else {
+          err_input_colmeia_perdida.innerHTML = "";
+        }
+
+        // FAZ OS CÁLCULOS SOMENTE SE ESTIVER TUDO CERTO
+
+        if (valido == true) {
+          // Valor do mel produzido por mês
+          let valorMelMes = qtdMelMes * valorMel;
+          // Valor do mel produzido por ano
+          let valorMelAno = valorMelMes * 12;
+          // Valor total dos enxames
+          let valorTotalEnxame = qtdColmeias * valorEnxame;
+          // Valor perdido pelas colmeias
+          let valorPerdido = colmeiaPerdida * valorEnxame;
+          // Percentual de perda
+          let percentualPerda = 0;
+
+          if (qtdColmeias > 0) {
+            percentualPerda = (colmeiaPerdida / qtdColmeias) * 100;
+          }
+
+          // MOSTRANDO OS RESULTADOS
+          div_mensagem.innerHTML =
+            "<p>Valor total dos enxames: <strong>R$ " +
+            valorTotalEnxame +
+            "</strong></p>" +
+            "<p>Receita do mel por mês: <strong>R$ " +
+            valorMelMes +
+            "</strong></p>" +
+            "<p>Receita do mel por ano: <strong>R$ " +
+            valorMelAno +
+            "</strong></p>" +
+            "<p>Valor perdido: <strong>R$ " +
+            valorPerdido +
+            "</strong></p>" +
+            "<p>Percentual de perda: <strong>" +
+            percentualPerda +
+            "%</strong></p>";
+        }
       }
 
+      function limparCampos1() {
+        ipt_qtd_colmeia.value = "";
+        ipt_enxame_Jatai.value = "";
+        ipt_qtd_Mel.value = "";
+        ipt_valor_mel.value = "";
+        input_colmeia_perdida.value = "";
+        err_ipt_qtd_colmeia.innerHTML = "";
+        err_ipt_enxame_Jatai.innerHTML = "";
+        err_ipt_qtd_Mel.innerHTML = "";
+        err_ipt_valor_mel.innerHTML = "";
+        err_input_colmeia_perdida.innerHTML = "";
+        div_mensagem.innerHTML = "";
+      }
+      // CALCULADORA 2
+
       function Calculo2() {
-        // Pegando os valores diretamente pelos IDs
-
         let qtdColmeias = Number(ipt_qtd_colmeia2.value);
-
         let qtdMel = Number(ipt_qntmel2.value);
-
         let valorEnxame = Number(ipt_enxame2.value);
 
-        // =============================
-        // CÁLCULOS
-        // =============================
+        let valido = true;
 
-        let producaoTotal = qtdColmeias * qtdMel;
+        // VALIDAÇÃO DA QUANTIDADE DE COLMEIAS
+        if (qtdColmeias == "") {
+          err_ipt_qtd_colmeia2.innerHTML = "Digite a quantidade de colmeias.";
+          valido = false;
 
-        let producaoAnual = producaoTotal * 12;
+        } else if (qtdColmeias < 0) {
+          err_ipt_qtd_colmeia2.innerHTML =
+            "A quantidade não pode ser negativa.";
+          valido = false;
 
-        let valorTotalEnxames = qtdColmeias * valorEnxame;
+        } else {
+          err_ipt_qtd_colmeia2.innerHTML = "";
+        }
 
-        // =============================
-        // MOSTRAR RESULTADO
-        // =============================
+        // VALIDAÇÃO DA PRODUÇÃO DE MEL
+        if (qtdMel == "") {
+          err_ipt_qntmel2.innerHTML = "Digite a quantidade de mel.";
+          valido = false;
 
-        div_mensagem2.innerHTML = `
+        } else if (qtdMel < 0) {
+          err_ipt_qntmel2.innerHTML = "A quantidade não pode ser negativa.";
+          valido = false;
 
-                <p>
-                    Produção mensal:
-                    <strong>
-                        ${producaoTotal.toFixed(0)} ml
-                    </strong>
-                </p>
+        } else {
+          err_ipt_qntmel2.innerHTML = "";
+        }
 
-                <p>
-                    Produção anual:
-                    <strong>
-                        ${producaoAnual.toFixed(0)} ml
-                    </strong>
-                </p>
+        // VALIDAÇÃO DO VALOR DO ENXAME
+        if (valorEnxame == "") {
+          err_ipt_enxame2.innerHTML = "Digite o valor do enxame.";
+          valido = false;
 
-                <p>
-                    Valor dos enxames:
-                    <strong>
-                        R$ ${valorTotalEnxames.toFixed(2)}
-                    </strong>
-                </p>
+        } else if (valorEnxame < 0) {
+          err_ipt_enxame2.innerHTML = "O valor não pode ser negativo.";
+          valido = false;
 
-            `;
+        } else {
+          err_ipt_enxame2.innerHTML = "";
+        }
+
+        // FAZ OS CÁLCULOS SOMENTE SE ESTIVER TUDO CERTO
+        if (valido == true) {
+          // Produção mensal
+          let producaoTotal = qtdColmeias * qtdMel;
+
+          // Produção anual
+          let producaoAnual = producaoTotal * 12;
+          // Valor total dos enxames
+          let valorTotalEnxames = qtdColmeias * valorEnxame;
+
+          div_mensagem2.innerHTML =
+            "<p>Produção mensal: <strong>" +
+            producaoTotal +
+            " ml</strong></p>" +
+            "<p>Produção anual: <strong>" +
+            producaoAnual +
+            " ml</strong></p>" +
+            "<p>Valor dos enxames: <strong>R$ " +
+            valorTotalEnxames +
+            "</strong></p>";
+        }
+      }
+      
+      // LIMPAR CALCULADORA 
+      function limparCampos2() {
+        ipt_qtd_colmeia2.value = "";
+        ipt_qntmel2.value = "";
+        ipt_enxame2.value = "";
+        err_ipt_qtd_colmeia2.innerHTML = "";
+        err_ipt_qntmel2.innerHTML = "";
+        err_ipt_enxame2.innerHTML = "";
+        div_mensagem2.innerHTML = "";
       }
     </script>
   </body>
