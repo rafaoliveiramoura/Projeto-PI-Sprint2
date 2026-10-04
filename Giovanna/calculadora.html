@@ -201,30 +201,31 @@
             let valorVantagemSensor = valorAnoComSensor - valorAnoSemSensor
 
 
-           div_sem_sensor.innerHTML = `
-            <h3>💸SEM O SENSOR</h3>
-            <div class="linha"><span>Colmeias perdidas</span> <b>${qtdColmeiasPerdidas} (${porcentagemColmeiasPerdidas.toFixed(1)}%)</b></div>
-            <div class="linha"><span>Receita do mel sem perdas</span> <b>R$ ${valorProducaoAno.toFixed(2)}</b></div>
-            <div class="linha"><span>Receita perdida</span> <b class="valor-negativo">- R$ ${valorProducaoPerdida.toFixed(2)}</b></div>
-            <div class="linha"><span>Custo para repor as colmeias</span> <b class="valor-negativo">- R$ ${valorReposicao.toFixed(2)}</b></div>
-            <div class="linha linha-total"><span>Resultado do ano</span> <b>R$ ${valorAnoSemSensor.toFixed(2)}</b></div>
-            `
+       div_sem_sensor.innerHTML = `
+<h3>💸SEM O SENSOR</h3>
+<div class="linha"><span>Colmeias perdidas</span> <b>${qtdColmeiasPerdidas} (${porcentagemColmeiasPerdidas.toFixed(1)}%)</b></div>
+<div class="linha"><span>Receita do mel sem perdas</span> <b>${valorProducaoAno.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
+<div class="linha"><span>Receita perdida</span> <b class="valor-negativo">- ${valorProducaoPerdida.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
+<div class="linha"><span>Custo para repor as colmeias</span> <b class="valor-negativo">- ${valorReposicao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
+<div class="linha linha-total"><span>Resultado do ano</span> <b>${valorAnoSemSensor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
+`
 
-            div_com_sensor.innerHTML = `
-            <h3>💵COM O SENSOR</h3>
-            <div class="linha"><span>Colmeias perdidas</span> <b>0</b></div>
-            <div class="linha"><span>Receita do mel sem perdas</span> <b>R$ ${valorProducaoAno.toFixed(2)}</b></div>
-            <div class="linha"><span>Aumento de produção (até 10%)</span> <b class="valor-positivo">+ R$ ${valorAumentoProducao.toFixed(2)}</b></div>
-            <div class="linha linha-total"><span>Resultado do ano</span> <b>R$ ${valorAnoComSensor.toFixed(2)}</b></div>
-            `
+div_com_sensor.innerHTML = `
+<h3>💵COM O SENSOR</h3>
+<div class="linha"><span>Colmeias perdidas</span> <b>0</b></div>
+<div class="linha"><span>Receita do mel sem perdas</span> <b>${valorProducaoAno.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
+<div class="linha"><span>Aumento de produção (até 10%)</span> <b class="valor-positivo">+ ${valorAumentoProducao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
+<div class="linha linha-total"><span>Resultado do ano</span> <b>${valorAnoComSensor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
+`
 
-            div_vantagem.innerHTML = `
-            <h3>💰VANTAGEM DE TER O SENSOR</h3>
-            <div class="linha"><span>Perda evitada</span> <b>R$ ${valorProducaoPerdida.toFixed(2)}</b></div>
-            <div class="linha"><span>Reposição evitada</span> <b>R$ ${valorReposicao.toFixed(2)}</b></div>
-            <div class="linha"><span>Aumento de produção</span> <b>R$ ${valorAumentoProducao.toFixed(2)}</b></div>
-            <div class="linha linha-total"><span>Ganho total ao ano</span> <b>R$ ${valorVantagemSensor.toFixed(2)}</b></div>
-            `
+div_vantagem.innerHTML = `
+<h3>💰VANTAGEM DE TER O SENSOR</h3>
+<div class="linha"><span>Perda evitada</span> <b>${valorProducaoPerdida.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
+<div class="linha"><span>Reposição evitada</span> <b>${valorReposicao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
+<div class="linha"><span>Aumento de produção</span> <b>${valorAumentoProducao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
+<div class="linha linha-total"><span>Ganho total ao ano</span> <b>${valorVantagemSensor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
+`
+            
 
         } else {
           div_sem_sensor.innerHTML = "";
