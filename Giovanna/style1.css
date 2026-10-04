@@ -13,24 +13,7 @@ body {
     width: 100%;
     min-height: 100vh;
     color: #221E19;
-}
-
-/* ================================= */
-/* ÁREA PRINCIPAL */
-/* ================================= */
-.mainbody {
-    background-color: #221E19;
-    min-height: calc(100vh - 160px); /* Ajuste para não sobrepor o header */
     padding-bottom: 50px;
-}
-
-/* ================================= */
-/* HEADER */
-/* ================================= */
-.mainheader {
-    width: 100%;
-    margin: 0;
-    padding: 0;
 }
 
 /* ================================= */
@@ -76,7 +59,6 @@ body {
     color: #FFCB05;
 }
 
-
 /* ================================= */
 /* HEADER */
 /* ================================= */
@@ -90,25 +72,11 @@ body {
     padding: 30px 50px;
     width: 100%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-bottom: none;
-    border-radius: 0;
-    gap: 20px;
-}
-
-
-.header-content {
-    display: flex;
-    align-items: center;
     gap: 20px;
 }
 
 .header .img {
     width: 80px;
-    margin-bottom: 0;
-}
-
-.header-text {
-    text-align: center;
 }
 
 .header h1 {
@@ -117,61 +85,44 @@ body {
     color: #221E19;
     font-size: 28px;
     letter-spacing: 1px;
-    margin-bottom: 0;
 }
-
-.header p {
-    margin-top: 0;
-    color: #6B6257;
-    font-size: 14px;
-}
-
 
 /* ================================= */
-/* CONTAINER DAS CALCULADORAS */
+/* CONTAINER DA CALCULADORA */
 /* ================================= */
 .container-calculadoras {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    gap: 30px;
-    flex-wrap: wrap;
     width: 100%;
     max-width: 1000px;
-    margin: 40px auto;
+    margin: 40px auto 24px;
     padding: 0 20px;
 }
 
 /* ================================= */
-/* CALCULADORA (CARD) */
+/* CALCULADORA (CARD DAS PERGUNTAS) */
 /* ================================= */
 .calculo {
     width: 100%;
-    max-width: 420px;
-    padding: 30px;
-    background-color: #FFCB05; /* Voltando para o amarelo original */
+    padding: 32px 36px;
+    background-color: #FFCB05;
     border-radius: 20px;
-    border: none; /* Removendo a borda superior para manter o estilo original */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 18px;
 }
 
-.calculo:hover {
-    box-shadow: 0 15px 35px rgba(34, 30, 25, 0.2);
-    transform: translateY(-5px);
-}
-
-/* TÍTULO DA CALCULADORA */
+/* TÍTULO DO CARD */
 .calculo h2 {
+    grid-column: 1 / -1;
     font-family: 'Montserrat', sans-serif;
     font-size: 20px;
     font-weight: 800;
     color: #221E19;
-    margin-bottom: 20px;
     text-align: center;
+    margin-bottom: 4px;
 }
 
 /* ================================= */
@@ -179,15 +130,15 @@ body {
 /* ================================= */
 .calculo .campo {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 15px;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.calculo .campo-perda {
+    grid-column: 1 / -1;
 }
 
 .calculo .campo label {
-    flex: 1;
     font-family: 'Poppins', sans-serif;
     color: #221E19;
     font-size: 14px;
@@ -197,95 +148,59 @@ body {
 
 /* INPUT */
 .calculo .campo input {
-    flex: 0 0 110px; /* Largura flexível porém controlada */
-    height: 40px;
-    padding: 5px 10px;
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
     background-color: #FFFFFF;
     border: 1px solid #D5D5D5;
-    border-radius: 8px;
-    font-size: 14px;
+    border-radius: 10px;
+    font-size: 15px;
     font-family: 'Poppins', sans-serif;
     color: #221E19;
     outline: none;
-    text-align: center;
+    text-align: left;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: all 0.2s ease;
 }
 
 .calculo .campo input:focus {
     border: 1px solid #221E19;
-    box-shadow: 0 0 0 3px rgba(34, 30, 25, 0.1);
-    transform: scale(1.02);
+    box-shadow: 0 0 0 3px rgba(34, 30, 25, 0.15);
 }
 
-/* TEXTO DE PERDA */
-.campo-perda {
-    flex-wrap: wrap;
-}
-
-.campo-perda span {
-    width: 100%;
-    font-size: 11px;
-    font-style: italic;
-    color: #514A41;
-    margin-top: -8px;
-}
-
-/* ================================= */
-/* ERROS E VALIDAÇÕES */
-/* ================================= */
-.input-error {
-    border: 1px solid #d9534f !important;
-    box-shadow: 0 0 0 3px rgba(217, 83, 79, 0.1) !important;
-}
-
-.error-message {
-    color: #d9534f;
-    font-size: 11px;
-    font-weight: 600;
-    margin-top: -10px;
-    margin-bottom: 10px;
-    display: block;
-    text-align: right;
+/* TEXTOS ABAIXO DO INPUT (OBSERVAÇÃO E ERROS) */
+.calculo .campo span {
+    font-size: 12px;
     font-family: 'Poppins', sans-serif;
+    color: #514A41;
+}
+
+.calculo .campo span:empty {
+    display: none;
+}
+
+/* MENSAGENS DE ERRO DA VALIDAÇÃO */
+.calculo .campo span[id^="err_"] {
+    color: #A3231E;
+    font-weight: 600;
 }
 
 /* ================================= */
-/* BOTÕES DE AÇÃO */
+/* BOTÃO CALCULAR */
 /* ================================= */
-.btn-group {
+.calculo .btn {
+    grid-column: 1 / -1;
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin: 20px 0 10px;
+    gap: 12px;
+    margin-top: 8px;
 }
 
-.btn-clear {
-    border: 2px solid #D5D5D5;
-    width: 100%;
-    max-width: 120px;
-    height: 48px;
-    border-radius: 12px;
-    background-color: #FFFFFF;
-    color: #6B6257;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 800;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-clear:hover {
-    background-color: #f8f8f8;
-    border-color: #221E19;
-    color: #221E19;
-}
-
-.btn-group button {
+.calculo .btn button {
     border: 2px solid #221E19;
     width: 100%;
-    max-width: 250px;
-    height: 48px;
+    max-width: 220px;
+    height: 50px;
     border-radius: 12px;
     background-color: #221E19;
     color: #FFCB05;
@@ -296,32 +211,172 @@ body {
     transition: all 0.2s ease;
 }
 
-.btn-group button:hover {
+.calculo .btn button:hover {
     background-color: #FFFFFF;
     color: #221E19;
     transform: translateY(-2px);
 }
 
-.btn-group button:active {
+.calculo .btn button:active {
     transform: scale(0.97);
 }
 
+/* BOTÃO LIMPAR */
+.calculo .btn .btn-limpar {
+    max-width: 130px;
+    background-color: transparent;
+    color: #221E19;
+}
+
+.calculo .btn .btn-limpar:hover {
+    background-color: #221E19;
+    color: #FFCB05;
+}
 
 /* ================================= */
-/* ÁREA DO RESULTADO */
+/* CONTAINER DOS RESULTADOS */
+/* ================================= */
+.container-mensagens {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 40px;
+    padding: 0 20px;
+}
+
+/* ================================= */
+/* ÁREA DO RESULTADO (UM BLOCO PARA CADA TÓPICO) */
 /* ================================= */
 .mensagem {
-    background-color: #FFF9E6;
-    border-radius: 12px;
-    border-left: 6px solid #221E19;
-    padding: 20px;
-    margin-top: 20px;
-    width: 100%;
-    min-height: 80px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #F5F0E6;
+    border-radius: 16px;
+    border-top: 6px solid #221E19;
+    padding: 22px 22px 20px;
     font-family: 'Poppins', sans-serif;
     color: #221E19;
-    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
     animation: fadeIn 0.5s ease-out;
+}
+
+/* ESCONDE O BLOCO ENQUANTO ESTIVER VAZIO */
+.mensagem:empty {
+    display: none;
+}
+
+.mensagem-sem {
+    border-top-color: #D9534F;
+}
+
+.mensagem-com {
+    border-top-color: #5CB85C;
+}
+
+/* TÍTULO DO BLOCO */
+.mensagem h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 10px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(34, 30, 25, 0.15);
+}
+
+/* LINHA: DESCRIÇÃO À ESQUERDA E VALOR À DIREITA */
+.mensagem .linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(34, 30, 25, 0.18);
+    text-align: left;
+}
+
+.mensagem .linha span {
+    flex: 1;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #6B6257;
+}
+
+.mensagem .linha b {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.valor-negativo {
+    color: #C0302B;
+}
+
+.valor-positivo {
+    color: #2F8A3A;
+}
+
+/* LINHA DO TOTAL (SEMPRE NO FINAL DO BLOCO) */
+.mensagem .linha-total {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 2px solid #221E19;
+    border-bottom: none;
+}
+
+.mensagem .linha-total span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #221E19;
+}
+
+.mensagem .linha-total b {
+    font-size: 19px;
+}
+
+/* BLOCO DA VANTAGEM (DESTAQUE ESCURO COM AMARELO) */
+.mensagem-vantagem {
+    background-color: #2D2822;
+    border: 2px solid #FFCB05;
+    border-top-width: 6px;
+    color: #F5F0E6;
+}
+
+.mensagem-vantagem h3 {
+    color: #FFCB05;
+    border-bottom-color: rgba(245, 240, 230, 0.2);
+}
+
+.mensagem-vantagem .linha {
+    border-bottom-color: rgba(245, 240, 230, 0.18);
+}
+
+.mensagem-vantagem .linha span {
+    color: #CFC6B8;
+}
+
+.mensagem-vantagem .linha b {
+    color: #F5F0E6;
+}
+
+.mensagem-vantagem .linha-total {
+    border-top-color: #FFCB05;
+}
+
+.mensagem-vantagem .linha-total span {
+    color: #F5F0E6;
+}
+
+.mensagem-vantagem .linha-total b {
+    color: #FFCB05;
+    font-size: 22px;
 }
 
 @keyframes fadeIn {
@@ -335,74 +390,55 @@ body {
     }
 }
 
-.mensagem h3 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    font-weight: 800;
-    margin-bottom: 12px;
-    letter-spacing: 1px;
-    color: #6B6257;
-}
-
-.mensagem p {
-    margin: 8px 0;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-.mensagem strong {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 800;
-    color: #221E19;
-}
-
 /* ================================= */
 /* RESPONSIVIDADE */
 /* ================================= */
-@media (max-width: 700px) {
-    .container-calculadoras {
+@media (max-width: 900px) {
+    .container-mensagens {
         flex-direction: column;
         align-items: center;
     }
 
+    .mensagem {
+        width: 100%;
+        max-width: 520px;
+        flex: none;
+    }
+}
+
+@media (max-width: 700px) {
     .calculo {
-        max-width: 450px;
+        grid-template-columns: 1fr;
+        padding: 24px 20px;
     }
 }
 
 @media (max-width: 450px) {
-    .header h1 {
-        font-size: 24px;
+    .nav-container {
+        padding: 0 15px;
     }
 
-    .header p {
+    .nav-logo .nav-img {
+        width: 60px;
+    }
+
+    .nav-links {
+        gap: 12px;
+    }
+
+    .nav-links a {
         font-size: 12px;
     }
 
-    .calculo {
-        padding: 20px 15px;
+    .header {
+        padding: 20px;
     }
 
-    .calculo h2 {
-        font-size: 18px;
+    .header h1 {
+        font-size: 20px;
     }
 
-    .calculo .campo {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-
-    .calculo .campo label {
-        font-size: 13px;
-    }
-
-    .calculo .campo input {
-        width: 100%;
-        flex: none;
-    }
-
-    .btn button {
+    .calculo .btn button {
         max-width: 100%;
     }
 }

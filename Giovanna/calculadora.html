@@ -13,6 +13,21 @@
     <title>Calculadora Financeira - Colmeia Conectada</title>
 </head>
 <body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="../src/tetria-logo-transparente.png" alt="Logo Tetria" class="nav-img">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Início</a></li>
+                <li><a href="#">Calculadora</a></li>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Sobre</a></li>
+            </ul>
+        </div>
+    </nav>
+
     
     <div class="header">
         <img src="../src/tetria-logo-transparente.png" alt="Logo Tetria" class="img">
@@ -23,43 +38,56 @@
     <div class="container-calculadoras">
         <!-- CALCULADORA 1 -->
         <div class="calculo">
+            <h2>🐝Dados da sua produção</h2>
+
             <div class="campo">
-                <label for="ipt_qtd_colmeia">Quantidade de Colmeias: </label>
-                <input type="number" value="150" id="ipt_qtd_colmeia">
+                <label for="ipt_qtd_colmeias">Quantidade de Colmeias: </label>
+                <input type="number" value="150" id="ipt_qtd_colmeias">
+                <span id="err_ipt_qtd_colmeias"></span>
             </div>
             
             <div class="campo">
-                <label for="ipt_enxame_Jatai">Valor médio do enxame de abelha Jataí: </label>
-                <input type="number" value="275.00" id="ipt_enxame_Jatai">
+                <label for="ipt_valor_enxame">Valor médio do enxame de abelha Jataí: </label>
+                <input type="number" value="275.00" id="ipt_valor_enxame">
+                <span id="err_ipt_valor_enxame"></span>
             </div>
             
             <div class="campo">
-                <label for="ipt_qtd_mel_ano">Quantos (kg) de mel é produzido por colmeia ao ano?</label>
-                <input type="text" value="1" id="ipt_qtd_mel_ano">
+                <label for="ipt_qtd_mel_kg">Quantos (kg) de mel é produzido por colmeia ao ano?</label>
+                <input type="text" value="1" id="ipt_qtd_mel_kg">
+                <span id="err_ipt_qtd_mel_kg"></span>
 
             </div>
 
             <div class="campo">
-                <label for="ipt_valor_mel">Valor do mel por kg: </label>
-                <input type="text" value="300" id="ipt_valor_mel">
+                <label for="ipt_valor_mel_kg">Valor do mel por kg: </label>
+                <input type="text" value="300" id="ipt_valor_mel_kg">
+                <span id="err_ipt_valor_mel_kg"></span>
 
             </div>
 
-            <div class="campo">
-                <label for="input_colmeia_perdida">Quantidade de colmeias perdidas ao ano: </label>
-                <input type="text" value="40" id="input_colmeia_perdida">
+            <div class="campo campo-perda">
+                <label for="ipt_qtd_colmeias_perdidas">Quantidade de colmeias perdidas ao ano: </label>
+                <input type="text" value="40" id="ipt_qtd_colmeias_perdidas">
                 <span><b><i>*Por temperatura e umidade</i></b></span>
+                <span id="err_ipt_qtd_colmeias_perdidas"></span>
             </div>
 
             <div class="btn">
                 <button onclick="Calculo1()">Calcular</button>
-            </div>
+                <button class="btn-limpar" onclick="limpar()">Limpar</button>
 
-            <div class="mensagem">
-                <div id="div_mensagem"></div>
             </div>
+          
+            
         </div>
     </div> 
+
+    <div class="container-mensagens">
+        <div class="mensagem mensagem-sem" id="div_sem_sensor"></div>
+        <div class="mensagem mensagem-com" id="div_com_sensor"></div>
+        <div class="mensagem mensagem-vantagem" id="div_vantagem"></div>
+    </div>
  
 </body>
 </html>
@@ -67,61 +95,155 @@
 <script>
     function Calculo1(){
 
-        let qtdColmeias = Number(ipt_qtd_colmeia.value);
-        let valorEnxame = Number(ipt_enxame_Jatai.value);
-        let MelPorColmeia = Number(ipt_qtd_mel_ano.value);
-        let valorMelKg = Number(ipt_valor_mel.value);
-        let colmeiaPerdidaAno = Number(input_colmeia_perdida.value);
+        let qtdColmeias = Number(ipt_qtd_colmeias.value);
+        let valorEnxame = Number(ipt_valor_enxame.value);
+        let qtdMelKgPorColmeia = Number(ipt_qtd_mel_kg.value);
+        let valorMelKg = Number(ipt_valor_mel_kg.value);
+        let qtdColmeiasPerdidas = Number(ipt_qtd_colmeias_perdidas.value);
 
-        //quantidade total do mel ao ano 
-        let melAno = MelPorColmeia * qtdColmeias
+        let valido = true;
+
+        // VALIDAÇÃO DA QUANTIDADE DE COLMEIAS
+
+        if (ipt_qtd_colmeias.value == "") {
+          err_ipt_qtd_colmeias.innerHTML = "Digite a quantidade de colmeias.";
+          valido = false;
+
+        } else if (qtdColmeias < 0) {
+          err_ipt_qtd_colmeias.innerHTML = "A quantidade não pode ser negativa.";
+          valido = false;
+
+        } else {
+          err_ipt_qtd_colmeias.innerHTML = "";
+        }
+
+        // VALIDAÇÃO DO VALOR DO ENXAME
+
+        if (ipt_valor_enxame.value == "") {
+          err_ipt_valor_enxame.innerHTML = "Digite o valor do enxame.";
+          valido = false;
+
+        } else if (valorEnxame < 0) {
+          err_ipt_valor_enxame.innerHTML = "O valor não pode ser negativo.";
+          valido = false;
+
+        } else {
+          err_ipt_valor_enxame.innerHTML = "";
+        }
+
+        // VALIDAÇÃO DA QUANTIDADE DE MEL POR COLMEIA
+
+        if (ipt_qtd_mel_kg.value == "") {
+          err_ipt_qtd_mel_kg.innerHTML = "Digite a quantidade de mel por colmeia.";
+          valido = false;
+
+        } else if (qtdMelKgPorColmeia < 0) {
+          err_ipt_qtd_mel_kg.innerHTML = "A quantidade não pode ser negativa.";
+          valido = false;
+
+        } else {
+          err_ipt_qtd_mel_kg.innerHTML = "";
+        }
+
+        // VALIDAÇÃO DO VALOR DO MEL POR KG
+
+        if (ipt_valor_mel_kg.value == "") {
+          err_ipt_valor_mel_kg.innerHTML = "Digite o valor do mel por kg.";
+          valido = false;
+
+        } else if (valorMelKg < 0) {
+          err_ipt_valor_mel_kg.innerHTML = "O valor não pode ser negativo.";
+          valido = false;
+
+        } else {
+          err_ipt_valor_mel_kg.innerHTML = "";
+        }
+
+        // VALIDAÇÃO DA QUANTIDADE DE COLMEIAS PERDIDAS
+
+        if (ipt_qtd_colmeias_perdidas.value == "") {
+          err_ipt_qtd_colmeias_perdidas.innerHTML = "Digite a quantidade de colmeias perdidas.";
+          valido = false;
+
+        } else if (qtdColmeiasPerdidas < 0) {
+          err_ipt_qtd_colmeias_perdidas.innerHTML = "A quantidade não pode ser negativa.";
+          valido = false;
+
+        } else {
+          err_ipt_qtd_colmeias_perdidas.innerHTML = "";
+        }
+
+        if (valido == true) {
+
+            //quantidade total do mel ao ano 
+            let qtdMelKgAno = qtdMelKgPorColmeia * qtdColmeias
         
-        //valor total do mel ao ano
-        let valorAoAno = melAno * valorMelKg
+            //valor total do mel ao ano
+            let valorProducaoAno = qtdMelKgAno * valorMelKg
 
-        //valor da reconstituição enxame
-        let custoReposicao = colmeiaPerdidaAno * valorEnxame
+            //valor da reconstituição enxame
+            let valorReposicao = qtdColmeiasPerdidas * valorEnxame
 
-        //sem o sensor: produção com perda e gasto para repor as colmeias
-        let valorPerdido = (valorAoAno / qtdColmeias) / 12 * 6 * colmeiaPerdidaAno
-        let totalComPerda = valorAoAno - valorPerdido
-        let totalSemSensor = totalComPerda - custoReposicao
-
-
-        //com o sensor: sem perdas e com estimativa de aumento de até 10%
-        let aumentoProducao = valorAoAno * 0.10
-        let totalComSensor = valorAoAno + aumentoProducao
-
-        //porcentagem de colmeias perdidas
-        let porcentagemColmeiaPerd =  colmeiaPerdidaAno / qtdColmeias  * 100
-
-        //vantagem: diferença entre os dois cenários
-        let vantagemTotal = totalComSensor - totalSemSensor
+            //sem o sensor: produção com perda e gasto para repor as colmeias
+            let valorProducaoPerdida = (valorProducaoAno / qtdColmeias) / 12 * 6 * qtdColmeiasPerdidas
+            let valorAnoComPerda = valorProducaoAno - valorProducaoPerdida
+            let valorAnoSemSensor = valorAnoComPerda - valorReposicao
 
 
-       div_mensagem.innerHTML = `
-        <b>SEM O SENSOR</b> <br>
-        Colmeias perdidas ao ano: ${colmeiaPerdidaAno} (${porcentagemColmeiaPerd.toFixed(1)}%) <br>
-        Valor ao ano sem perdas: R$ ${valorAoAno.toFixed(2)} <br>
-        Valor perdido com as colmeias: R$ ${valorPerdido.toFixed(2)} <br>
-        Custo para repor as colmeias: R$ ${custoReposicao.toFixed(2)} <br>
-        Resultado final no ano: R$ ${totalSemSensor.toFixed(2)} <br> <br>
+            //com o sensor: sem perdas e com estimativa de aumento de até 10%
+            let valorAumentoProducao = valorProducaoAno * 0.10
+            let valorAnoComSensor = valorProducaoAno + valorAumentoProducao
 
-        <b>COM O SENSOR</b> <br>
-        Colmeias perdidas ao ano: 0 <br>
-        Valor ao ano sem perdas: R$ ${valorAoAno.toFixed(2)} <br>
-        Aumento de produção (até 10%): R$ ${aumentoProducao.toFixed(2)} <br>
-        Resultado final no ano (valor + aumento): R$ ${totalComSensor.toFixed(2)} <br> <br>
+            //porcentagem de colmeias perdidas
+            let porcentagemColmeiasPerdidas =  qtdColmeiasPerdidas / qtdColmeias  * 100
 
-        <b>VANTAGEM DE TER O SENSOR</b> <br>
-        Perda evitada: R$ ${valorPerdido.toFixed(2)} <br>
-        Reposição evitada: R$ ${custoReposicao.toFixed(2)} <br>
-        Aumento de produção: R$ ${aumentoProducao.toFixed(2)} <br>
-        <b>Ganho total ao ano: R$ ${vantagemTotal.toFixed(2)}</b> oi
-        `
+            //vantagem: diferença entre os dois cenários
+            let valorVantagemSensor = valorAnoComSensor - valorAnoSemSensor
 
+
+           div_sem_sensor.innerHTML = `
+            <h3>💸SEM O SENSOR</h3>
+            <div class="linha"><span>Colmeias perdidas</span> <b>${qtdColmeiasPerdidas} (${porcentagemColmeiasPerdidas.toFixed(1)}%)</b></div>
+            <div class="linha"><span>Receita do mel sem perdas</span> <b>R$ ${valorProducaoAno.toFixed(2)}</b></div>
+            <div class="linha"><span>Receita perdida</span> <b class="valor-negativo">- R$ ${valorProducaoPerdida.toFixed(2)}</b></div>
+            <div class="linha"><span>Custo para repor as colmeias</span> <b class="valor-negativo">- R$ ${valorReposicao.toFixed(2)}</b></div>
+            <div class="linha linha-total"><span>Resultado do ano</span> <b>R$ ${valorAnoSemSensor.toFixed(2)}</b></div>
+            `
+
+            div_com_sensor.innerHTML = `
+            <h3>💵COM O SENSOR</h3>
+            <div class="linha"><span>Colmeias perdidas</span> <b>0</b></div>
+            <div class="linha"><span>Receita do mel sem perdas</span> <b>R$ ${valorProducaoAno.toFixed(2)}</b></div>
+            <div class="linha"><span>Aumento de produção (até 10%)</span> <b class="valor-positivo">+ R$ ${valorAumentoProducao.toFixed(2)}</b></div>
+            <div class="linha linha-total"><span>Resultado do ano</span> <b>R$ ${valorAnoComSensor.toFixed(2)}</b></div>
+            `
+
+            div_vantagem.innerHTML = `
+            <h3>💰VANTAGEM DE TER O SENSOR</h3>
+            <div class="linha"><span>Perda evitada</span> <b>R$ ${valorProducaoPerdida.toFixed(2)}</b></div>
+            <div class="linha"><span>Reposição evitada</span> <b>R$ ${valorReposicao.toFixed(2)}</b></div>
+            <div class="linha"><span>Aumento de produção</span> <b>R$ ${valorAumentoProducao.toFixed(2)}</b></div>
+            <div class="linha linha-total"><span>Ganho total ao ano</span> <b>R$ ${valorVantagemSensor.toFixed(2)}</b></div>
+            `
+
+        } else {
+          div_sem_sensor.innerHTML = "";
+          div_com_sensor.innerHTML = "";
+          div_vantagem.innerHTML = "";
+        }
+
+    }
+
+    function limpar(){
+           err_ipt_qtd_colmeias.innerHTML = ""
+    err_ipt_valor_enxame.innerHTML = ""
+    err_ipt_qtd_mel_kg.innerHTML = ""
+    err_ipt_valor_mel_kg.innerHTML = ""
+    err_ipt_qtd_colmeias_perdidas.innerHTML = ""
+
+    div_sem_sensor.innerHTML = ""
+    div_com_sensor.innerHTML = ""
+    div_vantagem.innerHTML = ""
 
     }
 </script>
-
-  
