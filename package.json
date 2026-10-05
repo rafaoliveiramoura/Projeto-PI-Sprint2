@@ -15,12 +15,14 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon Rafael/backend/app.js"
   },
   "dependencies": {
     "axios": "^1.20.0",
     "cors": "^2.8.6",
-    "dotenv": "^18.0.4",
+    "dotenv": "^18.0.5",
     "express": "^5.2.1",
     "mysql2": "^3.24.5",
     "path": "^0.12.7"

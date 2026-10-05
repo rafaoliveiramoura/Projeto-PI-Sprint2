@@ -52,11 +52,6 @@
                 </div>
 
                 <div class="campo">
-                    <label for="user">Usuário</label>
-                    <input type="text" id="usario_input" placeholder="@usuario">
-                </div>
-
-                <div class="campo">
                     <label for="cpf">CPF</label>
                     <input type="text" id="cpf_input" placeholder="000.000.000-00">
                 </div>
@@ -116,7 +111,7 @@
             }
 
             // 2. Validação de Letra Maiúscula
-            if (/[A-Z]/.test(senha)) {
+            if (/[A-Z]/.test(senha)) {  
                 exibir2.innerHTML = `<span style="color: #28a745;">✓ Contém letra maiúscula</span>`;
                 criterio++;
             } else {
@@ -165,7 +160,6 @@
     var emailVar = email_input.value;
     var senhaVar = senha_input.value;
     var telefoneVar = tel_input.value;
-    var usuarioVar = usario_input.value;
     var cpfVar = cpf_input.value;
 
     // Verificando se há algum campo em branco
@@ -173,7 +167,6 @@
       nomeVar == "" ||
       emailVar == "" ||
       senhaVar == "" ||
-      usuarioVar == "" ||
       telefoneVar == "" ||
       cpfVar == ""
     ) {
@@ -192,7 +185,6 @@
         emailServer: emailVar,
         senhaServer: senhaVar,
         cpfServer: cpfVar,
-        usuarioServer: usuarioVar,
         telefoneServer: telefoneVar
       }),
     })
