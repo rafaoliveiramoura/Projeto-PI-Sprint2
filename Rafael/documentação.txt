@@ -1,0 +1,105 @@
+
+╔══════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+║                          ✨ MANUAL DE IDENTIDADE VISUAL & CSS ✨                                       ║
+║                                     PROJETO RAFAEL                                                      ║
+╚══════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+
+Este guia detalha a engenharia visual do projeto, conectando a sintaxe do código
+à experiência do usuário (UX).
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
+💎 01. O DNA DO PROJETO (CONCEITOS GERAIS)
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+⚙️ ARQUITETURA TÉCNICA
+  • BOX-SIZING: border-box ➔ O "estabilizador" de tamanhos. Evita que paddings
+    empurrem os elementos para fora da tela.
+  • FLEXBOX ➔ O "motor" de alinhamento. Permite que o site seja fluido e
+    responsivo, ajustando-se a qualquer monitor.
+  • RESET (*) ➔ Limpa as "sujeiras" dos navegadores (margens e paddings padrão).
+
+🎨 PALETA PSICOLÓGICA
+  • 📀 DOURADO (#C68E17) ➔ Luxo, Exclusividade, Valor.
+  • 🤎 MARROM (#2b1e17)  ➔ Sobriedade, Confiança, Terra.
+  • 🌕 AMARELO (#FFCB05) ➔ Energia, Atenção, Funcionalidade.
+  • 🥛 BEGE (#FFF9E6)    ➔ Conforto, Limpeza, Leveza.
+
+✍️ TIPOGRAFIA E VOZ
+  • MONTSERRAT ➔ Títulos. Voz forte, geométrica e impactante.
+  • POPPINS    ➔ Corpo. Voz moderna, amigável e legível.
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
+📁 02. MÓDULO: CADASTRO (cadastro.css)
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
+🎯 PROPÓSITO: Impactar o usuário no primeiro contato.
+
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 🏗️ ESTRUTURA DE LAYOUT                                                                                  │
+├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ • .main-wrapper: O container pai que divide a tela em duas proporções (85% Form / 115% Imagem).          │
+│ • .cadastro-container: Focado em simplicidade e centralização vertical.                                   │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ ✨ ALQUIMIA VISUAL (EFEITOS)                                                                             │
+├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ • Glassmorphism (.destaque):                                                                             │
+│   ➜ backdrop-filter: blur(10px) + rgba(255,255,255, 0.12)                                               │
+│   ➜ Resultado: Um cartão de vidro fosco que flutua sobre a imagem.                                       │
+│ • Imagem Atmosférica:                                                                                     │
+│   ➜ object-fit: cover + opacity: 0.5                                                                   │
+│   ➜ Resultado: A foto preenche tudo sem distorcer e fica suave para não ofuscar o texto.                 │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 🖱️ INTERAÇÕES (UX)                                                                                       │
+├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ • Input :focus ➔ A borda "acende" em dourado, confirmando onde o usuário está digitando.                  │
+│ • Button :hover ➔ O botão "levita" (translateY -2px), simulando um botão físico real.                      │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
+📁 03. MÓDULO: LOGIN (login.css)
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
+🎯 PROPÓSITO: Fluidez e rapidez. Menos distrações, mais conversão.
+
+🔹 FOCO CENTRAL: O uso de `justify-content: center` remove distrações laterais,
+   direcionando o olhar do usuário exclusivamente para o formulário de entrada.
+🔹 FLUXO DE LEITURA: `align-items: flex-start` no cabeçalho organiza a informação
+   da esquerda para a direita, facilitando o escaneamento visual.
+🔹 SUAVE TRANSIÇÃO: `transition: 0.3s` em links e botões evita mudanças bruscas de
+   cor, tornando a interface "orgânica".
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
+📁 04. MÓDULO: CALCULADORAS (style.css)
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
+🎯 PROPÓSITO: Ferramenta técnica. Troca a elegância do bege pela energia do amarelo.
+
+📐 A GEOMETRIA PERFEITA
+  • .calculo { aspect-ratio: 1 / 1 } ➔ A regra mestre. Independente do conteúdo,
+    a calculadora será sempre um QUADRADO.
+  • .calculo { border: 5px solid #FFCB05 } ➔ Cria uma moldura robusta que separa
+    a ferramenta do fundo da página.
+
+⚡ DINÂMICA DE RESPOSTA
+  • flex-wrap: wrap ➔ Inteligência de tela. Se o espaço acaba, as calculadoras
+    se empilham automaticamente.
+  • .mensagem ➔ Espaço de "Output". Um box bege suave que separa a entrada de
+    dados do resultado final.
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
+🛠️ DICIONÁRIO DE CONEXÕES (CSS ➜ HTML)
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+  SELETOR CSS          ➜   ELEMENTO HTML           ➜   EFEITO FINAL
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────
+  .main-wrapper         ➜   <div class="...">       ➜   Cria as colunas da página.
+  .btn button           ➜   <button>               ➜   Botão com cor, hover e sombra.
+  .calculo              ➜   <div class="...">       ➜   Card amarelo perfeitamente quadrado.
+  .ativo               ➜   <span class="...">      ➜   Barra de progresso iluminada.
+  body                 ➜   <body>                  ➜   Cor de fundo e fonte global.
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────
+🌟 NOTA FINAL: O design foi construído para ser responsivo, acessível e visualmente
+   coerente, utilizando cores para ditar a emoção de cada página.
+────────────────────────────────────────────────────────────────────────────────────────────────────────────

@@ -1,0 +1,132 @@
+================================================================================
+           📖 DOCUMENTAÇÃO TÉCNICA DETALHADA DE ESTILOS (CSS) - PROJETO RAFAEL
+================================================================================
+
+Esta documentação fornece uma análise profunda de cada linha de código CSS,
+explicando a teoria aplicada, a conexão com o HTML e o objetivo visual.
+
+--------------------------------------------------------------------------------
+📌 CONCEITOS GERAIS APLICADOS (PARA TODOS OS ARQUIVOS)
+--------------------------------------------------------------------------------
+
+1.  BOX MODEL (Modelo de Caixa):
+    - `box-sizing: border-box`: Fundamental. Garante que a largura (width)
+      definida inclua o padding e a borda, evitando que o elemento "estoure"
+      o tamanho do container.
+
+2.  FLEXBOX (Layout Dinâmico):
+    - `display: flex`: Transforma o container em um contexto flexível.
+    - `justify-content`: Alinha os itens no eixo principal (horizontal por padrão).
+    - `align-items`: Alinha os itens no eixo transversal (vertical por padrão).
+    - `flex-direction: column`: Empilha os elementos verticalmente.
+
+3.  TIPOGRAFIA:
+    - Montserrat: Usada para Títulos (Passa a ideia de força e modernidade).
+    - Poppins: Usada para Textos/Corpo (Passa a ideia de clareza e leitura fácil).
+
+--------------------------------------------------------------------------------
+📁 ARQUIVO: Rafael\cadastro\cadastro.css
+--------------------------------------------------------------------------------
+
+🎯 OBJETIVO: Criar uma tela de cadastro sofisticada com divisão entre
+   formulário (estático/claro) e painel visual (dinâmico/escuro).
+
+🔴 SEÇÃO 1: RESET E BASE
+- `* { margin: 0; padding: 0; ... }` ➔ Remove as margens padrão do navegador
+  para que o layout seja idêntico em qualquer browser.
+- `body { background: linear-gradient(...) }` ➔ Cria um fundo suave que transita
+  do bege claro ao bege médio, evitando cores sólidas e chatas.
+- `background-attachment: fixed` ➔ O fundo não rola com a página, criando
+  um efeito de profundidade.
+
+🔵 SEÇÃO 2: ESTRUTURA DE COLUNAS (.main-wrapper)
+- `display: flex` ➔ Coloca o formulário e a imagem lado a lado.
+- `.cadastro-container { flex: 0.85 }` ➔ Ocupa 85% da proporção do flex.
+- `.imagem-container { flex: 1.15 }` ➔ Ocupa 115% da proporção, sendo maior
+  que o formulário.
+- `.cadastro-container > * { max-width: 400px }` ➔ Força todos os elementos
+  internos (inputs, botões) a não ultrapassarem 400px, mantendo a elegância.
+
+🟢 SEÇÃO 3: O PAINEL VISUAL (LADO DIREITO)
+- `position: relative` ➔ Permite que a imagem e o conteúdo interno sejam
+  posicionados absolutamente em relação a este container.
+- `.imagem-container img { object-fit: cover; opacity: 0.5 }` ➔ A imagem preenche
+  tudo sem distorcer. A opacidade em 0.5 escurece a foto para que o texto branco
+  seja legível.
+- `::after { background: linear-gradient(...) }` ➔ Um "pseudo-elemento" que
+  coloca uma sombra degradê no topo da imagem, fundindo a foto com o fundo.
+- `.destaque { backdrop-filter: blur(10px) }` ➔ O efeito "Glassmorphism" (Vidro).
+  Ele desfoca o que está atrás do cartão, dando um aspecto de interface premium.
+
+🟡 SEÇÃO 4: FORMULÁRIO E INTERAÇÕES
+- `.info { flex-direction: row }` ➔ Coloca Nome e Sobrenome na mesma linha.
+- `input:focus { border-color: #C68E17 }` ➔ Feedback visual: quando o usuário
+  clica para digitar, a borda muda para dourado.
+- `.btn button:hover { transform: translateY(-2px) }` ➔ Micro-interação: o
+  botão "sobe" levemente ao passar o mouse, indicando que é clicável.
+
+📱 RESPONSIVIDADE (Mobile)
+- `@media (max-width: 900px)` ➔ Quando a tela for menor que 900px:
+  - `.imagem-container { display: none }` ➔ Remove a imagem para economizar espaço.
+  - `.cadastro-container { flex: 1 }` ➔ O formulário assume 100% da largura.
+
+--------------------------------------------------------------------------------
+📁 ARQUIVO: Rafael\login\login.css
+--------------------------------------------------------------------------------
+
+🎯 OBJETIVO: Proporcionar uma experiência de entrada rápida, mantendo a
+   coerência visual com a página de cadastro.
+
+🔴 SEÇÃO 1: FORMULÁRIO DE ACESSO
+- `.login-container { justify-content: center }` ➔ Centraliza o formulário
+  perfeitamente no meio da área disponível.
+- `.header { align-items: flex-start }` ➔ Alinha logo e título à esquerda,
+  estilo formulário corporativo.
+- `.campo { gap: 3px }` ➔ Espaçamento mínimo entre o Label (nome do campo) e
+  o Input (caixa de texto).
+
+🔵 SEÇÃO 2: ELEMENTOS DE NAVEGAÇÃO
+- `.esqueci-senha { margin-left: auto }` ➔ Empurra o link "Esqueci a senha"
+  totalmente para a direita do container.
+- `.btn button { background-color: #2b1e17 }` ➔ Usa a cor marrom escuro para
+  transmitir sobriedade e contraste com o fundo bege.
+- `.criar-conta a { transition: color 0.3s }` ➔ Suaviza a mudança de cor do
+  link ao passar o mouse, evitando mudanças bruscas.
+
+--------------------------------------------------------------------------------
+📁 ARQUIVO: Rafael\calculadora\style.css
+--------------------------------------------------------------------------------
+
+🎯 OBJETIVO: Apresentar calculadoras de forma modular, usando cores vibrantes
+   para diferenciar a ferramenta de cálculo das telas de autenticação.
+
+🔴 SEÇÃO 1: LAYOUT DE GRID FLEXÍVEL
+- `.container-calculadoras { flex-wrap: wrap }` ➔ Se não houver espaço para
+  duas calculadoras lado a lado, a segunda "pula" automaticamente para a linha de baixo.
+- `margin: 20px auto` ➔ Centraliza todo o bloco de calculadoras na página.
+
+🔵 SEÇÃO 2: O CARD DA CALCULADORA (.calculo)
+- `border: 5px solid #FFCB05` ➔ Moldura amarela grossa para chamar a atenção.
+- `aspect-ratio: 1 / 1` ➔ A propriedade mais importante aqui: Garante que a
+  calculadora seja sempre um QUADRADO, independente do conteúdo interno.
+- `background-color: #FFCB05` ➔ Preenchimento amarelo para destacar a ferramenta.
+
+🟢 SEÇÃO 3: CAMPOS E RESULTADOS
+- `.calculo input:focus { border-color: #000000 }` ➔ Altera a borda para preto
+  para combinar com a paleta amarela/preta.
+- `.btn button { color: wheat }` ➔ Usa a cor "trigo" (bege claro) sobre fundo
+  escuro para garantir contraste e legibilidade.
+- `.mensagem { background-color: #FFF9E6 }` ➔ Cria um box de resultado com
+  cor suave, separando visualmente o "input" (entrada) do "output" (resultado).
+
+--------------------------------------------------------------------------------
+🛠️ RESUMO DE CONEXÃO CSS ➔ HTML
+
+| Seletor CSS | Elemento HTML correspondente | O que acontece? |
+| :--- | :--- | :--- |
+| `.main-wrapper` | `<div class="main-wrapper">` | Organiza a tela em colunas. |
+| `.btn button` | `<div class="btn"><button>...</button></div>` | Estiliza o botão dentro da div de botão. |
+| `.calculo label` | `<div class="calculo"><label>...</label></div>` | Estiliza apenas as etiquetas das calculadoras. |
+| `body` | `<body>` | Define o fundo e a fonte de toda a aplicação. |
+| `.ativo` | `<span class="ativo">` | Muda a cor de um elemento para indicar estado ativo. |
+================================================================================
