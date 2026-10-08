@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Tetria: proposta de monitoramento ambiental de colônias de abelhas Jataí."
+    />
+    <title>Início | Tetria</title>
+    <link rel="icon" type="image/png" href="images/logo-tetria-icone.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="home.css" />
+  </head>
+  <body>
+    <!-- Abelha reutilizável -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <symbol id="bee" viewBox="0 0 64 48">
+        <ellipse cx="24" cy="13" rx="11" ry="8" fill="#fff" stroke="#2b1e17" stroke-width="2" opacity=".9" transform="rotate(-25 24 13)" />
+        <ellipse cx="40" cy="11" rx="11" ry="8" fill="#fff" stroke="#2b1e17" stroke-width="2" opacity=".9" transform="rotate(15 40 11)" />
+        <ellipse cx="32" cy="30" rx="18" ry="12" fill="#dcae1d" stroke="#2b1e17" stroke-width="2.5" />
+        <path d="M26 19v22M34 19v22M42 21v18" stroke="#2b1e17" stroke-width="4" />
+        <circle cx="17" cy="27" r="2" fill="#2b1e17" />
+      </symbol>
+    </svg>
+
+    <header>
+      <nav class="nav container" aria-label="Navegação principal">
+        <a class="brand" href="index.html"
+          ><img class="brand-logo" src="images/logo-tetria-icone.png" alt="" width="40" height="40" /><span>TETRIA</span></a
+        >
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu" aria-expanded="false" style="display: none;">☰</button>
+        <ul class="menu" id="menu">
+          <li><a href="index.html" class="active" aria-current="page">Início</a></li>
+          <li><a href="sobre.html">Sobre o projeto</a></li>
+          <li><a href="calculadora.html">Calculadora financeira</a></li>
+          <li><a href="contato.html">Contato</a></li>
+          <li><a class="account-link" href="entrar.html">Entrar</a></li>
+          <li><a class="btn btn-small" href="criar-conta.html">Criar conta</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-text">
+            <p class="pill">🐝 Tecnologia a favor da natureza</p>
+            <h1>Tecnologia para monitorar e proteger nossas colmeias.</h1>
+            <p class="lead">
+              A Tetria é uma proposta de monitoramento das condições ambientais
+              de colônias de abelhas Jataí, ajudando a acompanhar variações de
+              temperatura e umidade.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-dark" href="sobre.html">Conheça o projeto</a>
+              <a class="btn btn-outline" href="calculadora.html">Simular investimento</a>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-photo">
+              <img src="images/abelhas-colmeia.png" alt="Abelhas na entrada de uma colmeia" />
+            </div>
+            <svg class="flying-bee" viewBox="0 0 64 48" aria-hidden="true"><use href="#bee" /></svg>
+            <div class="live-card" aria-label="Exemplo ilustrativo de leitura">
+              <span class="live-tag"><i></i> Exemplo de leitura</span>
+              <div class="live-row">
+                <div><strong>29,4°C</strong><span>Temperatura</span></div>
+                <div><strong>68%</strong><span>Umidade</span></div>
+              </div>
+            </div>
+            <div class="hero-note">🌿 Cuidado, tecnologia e biodiversidade</div>
+          </div>
+        </div>
+
+        <!-- Favos com os números -->
+        <div class="container">
+          <ul class="comb" aria-label="Destaques do projeto">
+            <li class="comb-item"> <span class="hex">◷</span><div><strong>24/7</strong><small>Potencial de acompanhamento</small></div></li>
+            <li class="comb-item"> <span class="hex">⌁</span><div><strong>2 variáveis</strong><small>Temperatura e umidade</small></div></li>
+            <li class="comb-item"> <span class="hex">◈</span><div><strong>IoT</strong><small>Tecnologia aplicada</small></div></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- POR QUE MONITORAR -->
+      <section class="section honey-bg">
+        <div class="container">
+          <div class="section-head">
+            <h2>Por que monitorar as colmeias?</h2>
+            <p class="muted">
+              Observar as condições ambientais ajuda a entender melhor o
+              ambiente e a identificar mudanças que merecem atenção.
+            </p>
+          </div>
+          <div class="bento">
+            <article class="tile tile-photo">
+              <img src="images/apicultor-colmeias.png" alt="Apicultor cuidando das colmeias em meio à vegetação" />
+              <div class="tile-caption">
+                <h3>Valorização da biodiversidade</h3>
+                <p>Uma abordagem tecnológica voltada ao cuidado com polinizadores.</p>
+              </div>
+            </article>
+            <article class="tile">
+              <span class="hex hex-sm">
+                <svg viewBox="0 0 24 24"><path d="M10 14V5a2 2 0 014 0v9a4 4 0 11-4 0z" /></svg>
+              </span>
+              <h3>Monitoramento ambiental</h3>
+              <p>Registrar temperatura e umidade para facilitar a observação.</p>
+            </article>
+            <article class="tile">
+              <span class="hex hex-sm">
+                <svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z" /></svg>
+              </span>
+              <h3>Mais previsibilidade</h3>
+              <p>Organizar as leituras para perceber variações ao longo do tempo.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMO FUNCIONA -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>Como a Tetria funciona</h2>
+            <p class="muted">Do sensor dentro da colmeia até a tela do seu dispositivo, em três etapas.</p>
+          </div>
+          <ol class="steps">
+            <li>
+              <span class="hex hex-num">1</span>
+              <h3>O sensor coleta</h3>
+              <p>O sensor DHT11 mede a temperatura e a umidade perto da colônia.</p>
+            </li>
+            <li>
+              <span class="hex hex-num">2</span>
+              <h3>O microcontrolador envia</h3>
+              <p>As leituras são organizadas e enviadas pela internet.</p>
+            </li>
+            <li>
+              <span class="hex hex-num">3</span>
+              <h3>O dashboard mostra</h3>
+              <p>Você consulta os registros atuais e o histórico em um só lugar.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- PRÉVIA DO DASHBOARD -->
+      <section class="section band">
+        <div class="container panel-grid">
+          <div class="panel" aria-label="Exemplo ilustrativo de dashboard">
+            <div class="panel-top">
+              <strong>Colmeia 01</strong>
+              <span class="chip">Exemplo ilustrativo</span>
+            </div>
+            <div class="panel-read">
+              <div><strong>29,4°C</strong><span>Temperatura</span></div>
+              <div><strong>68%</strong><span>Umidade</span></div>
+            </div>
+            <p class="panel-label">Temperatura nas últimas 12 leituras</p>
+            <div class="bars" role="img" aria-label="Gráfico de barras com variação de temperatura">
+              <i style="height:48%"></i><i style="height:54%"></i><i style="height:60%"></i><i style="height:57%"></i>
+              <i style="height:66%"></i><i style="height:74%"></i><i style="height:82%"></i><i style="height:78%"></i>
+              <i style="height:70%"></i><i style="height:63%"></i><i style="height:58%"></i><i class="now" style="height:61%"></i>
+            </div>
+          </div>
+
+          <div>
+            <h2>Uma proposta que conecta dados e cuidado.</h2>
+            <p class="muted">
+              A solução coleta informações com sensores DHT11 e um
+              microcontrolador, com a possibilidade de apresentar as leituras
+              em um dashboard.
+            </p>
+            <ul class="check-list">
+              <li><strong>Monitoramento contínuo</strong> conforme a estrutura implementada.</li>
+              <li><strong>Acesso aos registros</strong> para consulta e comparação.</li>
+              <li><strong>Histórico de dados</strong> para observar tendências.</li>
+              <li><strong>Tecnologia acessível</strong> com componentes simples, em um projeto acadêmico.</li>
+            </ul>
+            <blockquote class="callout">
+              O sistema monitora e informa, mas não controla a colmeia nem diagnostica a saúde das abelhas.
+            </blockquote>
+            <a class="btn" href="sobre.html">Entenda como funciona</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section">
+        <div class="container faq-grid">
+          <div>
+            <h2>Perguntas frequentes</h2>
+            <p class="muted">Ainda com dúvidas? Fale com a gente pela página de contato.</p>
+            <a class="btn btn-outline" href="contato.html">Falar com a equipe</a>
+          </div>
+          <div class="faq">
+            <details open>
+              <summary>O que a Tetria monitora?</summary>
+              <p>A temperatura e a umidade do ambiente da colônia de abelhas Jataí.</p>
+            </details>
+            <details>
+              <summary>A Tetria cuida das abelhas sozinha?</summary>
+              <p>Não. O sistema apenas registra e informa as leituras. Ele não controla a colmeia nem diagnostica a saúde das abelhas.</p>
+            </details>
+            <details>
+              <summary>Que tecnologia é usada?</summary>
+              <p>Sensores DHT11 e um microcontrolador, com leituras apresentadas em um dashboard.</p>
+            </details>
+            <details>
+              <summary>A Tetria já é um produto à venda?</summary>
+              <p>Não. É um projeto acadêmico. Use a calculadora para simular um possível investimento.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta">
+        <div class="container cta-grid">
+          <div>
+            <h2>Pronto para acompanhar sua colmeia?</h2>
+            <p>Crie sua conta e conheça o painel da Tetria.</p>
+            <div class="hero-actions">
+              <a class="btn" href="criar-conta.html">Criar conta</a>
+              <a class="btn btn-ghost" href="calculadora.html">Simular investimento</a>
+            </div>
+          </div>
+          <div class="cta-hex" aria-hidden="true">
+            <img src="images/apicultor-colmeias.png" alt="" />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="index.html"
+            ><img class="brand-logo" src="images/logo-tetria-icone.png" alt="" width="40" height="40" /><span>TETRIA</span></a
+          >
+          <p>Monitoramento ambiental para apoiar o cuidado com as abelhas Jataí.</p>
+        </div>
+        <div>
+          <h4>Navegação</h4>
+          <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="sobre.html">Sobre o projeto</a></li>
+            <li><a href="calculadora.html">Calculadora financeira</a></li>
+            <li><a href="contato.html">Contato</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Conta</h4>
+          <ul>
+            <li><a href="entrar.html">Entrar</a></li>
+          </ul>
+          <a class="btn btn-small" href="criar-conta.html">Criar conta</a>
+          <p class="footer-mail">contato@tetria.com.br</p>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <small>© <span id="ano"></span> Tetria · Projeto acadêmico</small>
+      </div>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>
