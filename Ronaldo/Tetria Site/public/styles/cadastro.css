@@ -1,0 +1,50 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.header {
+    background-color: rgb(255, 208, 147);
+}
+
+.header .container {
+    display: flex;
+}
+
+.header .text {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        margin-right: 70px;
+}
+
+.header img {
+    margin-left: 70px;
+    width: 80px;
+    height: 80px;
+    align-items: flex-start;
+}
+
+.cadastro {
+    display: flex;
+    background-color: antiquewhite;
+}
+
+.cadastro .container-left {
+    width: 50%;
+    padding: 15px 0px 15px 15px;
+}
+
+.cadastro .container-right {
+    width: 50%;
+}
+
+.cadastro .container-left .big-image {
+    background-image: url('../assets/colmeia-top.jpg');
+    background-size: cover;
+    width: 90%;
+    height: 400px;
+    border-radius: 10px;
+}

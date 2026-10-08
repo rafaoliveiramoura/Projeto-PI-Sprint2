@@ -1,0 +1,163 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.navbar {
+    position: sticky; 
+    top: 0; 
+    background-color: rgb(245, 240, 229, 0.99);
+    padding: 10px 0;
+    width: 100%;
+    border-bottom: none;
+    
+}
+
+.nav-container {
+    max-width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.nav-logo .nav-img {
+    width: 80px;
+    display: block;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #221E19;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #FFCB05;
+}
+
+.top-us {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #e7dfd4;
+    height: 300px;
+}
+
+.title p {
+    display: flex;
+    font-size: 18px;
+    justify-content: center;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.title h1 {
+    font-size: 58px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.subtitle p {
+    font-size: 18px;
+    margin-top: 0;
+    max-width: 800px;
+}
+
+.objetivo {
+    display: flex;
+    flex-direction: row;
+
+    background-color: #f8f5ef;
+    padding-top: 10px;
+    padding-bottom: 10px
+}
+
+.objetivo .left {
+    margin-left: 500px;
+}
+
+.objetivo .right {
+    background-image: url('../assets/cuidando-top.webp');
+    background-size: cover;
+    width: 600px;
+    height: 400px;
+    border-radius: 10px;
+    margin-left: 200px;
+    margin-top: 50px;
+}
+
+.objetivo h2 {
+    font-size: 48px;
+    max-width: 500px;
+    line-height: 1.1;
+    padding-bottom: 0px;
+}
+
+.objetivo p {
+    padding-top: 0px;
+    font-size: 18px;
+    max-width: 600px;
+}
+
+.etapas {
+    background-color: #e7dfd4;
+    padding-top: 100px;
+    padding-bottom: 100px
+
+}
+
+.etapas .title p {
+    display: flex;
+    justify-content: center;
+    font-size: 18px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.etapas h2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 0;
+    font-size: 58px
+}
+
+.etapa-cards-geral {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+}
+
+.etapa-card {
+    background-color: #fff;
+    padding: 20px; 
+    border-radius: 8px;
+    width: 200px;
+    height: 200px;
+}
+
+.numero-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;  /*preguiça de reescrever tudo no html*/
+    background-color: #221E19;
+    color: #e7dfd4;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+}
