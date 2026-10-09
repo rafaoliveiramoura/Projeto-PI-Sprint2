@@ -86,7 +86,7 @@ body {
 }
 
 .objetivo .left {
-    margin-left: 500px;
+    margin-left: 300px;
 }
 
 .objetivo .right {
@@ -96,6 +96,7 @@ body {
     height: 400px;
     border-radius: 10px;
     margin-left: 200px;
+    margin-right: 200px;
     margin-top: 50px;
 }
 
@@ -154,10 +155,42 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: bold;  /*preguiça de reescrever tudo no html*/
+    font-weight: bold;  /*mto tampo reescrever tudo no html*/
     background-color: #221E19;
     color: #e7dfd4;
     width: 30px;
     height: 30px;
     border-radius: 10px;
 }
+
+.visao {
+    display: flex;
+    flex-direction: row;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    background-color: #f8f5ef;
+}
+
+.visao .left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 300px;
+    width: 50%;
+}
+
+.visao h2 {
+    font-size: 58px;
+    padding-top: 0px;
+    max-width: 600px;
+}
+
+.visao p {
+    margin-bottom: 0;
+}
+
+.visao .right {
+    max-width: 600px;
+    padding-right: 200px;
+}
+
