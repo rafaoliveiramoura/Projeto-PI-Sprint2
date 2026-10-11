@@ -1,0 +1,175 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    background-color: rgb(245, 240, 229, 0.99);
+    padding: 10px 0;
+    width: 100%;
+    border-bottom: none;
+
+}
+
+.nav-container {
+    max-width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.nav-logo .nav-img {
+    width: 80px;
+    display: block;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #221E19;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #FFCB05;
+}
+
+.top-us {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #e7dfd4;
+    height: 300px;
+}
+
+.title p {
+    display: flex;
+    font-size: 18px;
+    justify-content: center;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.title h1 {
+    font-size: 58px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.subtitle p {
+    font-size: 18px;
+    margin-top: 0;
+    max-width: 800px;
+}
+
+.contato {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #f8f5ef;
+    padding-top: 10px;
+    padding-bottom: 10px
+}
+
+.contato .left {
+    margin-left: 300px;
+}
+
+.contato .right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    width: 450px;
+    height: 600px;
+    border-radius: 10px;
+    margin-left: 200px;
+    margin-right: 200px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border: solid 1px rgba(34, 30, 25, 0.2);
+}
+
+.contato h2 {
+    font-size: 48px;
+    max-width: 500px;
+    line-height: 1.1;
+    padding-bottom: 0px;
+}
+
+.contato p {
+    padding-top: 0px;
+    font-size: 18px;
+    max-width: 600px;
+}
+
+.contato .campo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 350px;
+    font-weight: bold;
+    /*mto tampo reescrever tudo no html*/
+    font-size: 14px;
+}
+
+.contato input {
+    border-radius: 4px;
+    border: solid 1px;
+    height: 50px;
+    border-color: rgba(2, 2, 2, 0.2);
+    padding-left: 15px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+}
+
+.contato select {
+    border-radius: 4px;
+    border: solid 1px;
+    height: 50px;
+    border-color: rgba(2, 2, 2, 0.2);
+    padding-left: 15px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+}
+
+.contato textarea {
+    border-radius: 4px;
+    border: solid 1px;
+    height: 50px;
+    border-color: rgba(2, 2, 2, 0.2);
+    padding-left: 15px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+}
+
+.contato button {
+    width: 200px;
+    height: 50px;
+    background-color: #FFCB05;
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 8px;
+    border: solid 0px;
+    transition: 0.2s; /* Leo do ADSB ensinou, vlw leo :)*/
+}
+.contato button:hover { /* Leo do ADSB ensinou, vlw leo :)*/
+    background-color: #221E19;
+    color: #f8f5ef;
+}

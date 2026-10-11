@@ -1,0 +1,460 @@
+/* ================================= */
+/* CONFIGURAÇÕES GERAIS */
+/* ================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #221E19;
+    width: 100%;
+    min-height: 100vh;
+    color: #221E19;
+    padding-bottom: 50px;
+}
+
+/* ================================= */
+/* NAVBAR (MENU DE NAVEGACAO) */
+/* ================================= */
+.navbar {
+    background-color: #F5F0E6;
+    padding: 10px 0;
+    width: 100%;
+    border-bottom: none;
+}
+
+.nav-container {
+    max-width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.nav-logo .nav-img {
+    width: 80px;
+    display: block;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #221E19;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #FFCB05;
+}
+
+.nav-container button {
+    border: solid 0px;
+    background-color: yellow;
+}
+
+/* ================================= */
+/* HEADER */
+/* ================================= */
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F5F0E6;
+    background-image: radial-gradient(#FFCB05 0.5px, transparent 0.5px);
+    background-size: 20px 20px;
+    padding: 30px 50px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    gap: 20px;
+}
+
+.header .img {
+    width: 80px;
+}
+
+.header-text {
+    text-align: center;
+}
+
+.header p {
+    margin-top: 0;
+    color: #6B6257;
+    font-size: 14px;
+    text-align: center;
+}
+
+.header h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    color: #221E19;
+    font-size: 30px;
+    letter-spacing: 1px;
+}
+
+/* ================================= */
+/* CONTAINER DA CALCULADORA */
+/* ================================= */
+.container-calculadoras {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 1000px;
+    margin: 40px auto 24px;
+    padding: 0 20px;
+}
+
+/* ================================= */
+/* CALCULADORA (CARD DAS PERGUNTAS) */
+/* ================================= */
+.calculo {
+    width: 100%;
+    padding: 32px 36px;
+    background-color: #FFCB05;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 28px;
+    row-gap: 18px;
+}
+
+/* TÍTULO DO CARD */
+.calculo h2 {
+    grid-column: 1 / -1;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #221E19;
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+/* ================================= */
+/* CAMPOS */
+/* ================================= */
+.calculo .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.calculo .campo-perda {
+    grid-column: 1 / -1;
+}
+
+.calculo .campo label {
+    font-family: 'Poppins', sans-serif;
+    color: #221E19;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+/* INPUT */
+.calculo .campo input {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    background-color: #FFFFFF;
+    border: 1px solid #D5D5D5;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    color: #221E19;
+    outline: none;
+    text-align: left;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.calculo .campo input:focus {
+    border: 1px solid #221E19;
+    box-shadow: 0 0 0 3px rgba(34, 30, 25, 0.15);
+}
+
+/* TEXTOS ABAIXO DO INPUT (OBSERVAÇÃO E ERROS) */
+.calculo .campo span {
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+    color: #514A41;
+}
+
+.calculo .campo span:empty {
+    display: none;
+}
+
+/* MENSAGENS DE ERRO DA VALIDAÇÃO */
+.calculo .campo span[id^="err_"] {
+    color: #A3231E;
+    font-weight: 600;
+}
+
+/* ================================= */
+/* BOTÃO CALCULAR */
+/* ================================= */
+.calculo .btn {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.calculo .btn button {
+    border: 2px solid #221E19;
+    width: 100%;
+    max-width: 220px;
+    height: 50px;
+    border-radius: 12px;
+    background-color: #221E19;
+    color: #FFCB05;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.calculo .btn button:hover {
+    background-color: #FFFFFF;
+    color: #221E19;
+    transform: translateY(-2px);
+}
+
+.calculo .btn button:active {
+    transform: scale(0.97);
+}
+
+/* BOTÃO LIMPAR */
+.calculo .btn .btn-limpar {
+    max-width: 130px;
+    background-color: transparent;
+    color: #221E19;
+}
+
+.calculo .btn .btn-limpar:hover {
+    background-color: #221E19;
+    color: #FFCB05;
+}
+
+/* ================================= */
+/* CONTAINER DOS RESULTADOS */
+/* ================================= */
+.container-mensagens {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 40px;
+    padding: 0 20px;
+}
+
+/* ================================= */
+/* ÁREA DO RESULTADO (UM BLOCO PARA CADA TÓPICO) */
+/* ================================= */
+.mensagem {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #F5F0E6;
+    border-radius: 16px;
+    border-top: 6px solid #221E19;
+    padding: 22px 22px 20px;
+    font-family: 'Poppins', sans-serif;
+    color: #221E19;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* ESCONDE O BLOCO ENQUANTO ESTIVER VAZIO */
+.mensagem:empty {
+    display: none;
+}
+
+.mensagem-sem {
+    border-top-color: #D9534F;
+}
+
+.mensagem-com {
+    border-top-color: #5CB85C;
+}
+
+/* TÍTULO DO BLOCO */
+.mensagem h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 10px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(34, 30, 25, 0.15);
+}
+
+/* LINHA: DESCRIÇÃO À ESQUERDA E VALOR À DIREITA */
+.mensagem .linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(34, 30, 25, 0.18);
+    text-align: left;
+}
+
+.mensagem .linha span {
+    flex: 1;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #6B6257;
+}
+
+.mensagem .linha b {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.valor-negativo {
+    color: #C0302B;
+}
+
+.valor-positivo {
+    color: #2F8A3A;
+}
+
+/* LINHA DO TOTAL (SEMPRE NO FINAL DO BLOCO) */
+.mensagem .linha-total {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 2px solid #221E19;
+    border-bottom: none;
+}
+
+.mensagem .linha-total span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #221E19;
+}
+
+.mensagem .linha-total b {
+    font-size: 19px;
+}
+
+/* BLOCO DA VANTAGEM (DESTAQUE ESCURO COM AMARELO) */
+.mensagem-vantagem {
+    background-color: #2D2822;
+    border: 2px solid #FFCB05;
+    border-top-width: 6px;
+    color: #F5F0E6;
+}
+
+.mensagem-vantagem h3 {
+    color: #FFCB05;
+    border-bottom-color: rgba(245, 240, 230, 0.2);
+}
+
+.mensagem-vantagem .linha {
+    border-bottom-color: rgba(245, 240, 230, 0.18);
+}
+
+.mensagem-vantagem .linha span {
+    color: #CFC6B8;
+}
+
+.mensagem-vantagem .linha b {
+    color: #F5F0E6;
+}
+
+.mensagem-vantagem .linha-total {
+    border-top-color: #FFCB05;
+}
+
+.mensagem-vantagem .linha-total span {
+    color: #F5F0E6;
+}
+
+.mensagem-vantagem .linha-total b {
+    color: #FFCB05;
+    font-size: 22px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================= */
+/* RESPONSIVIDADE */
+/* ================================= */
+@media (max-width: 900px) {
+    .container-mensagens {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .mensagem {
+        width: 100%;
+        max-width: 520px;
+        flex: none;
+    }
+}
+
+@media (max-width: 700px) {
+    .calculo {
+        grid-template-columns: 1fr;
+        padding: 24px 20px;
+    }
+}
+
+@media (max-width: 450px) {
+    .nav-container {
+        padding: 0 15px;
+    }
+
+    .nav-logo .nav-img {
+        width: 60px;
+    }
+
+    .nav-links {
+        gap: 12px;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+    }
+
+    .header {
+        padding: 20px;
+    }
+
+    .header h1 {
+        font-size: 20px;
+    }
+
+    .calculo .btn button {
+        max-width: 100%;
+    }
+}
