@@ -88,7 +88,7 @@
             </div>
             <div class="jconta">
                 <span>Já possui uma conta</span>
-                <button onclick="window.location.href='logi.html'">
+                <button onclick="window.location.href='login.html'">
                     Entrar
                 </button>
             </div>
@@ -192,7 +192,7 @@
         if (resposta.ok) {
           alert("Cadastro realizado com sucesso! Redirecionando...");
           setTimeout(() => {
-            window.location = "../login/logi.html";
+            window.location = "../login/login.html";
           }, 2000);
         } else {
           throw new Error("Houve um erro ao tentar realizar o cadastro!");
