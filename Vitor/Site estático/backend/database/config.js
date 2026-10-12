@@ -1,16 +1,16 @@
 const mysql = require("mysql2")
 
 const mysqlconfig = {
-    host: process.env.DB_HOST,
-    database: process.env.DB_DATABASE,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT
+    host: '127.0.0.1',
+    database: 'tetria',
+    user: 'user_insert',
+    password: 'Urubu100',
+    port: 3306
 }
 
 function executar(instrucao) {
      
-    console.log("valores ambinte", process.env.AMBIENTE_PROCESSO)
+    console.log("valores ambiente", process.env.AMBIENTE_PROCESSO)
     if (process.env.AMBIENTE_PROCESSO !== "producao" && process.env.AMBIENTE_PROCESSO !== "desenvolvimento") {
         console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM .env OU dev.env OU app.js\n");
         return Promise.reject("AMBIENTE NÃO CONFIGURADO EM .env");
