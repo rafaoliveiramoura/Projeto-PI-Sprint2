@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard de monitoramento</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- conectando com arquivo do css -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <!-- conectando com Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2? family=Roboto:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Falando pro Google Fonts qual fonte eu quero e em quais formatos (normal, negrito, etc) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- conectando com o chart JS -->
+  </head>
+  <body>
+    <header class="navbar">
+      <button class="botao_menu" aria-label="Abrir menu">☰</button>
+      <h1 class="logo">NOME DA EMPRESA</h1>
+    </header>
+
+    <main class="dashboard">
+      <section>
+        <article class="kpi-card">
+          <div class="kpi-icone">
+            <img
+              src="file:///C:/Users/gabif/Downloads/Facul/P.%20I/icon%20projeto%20da%20sprint/icone-termometro_v2.svg"
+              alt="Temperatura"
+              width="50px"
+            />
+          </div>
+          <div class="kpi-info">
+            <p>Temperatura Média Interna</p>
+            <h2>34,5 °C</h2>
+            <span>Média das leituras de hoje</span>
+          </div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-icone">
+            <img
+              src="file:///C:/Users/gabif/Downloads/Facul/P.%20I/icon%20projeto%20da%20sprint/icone-gota-agua.svg"
+              alt="Umidade"
+              width="50px"
+            />
+          </div>
+          <div class="kpi-info">
+            <p>Umidade Relativa Média</p>
+            <h2>83%</h2>
+            <span>Média das leituras no período</span>
+          </div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-icone">
+            <img
+              src="file:///C:/Users/gabif/Downloads/Facul/P.%20I/icon%20projeto%20da%20sprint/icone-colmeia.svg"
+              alt="Umidade"
+              width="50px"
+            />
+          </div>
+          <div class="kpi-info">
+            <p>Colmeias Fora dos Parâmetros</p>
+            <h2>3</h2>
+            <span>Do total monitorado</span>
+          </div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="kpi-icon">
+            <img
+              src="file:///C:/Users/gabif/Downloads/Facul/P.%20I/icon%20projeto%20da%20sprint/icone-colmeia.svg"
+              alt="Umidade"
+              width="50px"
+            />
+          </div>
+          <div class="kpi-info">
+            <p>Diferença Interna/Externa</p>
+            <h2>- 9 °C</h2>
+            <span>Comparando ambiente interno/externo</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="charts-container">
+          <article class="chart-card">
+              <canvas id="graficoTemperatura"></canvas>
+            <script>
+              const ctxTemperatura = document.getElementById("graficoTemperatura");
+
+              new Chart(ctxTemperatura, {
+                type: "line",
+                data: {
+                  labels: [
+                    "08:00:00",
+                    "08:00:02",
+                    "08:00:04",
+                    "08:00:06",
+                    "08:00:08",
+                    "08:00:10",
+                  ],
+                  datasets: [
+                    {
+                      label: "Temperatura Média Atual Interna (°C)",
+                      data: [35.5, 35.6, 35.5, 35.4, 35.5, 35.5],
+                      borderWidth: 1,
+                    },
+                    {
+                      label: "Temperatura Média Atual Externa (°C)",
+                      data: [38.5, 38.6, 38.5, 38.4, 38.5, 38.5],
+                      borderWidth: 1,
+                    }
+                  ],
+                },
+                options: {
+                  scales: {
+                    y: {
+                      beginAtZero: false,
+                    },
+                  },
+                },
+              });
+            </script>
+        </article>
+
+        <article class="chart-card">
+          <canvas id="graficoUmidade"></canvas>
+           <script>
+              const ctxUmidade = document.getElementById("graficoUmidade");
+
+              new Chart(ctxUmidade, {
+                type: "line",
+                data: {
+                  labels: [
+                    "08:00:00",
+                    "08:00:02",
+                    "08:00:04",
+                    "08:00:06",
+                    "08:00:08",
+                    "08:00:10",
+                  ],
+                  datasets: [
+                    {
+                      label: "Umidade Média Atual Interna (%)",
+                      data: [75, 75, 76, 76, 77, 77],
+                      borderWidth: 1,},
+                    
+                      {
+                      label: "Umidade Média Atual Externa (%)",
+                      data: [70, 70, 71, 71, 72, 72],
+                      borderWidth: 1,
+                    },
+                  ],
+                },
+                options: {
+                  scales: {
+                    y: {
+                      beginAtZero: false,
+                    },
+                  },
+                },
+              });
+            </script>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>
