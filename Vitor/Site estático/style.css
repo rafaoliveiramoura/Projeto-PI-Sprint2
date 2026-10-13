@@ -24,7 +24,6 @@ header {
   z-index: 20;
 }
 
-
 .container {
   width: min(1120px, calc(100% - 40px));
   margin: auto;
@@ -149,7 +148,7 @@ a {
 }
 
 .eyebrow {
-  font-size: 0.75rem;
+  font-size: 15;
   letter-spacing: 2px;
   font-weight: 800;
   color: #84651b;
