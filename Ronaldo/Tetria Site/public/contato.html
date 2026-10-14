@@ -57,23 +57,24 @@
         </div>
 
         <div class="right">
-            <div class="formulario">
+            <form class="formulario">
                 <div class="campo">
                     <span>Nome:</span>
                     <input id="nome_input" type="text" placeholder="Seu nome" />
                 </div>
                 <div class="campo">
                     <span>Empresa:</span>
-                    <input id="nome_input" type="text" placeholder="Sua empresa" />
+                    <input id="empresa_input" type="text" placeholder="Sua empresa" />
                 </div>
                 <div class="campo">
                     <span>Motivo do contato:</span>
                     <select name="" id="select_contatinhos">
-                        <option selected value="">Dúvida sobre o projeto</option>
-                        <option value="">Parceria</option>
-                        <option value="">Sugestão</option>
-                        <option value="">Suporte</option>
-                        <option value="">Outro assunto</option>
+                        <option value="" disabled selected>Selecione um motivo...</option>
+                        <option value="Dúvida">Dúvida sobre o projeto</option>
+                        <option value="Parceria">Parceria</option>
+                        <option value="Sugestão">Sugestão</option>
+                        <option value="Suporte">Suporte</option>
+                        <option value="Outro">Outro assunto</option>
                     </select>
                 </div>
                 <div class="campo">
@@ -82,15 +83,79 @@
                 </div>
                 <div class="campo">
                     <span>Mensagem:</span>
-                    <textarea name="" id="textarea_mensagem" placeholder="Escreva sua mensagem."></textarea> <!--primeira vez usando isso-->
+                    <textarea name="" id="textarea_mensagem" placeholder="Escreva sua mensagem."></textarea>
+                    <!--primeira vez usando isso-->
                 </div>
                 <div class="butao">
-                    <button>Enviar mensagem</button>
+                    <button type="button" onclick="entrar_contato()">Enviar mensagem</button>
                 </div>
-            </div>
+                
+                </div>
+            </form>
         </div>
     </div>
 
 </body>
 
 </html>
+
+<script>
+
+    function limparFormulario() {
+        document.getElementById("formulario").reset();
+    }
+
+
+
+    function entrar_contato() {
+        let nomeLet = nome_input.value;
+        let empresaLet = empresa_input.value;
+        let motivoContatoLet = select_contatinhos.value;
+        let emailLet = email_input.value;
+        let mensagemContatoLet = textarea_mensagem.value;
+
+        if (nomeLet == '') {
+            alert('O campo nome está vazio');
+        } else if (empresaLet == '') {
+            alert('O campo empresa está vazio');
+        } else if (motivoContatoLet == '') {
+            alert('Selecione um motivo de contato');
+        } else if (emailLet == '') {
+            alert('O campo email está vazio');
+        } else if (mensagemContatoLet == '') {
+            alert('O campo mensagem está vazio');
+        } else {
+
+            // Enviando o valor da nova input
+            fetch("/contato", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    //  src/routes/contato.js
+                    nomeServer: nomeLet,
+                    empresaServer: empresaLet,
+                    motivoContatoServer: motivoContatoLet,
+                    emailServer: emailLet,
+                    mensagemContatoServer: mensagemContatoLet
+                }),
+            })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
+
+                    if (resposta.ok) {
+                        alert('Mensagem enviada a nossa equipe com sucesso!\nEm breve entraremos em contato.')
+                        limparFormulario();
+                    } else {
+                        throw "Houve um erro ao tentar realizar o cadastro!";
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+
+            return false;
+        }
+    }
+</script>
