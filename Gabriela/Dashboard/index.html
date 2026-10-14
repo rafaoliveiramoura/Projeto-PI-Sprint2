@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard de monitoramento</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="(NOME DAS FONTES QUE EU USAR E TAMANHOS REQUISITADOS)"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <button class="botao_menu" aria-label="Menu">☰</button>
+      <a href="(HOME PAGE)">
+        <img
+          src="Gabriela\Dashboard\Src\SRC\tetria-logo-transparente.png"
+          alt="logo"
+        />
+      </a>
+
+      <a href="(Tela da conta)">
+        <img src="(IMAGEM DO FRIZZA)" alt="usuario" />
+      </a>
+    </header>
+
+    <main>
+      <section>
+        <article class="Card_de_KPI">
+          <div class="icone_da_KPI">
+            <img
+              src="(ICONE 1- Colmeias)"
+              alt="Icone total de colmeias"
+              width="50px"
+            />
+          </div>
+
+          <div class="informacao_KPI">
+            <p>Total de colmeias:</p>
+            <h2>04</h2>
+            <p>colmeias monitoradas</p>
+          </div>
+        </article>
+
+        <article class="Card_de_KPI">
+          <div class="icone_da_KPI">
+            <img
+              src="(ICONE 2 - Alerta)"
+              alt="Alerta de colmeias"
+              width="50px"
+            />
+          </div>
+
+          <div class="informacao_KPI">
+            <p>Colmeias críticas:</p>
+            <h2>3</h2>
+            <p>Colmeias precisam de atenção</p>
+          </div>
+        </article>
+
+        <article class="Card_de_KPI">
+          <div class="icone_da_KPI">
+            <img
+              src="(ICONE 3- Diferença)"
+              alt="Icone da diferença interna e externa"
+              width="50px"
+            />
+          </div>
+
+          <div class="informacao_KPI">
+            <p>Diferença entre temperaturas:</p>
+            <h2>+ 6 °C</h2>
+            <p>Comparação entre externo e interno</p>
+          </div>
+        </article>
+      </section>
+
+      <section>
+        <article>
+          <div>
+            <h2 id="titulo-colmeia">Selecione a colmeia:</h2>
+            <select id="select_colmeia">
+              <option value="01">Colmeia 01</option>
+              <option value="02">Colmeia 02</option>
+              <option value="03">Colmeia 03</option>
+              <option value="04">Colmeia 04</option>
+            </select>
+          </div>
+          <button class="botão_selecionar" onclick="selecionar()">Selecionar</button>
+        </article>
+      </section>
+
+      <section class="charts-container">
+        <article class="chart-card">
+          <canvas id="graficoTemperatura"></canvas>
+        </article>
+        
+        <article class="chart-card">
+          <canvas id="graficoUmidade"></canvas>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      const ctxTemperatura = document.getElementById('graficoTemperatura');
+      const GraficoTemperatura = new Chart(ctxTemperatura, {
+        type: 'line',
+        data: {
+          labels: ["08:00:00", "08:00:02", "08:00:04", "08:00:06", "08:00:08", "08:00:10"],
+          datasets: [
+            {
+              label: "Temperatura Média Atual Interna (°C)",
+              data: [0, 0, 0, 0, 0, 0],
+              borderWidth: 1,
+            },
+            {
+              label: "Temperatura Média Atual Externa (°C)",
+              data: [0, 0, 0, 0, 0, 0],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: { beginAtZero: false },
+          },
+        },
+      });
+
+      const ctxUmidade = document.getElementById('graficoUmidade');
+      const GraficoUmidade = new Chart(ctxUmidade, {
+        type: 'line',
+        data: {
+          labels: ["08:00:00", "08:00:02", "08:00:04", "08:00:06", "08:00:08", "08:00:10"],
+          datasets: [
+            {
+              label: "Umidade Média Atual Interna (%)",
+              data: [0, 0, 0, 0, 0, 0],
+              borderWidth: 1,
+            },
+            {
+              label: "Umidade Média Atual Externa (%)",
+              data: [0, 0, 0, 0, 0, 0],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: { beginAtZero: false },
+          },
+        },
+      });
+
+      function selecionar() {
+        var selecao = select_colmeia.value;
+
+        let dadosTempInterna = [0, 0, 0, 0, 0, 0];
+        let dadosTempExterna = [0, 0, 0, 0, 0, 0];
+        let dadosUmidInterna = [0, 0, 0, 0, 0, 0];
+        let dadosUmidExterna = [0, 0, 0, 0, 0, 0];
+
+        if (selecao === "01") {
+          dadosTempInterna = [35.6, 35.6, 35.7, 35.7, 35.6, 35.6];
+          dadosTempExterna = [35.5, 35.5, 35.7, 35.6, 35.5, 35.6];
+          dadosUmidInterna = [73, 73, 72, 73, 74, 74]; 
+          dadosUmidExterna = [72, 72, 72, 73, 74, 74];
+        } 
+        else if (selecao === "02") {
+          dadosTempInterna = [36.6, 36.6, 36.7, 36.7, 36.6, 36.6];
+          dadosTempExterna = [34.5, 35.5, 34.7, 34.6, 35.5, 35.6];
+          dadosUmidInterna = [74, 74, 74, 72, 72, 71];
+          dadosUmidExterna = [83, 83, 83, 84, 84, 85];
+        } 
+        else if (selecao === "03") {
+          dadosTempInterna = [35.6, 35.6, 35.7, 35.7, 35.6, 35.6];
+          dadosTempExterna = [35.5, 35.5, 35.7, 35.6, 35.5, 35.6];
+          dadosUmidInterna = [73, 73, 72, 73, 74, 74];
+          dadosUmidExterna = [72, 72, 72, 73, 74, 74];
+        } 
+        else if (selecao === "04") {
+          dadosTempInterna = [32.4, 32.5, 32.9, 32.4, 32.8, 32.8];
+          dadosTempExterna = [31.5, 31.5, 31.7, 31.6, 31.5, 31.6];
+          dadosUmidInterna = [83, 83, 82, 83, 84, 84];
+          dadosUmidExterna = [82, 82, 82, 83, 84, 84];
+        }
+
+        //Atualiza os dados das variáveis do Chart.js e manda redesenhar a tela (.update())
+        GraficoTemperatura.data.datasets[0].data = dadosTempInterna;
+        GraficoTemperatura.data.datasets[1].data = dadosTempExterna;
+        GraficoTemperatura.update();
+
+        GraficoUmidade.data.datasets[0].data = dadosUmidInterna;
+        GraficoUmidade.data.datasets[1].data = dadosUmidExterna;
+        GraficoUmidade.update();
+      }
+    </script>
+  </body>
+</html>
