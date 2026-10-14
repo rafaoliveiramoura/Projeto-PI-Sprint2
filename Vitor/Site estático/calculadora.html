@@ -1,19 +1,19 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="calculadora.css">
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="calculadora.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap"
+    />
     <title>Calculadora | Tetria</title>
-</head>
-<body>
+  </head>
+  <body style="background-color: #221E19;">
     <header>
       <nav class="navbar">
         <div class="nav-container">
@@ -27,73 +27,65 @@
             <a href="sobre.html">Sobre</a>
             <a href="calculadora.html">Calculadora</a>
             <a href="contato.html">Contato</a>
-            <a class="btn btn-login" href="login/login.html">Login</a>
+            <a class="btn btn-login" href="login.html">Login</a>
           </ul>
         </div>
       </nav>
-    </header>  
+    </header>
     <div class="header">
       <div id="header-text">
         <h1>CALCULADORA FINANCEIRA</h1>
         <p>Calcule os resultados financeiros das suas colmeias</p>
       </div>
     </div>
-
-    <!-- CONTAINER QUE CENTRALIZA AS DUAS LADO A LADO -->
     <div class="container-calculadoras">
-        <!-- CALCULADORA 1 -->
-        <div class="calculo">
-            <h2>🐝Dados da sua produção</h2>
-
-            <div class="campo">
-                <label for="ipt_qtd_colmeias">Quantidade de Colmeias: </label>
-                <input type="number" value="150" id="ipt_qtd_colmeias">
-                <span id="err_ipt_qtd_colmeias"></span>
-            </div>
-            
-            <div class="campo">
-                <label for="ipt_valor_enxame">Valor médio do enxame de abelha Jataí: </label>
-                <input type="number" value="275.00" id="ipt_valor_enxame">
-                <span id="err_ipt_valor_enxame"></span>
-            </div>
-            
-            <div class="campo">
-                <label for="ipt_qtd_mel_kg">Quantos (kg) de mel é produzido por colmeia ao ano?</label>
-                <input type="text" value="1" id="ipt_qtd_mel_kg">
-                <span id="err_ipt_qtd_mel_kg"></span>
-
-            </div>
-
-            <div class="campo">
-                <label for="ipt_valor_mel_kg">Valor do mel por kg: </label>
-                <input type="text" value="300" id="ipt_valor_mel_kg">
-                <span id="err_ipt_valor_mel_kg"></span>
-
-            </div>
-
-            <div class="campo campo-perda">
-                <label for="ipt_qtd_colmeias_perdidas">Quantidade de colmeias perdidas ao ano: </label>
-                <input type="text" value="40" id="ipt_qtd_colmeias_perdidas">
-                <span><b><i>*Por temperatura e umidade</i></b></span>
-                <span id="err_ipt_qtd_colmeias_perdidas"></span>
-            </div>
-
-            <div class="btn">
-                <button onclick="Calculo1()">Calcular</button>
-                <button class="btn-limpar" onclick="limpar()">Limpar</button>
-
-            </div>
-          
-            
+      <div class="calculo">
+        <h2>🐝Dados da sua produção</h2>
+        <div class="campo">
+          <label for="ipt_qtd_colmeias">Quantidade de Colmeias: </label>
+          <input type="number" value="150" id="ipt_qtd_colmeias" />
+          <span id="err_ipt_qtd_colmeias"></span>
         </div>
-    </div> 
-
-    <div class="container-mensagens">
-        <div class="mensagem mensagem-sem" id="div_sem_sensor"></div>
-        <div class="mensagem mensagem-com" id="div_com_sensor"></div>
-        <div class="mensagem mensagem-vantagem" id="div_vantagem"></div>
+        <div class="campo">
+          <label for="ipt_valor_enxame"
+            >Valor médio do enxame de abelha Jataí:
+          </label>
+          <input type="number" value="275.00" id="ipt_valor_enxame" />
+          <span id="err_ipt_valor_enxame"></span>
+        </div>
+        <div class="campo">
+          <label for="ipt_qtd_mel_kg"
+            >Quantos (kg) de mel é produzido por colmeia ao ano?</label
+          >
+          <input type="text" value="1" id="ipt_qtd_mel_kg" />
+          <span id="err_ipt_qtd_mel_kg"></span>
+        </div>
+        <div class="campo">
+          <label for="ipt_valor_mel_kg">Valor do mel por kg: </label>
+          <input type="text" value="300" id="ipt_valor_mel_kg" />
+          <span id="err_ipt_valor_mel_kg"></span>
+        </div>
+        <div class="campo campo-perda">
+          <label for="ipt_qtd_colmeias_perdidas"
+            >Quantidade de colmeias perdidas ao ano:
+          </label>
+          <input type="text" value="40" id="ipt_qtd_colmeias_perdidas" />
+          <span
+            ><b><i>*Por temperatura e umidade</i></b></span
+          >
+          <span id="err_ipt_qtd_colmeias_perdidas"></span>
+        </div>
+        <div class="btn">
+          <button onclick="Calculo1()">Calcular</button>
+          <button class="btn-limpar" onclick="limpar()">Limpar</button>
+        </div>
+      </div>
     </div>
-    
+    <div class="container-mensagens">
+      <div class="mensagem mensagem-sem" id="div_sem_sensor"></div>
+      <div class="mensagem mensagem-com" id="div_com_sensor"></div>
+      <div class="mensagem mensagem-vantagem" id="div_vantagem"></div>
+    </div>
     <footer>
       <div class="container footer-grid">
         <div class="footer-brand">
@@ -129,88 +121,73 @@
         <small>© 2026 Tetria</small>
       </div>
     </footer>
-</body>
+  </body>
 </html>
 <script>
-    function Calculo1(){
+  function Calculo1() {
+    let qtdColmeias = Number(ipt_qtd_colmeias.value);
+    let valorEnxame = Number(ipt_valor_enxame.value);
+    let qtdMelKgPorColmeia = Number(ipt_qtd_mel_kg.value);
+    let valorMelKg = Number(ipt_valor_mel_kg.value);
+    let qtdColmeiasPerdidas = Number(ipt_qtd_colmeias_perdidas.value);
+    let valido = true;
 
-        let qtdColmeias = Number(ipt_qtd_colmeias.value);
-        let valorEnxame = Number(ipt_valor_enxame.value);
-        let qtdMelKgPorColmeia = Number(ipt_qtd_mel_kg.value);
-        let valorMelKg = Number(ipt_valor_mel_kg.value);
-        let qtdColmeiasPerdidas = Number(ipt_qtd_colmeias_perdidas.value);
+    // VALIDAÇÃO DA QUANTIDADE DE COLMEIAS
+    if (ipt_qtd_colmeias.value == "") {
+      err_ipt_qtd_colmeias.innerHTML = "Digite a quantidade de colmeias.";
+      valido = false;
+    } else if (qtdColmeias < 0) {
+      err_ipt_qtd_colmeias.innerHTML = "A quantidade não pode ser negativa.";
+      valido = false;
+    } else {
+      err_ipt_qtd_colmeias.innerHTML = "";
+    }
 
-        let valido = true;
+    // VALIDAÇÃO DO VALOR DO ENXAME
+    if (ipt_valor_enxame.value == "") {
+      err_ipt_valor_enxame.innerHTML = "Digite o valor do enxame.";
+      valido = false;
+    } else if (valorEnxame < 0) {
+      err_ipt_valor_enxame.innerHTML = "O valor não pode ser negativo.";
+      valido = false;
+    } else {
+      err_ipt_valor_enxame.innerHTML = "";
+    }
 
-        // VALIDAÇÃO DA QUANTIDADE DE COLMEIAS
+    // VALIDAÇÃO DA QUANTIDADE DE MEL POR COLMEIA
+    if (ipt_qtd_mel_kg.value == "") {
+      err_ipt_qtd_mel_kg.innerHTML = "Digite a quantidade de mel por colmeia.";
+      valido = false;
+    } else if (qtdMelKgPorColmeia < 0) {
+      err_ipt_qtd_mel_kg.innerHTML = "A quantidade não pode ser negativa.";
+      valido = false;
+    } else {
+      err_ipt_qtd_mel_kg.innerHTML = "";
+    }
 
-        if (ipt_qtd_colmeias.value == "") {
-          err_ipt_qtd_colmeias.innerHTML = "Digite a quantidade de colmeias.";
-          valido = false;
+    // VALIDAÇÃO DO VALOR DO MEL POR KG
+    if (ipt_valor_mel_kg.value == "") {
+      err_ipt_valor_mel_kg.innerHTML = "Digite o valor do mel por kg.";
+      valido = false;
+    } else if (valorMelKg < 0) {
+      err_ipt_valor_mel_kg.innerHTML = "O valor não pode ser negativo.";
+      valido = false;
+    } else {
+      err_ipt_valor_mel_kg.innerHTML = "";
+    }
 
-        } else if (qtdColmeias < 0) {
-          err_ipt_qtd_colmeias.innerHTML = "A quantidade não pode ser negativa.";
-          valido = false;
-
-        } else {
-          err_ipt_qtd_colmeias.innerHTML = "";
-        }
-
-        // VALIDAÇÃO DO VALOR DO ENXAME
-
-        if (ipt_valor_enxame.value == "") {
-          err_ipt_valor_enxame.innerHTML = "Digite o valor do enxame.";
-          valido = false;
-
-        } else if (valorEnxame < 0) {
-          err_ipt_valor_enxame.innerHTML = "O valor não pode ser negativo.";
-          valido = false;
-
-        } else {
-          err_ipt_valor_enxame.innerHTML = "";
-        }
-
-        // VALIDAÇÃO DA QUANTIDADE DE MEL POR COLMEIA
-
-        if (ipt_qtd_mel_kg.value == "") {
-          err_ipt_qtd_mel_kg.innerHTML = "Digite a quantidade de mel por colmeia.";
-          valido = false;
-
-        } else if (qtdMelKgPorColmeia < 0) {
-          err_ipt_qtd_mel_kg.innerHTML = "A quantidade não pode ser negativa.";
-          valido = false;
-
-        } else {
-          err_ipt_qtd_mel_kg.innerHTML = "";
-        }
-
-        // VALIDAÇÃO DO VALOR DO MEL POR KG
-
-        if (ipt_valor_mel_kg.value == "") {
-          err_ipt_valor_mel_kg.innerHTML = "Digite o valor do mel por kg.";
-          valido = false;
-
-        } else if (valorMelKg < 0) {
-          err_ipt_valor_mel_kg.innerHTML = "O valor não pode ser negativo.";
-          valido = false;
-
-        } else {
-          err_ipt_valor_mel_kg.innerHTML = "";
-        }
-
-        // VALIDAÇÃO DA QUANTIDADE DE COLMEIAS PERDIDAS
-
-        if (ipt_qtd_colmeias_perdidas.value == "") {
-          err_ipt_qtd_colmeias_perdidas.innerHTML = "Digite a quantidade de colmeias perdidas.";
-          valido = false;
-
-        } else if (qtdColmeiasPerdidas < 0) {
-          err_ipt_qtd_colmeias_perdidas.innerHTML = "A quantidade não pode ser negativa.";
-          valido = false;
-
-        } else {
-          err_ipt_qtd_colmeias_perdidas.innerHTML = "";
-        }
+    // VALIDAÇÃO DA QUANTIDADE DE COLMEIAS PERDIDAS
+    if (ipt_qtd_colmeias_perdidas.value == "") {
+      err_ipt_qtd_colmeias_perdidas.innerHTML =
+        "Digite a quantidade de colmeias perdidas.";
+      valido = false;
+    } else if (qtdColmeiasPerdidas < 0) {
+      err_ipt_qtd_colmeias_perdidas.innerHTML =
+        "A quantidade não pode ser negativa.";
+      valido = false;
+    } else {
+      err_ipt_qtd_colmeias_perdidas.innerHTML = "";
+    }
 
     if (valido == true) {
       //quantidade total do mel ao ano
@@ -222,11 +199,10 @@
       //valor da reconstituição enxame
       let valorReposicao = qtdColmeiasPerdidas * valorEnxame;
 
-            //sem o sensor: produção com perda e gasto para repor as colmeias
-            let valorProducaoPerdida = (valorProducaoAno / qtdColmeias) / 12 * 6 * qtdColmeiasPerdidas
-            let valorAnoComPerda = valorProducaoAno - valorProducaoPerdida
-            let valorAnoSemSensor = valorAnoComPerda - valorReposicao
-
+      //sem o sensor: produção com perda e gasto para repor as colmeias
+      let valorProducaoPerdida = qtdMelKgPorColmeia * valorMelKg * qtdColmeiasPerdidas;
+      let valorAnoComPerda = valorProducaoAno - valorProducaoPerdida;
+      let valorAnoSemSensor = valorAnoComPerda - valorReposicao;
 
       //com o sensor: sem perdas e com estimativa de aumento de até 10%
       let valorAumentoProducao = valorProducaoAno * 0.1;
@@ -238,50 +214,43 @@
       //vantagem: diferença entre os dois cenários
       let valorVantagemSensor = valorAnoComSensor - valorAnoSemSensor;
 
-       div_sem_sensor.innerHTML = `
-<h3>💸SEM O SENSOR</h3>
-<div class="linha"><span>Colmeias perdidas</span> <b>${qtdColmeiasPerdidas} (${porcentagemColmeiasPerdidas.toFixed(1)}%)</b></div>
-<div class="linha"><span>Receita do mel sem perdas</span> <b>${valorProducaoAno.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
-<div class="linha"><span>Receita perdida</span> <b class="valor-negativo">- ${valorProducaoPerdida.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
-<div class="linha"><span>Custo para repor as colmeias</span> <b class="valor-negativo">- ${valorReposicao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
-<div class="linha linha-total"><span>Resultado do ano</span> <b>${valorAnoSemSensor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
-`
+      div_sem_sensor.innerHTML = `
+        <h3>💸SEM O SENSOR</h3>
+        <div class="linha"><span>Colmeias perdidas</span> <b>${qtdColmeiasPerdidas} (${porcentagemColmeiasPerdidas.toFixed(1)}%)</b></div>
+        <div class="linha"><span>Receita do mel sem perdas</span> <b>${valorProducaoAno.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</b></div>
+        <div class="linha"><span>Receita perdida</span> <b class="valor-negativo">- ${valorProducaoPerdida.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</b></div>
+        <div class="linha"><span>Custo para repor as colmeias</span> <b class="valor-negativo">- ${valorReposicao.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</b></div>
+        <div class="linha linha-total"><span>Resultado do ano</span> <b>${valorAnoSemSensor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</b></div>`;
 
-div_com_sensor.innerHTML = `
-<h3>💵COM O SENSOR</h3>
-<div class="linha"><span>Colmeias perdidas</span> <b>0</b></div>
-<div class="linha"><span>Receita do mel sem perdas</span> <b>${valorProducaoAno.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
-<div class="linha"><span>Aumento de produção (até 10%)</span> <b class="valor-positivo">+ ${valorAumentoProducao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
-<div class="linha linha-total"><span>Resultado do ano</span> <b>${valorAnoComSensor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
-`
+      div_com_sensor.innerHTML = `
+        <h3>💵COM O SENSOR</h3>
+        <div class="linha"><span>Colmeias perdidas</span> <b>0</b></div>
+        <div class="linha"><span>Receita do mel sem perdas</span> <b>${valorProducaoAno.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</b></div>
+        <div class="linha"><span>Aumento de produção (até 10%)</span> <b class="valor-positivo">+ ${valorAumentoProducao.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</b></div>
+        <div class="linha linha-total"><span>Resultado do ano</span> <b>${valorAnoComSensor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</b></div>`;
 
-div_vantagem.innerHTML = `
-<h3>💰VANTAGEM DE TER O SENSOR</h3>
-<div class="linha"><span>Perda evitada</span> <b>${valorProducaoPerdida.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
-<div class="linha"><span>Reposição evitada</span> <b>${valorReposicao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
-<div class="linha"><span>Aumento de produção</span> <b>${valorAumentoProducao.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
-<div class="linha linha-total"><span>Ganho total ao ano</span> <b>${valorVantagemSensor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</b></div>
-`
-            
-
-        } else {
-          div_sem_sensor.innerHTML = "";
-          div_com_sensor.innerHTML = "";
-          div_vantagem.innerHTML = "";
-        }
-
+      div_vantagem.innerHTML = `
+        <h3>💰VANTAGEM DE TER O SENSOR</h3>
+        <div class="linha"><span>Perda evitada</span> <b>${valorProducaoPerdida.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</b></div>
+        <div class="linha"><span>Reposição evitada</span> <b>${valorReposicao.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</b></div>
+        <div class="linha"><span>Aumento de produção</span> <b>${valorAumentoProducao.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</b></div>
+        <div class="linha linha-total"><span>Ganho total ao ano</span> <b>${valorVantagemSensor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</b></div>`;
+    } else {
+      div_sem_sensor.innerHTML = "";
+      div_com_sensor.innerHTML = "";
+      div_vantagem.innerHTML = "";
     }
+  }
 
-    function limpar(){
-           err_ipt_qtd_colmeias.innerHTML = ""
-    err_ipt_valor_enxame.innerHTML = ""
-    err_ipt_qtd_mel_kg.innerHTML = ""
-    err_ipt_valor_mel_kg.innerHTML = ""
-    err_ipt_qtd_colmeias_perdidas.innerHTML = ""
+  function limpar() {
+    err_ipt_qtd_colmeias.innerHTML = "";
+    err_ipt_valor_enxame.innerHTML = "";
+    err_ipt_qtd_mel_kg.innerHTML = "";
+    err_ipt_valor_mel_kg.innerHTML = "";
+    err_ipt_qtd_colmeias_perdidas.innerHTML = "";
 
-    div_sem_sensor.innerHTML = ""
-    div_com_sensor.innerHTML = ""
-    div_vantagem.innerHTML = ""
-
-    }
+    div_sem_sensor.innerHTML = "";
+    div_com_sensor.innerHTML = "";
+    div_vantagem.innerHTML = "";
+  }
 </script>
