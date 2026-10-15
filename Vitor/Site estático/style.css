@@ -7,6 +7,13 @@
   --white: #fff;
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;
@@ -73,38 +80,36 @@ a {
 }
 
 .navbar {
-  position: sticky;
-  top: 0;
   background-color: rgb(255, 255, 255);
   padding: 5px 0;
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   border-bottom: solid 3px rgba(248, 248, 76, 0.705);
 }
 
 .nav-container {
-  max-width: 100%;
-  margin: 0;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 30px;
+  gap: 30px;
 }
 
 .nav-logo .nav-img {
   width: 80px;
-  display: flex;
+  height: auto;
+  display: block;
 }
 
 .nav-links {
   list-style: none;
   display: flex;
   align-items: center;
-  padding-left: 400px;
-  gap: 80px;
-  width: 100%;
+  justify-content: flex-end;
+  gap: 35px;
+  margin-left: auto;
 }
 
 .nav-links a {

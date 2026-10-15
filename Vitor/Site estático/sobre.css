@@ -65,15 +65,18 @@ body {
 }
 
 .title h1 {
+    display: flex;
     font-size: 58px;
+    justify-content: center;
     margin-top: 0;
     margin-bottom: 0;
 }
 
 .subtitle p {
     font-size: 18px;
-    margin-top: 0;
+    margin-top: 8px;
     max-width: 800px;
+    text-align: center;
 }
 
 .objetivo {
@@ -90,7 +93,7 @@ body {
 }
 
 .objetivo .right {
-    background-image: url('../assets/cuidando-top.webp');
+    background-image: url('src/cuidando-top.webp');
     background-size: cover;
     width: 600px;
     height: 400px;
