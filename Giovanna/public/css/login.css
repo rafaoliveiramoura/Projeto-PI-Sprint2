@@ -1,0 +1,258 @@
+/* ---------- CORES ---------- */
+:root {
+    --marrom: #2a1c12;
+    --marrom-medio: #4a3322;
+    --mel: #f2b705;
+    --mel-escuro: #c98a00;
+    --creme: #fdf0d2;
+    --borda: #d8bf8a;
+    --texto-suave: #5c4a3c;
+    --vermelho: #b3261e;
+}
+
+/* ---------- BASE ---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Poppins', sans-serif;
+    color: var(--marrom);
+    background-color: var(--creme);
+}
+
+/* ---------- MENU ---------- */
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 20px 48px;
+    background-color: var(--marrom);
+}
+
+.menu a {
+    padding-bottom: 4px;
+    font-size: 14px;
+    color: #f5e6c8;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+}
+
+.menu a:hover {
+    color: #ffffff;
+    border-bottom-color: var(--mel);
+}
+
+.menu a[aria-current="page"] {
+    font-weight: 600;
+    color: var(--mel);
+    border-bottom-color: var(--mel);
+}
+
+/* o logo empurra o resto do menu para a direita */
+.menu .logo {
+    margin-right: auto;
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--mel);
+    border-bottom: none;
+}
+
+/* ---------- TELA DIVIDIDA: METADE FOTO, METADE FORMULÁRIO ---------- */
+.portal {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+/* ---------- METADE DA FOTO ---------- */
+.boas-vindas {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 56px;
+    color: #ffffff;
+    /* degradê marrom embaixo para o texto ficar legível em cima da foto */
+    background:
+        linear-gradient(to top, rgba(42, 28, 18, 0.95) 10%, rgba(42, 28, 18, 0.35) 60%, rgba(201, 138, 0, 0.25)),
+        url("../img/colmeia.jpg") center / cover;
+}
+
+/* etiqueta amarela, igual às da landing page */
+.selo {
+    align-self: flex-start;
+    margin-bottom: 18px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--marrom);
+    background-color: var(--mel);
+    border-radius: 999px;
+}
+
+.boas-vindas h1 {
+    margin-bottom: 14px;
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 52px;
+    line-height: 1.05;
+}
+
+.boas-vindas p {
+    max-width: 420px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #f5e6c8;
+}
+
+/* ---------- METADE DO FORMULÁRIO ---------- */
+.ficha {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 56px max(48px, calc((50vw - 440px) / 2));
+    background-color: var(--creme);
+}
+
+.ficha h2 {
+    margin-bottom: 8px;
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 40px;
+}
+
+/* tracinho cor de mel embaixo do título */
+.ficha h2::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 4px;
+    margin-top: 10px;
+    background-color: var(--mel);
+    border-radius: 999px;
+}
+
+.ficha-intro {
+    margin-bottom: 28px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--texto-suave);
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+}
+
+.input-box label {
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.input-box input {
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--marrom);
+    background-color: #ffffff;
+    border: 1.5px solid var(--borda);
+    border-radius: 10px;
+    outline: none;
+}
+
+.input-box input::placeholder {
+    color: #a8957c;
+}
+
+.input-box input:focus {
+    border-color: var(--mel-escuro);
+    box-shadow: 0 0 0 3px rgba(242, 183, 5, 0.3);
+}
+
+.erro {
+    min-height: 18px;
+    margin-top: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--vermelho);
+}
+
+/* ---------- BOTÃO ---------- */
+.botao_login {
+    width: 100%;
+    margin-top: 6px;
+    padding: 15px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--marrom);
+    background-color: var(--mel);
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(201, 138, 0, 0.3);
+    cursor: pointer;
+}
+
+.botao_login:hover {
+    background-color: var(--mel-escuro);
+    color: #ffffff;
+}
+
+.botao_login:focus-visible {
+    outline: 3px solid var(--marrom);
+    outline-offset: 3px;
+}
+
+.ja-membro {
+    margin-top: 22px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--texto-suave);
+}
+
+.ja-membro a {
+    margin-left: 4px;
+    font-weight: 600;
+    color: var(--mel-escuro);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.ja-membro a:hover {
+    color: var(--marrom);
+}
+
+/* ---------- CELULAR ---------- */
+@media (max-width: 860px) {
+    .menu {
+        flex-wrap: wrap;
+        gap: 14px 22px;
+        padding: 18px 20px;
+    }
+
+    .portal {
+        grid-template-columns: 1fr;
+    }
+
+    .boas-vindas {
+        min-height: 300px;
+        padding: 28px;
+    }
+
+    .boas-vindas h1 {
+        font-size: 36px;
+    }
+
+    .ficha {
+        padding: 36px 20px;
+    }
+}

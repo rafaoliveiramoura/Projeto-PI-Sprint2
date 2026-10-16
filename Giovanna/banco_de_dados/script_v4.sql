@@ -9,18 +9,18 @@ CREATE TABLE Empresa (
     razao_social VARCHAR(45) NOT NULL,
     cnpj CHAR(14) NOT NULL,
     email VARCHAR(45) NOT NULL UNIQUE,
-    telefone CHAR(11) UNIQUE,
+    telefone CHAR(14) UNIQUE,
     dtCadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
-    dtAualizacao DATE
+    dtAtualizacao DATE
 );
 
 -- TABELA USUARIO
 CREATE TABLE Usuario (
     idUsuario INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(45) NOT NULL,
-    cpf CHAR(11) NOT NULL UNIQUE,
+    cpf CHAR(14) NOT NULL UNIQUE,
     email VARCHAR(45) NOT NULL UNIQUE,
-    telefone CHAR(11) NOT NULL UNIQUE,
+    telefone CHAR(14) NOT NULL UNIQUE,
     senha VARCHAR(45) NOT NULL,
     fkEmpresa INT NOT NULL,
     Responsavel TINYINT DEFAULT 0,
@@ -98,24 +98,24 @@ CREATE TABLE Endereco (
 
 -- DADOS EMPRESA
 INSERT INTO Empresa(nome_fantasia,razao_social, cnpj, email, telefone) VALUES 
-('Fazenda Vale Dourado', 'Vale Dourado Apicultura Ltda', '12345678000101', 'fazendaValedourado@gmail.com', '11987650001'),
-('Apiário Santa Helena', 'Santa Helena Produtos Apícolas Ltda', '12345678000102', 'apiariosantahelena@gmail.com', '11987650002'),
-('Fazenda Bela Colmeia', 'Bela Colmeia Producao Apícola Ltda', '12345678000103', 'belacolmeia@.gmailcom', '11987650003' ),
-('Apiário Monte Verde', 'Monte Verde Apicultura Ltda', '12345678000104', 'fzdApiariomonteverde@gmail.com', '11987650004' ),
-('Fazenda Recanto das Abelhas', 'Recanto das Abelhas Produtos Naturais Ltda', '12345678000105', 'fazendaRecantodasabelhas@gmail.com', '11987650005');
+('Fazenda Vale Dourado', 'Vale Dourado Apicultura Ltda', '12345678000101', 'fazendaValedourado@gmail.com', '(11)98765-0001'),
+('Apiário Santa Helena', 'Santa Helena Produtos Apícolas Ltda', '12345678000102', 'apiariosantahelena@gmail.com', '(11)98765-0002'),
+('Fazenda Bela Colmeia', 'Bela Colmeia Producao Apícola Ltda', '12345678000103', 'belacolmeia@gmailcom', '(11)98765-0003' ),
+('Apiário Monte Verde', 'Monte Verde Apicultura Ltda', '12345678000104', 'fzdApiariomonteverde@gmail.com', '(11)98765-0004' ),
+('Fazenda Recanto das Abelhas', 'Recanto das Abelhas Produtos Naturais Ltda', '12345678000105', 'fazendaRecantodasabelhas@gmail.com', '(11)98765-0005');
 
 -- DADOS USUARIO
-INSERT INTO Usuario(nome, cpf, email, telefone,senha, fkEmpresa, Responsavel) VALUES
-('Joao Silva', '52984176320', 'joaosilva@gmail.com', '11987651001', 'joao123', 1, 1),
-('Beatriz Lima', '63821594701', 'beatrizlima@gmail.com', '11987651002', 'bia123', 1, 0),
-('Maria Santos', '74196385204', 'mariasantos@gmail.com', '11987651003', 'maria123', 2, 1),
-('Rafael Costa', '85274196305', 'rafaelcosta@gmail.com', '11987651004', 'rafa123', 2, 0),
-('Carlos Oliveira', '96385274106', 'carlosoliveira@gmail.com', '11987651005', 'carlos123', 3, 1),
-('Juliana Rocha', '18472639507', 'julianarocha@gmail.com', '11987651006', 'julia123', 3, 0),
-('Ana Souza', '29583741608', 'anasouza@gmail.com', '11987651007', 'ana123', 4, 1),
-('Lucas Ferreira', '31694852709', 'lucasferreira@gmail.com', '11987651008', 'lucas123', 4, 0),
-('Pedro Costa', '42715963810', 'pedrocosta@gmail.com', '11987651009', 'pedro123', 5, 1),
-('Camila Alves', '53826174911', 'camilaalves@gmail.com', '11987651010', 'cami123', 5, 0);
+INSERT INTO Usuario(nome, cpf, email, telefone, senha, fkEmpresa, Responsavel) VALUES
+('Joao Silva', '529.841.763-20', 'joaosilva@gmail.com', '(11)98765-1001', 'joao123', 1, 1),
+('Beatriz Lima', '638.215.947-01', 'beatrizlima@gmail.com', '(11)98765-1002', 'bia123', 1, 0),
+('Maria Santos', '741.963.852-04', 'mariasantos@gmail.com', '(11)98765-1003', 'maria123', 2, 1),
+('Rafael Costa', '852.741.963-05', 'rafaelcosta@gmail.com', '(11)98765-1004', 'rafa123', 2, 0),
+('Carlos Oliveira', '963.852.741-06', 'carlosoliveira@gmail.com', '(11)98765-1005', 'carlos123', 3, 1),
+('Juliana Rocha', '184.726.395-07', 'julianarocha@gmail.com', '(11)98765-1006', 'julia123', 3, 0),
+('Ana Souza', '295.837.416-08', 'anasouza@gmail.com', '(11)98765-1007', 'ana123', 4, 1),
+('Lucas Ferreira', '316.948.527-09', 'lucasferreira@gmail.com', '(11)98765-1008', 'lucas123', 4, 0),
+('Pedro Costa', '427.159.638-10', 'pedrocosta@gmail.com', '(11)98765-1009', 'pedro123', 5, 1),
+('Camila Alves', '538.261.749-11', 'camilaalves@gmail.com', '(11)98765-1010', 'cami123', 5, 0);
 
 -- DADOS COLMEIA
 INSERT INTO Colmeia (codigo, localizacao, quadrante, statuss, fkEmpresa) VALUES
@@ -132,21 +132,21 @@ INSERT INTO Colmeia (codigo, localizacao, quadrante, statuss, fkEmpresa) VALUES
 
 -- DADOS SENSOR
 INSERT INTO Sensor (nome, tipoSensor, dtInstalacao, fkColmeia, fkEmpresa) VALUES
-('DHT11 Interno 01', 'Interno', '2025-06-01 08:00:00', 1, 1),
-('DHT11 Interno 02', 'Interno', '2025-06-01 08:10:00', 2, 1),
-('DHT11 Externo 01', 'Externo', '2025-06-01 08:20:00', NULL, 1),
-('DHT11 Interno 03', 'Interno', '2025-06-01 09:00:00', 3, 2),
-('DHT11 Interno 04', 'Interno', '2025-06-01 09:10:00', 4, 2),
-('DHT11 Externo 02', 'Externo', '2025-06-01 09:20:00', NULL, 2),
-('DHT11 Interno 05', 'Interno', '2025-06-01 10:00:00', 5, 3),
-('DHT11 Interno 06', 'Interno', '2025-06-01 10:10:00', 6, 3),
-('DHT11 Externo 03', 'Externo', '2025-06-01 10:20:00', NULL, 3),
-('DHT11 Interno 07', 'Interno', '2025-06-01 11:00:00', 7, 4),
-('DHT11 Interno 08', 'Interno', '2025-06-01 11:10:00', 8, 4),
-('DHT11 Externo 04', 'Externo', '2025-06-01 11:20:00', NULL, 4),
-('DHT11 Interno 09', 'Interno', '2025-06-01 12:00:00', 9, 5),
-('DHT11 Interno 10', 'Interno', '2025-06-01 12:10:00', 10, 5),
-('DHT11 Externo 05', 'Externo', '2025-06-01 12:20:00', NULL, 5);
+('DHT11 01', 'Interno', '2025-06-01 08:00:00', 1, 1),
+('DHT11 02', 'Interno', '2025-06-01 08:10:00', 2, 1),
+('DHT11 01', 'Externo', '2025-06-01 08:20:00', NULL, 1),
+('DHT11 03', 'Interno', '2025-06-01 09:00:00', 3, 2),
+('DHT11 04', 'Interno', '2025-06-01 09:10:00', 4, 2),
+('DHT11 02', 'Externo', '2025-06-01 09:20:00', NULL, 2),
+('DHT11 05', 'Interno', '2025-06-01 10:00:00', 5, 3),
+('DHT11 06', 'Interno', '2025-06-01 10:10:00', 6, 3),
+('DHT11 03', 'Externo', '2025-06-01 10:20:00', NULL, 3),
+('DHT11 07', 'Interno', '2025-06-01 11:00:00', 7, 4),
+('DHT11 08', 'Interno', '2025-06-01 11:10:00', 8, 4),
+('DHT11 04', 'Externo', '2025-06-01 11:20:00', NULL, 4),
+('DHT11 09', 'Interno', '2025-06-01 12:00:00', 9, 5),
+('DHT11 10', 'Interno', '2025-06-01 12:10:00', 10, 5),
+('DHT11 05', 'Externo', '2025-06-01 12:20:00', NULL, 5);
 
 -- DADOS ENDEREÇO
 INSERT INTO Endereco (cep, numero, complemento, logradouro, bairro, cidade, estado, dt_ultima_atualizacao, fkEnderecoEmpresa) VALUES
@@ -164,4 +164,73 @@ SELECT * FROM Usuario;
 SELECT * FROM Colmeia;
 SELECT * FROM Sensor;
 
+-- 1. Exiba o nome dos usuários em ordem alfabética.
+SELECT nome AS Nome_Usuario
+FROM Usuario
+ORDER BY nome ASC;
 
+-- 2. Liste as colmeias inativas.
+SELECT codigo, localizacao
+FROM Colmeia
+WHERE statuss = 0;
+
+-- 3. Exiba os tipos de sensores cadastrados, sem repetir.
+SELECT DISTINCT tipoSensor
+FROM Sensor;
+
+-- 4. Exiba o nome de cada usuário e o nome da fazenda à qual pertence.
+SELECT Usuario.nome AS Usuario,
+       Empresa.nome_fantasia AS Fazenda
+FROM Usuario
+JOIN Empresa
+    ON Usuario.fkEmpresa = Empresa.idEmpresa;
+
+-- 5. Exiba todas as fazendas e seus endereços,
+-- incluindo as fazendas sem endereço.
+SELECT Empresa.nome_fantasia AS Fazenda,
+       Endereco.logradouro,
+       Endereco.cidade,
+       Endereco.estado
+FROM Empresa
+LEFT JOIN Endereco
+    ON Empresa.idEmpresa = Endereco.fkEnderecoEmpresa;
+
+-- 6. Liste as colmeias inativas e o nome da fazenda à qual pertencem.
+SELECT Colmeia.codigo,
+       Empresa.nome_fantasia AS Fazenda
+FROM Colmeia
+JOIN Empresa
+    ON Colmeia.fkEmpresa = Empresa.idEmpresa
+WHERE Colmeia.statuss = 0;
+
+-- 7. Exiba o código e a localização de cada colmeia em uma única coluna.
+SELECT CONCAT(codigo, ' - ', localizacao) AS identificacao
+FROM Colmeia;
+
+-- 8. Exiba o código de cada colmeia e sua situação: ativa ou inativa.
+SELECT codigo,
+       CASE
+           WHEN statuss = 1 THEN 'Ativa'
+           ELSE 'Inativa'
+       END AS situacao
+FROM Colmeia;
+
+-- 9. Conte quantas colmeias cada fazenda possui,
+-- incluindo as fazendas sem colmeias.
+SELECT Empresa.nome_fantasia AS Fazenda,
+       COUNT(Colmeia.idColmeia) AS Quantidade_Colmeias
+FROM Empresa
+LEFT JOIN Colmeia
+    ON Empresa.idEmpresa = Colmeia.fkEmpresa
+GROUP BY Empresa.idEmpresa, Empresa.nome_fantasia;
+
+-- 10. Exiba a fazenda, o código da colmeia e os sensores internos associados.
+SELECT Empresa.nome_fantasia AS Fazenda,
+       Colmeia.codigo AS Colmeia,
+       Sensor.nome AS Sensor
+FROM Empresa
+JOIN Colmeia
+    ON Empresa.idEmpresa = Colmeia.fkEmpresa
+JOIN Sensor
+    ON Colmeia.idColmeia = Sensor.fkColmeia
+WHERE Sensor.tipoSensor = 'Interno';

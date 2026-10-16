@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetria | Entrar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <a href="landing_page.html"
+              ><img src="src/logo-icon.svg" alt="Logo Tetria" class="nav-img"
+            /></a>
+          </div>
+          <ul class="nav-links">
+            <a href="landing_page.html">Início</a>
+            <a href="sobre.html">Sobre</a>
+            <a href="calculadora.html">Calculadora</a>
+            <a href="contato.html">Contato</a>
+            <a class="btn btn-login" href="login.html">Login</a>
+          </ul>
+        </div>
+      </nav>
+
+    <main class="portal">
+
+        <section class="boas-vindas">
+            <span class="selo">Monitoramento de colmeias</span>
+            <h1>Que bom ter você de volta</h1>
+            <p>Entre para ver como estão suas colmeias agora e quais delas pedem atenção.</p>
+        </section>
+
+        <form class="ficha">
+            <h2>Entrar na conta</h2>
+            <p class="ficha-intro">Use o e-mail e a senha que você cadastrou.</p>
+
+            <div class="input-box">
+                <label for="ipt_email">E-mail</label>
+                <input type="email" id="ipt_email" placeholder="voce@exemplo.com" autocomplete="email">
+                <span id="erro_email" class="erro"></span>
+            </div>
+
+            <div class="input-box">
+                <label for="ipt_senha">Senha</label>
+                <input type="password" id="ipt_senha">
+                <span id="erro_senha" class="erro"></span>
+            </div>
+
+            <button type="button" class="botao_login" onclick="login()">Entrar</button>
+
+            <p class="ja-membro">
+                Ainda não tem conta?
+                <a href="cadastro.html">Criar conta</a>
+            </p>
+        </form>
+    </main>
+
+    <script>
+        function login() {}
+    </script>
+
+</body>
+</html>
