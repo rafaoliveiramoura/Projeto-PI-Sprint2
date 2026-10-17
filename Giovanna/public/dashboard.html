@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard de monitoramento</title>
+
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="(NOME DAS FONTES QUE EU USAR E TAMANHOS REQUISITADOS)"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <button class="botao_menu" aria-label="Menu">☰</button>
+      <a href="(HOME PAGE)">
+        <img
+          src="Gabriela\Dashboard\Src\SRC\tetria-logo-transparente.png"
+          alt="logo"
+        />
+      </a>
+
+      <a href="(Tela da conta)">
+        <img src="(IMAGEM DO FRIZZA)" alt="usuario" />
+      </a>
+    </header>
+
+    <main>
+      <section>
+        <article class="Card_de_KPI">
+          <div class="icone_da_KPI">
+            <img
+              src="(ICONE 1- Colmeias)"
+              alt="Icone total de colmeias"
+              width="50px"
+            />
+          </div>
+
+          <div class="informacao_KPI">
+            <p>Total de colmeias:</p>
+            <h2>10</h2>
+            <p>colmeias monitoradas</p>
+          </div>
+        </article>
+
+        <article class="Card_de_KPI">
+          <div class="icone_da_KPI">
+            <img
+              src="(ICONE 2 - Alerta)"
+              alt="Alerta de colmeias"
+              width="50px"
+            />
+          </div>
+
+          <div class="informacao_KPI">
+            <p>Colmeias críticas:</p>
+            <h2>3</h2>
+            <p>Colmeias em estado de risco</p>
+          </div>
+        </article>
+
+        <article class="Card_de_KPI">
+          <div class="icone_da_KPI">
+            <img
+              src="(ICONE 3- Diferença)"
+              alt="Icone da diferença interna e externa"
+              width="50px"
+            />
+          </div>
+
+          <div class="informacao_KPI">
+            <p>Diferença entre temperaturas:</p>
+            <h2>+ 6 °C</h2>
+            <p>Comparação entre externo e interno</p>
+          </div>
+        </article>
+      </section>
+
+      <section>
+        <article>
+          <div>
+            <h2>Filtrar por situação:</h2>
+            <select id="select_status" onchange="filtrar()">
+              <option value="todas">Todas as situações</option>
+              <option value="Ideal">Ideal</option>
+              <option value="Atenção">Atenção</option>
+              <option value="Risco">Risco</option>
+            </select>
+          </div>
+
+          <div>
+            <h2>Selecione a colmeia:</h2>
+            <select id="select_colmeia">
+              <option selected disabled>Escolha uma colmeia</option>
+              <option value="00">Todas as colmeias</option>
+            </select>
+          </div>
+
+          <button class="botão_selecionar" onclick="visualizar()">
+            Ver detalhes
+          </button>
+        </article>
+      </section>
+
+      <div id="visao_geral">
+        <section class="charts-container">
+          <article class="chart-card">
+            <canvas id="graficoStatusColmeia"></canvas>
+          </article>
+        </section>
+      </div>
+
+      <div id="visao_individual" class="oculto">
+        <h2 id="titulo_individual"></h2>
+        <p id="status_individual"></p>
+        <p id="mensagem_individual"></p>
+
+        <section class="charts-container">
+          <article class="chart-card">
+            <canvas id="graficoTemperatura"></canvas>
+          </article>
+          <article class="chart-card">
+            <canvas id="graficoUmidade"></canvas>
+          </article>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const ctxColmeias = document.getElementById("graficoStatusColmeia");
+      const GraficoStatusColmeia = new Chart(ctxColmeias, {
+        type: "bar",
+        data: {
+          labels: ["Ideal", "Em atenção", "Em risco"],
+          datasets: [
+            {
+              label: "Situação atual das colmeias",
+              data: [5, 2, 3],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: { beginAtZero: true },
+          },
+        },
+      });
+
+      const ctxTemperatura = document.getElementById("graficoTemperatura");
+      const GraficoTemperatura = new Chart(ctxTemperatura, {
+        type: "line",
+        data: {
+          labels: [
+            "08:00:00",
+            "08:00:02",
+            "08:00:04",
+            "08:00:06",
+            "08:00:08",
+            "08:00:10",
+          ],
+          datasets: [
+            {
+              label: "Dentro da colmeia",
+              data: [0, 0, 0, 0, 0, 0],
+              borderWidth: 1,
+            },
+            {
+              label: "Ambiente externo",
+              data: [0, 0, 0, 0, 0, 0],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: "Temperatura ao longo do tempo (°C)",
+            },
+          },
+          scales: {
+            y: { beginAtZero: false },
+          },
+        },
+      });
+
+      const ctxUmidade = document.getElementById("graficoUmidade");
+      const GraficoUmidade = new Chart(ctxUmidade, {
+        type: "line",
+        data: {
+          labels: [
+            "08:00:00",
+            "08:00:02",
+            "08:00:04",
+            "08:00:06",
+            "08:00:08",
+            "08:00:10",
+          ],
+          datasets: [
+            {
+              label: "Dentro da colmeia",
+              data: [0, 0, 0, 0, 0, 0],
+              borderWidth: 1,
+            },
+            {
+              label: "Ambiente externo",
+              data: [0, 0, 0, 0, 0, 0],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: "Umidade ao longo do tempo (%)",
+            },
+          },
+          scales: {
+            y: { beginAtZero: false },
+          },
+        },
+      });
+
+      // adiciona um status a cada colmeia
+      let status01 = "Ideal";
+      let status02 = "Risco";
+      let status03 = "Atenção";
+      let status04 = "Risco";
+      let status05 = "Ideal";
+      let status06 = "Atenção";
+      let status07 = "Ideal";
+      let status08 = "Risco";
+      let status09 = "Ideal";
+      let status10 = "Ideal";
+
+      function filtrar() {
+        let filtro = select_status.value;
+
+        select_colmeia.innerHTML =
+          '<option value="00">Todas as colmeias</option>';
+
+        // se a pessoa escolher todas - todas as colmeias são adicionadas +=
+        // se o statusx === ao filtro que a pessoa selecionou, apenas essas colmeias serão adicionadas
+
+        if (filtro === "todas" || status01 === filtro) {
+          situacao = status01;
+          select_colmeia.innerHTML += '<option value="01">Colmeia 01</option>';
+        }
+
+        if (filtro === "todas" || status02 === filtro) {
+          situacao = status02;
+          select_colmeia.innerHTML += '<option value="02">Colmeia 02</option>';
+        }
+
+        if (filtro === "todas" || status03 === filtro) {
+          situacao = status03;
+          select_colmeia.innerHTML += '<option value="03">Colmeia 03</option>';
+        }
+
+        if (filtro === "todas" || status04 === filtro) {
+          situacao = status04;
+          select_colmeia.innerHTML += '<option value="04">Colmeia 04</option>';
+        }
+
+        if (filtro === "todas" || status05 === filtro) {
+          situacao = status05;
+          select_colmeia.innerHTML += '<option value="05">Colmeia 05</option>';
+        }
+
+        if (filtro === "todas" || status06 === filtro) {
+          situacao = status06;
+          select_colmeia.innerHTML += '<option value="06">Colmeia 06</option>';
+        }
+
+        if (filtro === "todas" || status07 === filtro) {
+          situacao = status07;
+          select_colmeia.innerHTML += '<option value="07">Colmeia 07</option>';
+        }
+
+        if (filtro === "todas" || status08 === filtro) {
+          situacao = status08;
+          select_colmeia.innerHTML += '<option value="08">Colmeia 08</option>';
+        }
+
+        if (filtro === "todas" || status09 === filtro) {
+          situacao = status09;
+          select_colmeia.innerHTML += '<option value="09">Colmeia 09</option>';
+        }
+
+        if (filtro === "todas" || status10 === filtro) {
+          situacao = status10;
+          select_colmeia.innerHTML += '<option value="10">Colmeia 10</option>';
+        }
+      }
+
+      filtrar();
+
+      function visualizar() {
+        let selecao = select_colmeia.value;
+        let situacao = "";
+
+        let dadosTempInterna = [0, 0, 0, 0, 0, 0];
+        let dadosTempExterna = [0, 0, 0, 0, 0, 0];
+        let dadosUmidInterna = [0, 0, 0, 0, 0, 0];
+        let dadosUmidExterna = [0, 0, 0, 0, 0, 0];
+
+        if (selecao === "00") {
+          visao_geral.classList.remove("oculto");
+          visao_individual.classList.add("oculto");
+        } else {
+          visao_geral.classList.add("oculto");
+          visao_individual.classList.remove("oculto");
+          titulo_individual.innerText = "Colmeia " + selecao;
+        }
+
+        if (selecao === "01") {
+          dadosTempInterna = [34.8, 34.9, 35.0, 35.1, 35.0, 34.9];
+          dadosTempExterna = [33.9, 34.0, 34.2, 34.1, 34.0, 34.3];
+          dadosUmidInterna = [60, 61, 61, 62, 62, 63];
+          dadosUmidExterna = [58, 59, 59, 60, 60, 61];
+        } else if (selecao === "02") {
+          dadosTempInterna = [38.2, 38.4, 38.6, 38.5, 38.7, 38.9];
+          dadosTempExterna = [35.1, 35.3, 35.2, 35.4, 35.3, 35.5];
+          dadosUmidInterna = [68, 69, 69, 70, 70, 71];
+          dadosUmidExterna = [62, 63, 63, 64, 64, 65];
+        } else if (selecao === "03") {
+          dadosTempInterna = [36.4, 36.6, 36.8, 36.7, 36.5, 36.9];
+          dadosTempExterna = [34.8, 35.0, 35.1, 35.0, 34.9, 35.2];
+          dadosUmidInterna = [60, 60, 61, 61, 62, 62];
+          dadosUmidExterna = [57, 58, 58, 59, 59, 60];
+        } else if (selecao === "04") {
+          dadosTempInterna = [31.2, 31.0, 30.9, 31.3, 31.1, 31.4];
+          dadosTempExterna = [29.5, 29.6, 29.8, 29.7, 29.6, 29.9];
+          dadosUmidInterna = [52, 53, 53, 54, 54, 55];
+          dadosUmidExterna = [55, 56, 56, 57, 57, 58];
+        } else if (selecao === "05") {
+          dadosTempInterna = [33.6, 33.8, 33.7, 33.9, 34.0, 34.1];
+          dadosTempExterna = [32.8, 32.9, 33.0, 33.1, 33.0, 33.2];
+          dadosUmidInterna = [55, 56, 56, 57, 57, 58];
+          dadosUmidExterna = [53, 54, 54, 55, 55, 56];
+        } else if (selecao === "06") {
+          dadosTempInterna = [34.6, 34.8, 34.7, 34.9, 34.8, 34.7];
+          dadosTempExterna = [33.5, 33.6, 33.8, 33.7, 33.6, 33.9];
+          dadosUmidInterna = [76, 77, 77, 78, 78, 79];
+          dadosUmidExterna = [72, 73, 73, 74, 74, 75];
+        } else if (selecao === "07") {
+          dadosTempInterna = [35.4, 35.5, 35.6, 35.8, 35.7, 35.6];
+          dadosTempExterna = [34.4, 34.5, 34.7, 34.6, 34.5, 34.8];
+          dadosUmidInterna = [66, 67, 67, 68, 68, 69];
+          dadosUmidExterna = [63, 64, 64, 65, 65, 66];
+        } else if (selecao === "08") {
+          dadosTempInterna = [38.4, 38.6, 38.8, 38.7, 39.0, 38.9];
+          dadosTempExterna = [35.6, 35.8, 35.9, 35.7, 35.8, 36.0];
+          dadosUmidInterna = [76, 77, 77, 78, 78, 78];
+          dadosUmidExterna = [70, 71, 71, 72, 72, 73];
+        } else if (selecao === "09") {
+          dadosTempInterna = [34.0, 34.1, 34.2, 34.1, 34.3, 34.2];
+          dadosTempExterna = [33.0, 33.1, 33.2, 33.1, 33.3, 33.2];
+          dadosUmidInterna = [51, 52, 52, 53, 53, 54];
+          dadosUmidExterna = [50, 51, 51, 52, 52, 53];
+        } else if (selecao === "10") {
+          dadosTempInterna = [35.0, 35.1, 35.2, 35.4, 35.3, 35.5];
+          dadosTempExterna = [34.0, 34.1, 34.3, 34.2, 34.1, 34.4];
+          dadosUmidInterna = [70, 71, 71, 72, 72, 73];
+          dadosUmidExterna = [66, 67, 67, 68, 68, 69];
+        }
+
+        //Atualiza os dados das variáveis do Chart.js e manda redesenhar a tela (.update())
+        GraficoTemperatura.data.datasets[0].data = dadosTempInterna;
+        GraficoTemperatura.data.datasets[1].data = dadosTempExterna;
+        GraficoTemperatura.update();
+
+        GraficoUmidade.data.datasets[0].data = dadosUmidInterna;
+        GraficoUmidade.data.datasets[1].data = dadosUmidExterna;
+        GraficoUmidade.update();
+
+        if (situacao === "Ideal") {
+          status_individual.innerText = "Situação atual: Ideal";
+          mensagem_individual.innerText = "Temperatura e umidade dentro do esperado.";
+
+        } else if (situacao === "Atenção") {
+          status_individual.innerText = "Situação atual: Em atenção";
+          mensagem_individual.innerText = "Alguns valores estão fora do ideal. Recomendamos acompanhar de perto.";
+
+        } else if (situacao === "Risco") {
+          status_individual.innerText = "Situação atual: Em risco";
+          mensagem_individual.innerText = "Valores fora do limite seguro. Recomendamos verificar a colmeia o quanto antes.";
+        }
+      }
+    </script>
+  </body>
+</html>
