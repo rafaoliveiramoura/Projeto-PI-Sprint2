@@ -29,55 +29,70 @@
     </header>
 
     <main>
-      <section>
-        <article class="Card_de_KPI">
-          <div class="icone_da_KPI">
-            <img
-              src="(ICONE 1- Colmeias)"
-              alt="Icone total de colmeias"
-              width="50px"
-            />
-          </div>
+     <section class="grupo_kpi">
+  <h3 class="titulo_grupo">Situação atual</h3>
+  <div class="cards_do_grupo">
+    <article class="Card_de_KPI">
+      <div class="icone_da_KPI">
+        <img src="(ICONE 1 - Alerta)" alt="Colmeias que precisam de ação" width="50px" />
+      </div>
+      <div class="informacao_KPI">
+        <p>Precisam de ação:</p>
+        <h2>5 de 10</h2>
+        <p>3 em risco · 2 em atenção</p>
+      </div>
+    </article>
 
-          <div class="informacao_KPI">
-            <p>Total de colmeias:</p>
-            <h2>10</h2>
-            <p>colmeias monitoradas</p>
-          </div>
-        </article>
+    <article class="Card_de_KPI">
+      <div class="icone_da_KPI">
+        <img src="(ICONE 2 - Temperatura e umidade)" alt="Temperatura e umidade internas" width="50px" />
+      </div>
+      <div class="informacao_KPI">
+        <p>Dentro da faixa ideal:</p>
+        <h2>6 de 10 · 8 de 10</h2>
+        <p>temperatura · umidade</p>
+      </div>
+    </article>
 
-        <article class="Card_de_KPI">
-          <div class="icone_da_KPI">
-            <img
-              src="(ICONE 2 - Alerta)"
-              alt="Alerta de colmeias"
-              width="50px"
-            />
-          </div>
+    <article class="Card_de_KPI">
+      <div class="icone_da_KPI">
+        <img src="(ICONE 3 - Diferença)" alt="Diferença entre interna e externa" width="50px" />
+      </div>
+      <div class="informacao_KPI">
+        <p>Diferença interna − externa:</p>
+        <h2>6 de 10 com + 1 °C ou mais</h2>
+        <p>4 abaixo de 1 °C</p>
+      </div>
+    </article>
 
-          <div class="informacao_KPI">
-            <p>Colmeias críticas:</p>
-            <h2>3</h2>
-            <p>Colmeias em estado de risco</p>
-          </div>
-        </article>
+    <article class="Card_de_KPI">
+      <div class="icone_da_KPI">
+        <img src="(ICONE 4 - Relógio)" alt="Tempo fora da faixa" width="50px" />
+      </div>
+      <div class="informacao_KPI">
+        <p>Fora da faixa ideal:</p>
+        <h2>5 colmeias</h2>
+        <p>4 há mais de 1 h · 1 há menos de 1 h</p>
+      </div>
+    </article>
+  </div>
+</section>
 
-        <article class="Card_de_KPI">
-          <div class="icone_da_KPI">
-            <img
-              src="(ICONE 3- Diferença)"
-              alt="Icone da diferença interna e externa"
-              width="50px"
-            />
-          </div>
-
-          <div class="informacao_KPI">
-            <p>Diferença entre temperaturas:</p>
-            <h2>+ 6 °C</h2>
-            <p>Comparação entre externo e interno</p>
-          </div>
-        </article>
-      </section>
+<section class="grupo_kpi">
+  <h3 class="titulo_grupo">Confiabilidade dos dados</h3>
+  <div class="cards_do_grupo">
+    <article class="Card_de_KPI">
+      <div class="icone_da_KPI">
+        <img src="(ICONE 5 - Sensor)" alt="Sensores enviando dados" width="50px" />
+      </div>
+      <div class="informacao_KPI">
+        <p>Sensores enviando dados:</p>
+        <h2>10 de 10</h2>
+        <p>última leitura há 2 s · sem sinal após 3 min</p>
+      </div>
+    </article>
+  </div>
+</section>
 
       <section>
         <article>
@@ -381,15 +396,16 @@
 
         if (situacao === "Ideal") {
           status_individual.innerText = "Situação atual: Ideal";
-          mensagem_individual.innerText = "Temperatura e umidade dentro do esperado.";
-
+          mensagem_individual.innerText =
+            "Temperatura e umidade dentro do esperado.";
         } else if (situacao === "Atenção") {
           status_individual.innerText = "Situação atual: Em atenção";
-          mensagem_individual.innerText = "Alguns valores estão fora do ideal. Recomendamos acompanhar de perto.";
-
+          mensagem_individual.innerText =
+            "Alguns valores estão fora do ideal. Recomendamos acompanhar de perto.";
         } else if (situacao === "Risco") {
           status_individual.innerText = "Situação atual: Em risco";
-          mensagem_individual.innerText = "Valores fora do limite seguro. Recomendamos verificar a colmeia o quanto antes.";
+          mensagem_individual.innerText =
+            "Valores fora do limite seguro. Recomendamos verificar a colmeia o quanto antes.";
         }
       }
     </script>
