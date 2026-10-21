@@ -1,3 +1,25 @@
+:root {
+    /* Paleta Natureza Tecnológica - Migrada para OKLCH para maior vibração e controle */
+    --primary-honey: oklch(85% 0.18 85);       /* Amarelo Açafrão Vibrante */
+    --secondary-honey: oklch(75% 0.15 80);     /* Amarelo Mel Profundo */
+    --slate-deep: oklch(35% 0.05 250);          /* Azul Ardósia Profundo: Confiança e Tecnologia */
+    --bg-pearl: oklch(98% 0.01 85);            /* Branco Pérola Sutil (Não mais branco puro) */
+    --white-natural: oklch(100% 0 0);       /* Branco puro para contrastes específicos */
+    --sage-green: oklch(75% 0.08 160);          /* Verde Sálvia Moderno */
+
+    /* Cores Semânticas Financeiras */
+    --success-green: oklch(60% 0.12 150);
+    --error-red: oklch(60% 0.15 25);
+
+    /* Tokens de Design */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --shadow-soft: 0 10px 25px oklch(0% 0 0 / 0.05);
+    --shadow-strong: 0 15px 35px oklch(0% 0 0 / 0.12);
+    --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
 /* CONFIGURAÇÕES GERAIS */
 * {
     box-sizing: border-box;
@@ -7,115 +29,121 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #221E19;
+    background-color: var(--bg-pearl);
     width: 100%;
     min-height: 100vh;
-    color: #221E19;
+    color: var(--slate-deep);
+    line-height: 1.6;
+    overflow-x: hidden;
+    text-wrap: pretty; /* Modern CSS: Evita órfãos em parágrafos */
 }
 
 /* ÁREA PRINCIPAL */
 .mainbody {
-    background-color: #221E19;
-    min-height: calc(100vh - 160px); /* Ajuste para não sobrepor o header */
-    padding-bottom: 50px;
+    background-color: var(--bg-pearl);
+    min-height: calc(100vh - 160px);
+    padding: 40px 0 80px;
 }
 
-/* HEADER */
-.mainheader {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-/* NAVBAR (MENU DE NAVEGACAO) */
+/* NAVBAR */
 .navbar {
-    background-color: #F5F0E6;
-    padding: 10px 0;
+    background-color: var(--white-natural);
+    padding: 12px 0;
     width: 100%;
-    border-bottom: none;
+    border-bottom: 1px solid color-mix(in oklab, var(--slate-deep), transparent 90%);
+    box-shadow: 0 2px 10px oklch(0% 0 0 / 0.02);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .nav-container {
-    max-width: 100%;
-    margin: 0;
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 30px;
 }
 
-.nav-logo .nav-img {
-    width: 80px;
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+.nav-logo .nav-img, .nav-brand .nav-img {
+    width: 40px;
+    height: auto;
     display: block;
+    transition: var(--transition-smooth);
+}
+
+.nav-brand .brand-name {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--slate-deep);
+    letter-spacing: 1px;
 }
 
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 25px;
+    gap: 15px;
+    align-items: center;
 }
 
 .nav-links a {
     text-decoration: none;
-    color: #221E19;
+    color: var(--slate-deep);
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
     font-weight: 600;
-    transition: color 0.3s ease;
+    transition: var(--transition-smooth);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
 }
 
 .nav-links a:hover {
-    color: #FFCB05;
+    color: var(--primary-honey);
+    background-color: color-mix(in oklab, var(--primary-honey), transparent 90%);
 }
-
 
 /* HEADER */
 .header {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #F5F0E6;
-    background-image: radial-gradient(#FFCB05 0.5px, transparent 0.5px);
+    background-color: var(--white-natural);
+    background-image: radial-gradient(var(--primary-honey) 0.5px, transparent 0.5px);
     background-size: 20px 20px;
-    padding: 30px 50px;
+    padding: 40px 20px;
     width: 100%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-bottom: none;
-    border-radius: 0;
+    box-shadow: 0 2px 10px oklch(0% 0 0 / 0.05);
     gap: 20px;
-}
-
-
-.header-content {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.header .img {
-    width: 80px;
-    margin-bottom: 0;
-}
-
-.header-text {
     text-align: center;
 }
 
 .header h1 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 800;
-    color: #221E19;
-    font-size: 28px;
-    letter-spacing: 1px;
-    margin-bottom: 0;
+    color: var(--slate-deep);
+    /* Tipografia Fluida e Equilibrada */
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    text-wrap: balance;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
 }
 
 .header p {
     margin-top: 0;
-    color: #6B6257;
-    font-size: 14px;
+    color: var(--secondary-honey);
+    font-size: clamp(0.875rem, 2vw, 1rem);
+    font-weight: 500;
+    text-wrap: balance;
 }
-
 
 /* CONTAINER DAS CALCULADORAS */
 .container-calculadoras {
@@ -125,39 +153,40 @@ body {
     gap: 30px;
     flex-wrap: wrap;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 40px auto;
     padding: 0 20px;
 }
 
-/* CALCULADORA (CARD) */
+/* CALCULADORA (CARD PROFISSIONAL) */
 .calculo {
     width: 100%;
     max-width: 420px;
     padding: 30px;
-    background-color: #FFCB05; /* Voltando para o amarelo original */
-    border-radius: 20px;
-    border: none; /* Removendo a borda superior para manter o estilo original */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    background-color: var(--white-natural);
+    border-radius: var(--radius-lg);
+    border: 1px solid color-mix(in oklab, var(--secondary-honey), transparent 70%);
+    box-shadow: var(--shadow-soft);
     display: flex;
     flex-direction: column;
     gap: 5px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: var(--transition-smooth);
 }
 
 .calculo:hover {
-    box-shadow: 0 15px 35px rgba(34, 30, 25, 0.2);
+    box-shadow: var(--shadow-strong);
     transform: translateY(-5px);
+    border-color: var(--secondary-honey);
 }
 
-/* TÍTULO DA CALCULADORA */
 .calculo h2 {
     font-family: 'Montserrat', sans-serif;
     font-size: 20px;
     font-weight: 800;
-    color: #221E19;
+    color: var(--slate-deep);
     margin-bottom: 20px;
     text-align: center;
+    text-wrap: balance;
 }
 
 /* CAMPOS */
@@ -173,63 +202,31 @@ body {
 .calculo .campo label {
     flex: 1;
     font-family: 'Poppins', sans-serif;
-    color: #221E19;
+    color: var(--slate-deep);
     font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
 }
 
-/* INPUT */
 .calculo .campo input {
-    flex: 0 0 110px; /* Largura flexível porém controlada */
+    flex: 0 0 110px;
     height: 40px;
     padding: 5px 10px;
-    background-color: #FFFFFF;
+    background-color: var(--white-natural);
     border: 1px solid #D5D5D5;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     font-size: 14px;
     font-family: 'Poppins', sans-serif;
-    color: #221E19;
+    color: var(--slate-deep);
     outline: none;
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: all 0.2s ease;
+    transition: var(--transition-smooth);
 }
 
 .calculo .campo input:focus {
-    border: 1px solid #221E19;
-    box-shadow: 0 0 0 3px rgba(34, 30, 25, 0.1);
+    border: 1px solid var(--primary-honey);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary-honey), transparent 80%);
     transform: scale(1.02);
-}
-
-/* TEXTO DE PERDA */
-.campo-perda {
-    flex-wrap: wrap;
-}
-
-.campo-perda span {
-    width: 100%;
-    font-size: 11px;
-    font-style: italic;
-    color: #514A41;
-    margin-top: -8px;
-}
-
-/* ERROS E VALIDAÇÕES */
-.input-error {
-    border: 1px solid #d9534f !important;
-    box-shadow: 0 0 0 3px rgba(217, 83, 79, 0.1) !important;
-}
-
-.error-message {
-    color: #d9534f;
-    font-size: 11px;
-    font-weight: 600;
-    margin-top: -10px;
-    margin-bottom: 10px;
-    display: block;
-    text-align: right;
-    font-family: 'Poppins', sans-serif;
 }
 
 /* BOTÕES DE AÇÃO */
@@ -241,76 +238,62 @@ body {
 }
 
 .btn-clear {
-    border: 2px solid #D5D5D5;
+    border: 1px solid var(--secondary-honey);
     width: 100%;
     max-width: 120px;
     height: 48px;
-    border-radius: 12px;
-    background-color: #FFFFFF;
-    color: #6B6257;
+    border-radius: var(--radius-md);
+    background-color: var(--white-natural);
+    color: var(--slate-deep);
     font-family: 'Montserrat', sans-serif;
     font-weight: 800;
     font-size: 14px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: var(--transition-smooth);
 }
 
 .btn-clear:hover {
-    background-color: #f8f8f8;
-    border-color: #221E19;
-    color: #221E19;
+    background-color: var(--bg-pearl);
+    color: var(--secondary-honey);
 }
 
 .btn-group button {
-    border: 2px solid #221E19;
+    border: none;
     width: 100%;
     max-width: 250px;
     height: 48px;
-    border-radius: 12px;
-    background-color: #221E19;
-    color: #FFCB05;
+    border-radius: var(--radius-md);
+    background-color: var(--primary-honey);
+    color: var(--slate-deep);
     font-family: 'Montserrat', sans-serif;
     font-weight: 800;
     font-size: 16px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 10px color-mix(in oklab, var(--primary-honey), transparent 60%);
 }
 
 .btn-group button:hover {
-    background-color: #FFFFFF;
-    color: #221E19;
+    background-color: var(--secondary-honey);
+    color: var(--white-natural);
     transform: translateY(-2px);
+    box-shadow: 0 6px 15px color-mix(in oklab, var(--secondary-honey), transparent 50%);
 }
 
-.btn-group button:active {
-    transform: scale(0.97);
-}
-
-
-/* ÁREA DO RESULTADO */
+/* RESULTADOS */
 .mensagem {
-    background-color: #FFF9E6;
-    border-radius: 12px;
-    border-left: 6px solid #221E19;
+    background-color: var(--white-natural);
+    border-radius: var(--radius-md);
+    border-left: 6px solid var(--sage-green);
     padding: 20px;
     margin-top: 20px;
     width: 100%;
     min-height: 80px;
     font-family: 'Poppins', sans-serif;
-    color: #221E19;
+    color: var(--slate-deep);
     text-align: center;
     animation: fadeIn 0.5s ease-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    box-shadow: var(--shadow-soft);
 }
 
 .mensagem h3 {
@@ -318,67 +301,74 @@ body {
     font-size: 14px;
     font-weight: 800;
     margin-bottom: 12px;
-    letter-spacing: 1px;
-    color: #6B6257;
-}
-
-.mensagem p {
-    margin: 8px 0;
-    font-size: 14px;
-    line-height: 1.5;
+    color: var(--secondary-honey);
 }
 
 .mensagem strong {
     font-family: 'Montserrat', sans-serif;
     font-weight: 800;
-    color: #221E19;
+    color: var(--slate-deep);
 }
 
-/* RESPONSIVIDADE */
-@media (max-width: 700px) {
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVIDADE MODERNA (Sintaxe de Range) */
+@media (width <= 992px) {
+    .header {
+        padding: 30px 20px;
+        flex-direction: column;
+    }
+}
+
+@media (width <= 768px) {
     .container-calculadoras {
         flex-direction: column;
         align-items: center;
+        gap: 30px;
     }
-
     .calculo {
-        max-width: 450px;
+        max-width: 95%;
+    }
+    .nav-links {
+        gap: 5px;
     }
 }
 
-@media (max-width: 450px) {
-    .header h1 {
-        font-size: 24px;
+@media (width <= 480px) {
+    .header h1 { font-size: 20px; }
+    .header p { font-size: 13px; }
+
+    .nav-container {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
     }
 
-    .header p {
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .nav-links a {
         font-size: 12px;
+        padding: 5px 8px;
     }
 
     .calculo {
-        padding: 20px 15px;
-    }
-
-    .calculo h2 {
-        font-size: 18px;
+        padding: 20px;
     }
 
     .calculo .campo {
         flex-direction: column;
         align-items: flex-start;
-        gap: 5px;
-    }
-
-    .calculo .campo label {
-        font-size: 13px;
+        gap: 8px;
     }
 
     .calculo .campo input {
         width: 100%;
-        flex: none;
-    }
-
-    .btn button {
-        max-width: 100%;
     }
 }
