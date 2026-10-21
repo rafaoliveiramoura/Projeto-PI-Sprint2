@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <!-- Acentos e caracteres especiais -->
+    <meta charset="UTF-8" />
+    <!-- Faz a página se ajustar à tela do celular -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tetria | Criar conta</title>
+    <!-- Fontes do Google: Instrument Serif (títulos) e Instrument Sans (textos) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@400;500;600&display=swap"
+    />
+    <!-- CSS desta página (já traz o menu, o rodapé e tudo que é comum) -->
+    <link rel="stylesheet" href="css/cadastro.css" />
+  </head>
+  <body>
+  
+
+    <!-- A página tem dois lados: apresentação (esquerda) e formulário (direita) -->
+    <main class="portal">
+      <!-- 1. APRESENTAÇÃO: foto da abelha com o texto por cima -->
+      <section class="boas-vindas">
+        <span class="selo">Monitoramento de colmeias</span>
+        <h1>Suas colmeias, sempre por perto</h1>
+        <p>
+          Temperatura e umidade em tempo real, com alerta quando algo sai do
+          ideal.
+        </p>
+      </section>
+
+      <!-- 2. FORMULÁRIO -->
+      <form class="ficha">
+        <h2>Crie sua conta</h2>
+        <p class="ficha-intro">
+          Leva menos de um minuto. Depois é só cadastrar suas colmeias e
+          acompanhar tudo pelo painel.
+        </p>
+
+        <!-- Cada .input-box tem: rótulo, campo e espaço para o erro -->
+        <div class="linha-dupla">
+          <div class="input-box">
+            <label for="ipt_nomeUser">Nome completo</label>
+            <input
+              type="text"
+              id="ipt_nomeUser"
+              placeholder="Ex.: Maria da Silva"
+              autocomplete="name"
+            />
+            <span id="erro_nome" class="erro"></span>
+          </div>
+
+          <div class="input-box">
+            <label for="ipt_email">E-mail</label>
+            <input
+              type="email"
+              id="ipt_email"
+              placeholder="voce@exemplo.com"
+              autocomplete="email"
+            />
+            <span id="erro_email" class="erro"></span>
+          </div>
+        </div>
+
+        <div class="linha-dupla">
+          <div class="input-box">
+            <label for="ipt_cpf">CPF</label>
+            <input type="text" id="ipt_cpf" placeholder="000.000.000-00" />
+            <span id="erro_cpf" class="erro"></span>
+          </div>
+
+          <div class="input-box">
+            <label for="ipt_telefone">Celular</label>
+            <input
+              type="text"
+              id="ipt_telefone"
+              placeholder="(11)91234-5678"
+              autocomplete="tel"
+            />
+            <span id="erro_telefone" class="erro"></span>
+          </div>
+        </div>
+
+        <div class="linha-dupla">
+          <div class="input-box">
+            <label for="ipt_senha">Senha</label>
+            <input
+              type="password"
+              id="ipt_senha"
+              oninput="validacaoSenha()"
+              autocomplete="new-password"
+            />
+            <span id="erro_senha" class="erro"></span>
+          </div>
+
+          <div class="input-box">
+            <label for="ipt_confiSenha">Confirme a senha</label>
+            <input
+              type="password"
+              id="ipt_confiSenha"
+              autocomplete="new-password"
+            />
+            <span id="erro_confiSenha" class="erro"></span>
+          </div>
+        </div>
+
+        <!-- Requisitos da senha: o JavaScript marca cada item como cumprido -->
+        <div class="container-senha">
+          <div class="validacoes-senha">
+            <div class="topo-senha">
+              <span class="titulo-senha">Sua senha precisa ter</span>
+              <span id="exibir5" class="nivel-senha">Aguardando</span>
+            </div>
+
+            <ul class="requisitos">
+              <li id="exibir">Pelo menos 8 caracteres</li>
+              <li id="exibir2">Uma letra maiúscula</li>
+              <li id="exibir3">Uma letra minúscula</li>
+              <li id="exibir4">Um símbolo (! @ # $ % & *)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Aceite dos termos -->
+        <div class="juramento">
+          <label>
+            <input type="checkbox" />
+            <span>
+              Concordo com os <a href="#">termos de uso</a> e a
+              <a href="#">política de privacidade</a> da Tetria.
+            </span>
+          </label>
+        </div>
+
+        <!-- type="button" evita que o formulário recarregue a página ao clicar -->
+        <button type="button" class="botao_cadastro" onclick="cadastrar()">
+          Criar minha conta
+        </button>
+
+        <p class="ja-membro">
+          Já tem conta?
+          <a href="login.html" class="botao_login">Entrar</a>
+        </p>
+      </form>
+    </main>
+
+ 
+
+    <script>
+      let listaUsuariosCadastrados = [];
+      let criterio = 0;
+
+      function validacaoSenha() {
+        let senha = ipt_senha.value;
+        let letraMaiu = senha.toUpperCase();
+        let letraMinu = senha.toLowerCase();
+        let criterio = 0;
+
+        //TAMANHO
+        if (senha.length >= 8) {
+          exibir.className = "cumprido";
+          criterio++;
+        } else {
+          exibir.className = "";
+        }
+
+        //MAIUSCULA
+        if (senha != letraMinu) {
+          exibir2.className = "cumprido";
+          criterio++;
+        } else {
+          exibir2.className = "";
+        }
+
+        //MINUSCULA
+        if (senha != letraMaiu) {
+          exibir3.className = "cumprido";
+          criterio++;
+        } else {
+          exibir3.className = "";
+        }
+
+        //CARACTERES
+        if (
+          senha.includes("!") ||
+          senha.includes("@") ||
+          senha.includes("#") ||
+          senha.includes("$") ||
+          senha.includes("%") ||
+          senha.includes("&") ||
+          senha.includes("*")
+        ) {
+          exibir4.className = "cumprido";
+          criterio++;
+        } else {
+          exibir4.className = "";
+        }
+
+        //NIVEL DA SENHA
+        if (senha === "") {
+          exibir5.innerHTML = "Aguardando";
+          exibir5.className = "nivel-senha";
+        } else if (criterio == 4) {
+          exibir5.innerHTML = "Forte";
+          exibir5.className = "nivel-senha forte";
+        } else if (criterio >= 2) {
+          exibir5.innerHTML = "Média";
+          exibir5.className = "nivel-senha media";
+        } else {
+          exibir5.innerHTML = "Fraca";
+          exibir5.className = "nivel-senha fraca";
+        }
+      }
+
+      function cadastrar() {
+        let nomeUser = ipt_nomeUser.value;
+        let cpf = ipt_cpf.value;
+        let email = ipt_email.value;
+        let telefone = ipt_telefone.value;
+        let senha = ipt_senha.value;
+        let confiSenha = ipt_confiSenha.value;
+
+        //VALIDANDO CAMPOS
+        if (ipt_nomeUser.value == "") {
+          erro_nome.innerHTML = "Informe seu nome completo.";
+          ipt_nomeUser.focus();
+        } else if (ipt_cpf.value == "") {
+          erro_cpf.innerHTML = "Informe seu CPF.";
+          ipt_cpf.focus();
+        } else if (ipt_cpf.value.length != 14) {
+          erro_cpf.innerHTML = "CPF incompleto. Use o formato 000.000.000-00.";
+          ipt_cpf.value = "";
+          ipt_cpf.focus();
+        } else if (ipt_email.value == "") {
+          erro_email.innerHTML = "Informe seu e-mail.";
+          ipt_email.focus();
+        } else if (
+          !ipt_email.value.includes("@") ||
+          !ipt_email.value.endsWith(".com")
+        ) {
+          erro_email.innerHTML = "E-mail inválido. Confira o @ e o final .com.";
+          ipt_email.focus();
+        } else if (ipt_telefone.value == "") {
+          erro_telefone.innerHTML = "Informe seu celular com DDD.";
+          ipt_telefone.focus();
+        } else if (ipt_telefone.value.length != 14) {
+          erro_telefone.innerHTML =
+            "Número incompleto. Use o formato (11)91234-5678.";
+          ipt_telefone.value = "";
+          ipt_telefone.focus();
+        } else if (ipt_senha.value == "") {
+          erro_senha.innerHTML = "Crie uma senha.";
+          ipt_senha.focus();
+        } else if (ipt_confiSenha.value == "") {
+          erro_confiSenha.innerHTML = "Digite a senha de novo para confirmar.";
+          ipt_confiSenha.focus();
+        } else if (ipt_senha.value != ipt_confiSenha.value) {
+          erro_confiSenha.innerHTML =
+            "As senhas não são iguais. Tente de novo.";
+          ipt_confiSenha.value = "";
+          ipt_confiSenha.focus();
+        } else {
+          erro_nome.innerHTML = "";
+          erro_cpf.innerHTML = "";
+          erro_email.innerHTML = "";
+          erro_telefone.innerHTML = "";
+          erro_senha.innerHTML = "";
+          erro_confiSenha.innerHTML = "";
+        }
+      }
+
+    </script>
+  </body>
+</html>

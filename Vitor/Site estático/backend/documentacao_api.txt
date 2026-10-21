@@ -1,0 +1,152 @@
+================================================================================
+                📚 MANUAL TÉCNICO EXAUSTIVO DO BACKEND - API TETRIA
+================================================================================
+
+Este documento é um guia profundo sobre a infraestrutura do servidor, detalhando
+desde os protocolos de comunicação (HTTP) até a execução final no Banco de Dados.
+
+--------------------------------------------------------------------------------
+🌐 1. FUNDAMENTOS DE REDE E COMUNICAÇÃO (O BÁSICO)
+--------------------------------------------------------------------------------
+
+Para entender o código, é preciso entender três conceitos fundamentais:
+
+🔹 PORTAS (Ex: 3333)
+Imagine que o seu computador é um prédio. O IP é o endereço do prédio. A PORTA
+é a porta específica da sala onde o servidor está. O Backend roda na porta 3333
+para que as requisições do Frontend saibam exatamente onde "bater".
+
+🔹 MÉTODOS HTTP (A intenção da requisição)
+O servidor usa métodos para saber o que o Frontend quer fazer:
+• POST: "Estou te enviando dados para criar algo novo" (Usado no Cadastro e Login).
+• GET: "Quero buscar/ler alguma informação" (Usado para listar usuários).
+• PUT/PATCH: "Quero atualizar algo que já existe".
+• DELETE: "Quero apagar um registro".
+
+🔹 ROTAS (O caminho do recurso)
+A rota é o "endereço" dentro da porta 3333.
+Exemplo: `http://localhost:3333/usuarios/cadastrar`
+- `localhost:3333` ➜ Endereço e Porta do Servidor.
+- `/usuarios/cadastrar` ➜ Rota específica para a função de cadastro.
+
+--------------------------------------------------------------------------------
+🚀 2. PONTO DE ENTRADA: `app.js` (A Configuração do Ecossistema)
+--------------------------------------------------------------------------------
+
+O `app.js` prepara o terreno para que as requisições sejam processadas.
+
+🔹 O QUE É O `app.use()`?
+O `app.use` define "Middlewares". Um middleware é como um filtro que a requisição
+deve atravessar antes de chegar à rota final.
+
+• `app.use(cors())` ➜ Filtro de Segurança:
+  O CORS (Cross-Origin Resource Sharing) é uma trava de segurança dos navegadores.
+  Sem essa linha, o navegador bloquearia o `fetch` do frontend por estarem em
+  "origens" diferentes (ex: porta 5500 do Live Server vs porta 3333 do Backend).
+
+• `app.use(express.json())` ➜ Filtro de Tradução:
+  O Frontend envia os dados em formato JSON (uma string longa). Este middleware
+  intercepta a requisição, lê essa string e a converte em um OBJETO JavaScript.
+  É graças a isso que podemos usar `req.body.emailServer` no controlador.
+
+• `app.use(expressrouter)` ➜ Filtro de Direcionamento:
+  Aqui o servidor diz: "A partir de agora, qualquer rota que comece com o que está
+  definido no `expressrouter` deve ser tratada por aquele módulo".
+
+--------------------------------------------------------------------------------
+🗺️ 3. MAPA DE ROTAS: `routes/usuarioroutes.js` (A Triagem)
+--------------------------------------------------------------------------------
+
+Aqui definimos a relação: MÉTODO + CAMINHO ➜ FUNÇÃO.
+
+• `expressrouter.post("/usuarios/cadastrar", cadastrar)`
+  - Método: POST (Criação).
+  - Caminho: `/usuarios/cadastrar`.
+  - Ação: Se baterem esses dois, chame a função `cadastrar` do controlador.
+
+• `expressrouter.get("/user", ...)`
+  - Método: GET (Leitura).
+  - Caminho: `/user`.
+  - Ação: Retorna a lista de usuários. Note que o GET não costuma ter `req.body`,
+    pois ele apenas pede dados, não envia.
+
+--------------------------------------------------------------------------------
+🧠 4. CONTROLADORES: `controlers/controlersuser.js` (A Orquestração)
+--------------------------------------------------------------------------------
+
+O controlador é quem manipula o objeto `req` (Requisição) e o `res` (Resposta).
+
+🔹 O Objeto `req` (Request):
+Contém tudo que veio do Frontend:
+- `req.body`: Os dados do formulário (JSON convertido).
+- `req.params`: Variáveis na URL (ex: /usuario/:id).
+- `req.query`: Filtros na URL (ex: /usuarios?nome=rafael).
+
+🔹 O Objeto `res` (Response):
+É como o servidor responde ao Frontend:
+- `res.status(400)`: "Erro do Cliente" (Você esqueceu de preencher um campo).
+- `res.status(403)`: "Proibido" (Senha incorreta).
+- `res.status(500)`: "Erro do Servidor" (O banco de dados caiu).
+- `res.json({ ... })`: Retorna os dados processados em formato JSON.
+
+--------------------------------------------------------------------------------
+🗄️ 5. MODELOS E BANCO: `model/usuariomodel.js` & `config.js`
+--------------------------------------------------------------------------------
+
+Esta é a camada de persistência.
+
+• O Model cria a "Instrução SQL":
+  JavaScript não fala com o Banco de Dados diretamente. O Model escreve uma
+  frase em SQL (como `SELECT * FROM users`) e a entrega para o `config.js`.
+
+• O `database.executar(sql)`:
+  É a função que realmente abre o canal de comunicação com o MySQL/PostgreSQL,
+  envia a frase SQL e espera a resposta do banco.
+
+================================================================================
+🔄 FLUXO COMPLETO E DETALHADO (A Jornada do Dado)
+================================================================================
+
+Cenário: Usuário clica em "Entrar" no `logi.html`
+
+1. [FRONTEND] `logi.html` executa `fetch(".../autenticar", { method: "POST", body: { email, senha } })`.
+2. [REDE] A requisição viaja via protocolo HTTP para `localhost` na porta `3333`.
+3. [MIDDLEWARE 1] `app.js` recebe a requisição. O `cors()` verifica se a origem é permitida.
+4. [MIDDLEWARE 2] `express.json()` pega o corpo da mensagem e transforma em objeto JS.
+5. [ROTA] `usuarioroutes.js` vê que é um `POST` para `/usuarios/autenticar` e chama o controlador.
+6. [CONTROLADOR] `controlersuser.js` checa se `emailServer` e `senhaServer` existem no `req.body`.
+7. [MODEL] Se existirem, o controlador chama `usuarioModel.autenticar()`.
+8. [SQL] O Model monta a string: `SELECT id, nome, email FROM users WHERE...`.
+9. [BANCO] O `config.js` envia essa string ao Banco de Dados.
+10. [BANCO] O Banco de Dados processa a query e devolve a linha do usuário.
+11. [RETORNO] O resultado volta: Banco ➜ Config ➜ Model ➜ Controlador.
+12. [RESPOSTA] O Controlador usa `res.json()` para enviar os dados de volta ao Frontend com Status 200.
+13. [FRONTEND] O `.then()` do `fetch` no HTML recebe a resposta e redireciona para o Dashboard.
+
+--------------------------------------------------------------------------------
+📐 MAPA VISUAL DE CONEXÕES
+--------------------------------------------------------------------------------
+
+  [ TELAS FRONTEND ] ➜ (cadastro.html / logi.html)
+           │
+           │ (1) Requisição HTTP POST (JSON) ➜ Porta 3333
+           ▼
+  [    app.js    ] ───➜ [ Middleware: CORS ] ➜ [ Middleware: JSON Parser ]
+           │                                          │
+           │                                          │ (Traduz JSON ➜ Objeto JS)
+           ▼                                          ▼
+  [ usuarioroutes.js ] ──➜ (Triagem: "/usuarios/autenticar" ➜ Função X)
+           │
+           ▼
+  [ controlersuser.js ] ─➜ (Lógica: Valida campos ➜ Decide Resposta)
+           │
+           ▼
+  [ usuariomodel.js ] ──➜ (Tradução: Objeto JS ➜ Comando SQL "SELECT/INSERT")
+           │
+           ▼
+  [   config.js   ] ───➜ (Conexão Física: Driver MySQL/Postgres)
+           │
+           ▼
+  [ BANCO DE DADOS ] ───➜ (Operação no Disco: Busca ou Grava Dados)
+           │
+           └─ (Retorno do dado percorre o caminho inverso até a tela)
