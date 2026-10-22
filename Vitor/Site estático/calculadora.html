@@ -9,11 +9,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserroght@700;800&family=Poppins:wght@300;400;600;700&display=swap"
-    />
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap"
+    />  
     <title>Calculadora | Tetria</title>
   </head>
-  <body style="background-color: #221e19">
+  <body style="background-color: #2b1e17">
     <header>
       <nav class="navbar">
         <div class="nav-container">
@@ -38,9 +38,10 @@
         <p>Calcule os resultados financeiros das suas colmeias</p>
       </div>
     </div>
+    
     <div class="container-calculadoras">
       <div class="calculo">
-        <h2>🐝Dados da sua produção</h2>
+        <h2><span>🐝</span>Dados da sua produção</h2>
         <div class="campo">
           <label for="ipt_qtd_colmeias">Quantidade de Colmeias: </label>
           <input type="number" id="ipt_qtd_colmeias" />
@@ -226,7 +227,6 @@
       erro_qtd_colmeias_perdidas.innerHTML =
         "A quantidade perdida não pode ser maior que o total de colmeias.";
       valido = false;
-      ipt_qtd_colmeias_perdidas.value = "";
       ipt_qtd_colmeias_perdidas.focus();
     } else {
       erro_qtd_colmeias_perdidas.innerHTML = "";
@@ -267,7 +267,7 @@
       //receita de mel perdida: só a parte do ano em que as colmeias perdidas não produziram
       // 1- valor do mel ao mês  2- multiplica pela qtd de meses perdidos
       let valorProducaoPerdida =
-        ((qtdMelKgPorColmeia * valorMelKg) / 12) *
+        (qtdMelKgPorColmeia * valorMelKg) *
         qtdColmeiasPerdidas *
         fracaoPerdida;
       let valorAnoComPerda = valorProducaoAno - valorProducaoPerdida;
