@@ -13,8 +13,11 @@
   ],
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^18.0.8",
     "express": "^4.17.3",
     "mysql2": "^2.3.3",
+    "port": "^0.8.1",
+    "serial": "^0.0.9",
     "serialport": "^10.4.0"
   }
 }
