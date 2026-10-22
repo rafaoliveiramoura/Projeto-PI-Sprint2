@@ -1,3 +1,13 @@
+:root {
+  --yellow: #dcae1d;
+  --brown: #2b1e17;
+  --cream: #FFF7EA;
+  --muted: #716b63;
+  --line: #e7dfd4;
+  --white: #fff;
+  --brown-light: #FFFCF7;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -52,7 +62,7 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: #e7dfd4;
+    background-color: var(--cream);
     height: 300px;
 }
 
@@ -83,7 +93,7 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: #f8f5ef;
+    background-color: var(--brown-light);
     padding-top: 10px;
     padding-bottom: 10px
 }

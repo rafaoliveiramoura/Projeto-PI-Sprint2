@@ -89,7 +89,7 @@ body {
 }
 
 .header h1 {
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Montserrat', serif;
     font-weight: 400;
     color: #2A1E16;
     font-size: 44px;
@@ -135,7 +135,7 @@ body {
 /* TÍTULO DO CARD */
 .calculo h2 {
     grid-column: 1 / -1;
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Montserrat', serif;
     font-size: 26px;
     font-weight: 400;
     color: #2A1E16;
@@ -386,9 +386,9 @@ body {
 
 /* BLOCO DA VANTAGEM (ESCURO, IGUAL AO CARD DESTAQUE DA PÁGINA INICIAL) */
 .mensagem-vantagem {
-    background-color: #2A1E16;
+    background-color: #3B2A20;
     background-image: radial-gradient(circle at 100% 100%, rgba(224, 175, 30, 0.12) 0 110px, transparent 111px);
-    border-color: #2A1E16;
+    border-color: black;
     color: #FFF7EA;
 }
 
@@ -423,6 +423,22 @@ body {
 .mensagem-vantagem .linha-total b {
     color: #E0AF1E;
     font-size: 24px;
+}
+
+.calculo h2 span {
+    display: inline-block;
+    font-size: 30px;
+    animation: voar 3s ease-in-out infinite;
+}
+
+@keyframes voar {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
 }
 
 @keyframes fadeIn {
