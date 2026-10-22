@@ -210,7 +210,7 @@ body {
 /* ================================= */
 /* BOTÕES */
 /* ================================= */
-.calculo .btn {
+.calculo .bt {
     grid-column: 1 / -1;
     display: flex;
     justify-content: flex-start;
@@ -218,7 +218,7 @@ body {
     margin-top: 6px;
 }
 
-.calculo .btn button {
+.calculo .bt button {
     border: 1px solid #2A1E16;
     width: 100%;
     max-width: 200px;
@@ -233,27 +233,27 @@ body {
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-.calculo .btn button:hover {
+.calculo .bt button:hover {
     background-color: #E0AF1E;
     border-color: #E0AF1E;
     color: #2A1E16;
 }
 
 /* BOTÃO LIMPAR */
-.calculo .btn .btn-limpar {
+.calculo .bt .bt-limpar {
     max-width: 120px;
     background-color: #FFFFFF;
     border-color: #E8DCC4;
     color: #2A1E16;
 }
 
-.calculo .btn .btn-limpar:hover {
+.calculo .bt .bt-limpar:hover {
     background-color: #FFFFFF;
     border-color: #2A1E16;
     color: #2A1E16;
 }
 
-.calculo .btn button:focus-visible {
+.calculo .bt button:focus-visible {
     outline: 3px solid rgba(224, 175, 30, 0.6);
     outline-offset: 2px;
 }
@@ -488,7 +488,7 @@ body {
         font-size: 28px;
     }
 
-    .calculo .btn button {
+    .calculo .bt button {
         max-width: 100%;
     }
 }
