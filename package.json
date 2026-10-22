@@ -18,6 +18,8 @@
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon Rafael/backend/app.js"
+    // "start": "node \"Vitor/Site estático/backend/app.js\"",
+    // "dev": "nodemon Vitor/Site estático/backend/app.js"
   },
   "dependencies": {
     "axios": "^1.20.0",

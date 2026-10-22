@@ -1,10 +1,11 @@
 :root {
   --yellow: #dcae1d;
   --brown: #2b1e17;
-  --cream: #f8f5ef;
+  --cream: #FFF7EA;
   --muted: #716b63;
   --line: #e7dfd4;
   --white: #fff;
+  --brown-light: #FFFCF7;
 }
 
 * {
@@ -195,7 +196,7 @@ a {
 }
 
 .band {
-  background: #eee8de;
+  background: var(--brown-light);
 }
 
 .split-title {
@@ -330,6 +331,7 @@ footer {
   background: var(--brown);
   color: #fff;
   padding: 30px 0 10px;
+  border-top: 2px solid var(--yellow);
 }
 .footer-grid {
   display: grid;
