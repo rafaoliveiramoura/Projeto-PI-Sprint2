@@ -165,7 +165,7 @@ body{
      margin-bottom: 10px;
 }
 
-.info, .email, .senha, .validacoes-senha {
+.info, .email, .senha, .validacoes-senha, .endereço {
     width: 100%;
     max-width: 400px;
     display: flex;
@@ -185,7 +185,7 @@ body{
     gap: 8px;
 }
 
-.info label, .email label, .senha label {
+.info label, .email label, .senha label, .endereço label {
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     font-weight: 600;
@@ -194,7 +194,7 @@ body{
     align-self: flex-start;
 }
 
-.info input, .email input, .senha input {
+.info input, .email input, .senha input, .endereço input {
     width: 100%;
     height: 45px;
     border-radius: 8px;
