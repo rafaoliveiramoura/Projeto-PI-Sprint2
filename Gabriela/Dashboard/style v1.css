@@ -1,0 +1,161 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f5f2eb; 
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 20px 40px;
+  border-bottom: 1px solid #e5e0d8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.botao_menu {
+  background: none;
+  border: none;
+  color: #1f1f1f;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: none; 
+}
+
+.navbar img {
+  height: 40px;
+  object-fit: contain;
+}
+
+main {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+main > section:first-of-type {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.Card_de_KPI {
+  background-color: #ffffff;
+  border: 1px solid #e5e0d8;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.01);
+}
+
+.icone_da_KPI img {
+  width: 50px;
+  height: 50px;
+}
+
+.informacao_KPI p:first-child {
+  color: #6b655e;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.informacao_KPI h2 {
+  font-size: 2rem;
+  color: #1f1f1f;
+  margin: 5px 0;
+  font-weight: 700;
+}
+
+.informacao_KPI p:last-child {
+  color: #8c857b;
+  font-size: 0.8rem;
+}
+
+main > section:nth-of-type(2) article {
+  background-color: #ffffff;
+  border: 1px solid #e5e0d8;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.01);
+}
+
+#titulo-colmeia {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: #1f1f1f;
+  font-weight: 600;
+}
+
+#select_colmeia {
+  background-color: #faf8f5;
+  color: #1f1f1f;
+  border: 1px solid #d4cec4;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.botão_selecionar {
+  background-color: #1f1f1f;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.botão_selecionar:hover {
+  background-color: #3f3f3f;
+}
+
+
+.charts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+  gap: 24px;
+  padding: 0 40px 40px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.chart-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e0d8;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 380px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.01);
+}
+
+canvas {
+  width: 100% !important;
+  max-height: 340px;
+}
