@@ -45,7 +45,7 @@ function autenticarempresa(req, res) {
     } else if (codigo == undefined) {
         res.status(400).send("Seu codigo não foi gerado");
     } else {
-        usuarioModel.autenticar(email, codigo)
+        usuarioModel.autenticar(emailempresa, codigo)
             .then(
                 function (resultadoAutenticar) {
                     if (resultadoAutenticar.length == 1) {
@@ -70,28 +70,30 @@ function autenticarempresa(req, res) {
 
 
 
-function cadastrar(req, res) {
+function cadastrarempresa(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
-    var nome = req.body.nomeServer;
-    var email = req.body.emailServer;
-    var senha = req.body.senhaServer;
-    var cpf = req.body.cpfServer || ""; // Se vier undefined, vira string vazia
-    let telefone = req.body.telefoneServer;
+    var nomeempresa = req.body.nomeempresaVar;
+    var emailempresa = req.body.emailempresaVar;
+    var endereco = req.body.endempresaVar
+    var codigo = req.body.codigoempresaVar;
+    var cnpj = req.body.cnpjVar || ""; // Se vier undefined, vira string vazia
+    var telefoneempresa = req.body.telefoneVar;
+    var razaosocial = req.body.razaosocialempresaVar
 
-    if (nome == undefined) {
+    if (nomeempresa == undefined) {
         res.status(400).send("Seu nome está undefined!");
-    } else if (email == undefined) {
+    } else if (emailempresa == undefined) {
         res.status(400).send("Seu email está undefined!");
-    } else if (senha == undefined) {
+    } else if (endereco == undefined) {
         res.status(400).send("Sua senha está undefined!");
     } else if (telefone == undefined) {
         res.status(400).send("Sua telefone está undefined!");
     } else {
         // Removida a validação obrigatória de CPF pois não existe no HTML
-        usuarioModel.cadastrar(nome, email, senha, cpf, telefone)
+        usuarioModel.cadastrar(nomeempresa, emailempresa, codigo, cnpj, telefoneempresa)
             .then(
-                function (resultado) {
-                    res.json(resultado);
+                function (resultadoemprea) {
+                    res.json(resultadoeempresa);
                 }
             ).catch(
                 function (erro) {
@@ -106,7 +108,7 @@ function cadastrar(req, res) {
     }
 }
 
-function cadastrarempresa(req, res) {
+function cadastrar(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
     var nome = req.body.nomeServer;
     var email = req.body.emailServer;
@@ -149,5 +151,7 @@ function cadastrarempresa(req, res) {
 
 module.exports = {
     autenticar,
-    cadastrar
+    cadastrar,
+    cadastrarempresa, 
+    autenticarempresa
 }
