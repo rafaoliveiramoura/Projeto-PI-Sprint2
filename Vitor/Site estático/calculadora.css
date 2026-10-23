@@ -73,7 +73,7 @@ body {
     background-color: #FFF7EA;
     /* dois circulos suaves, igual aos da pagina inicial */
     background-image:
-        radial-gradient(circle at 90% 15%, rgba(224, 175, 30, 0.16) 0 120px, transparent 121px),
+        radial-gradient(circle at 90% -10%, rgba(224, 175, 30, 0.16) 0 120px, transparent 121px),
         radial-gradient(circle at 5% 110%, rgba(42, 30, 22, 0.06) 0 110px, transparent 111px);
     padding: 56px 50px 52px;
     width: 100%;
@@ -98,8 +98,7 @@ body {
 
 .header p {
     margin-top: 12px;
-    color: #6F6358;
-    font-size: 15px;
+    font-size: 18px;
     line-height: 1.6;
     text-align: center;
 }

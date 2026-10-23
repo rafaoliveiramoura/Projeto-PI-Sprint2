@@ -62,8 +62,9 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    background-image: radial-gradient(circle at 90% 15%, rgba(42, 30, 22, 0.06) 0 120px, transparent 121px), radial-gradient(circle at 5% 110%, rgba(224, 175, 30, 0.16) 0 110px, transparent 111px);
     background-color: var(--cream);
-    height: 300px;
+    height: 205px;
 }
 
 .title p {
@@ -76,9 +77,10 @@ body {
 
 .title h1 {
     display: flex;
-    font-size: 58px;
+    font-family: 'Montserrat', serif;
+    font-size: 44px;
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 5px;
     justify-content: center;
 }
 

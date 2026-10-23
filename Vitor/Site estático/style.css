@@ -26,7 +26,6 @@ body {
 
 header {
   background: #fff;
-  border-bottom: 1px solid var(--line);
   position: sticky;
   top: 0;
   z-index: 20;
@@ -84,7 +83,7 @@ a {
   background-color: rgb(255, 255, 255);
   padding: 5px 0;
   width: 100%;
-  border-bottom: solid 3px rgba(248, 248, 76, 0.705);
+  box-shadow: 0 2px 0 rgba(231, 212, 6, 0.25);
 }
 
 .nav-container {
@@ -125,6 +124,10 @@ a {
 .nav-links a:hover {
   color: #ffcb05;
 }
+.nav-links span a:hover {
+  color: white;
+}
+
 
 .hero-home {
   padding: 74px 0 82px;
