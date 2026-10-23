@@ -10,6 +10,10 @@ function autenticar(email, senha) {
     return database.executar(instrucaoSql);
 }
 
+function autenticarempres (emailempresa, codigo){
+    var autenticar = `SELECT id, nome_fantasia, codEmpresa  FROM Empresa WHERE nome_fantasia  = ${emailempresa} AND codEmpresa = ${codigo}`
+}
+
 // Coloque os mesmos parâmetros aqui. Vá para a var instrucaoSql
 function cadastrar(nome, email, senha, cpf, telefone) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email, senha, cpf, telefone);
@@ -21,6 +25,13 @@ function cadastrar(nome, email, senha, cpf, telefone) {
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
+};
+
+
+function cadastrarempres (nomeempresa, emailempresa, telefoneempresa, codigo, cnpj, razaosocial){
+    var entre = `INSERY INTO Empresa (nome_fantasia, razao_social, cnpj, email, telefone, codEmpresa) VALUES ('${nomeempresa}', '${emailempresa}', '${telefoneempresa}', '${codigo}', '${cnpj}', '${razaosocial}')`
+    console.log("Executando a instrução SQL: \n" + entre)
+    return database.executar(entre)
 }
 
 module.exports = {
