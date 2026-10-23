@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard de monitoramento</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/dashboard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="navbar_esquerda">
+        <button class="botao_menu" aria-label="Menu">☰</button>
+        <a href="(HOME PAGE)" class="navbar_logo">
+          <img
+            src="Gabriela\Dashboard\Src\SRC\tetria-logo-transparente.png"
+            alt="Tetria"
+          />
+        </a>
+        <div class="navbar_titulo">
+          <h1>Monitoramento das colmeias</h1>
+          <p>10 colmeias · atualizado a cada 2 s</p>
+        </div>
+      </div>
+
+      <div class="navbar_direita">
+        <p class="selo_ao_vivo"><span></span>Ao vivo · última leitura há 2 s</p>
+        <a href="(Tela da conta)" class="navbar_usuario">
+          <img src="(IMAGEM DO FRIZZA)" alt="Usuário" />
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <!-- KPIs (TOPO) -->
+      <div class="faixa_kpis">
+        <section class="grupo_kpi grupo_situacao">
+          <h2 class="titulo_grupo">Situação atual</h2>
+
+          <div class="grade_kpi">
+            <article class="kpi kpi_destaque">
+              <div class="kpi_topo">
+                <span class="kpi_icone">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4"/><path d="M12 17h.01"/></svg>
+                </span>
+                <h3 class="kpi_titulo">Precisam de ação</h3>
+              </div>
+              <p class="kpi_valor">5<span>/10 colmeias</span></p>
+              <ul class="kpi_detalhes">
+                <li><span class="ponto risco"></span>3 em risco</li>
+                <li><span class="ponto atencao"></span>2 em atenção</li>
+              </ul>
+            </article>
+
+            <article class="kpi">
+              <div class="kpi_topo">
+                <span class="kpi_icone">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                </span>
+                <h3 class="kpi_titulo">Tempo fora da faixa</h3>
+              </div>
+              <p class="kpi_valor">5<span>colmeias</span></p>
+              <ul class="kpi_detalhes">
+                <li><span class="ponto risco"></span>4 há mais de 1 h</li>
+                <li><span class="ponto atencao"></span>1 há menos de 1 h</li>
+              </ul>
+            </article>
+
+            <article class="kpi">
+              <div class="kpi_topo">
+                <span class="kpi_icone">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 14.8V4a2 2 0 1 0-4 0v10.8a4 4 0 1 0 4 0z"/></svg>
+                </span>
+                <h3 class="kpi_titulo">Temperatura ideal</h3>
+              </div>
+              <p class="kpi_valor">6<span>/10 colmeias</span></p>
+              <div class="barra" role="img" aria-label="60% na faixa ideal"><span style="width: 60%"></span></div>
+              <ul class="kpi_detalhes">
+                <li>4 colmeias fora da faixa</li>
+              </ul>
+            </article>
+
+            <article class="kpi">
+              <div class="kpi_topo">
+                <span class="kpi_icone">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg>
+                </span>
+                <h3 class="kpi_titulo">Umidade ideal</h3>
+              </div>
+              <p class="kpi_valor">8<span>/10 colmeias</span></p>
+              <div class="barra" role="img" aria-label="80% na faixa ideal"><span style="width: 80%"></span></div>
+              <ul class="kpi_detalhes">
+                <li>2 colmeias fora da faixa</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="grupo_kpi grupo_confiabilidade">
+          <h2 class="titulo_grupo">Confiabilidade</h2>
+
+          <div class="grade_kpi">
+            <article class="kpi">
+              <div class="kpi_topo">
+                <span class="kpi_icone">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><path d="M12 19.5h.01"/></svg>
+                </span>
+                <h3 class="kpi_titulo">Sensores ativos</h3>
+              </div>
+              <p class="kpi_valor">10<span>/10 sensores</span></p>
+              <ul class="kpi_detalhes">
+                <li><span class="ponto ideal"></span>Sem sinal após 3 min</li>
+              </ul>
+            </article>
+
+            <article class="kpi">
+              <div class="kpi_topo">
+                <span class="kpi_icone">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16"/><path d="M3 8l4-4 4 4"/><path d="M17 20V4"/><path d="M13 16l4 4 4-4"/></svg>
+                </span>
+                <h3 class="kpi_titulo">Interna − externa</h3>
+              </div>
+              <p class="kpi_valor">6<span>/10 com +1 °C</span></p>
+              <ul class="kpi_detalhes">
+                <li><span class="ponto atencao"></span>4 abaixo de 1 °C</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ PAINEL: FILTROS E GRÁFICOS (LARGURA TODA) ============ -->
+      <section class="painel">
+        <div class="painel_topo">
+          <h2 class="titulo_painel">Análise por colmeia</h2>
+
+          <div class="filtro">
+            <div class="campo">
+              <label for="select_status">Situação</label>
+              <select id="select_status" onchange="filtrar()">
+                <option value="todas">Todas as situações</option>
+                <option value="Ideal">Ideal</option>
+                <option value="Atenção">Atenção</option>
+                <option value="Risco">Risco</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="select_colmeia">Colmeia</label>
+              <select id="select_colmeia">
+                <option value="00">Todas as colmeias</option>
+              </select>
+            </div>
+
+            <button class="botao_selecionar" onclick="visualizar()">
+              Ver detalhes
+            </button>
+          </div>
+        </div>
+
+        <div id="visao_geral" class="visao">
+          <div class="visao_cabecalho">
+            <h3>Situação atual das colmeias</h3>
+            <ul class="legenda">
+              <li><span class="ponto ideal"></span>Ideal</li>
+              <li><span class="ponto atencao"></span>Em atenção</li>
+              <li><span class="ponto risco"></span>Em risco</li>
+            </ul>
+          </div>
+          <div class="grafico">
+            <canvas id="graficoStatusColmeia"></canvas>
+          </div>
+        </div>
+
+        <div id="visao_individual" class="visao oculto">
+          <div class="visao_cabecalho">
+            <div>
+              <h3 id="titulo_individual"></h3>
+              <p id="mensagem_individual"></p>
+            </div>
+            <p id="status_individual"></p>
+          </div>
+
+          <div class="grade_graficos">
+            <div class="grafico">
+              <canvas id="graficoTemperatura"></canvas>
+            </div>
+            <div class="grafico">
+              <canvas id="graficoUmidade"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      // fonte e cor padrão de todos os gráficos
+      Chart.defaults.font.family = "Poppins, sans-serif";
+      Chart.defaults.color = "#6F6358";
+      Chart.defaults.maintainAspectRatio = false;
+
+      const ctxColmeias = document.getElementById("graficoStatusColmeia");
+      const GraficoStatusColmeia = new Chart(ctxColmeias, {
+        type: "bar",
+        data: {
+          labels: ["Ideal", "Em atenção", "Em risco"],
+          datasets: [
+            {
+              label: "Colmeias",
+              data: [5, 2, 3],
+              backgroundColor: ["#2A7A35", "#E0AF1E", "#B3261E"],
+              borderRadius: 10,
+              maxBarThickness: 90,
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            legend: { display: false },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1 },
+              grid: { color: "#F0E3C8" },
+            },
+            x: { grid: { display: false } },
+          },
+        },
+      });
+
+      const ctxTemperatura = document.getElementById("graficoTemperatura");
+      const GraficoTemperatura = new Chart(ctxTemperatura, {
+        type: "line",
+        data: {
+          labels: [
+            "08:00:00",
+            "08:00:02",
+            "08:00:04",
+            "08:00:06",
+            "08:00:08",
+            "08:00:10",
+          ],
+          datasets: [
+            {
+              label: "Dentro da colmeia",
+              data: [0, 0, 0, 0, 0, 0],
+              borderColor: "#2A1E16",
+              backgroundColor: "rgba(42, 30, 22, 0.06)",
+              fill: true,
+              borderWidth: 2.5,
+              tension: 0.35,
+              pointRadius: 3,
+              pointBackgroundColor: "#FFFFFF",
+            },
+            {
+              label: "Ambiente externo",
+              data: [0, 0, 0, 0, 0, 0],
+              borderColor: "#B88A0B",
+              borderDash: [6, 4],
+              borderWidth: 2.5,
+              tension: 0.35,
+              pointRadius: 3,
+              pointBackgroundColor: "#FFFFFF",
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: "Temperatura (°C)",
+              align: "start",
+              color: "#2A1E16",
+              font: { size: 14, weight: "600" },
+            },
+            legend: { align: "start", labels: { boxWidth: 12 } },
+          },
+          scales: {
+            y: { beginAtZero: false, grid: { color: "#F0E3C8" } },
+            x: { grid: { display: false } },
+          },
+        },
+      });
+
+      const ctxUmidade = document.getElementById("graficoUmidade");
+      const GraficoUmidade = new Chart(ctxUmidade, {
+        type: "line",
+        data: {
+          labels: [
+            "08:00:00",
+            "08:00:02",
+            "08:00:04",
+            "08:00:06",
+            "08:00:08",
+            "08:00:10",
+          ],
+          datasets: [
+            {
+              label: "Dentro da colmeia",
+              data: [0, 0, 0, 0, 0, 0],
+              borderColor: "#2A1E16",
+              backgroundColor: "rgba(42, 30, 22, 0.06)",
+              fill: true,
+              borderWidth: 2.5,
+              tension: 0.35,
+              pointRadius: 3,
+              pointBackgroundColor: "#FFFFFF",
+            },
+            {
+              label: "Ambiente externo",
+              data: [0, 0, 0, 0, 0, 0],
+              borderColor: "#B88A0B",
+              borderDash: [6, 4],
+              borderWidth: 2.5,
+              tension: 0.35,
+              pointRadius: 3,
+              pointBackgroundColor: "#FFFFFF",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            annotation: {
+        annotations: {
+          faixaAtencaoBaixo: {
+            type: 'box',
+            yMin: 45,
+            yMax: 50,
+            backgroundColor: 'rgba(255, 205, 86, 0.15)', // Amarelo suave
+            borderWidth: 0,
+          },
+          faixaRiscoBaixo: {
+            type: 'box',
+            yMin: 0,
+            yMax: 45,
+            backgroundColor: 'rgba(255, 99, 132, 0.15)', // Vermelho suave
+            borderWidth: 0,
+          },
+          faixaIdeal: {
+            type: 'box',
+            yMin: 50,
+            yMax: 75,
+            backgroundColor: 'rgba(75, 192, 192, 0.15)', // Verde suave
+            borderWidth: 0,
+          },
+            faixaAtencaoEmCima: {
+            type: 'box',
+            yMin: 75,
+            yMax: 80,
+            backgroundColor: 'rgba(255, 205, 86, 0.15)', // Amarelo suave
+            borderWidth: 0,
+          },
+          faixaRiscoEmCima: {
+            type: 'box',
+            yMin: 80,
+            yMax: 100,
+            backgroundColor: 'rgba(255, 99, 132, 0.15)', // Vermelho suave
+            borderWidth: 0,
+          },
+        }
+      },
+            title: {
+              display: true,
+              text: "Umidade (%)",
+              align: "start",
+              color: "#2A1E16",
+              font: { size: 14, weight: "600" },
+            },
+            legend: { align: "start", labels: { boxWidth: 12 } },
+          },
+          scales: {
+            y: { beginAtZero: false, grid: { color: "#F0E3C8" } },
+            x: { grid: { display: false } },
+          },
+        },
+      });
+
+      // adiciona um status a cada colmeia
+      let status01 = "Ideal";
+      let status02 = "Risco";
+      let status03 = "Atenção";
+      let status04 = "Risco";
+      let status05 = "Ideal";
+      let status06 = "Atenção";
+      let status07 = "Ideal";
+      let status08 = "Risco";
+      let status09 = "Ideal";
+      let status10 = "Ideal";
+
+      function filtrar() {
+        let filtro = select_status.value;
+
+        select_colmeia.innerHTML =
+          '<option value="00">Todas as colmeias</option>';
+
+        // se a pessoa escolher todas - todas as colmeias são adicionadas +=
+        // se o statusx === ao filtro que a pessoa selecionou, apenas essas colmeias serão adicionadas
+
+        if (filtro === "todas" || status01 === filtro) {
+          select_colmeia.innerHTML += '<option value="01">Colmeia 01</option>';
+        }
+
+        if (filtro === "todas" || status02 === filtro) {
+          select_colmeia.innerHTML += '<option value="02">Colmeia 02</option>';
+        }
+
+        if (filtro === "todas" || status03 === filtro) {
+          select_colmeia.innerHTML += '<option value="03">Colmeia 03</option>';
+        }
+
+        if (filtro === "todas" || status04 === filtro) {
+          select_colmeia.innerHTML += '<option value="04">Colmeia 04</option>';
+        }
+
+        if (filtro === "todas" || status05 === filtro) {
+          select_colmeia.innerHTML += '<option value="05">Colmeia 05</option>';
+        }
+
+        if (filtro === "todas" || status06 === filtro) {
+          select_colmeia.innerHTML += '<option value="06">Colmeia 06</option>';
+        }
+
+        if (filtro === "todas" || status07 === filtro) {
+          select_colmeia.innerHTML += '<option value="07">Colmeia 07</option>';
+        }
+
+        if (filtro === "todas" || status08 === filtro) {
+          select_colmeia.innerHTML += '<option value="08">Colmeia 08</option>';
+        }
+
+        if (filtro === "todas" || status09 === filtro) {
+          select_colmeia.innerHTML += '<option value="09">Colmeia 09</option>';
+        }
+
+        if (filtro === "todas" || status10 === filtro) {
+          select_colmeia.innerHTML += '<option value="10">Colmeia 10</option>';
+        }
+      }
+
+      filtrar();
+
+      function visualizar() {
+        let selecao = select_colmeia.value;
+        let situacao = "";
+
+        let dadosTempInterna = [0, 0, 0, 0, 0, 0];
+        let dadosTempExterna = [0, 0, 0, 0, 0, 0];
+        let dadosUmidInterna = [0, 0, 0, 0, 0, 0];
+        let dadosUmidExterna = [0, 0, 0, 0, 0, 0];
+
+        if (selecao === "00") {
+          visao_geral.classList.remove("oculto");
+          visao_individual.classList.add("oculto");
+        } else {
+          visao_geral.classList.add("oculto");
+          visao_individual.classList.remove("oculto");
+          titulo_individual.innerHTML = "Colmeia " + selecao;
+        }
+
+        if (selecao === "01") {
+          situacao = status01;
+          dadosTempInterna = [34.8, 34.9, 35.0, 35.1, 35.0, 34.9];
+          dadosTempExterna = [33.9, 34.0, 34.2, 34.1, 34.0, 34.3];
+          dadosUmidInterna = [60, 61, 61, 62, 62, 63];
+          dadosUmidExterna = [58, 59, 59, 60, 60, 61];
+        } else if (selecao === "02") {
+          situacao = status02;
+          dadosTempInterna = [38.2, 38.4, 38.6, 38.5, 38.7, 38.9];
+          dadosTempExterna = [35.1, 35.3, 35.2, 35.4, 35.3, 35.5];
+          dadosUmidInterna = [68, 69, 69, 70, 70, 71];
+          dadosUmidExterna = [62, 63, 63, 64, 64, 65];
+        } else if (selecao === "03") {
+          situacao = status03;
+          dadosTempInterna = [36.4, 36.6, 36.8, 36.7, 36.5, 36.9];
+          dadosTempExterna = [34.8, 35.0, 35.1, 35.0, 34.9, 35.2];
+          dadosUmidInterna = [60, 60, 61, 61, 62, 62];
+          dadosUmidExterna = [57, 58, 58, 59, 59, 60];
+        } else if (selecao === "04") {
+          situacao = status04;
+          dadosTempInterna = [31.2, 31.0, 30.9, 31.3, 31.1, 31.4];
+          dadosTempExterna = [29.5, 29.6, 29.8, 29.7, 29.6, 29.9];
+          dadosUmidInterna = [52, 53, 53, 54, 54, 55];
+          dadosUmidExterna = [55, 56, 56, 57, 57, 58];
+        } else if (selecao === "05") {
+          situacao = status05;
+          dadosTempInterna = [33.6, 33.8, 33.7, 33.9, 34.0, 34.1];
+          dadosTempExterna = [32.8, 32.9, 33.0, 33.1, 33.0, 33.2];
+          dadosUmidInterna = [55, 56, 56, 57, 57, 58];
+          dadosUmidExterna = [53, 54, 54, 55, 55, 56];
+        } else if (selecao === "06") {
+          situacao = status06;
+          dadosTempInterna = [34.6, 34.8, 34.7, 34.9, 34.8, 34.7];
+          dadosTempExterna = [33.5, 33.6, 33.8, 33.7, 33.6, 33.9];
+          dadosUmidInterna = [76, 77, 77, 78, 78, 79];
+          dadosUmidExterna = [72, 73, 73, 74, 74, 75];
+        } else if (selecao === "07") {
+          situacao = status07;
+          dadosTempInterna = [35.4, 35.5, 35.6, 35.8, 35.7, 35.6];
+          dadosTempExterna = [34.4, 34.5, 34.7, 34.6, 34.5, 34.8];
+          dadosUmidInterna = [66, 67, 67, 68, 68, 69];
+          dadosUmidExterna = [63, 64, 64, 65, 65, 66];
+        } else if (selecao === "08") {
+          situacao = status08;
+          dadosTempInterna = [38.4, 38.6, 38.8, 38.7, 39.0, 38.9];
+          dadosTempExterna = [35.6, 35.8, 35.9, 35.7, 35.8, 36.0];
+          dadosUmidInterna = [76, 77, 77, 78, 78, 78];
+          dadosUmidExterna = [70, 71, 71, 72, 72, 73];
+        } else if (selecao === "09") {
+          situacao = status09;
+          dadosTempInterna = [34.0, 34.1, 34.2, 34.1, 34.3, 34.2];
+          dadosTempExterna = [33.0, 33.1, 33.2, 33.1, 33.3, 33.2];
+          dadosUmidInterna = [51, 52, 52, 53, 53, 54];
+          dadosUmidExterna = [50, 51, 51, 52, 52, 53];
+        } else if (selecao === "10") {
+          situacao = status10;
+          dadosTempInterna = [35.0, 35.1, 35.2, 35.4, 35.3, 35.5];
+          dadosTempExterna = [34.0, 34.1, 34.3, 34.2, 34.1, 34.4];
+          dadosUmidInterna = [70, 71, 71, 72, 72, 73];
+          dadosUmidExterna = [66, 67, 67, 68, 68, 69];
+        }
+
+        //Atualiza os dados das variáveis do Chart.js e manda redesenhar a tela (.update())
+        GraficoTemperatura.data.datasets[0].data = dadosTempInterna;
+        GraficoTemperatura.data.datasets[1].data = dadosTempExterna;
+        GraficoTemperatura.update();
+
+        GraficoUmidade.data.datasets[0].data = dadosUmidInterna;
+        GraficoUmidade.data.datasets[1].data = dadosUmidExterna;
+        GraficoUmidade.update();
+
+        if (situacao === "Ideal") {
+          status_individual.innerHTML =
+            '<span class="status_ideal">Ideal</span>';
+          mensagem_individual.innerHTML =
+            "Temperatura e umidade dentro do esperado.";
+            
+        } else if (situacao === "Atenção") {
+          status_individual.innerHTML =
+            '<span class="status_atencao">Em atenção</span>';
+          mensagem_individual.innerHTML =
+            "Alguns valores estão fora do ideal. Recomendamos acompanhar de perto.";
+
+        } else if (situacao === "Risco") {
+          status_individual.innerHTML =
+            '<span class="status_risco">Em risco</span>';
+          mensagem_individual.innerHTML =
+            "Valores fora do limite seguro. Recomendamos verificar a colmeia o quanto antes.";
+        }
+      }
+    </script>
+  </body>
+</html>

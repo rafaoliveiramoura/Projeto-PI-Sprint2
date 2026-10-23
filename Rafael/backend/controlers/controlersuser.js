@@ -36,6 +36,77 @@ function autenticar(req, res) {
 }
 
 
+function autenticarempresa(req, res) {
+    var emailempresa = req.body.emailempresaVar;
+    var codigo = req.body.codigoempresaVar;
+
+    if (emailempresa == undefined) {
+        res.status(400).send("Seu email está undefined!");
+    } else if (codigo == undefined) {
+        res.status(400).send("Seu codigo não foi gerado");
+    } else {
+        usuarioModel.autenticar(emailempresa, codigo)
+            .then(
+                function (resultadoAutenticar) {
+                    if (resultadoAutenticar.length == 1) {
+                        res.json({
+                            id: resultadoAutenticar[0].id,
+                            emailempresa: resultadoAutenticar[0].emailempresa,
+                            codigo : resultadoAutenticar[0].codigo,
+                        });
+                    } else if (resultadoAutenticar.length == 0) {
+                        res.status(403).send("Email e/ou senha inválido(s)");
+                    } else {
+                        res.status(403).send("Mais de um usuário com o mesmo login e senha!");
+                    }
+                }
+            ).catch(
+                function (erro) {
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
+
+
+
+function cadastrarempresa(req, res) {
+    // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
+    var nomeempresa = req.body.nomeempresaVar;
+    var emailempresa = req.body.emailempresaVar;
+    var endereco = req.body.endempresaVar
+    var codigo = req.body.codigoempresaVar;
+    var cnpj = req.body.cnpjVar || ""; // Se vier undefined, vira string vazia
+    var telefoneempresa = req.body.telefoneVar;
+    var razaosocial = req.body.razaosocialempresaVar
+
+    if (nomeempresa == undefined) {
+        res.status(400).send("Seu nome está undefined!");
+    } else if (emailempresa == undefined) {
+        res.status(400).send("Seu email está undefined!");
+    } else if (endereco == undefined) {
+        res.status(400).send("Sua senha está undefined!");
+    } else if (telefone == undefined) {
+        res.status(400).send("Sua telefone está undefined!");
+    } else {
+        // Removida a validação obrigatória de CPF pois não existe no HTML
+        usuarioModel.cadastrar(nomeempresa, emailempresa, codigo, cnpj, telefoneempresa)
+            .then(
+                function (resultadoemprea) {
+                    res.json(resultadoeempresa);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar o cadastro! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
 
 function cadastrar(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
@@ -80,5 +151,7 @@ function cadastrar(req, res) {
 
 module.exports = {
     autenticar,
-    cadastrar
+    cadastrar,
+    cadastrarempresa, 
+    autenticarempresa
 }
