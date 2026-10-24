@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap');
-
 * {
     margin: 0;
     padding: 0;
@@ -16,7 +14,6 @@ body{
 .main-wrapper {
     display: flex;
     min-height: 100vh;
-    width: 100%;
     padding: 12px;
     gap: 12px;
 }
@@ -31,12 +28,10 @@ body{
     gap: 30px;
 }
 
-/* coluna do formulário: mesma largura para todos os blocos */
 .cadastro-container > * {
     width: 100%;
     max-width: 400px;
 }
-
 
 .imagem-container {
     display: flex;
@@ -56,7 +51,6 @@ body{
     width: 100%;
     height: 100%;
     object-fit: cover;
-    background-color: black;
     opacity: 0.5;
 }
 
@@ -159,15 +153,12 @@ body{
 }
 
 .header span{
-     font-family: 'Poppins', sans-serif;
      font-size: 16px;
      color: #6b5647;
      margin-bottom: 10px;
 }
 
 .info, .email, .senha, .validacoes-senha {
-    width: 100%;
-    max-width: 400px;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -202,7 +193,6 @@ body{
     background-color: #ffffff;
     outline: none;
     padding-left: 15px;
-    font-family: 'Poppins', sans-serif;
     font-size: 14px;
     color: #2b1e17;
     transition: border 0.3s ease;
@@ -217,10 +207,8 @@ body{
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Poppins', sans-serif;
   font-size: 14px;
   color: #6b5647;
-  margin-top: 0;
 }
 
 .termos-container input[type="checkbox"] {
@@ -245,7 +233,6 @@ body{
     max-width: 400px;
     display: flex;
     justify-content: center;
-    margin-top: 0;
 }
 
 .btn button{
@@ -255,28 +242,23 @@ body{
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    background-color: #C68E17;
+    background-color: #eaa81a;
     color: #2b1e17;
     border: none;
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    transition: background-color 0.3s;
 }
 
 .btn button:hover {
     background-color: #b07d10;
-    transform: translateY(-2px);
 }
 
 .jconta {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
-    margin-top: 0;
     gap: 14px;
 }
 
 .jconta span{
-    font-family: 'Poppins', sans-serif;
     font-size: 14px;
     color: #6b5647;
 }
@@ -291,7 +273,6 @@ body{
     background-color: transparent;
     color: #2b1e17;
     border: 1px solid #C68E17;
-    font-family: 'Poppins', sans-serif;
     transition: all 0.3s ease;
 }
 
@@ -305,7 +286,6 @@ body{
 }
 
 .vsenha {
-    font-family: 'Poppins', sans-serif;
     font-size: 12px;
     transition: all 0.3s ease;
     text-align: left;
@@ -314,7 +294,7 @@ body{
 
 
 @media (max-width: 900px) {
-    .imagem-container { display: none; background-color: black; opacity: 0.6; }
+    .imagem-container { display: none;}
     .main-wrapper { padding: 0; }
     .cadastro-container { flex: 1; padding: 30px 20px; }
 }

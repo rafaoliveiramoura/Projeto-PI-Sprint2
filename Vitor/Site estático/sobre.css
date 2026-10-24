@@ -14,52 +14,8 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-.navbar {
-    position: sticky; 
-    top: 0; 
-    background-color: rgb(245, 240, 229, 0.99);
-    padding: 10px 0;
-    width: 100%;
-    border-bottom: none;
-    
-}
-
-.nav-container {
-    max-width: 100%;
-    margin: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 30px;
-}
-
-.nav-logo .nav-img {
-    width: 80px;
-    display: block;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 25px;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: #221E19;
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
-
-.nav-links a:hover {
-    color: #FFCB05;
-}
-
 .top-us {
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
     background-image: radial-gradient(circle at 5% -10%, rgba(224, 175, 30, 0.16) 0 120px, transparent 121px), radial-gradient(circle at 95% 110%, rgba(42, 30, 22, 0.06) 0 110px, transparent 111px);
@@ -68,20 +24,16 @@ body {
 }
 
 .title p {
-    display: flex;
     font-size: 18px;
-    justify-content: center;
-    margin-top: 0;
-    margin-bottom: 0;
+    text-align: center;
+    margin: 0;
 }
 
 .title h1 {
-    display: flex;
     font-family: 'Montserrat', serif;
     font-size: 44px;
-    justify-content: center;
-    margin-top: 0;
-    margin-bottom: 5px;
+    text-align: center;
+    margin: 0 0 5px;
 }
 
 .subtitle p {
@@ -93,36 +45,34 @@ body {
 
 .objetivo {
     display: flex;
-    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
     background-color: var(--brown-light);
-    padding-top: 10px;
-    padding-bottom: 10px
+    padding: 50px 30px;
 }
 
 .objetivo .left {
-    margin-left: 300px;
+    max-width: 500px;
 }
 
 .objetivo .right {
     background-image: url('src/cuidando-top.webp');
     background-size: cover;
+    background-position: center;
     width: 600px;
+    max-width: 100%;
     height: 400px;
     border-radius: 10px;
-    margin-left: 200px;
-    margin-right: 200px;
-    margin-top: 50px;
 }
 
 .objetivo h2 {
     font-size: 48px;
     max-width: 500px;
     line-height: 1.1;
-    padding-bottom: 0px;
 }
 
 .objetivo p {
-    padding-top: 0px;
     font-size: 18px;
     max-width: 600px;
 }
@@ -135,17 +85,13 @@ body {
 }
 
 .etapas .title p {
-    display: flex;
-    justify-content: center;
+    text-align: center;
     font-size: 18px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin: 0;
 }
 
 .etapas h2 {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+    text-align: center;
     margin-top: 0;
     font-size: 58px
 }
@@ -153,7 +99,7 @@ body {
 .etapa-cards-geral {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 50px;
     width: 100%;
 }
 
@@ -178,9 +124,10 @@ body {
 
 .visao {
     display: flex;
-    flex-direction: row;
-    padding-top: 100px;
-    padding-bottom: 100px;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    padding: 100px 8%;
     background-color: var(--brown-light);
 }
 
@@ -188,22 +135,27 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 300px;
     width: 50%;
 }
 
 .visao h2 {
+    font-family: 'Montserrat', serif;
     font-size: 58px;
-    padding-top: 0px;
-    max-width: 600px;
+    font-weight: 400;
+    line-height: 1.1;
+    max-width: 500px;
+    margin: 0 0 24px;
 }
 
 .visao p {
-    margin-bottom: 0;
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0;
 }
 
 .visao .right {
-    max-width: 600px;
-    padding-right: 200px;
+    width: 50%;
+    max-width: 500px;
 }
-
