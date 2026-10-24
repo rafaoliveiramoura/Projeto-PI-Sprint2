@@ -92,13 +92,14 @@ body {
 
 .etapas h2 {
     text-align: center;
-    margin-top: 0;
+    margin-top: 10px;
     font-size: 58px
 }
 
 .etapa-cards-geral {
     display: flex;
     justify-content: center;
+    margin-top: 50px;
     gap: 50px;
     width: 100%;
 }
@@ -153,6 +154,7 @@ body {
     color: var(--muted);
     max-width: 500px;
     margin: 0;
+    margin-bottom: 10px;
 }
 
 .visao .right {
