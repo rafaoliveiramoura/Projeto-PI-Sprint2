@@ -218,17 +218,45 @@
             },
           ],
         },
+
         options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: {
+            padding: { top: 8, right: 12, bottom: 0, left: 4 },
+          },
           plugins: {
             legend: { display: false },
+            tooltip: {
+              backgroundColor: "#2A1E16",
+              titleFont: { family: "Poppins" },
+              bodyFont: { family: "Poppins" },
+              padding: 12,
+              cornerRadius: 8,
+              displayColors: false,
+            },
           },
           scales: {
+            x: {
+              grid: { display: false },
+              border: { color: "#EAE1D5" },
+              ticks: {
+                color: "#85776B",
+                font: { family: "Poppins", size: 12 },
+              },
+            },
             y: {
               beginAtZero: true,
-              ticks: { stepSize: 1 },
-              grid: { color: "#F0E3C8" },
+              grid: { color: "#F0E8DC", drawTicks: false },
+              border: { display: false },
+              ticks: {
+                stepSize: 1,
+                precision: 0,
+                padding: 8,
+                color: "#85776B",
+                font: { family: "Poppins", size: 12 },
+              },
             },
-            x: { grid: { display: false } },
           },
         },
       });

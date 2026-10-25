@@ -646,19 +646,52 @@ main {
     min-height: 0;
 }
 
+
+/* Gráficos da dashboard */
 .grade_graficos {
     flex: 1;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--espaco);
+    gap: 20px;
     min-height: 0;
 }
 
 .grade_graficos .grafico {
-    padding: 12px;
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    padding: 20px;
     border: 1px solid var(--borda);
-    border-radius: 12px;
+    border-radius: var(--raio);
+    background: #FFFFFF;
+    box-shadow: 0 3px 12px rgba(42, 30, 22, 0.04);
 }
+
+/* Título e legenda */
+.visao_cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.visao_cabecalho h3 {
+    color: var(--marrom);
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+}
+
+.legenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--texto_suave);
+}
+
 
 @keyframes fadeIn {
     from {
