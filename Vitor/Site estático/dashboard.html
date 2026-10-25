@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard de monitoramento</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap"
       rel="stylesheet"
@@ -18,10 +18,7 @@
       <div class="navbar_esquerda">
         <button class="botao_menu" aria-label="Menu">☰</button>
         <a href="landing_page.html" class="navbar_logo">
-          <img
-            src="src/tetria-logo-transparente.png"
-            alt="Tetria"
-          />
+          <img src="src/tetria-logo-transparente.png" alt="Tetria" />
         </a>
         <div class="navbar_titulo">
           <h1>Monitoramento das colmeias</h1>
@@ -47,7 +44,11 @@
             <article class="kpi kpi_destaque">
               <div class="kpi_topo">
                 <span class="kpi_icone">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4"/><path d="M12 17h.01"/></svg>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3 2 20h20L12 3z" />
+                    <path d="M12 10v4" />
+                    <path d="M12 17h.01" />
+                  </svg>
                 </span>
                 <h3 class="kpi_titulo">Precisam de ação</h3>
               </div>
@@ -61,7 +62,10 @@
             <article class="kpi">
               <div class="kpi_topo">
                 <span class="kpi_icone">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M12 7v5l3 2" />
+                  </svg>
                 </span>
                 <h3 class="kpi_titulo">Tempo fora da faixa</h3>
               </div>
@@ -72,6 +76,36 @@
               </ul>
             </article>
 
+            <!-- Novo card: Colmeias em risco -->
+            <article class="kpi kpi_risco">
+              <div class="kpi_topo">
+                <span class="kpi_icone">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3 21 8v8l-9 5-9-5V8z" />
+                    <path d="M12 8v5" />
+                    <path d="M12 16h.01" />
+                  </svg>
+                </span>
+
+                <h3 class="kpi_titulo">Colmeias em risco</h3>
+                <span class="risco_etiqueta">Ação imediata</span>
+              </div>
+
+              <div class="lista_colmeias_risco" aria-label="Colmeias em risco">
+                <span>02</span>
+                <span>04</span>
+                <span>08</span>
+              </div>
+
+              <div class="risco_resumo">
+                <strong>3</strong>
+                <p>colmeias em faixa de risco</p>
+              </div>
+
+              <p class="risco_rodape">
+                Verificar temperatura e umidade no local.
+              </p>
+            </article>
           </div>
         </section>
 
@@ -82,7 +116,11 @@
             <article class="kpi">
               <div class="kpi_topo">
                 <span class="kpi_icone">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><path d="M12 19.5h.01"/></svg>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 12.5a10 10 0 0 1 14 0" />
+                    <path d="M8.5 16a5 5 0 0 1 7 0" />
+                    <path d="M12 19.5h.01" />
+                  </svg>
                 </span>
                 <h3 class="kpi_titulo">Sensores ativos</h3>
               </div>
@@ -461,13 +499,11 @@
             '<span class="status_ideal">Ideal</span>';
           mensagem_individual.innerHTML =
             "Temperatura e umidade dentro do esperado.";
-            
         } else if (situacao === "Atenção") {
           status_individual.innerHTML =
             '<span class="status_atencao">Em atenção</span>';
           mensagem_individual.innerHTML =
             "Alguns valores estão fora do ideal. Recomendamos acompanhar de perto.";
-
         } else if (situacao === "Risco") {
           status_individual.innerHTML =
             '<span class="status_risco">Em risco</span>';

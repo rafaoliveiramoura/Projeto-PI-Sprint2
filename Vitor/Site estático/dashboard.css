@@ -171,10 +171,10 @@ main {
 
 
 .faixa_kpis {
-    flex-shrink: 0;
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 16px;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+    gap: 18px;
+    align-items: stretch;
 }
 
 
@@ -213,9 +213,10 @@ main {
 }
 
 .grupo_situacao .grade_kpi {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
 }
-
 .grupo_confiabilidade .grade_kpi {
     grid-template-columns: minmax(0, 1fr);
 }
@@ -232,15 +233,17 @@ main {
 .kpi {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 15px 20px;
-    min-height: 150px;
-    margin-right: 29px;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+    min-height: 216px;
+    margin: 0;
+    padding: 20px;
+    border-radius: 17px;
     background-color: #FFFFFF;
     border: 1px solid var(--borda);
-    border-radius: 18px;
-    align-items: stretch;
-    justify-content: space-between;
+    box-shadow: 0 4px 14px rgba(43, 30, 18, .05);
 }
 
 
@@ -363,6 +366,82 @@ main {
 .kpi_destaque .kpi_valor {
     color: var(--dourado);
 }
+
+
+/* KPI: COLMEIAS EM RISCO */
+.kpi_risco {
+    position: relative;
+    overflow: hidden;
+    color: #FFFFFF;
+    background: linear-gradient(125deg, #E7352A, #B91F16);
+    border-color: #C9271D;
+}
+
+.kpi_risco .kpi_icone {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, .18);
+}
+
+.kpi_risco .kpi_titulo {
+    color: #FFFFFF;
+}
+
+.risco_etiqueta {
+    margin-left: auto;
+    padding: 5px 8px;
+    border-radius: 6px;
+    background: #FFFFFF;
+    color: #B3261E;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.lista_colmeias_risco {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lista_colmeias_risco span {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(255, 255, 255, .45);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .13);
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.risco_resumo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.risco_resumo strong {
+    font-size: 30px;
+    line-height: 1;
+}
+
+.risco_resumo p {
+    font-size: 12px;
+    line-height: 1.3;
+    color: #FFFFFF;
+}
+
+.risco_rodape {
+    margin-top: auto;
+    font-size: 12px;
+    color: #FFF0E9;
+}
+
+
+
 
 /* ================================= */
 /* PAINEL (FILTROS + GRÁFICOS) */
