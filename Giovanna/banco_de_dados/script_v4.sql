@@ -4,7 +4,6 @@ USE tetria;
 
 -- TABELA EMPRESA
 CREATE TABLE empresa (
-    idempresa INT NOT NULL AUTO_INCREMENT,
     nome_fantasia VARCHAR (100),
     razao_social VARCHAR(100) NOT NULL,
     cnpj CHAR(14) NOT NULL,
@@ -23,10 +22,10 @@ CREATE TABLE usuario (
     email VARCHAR(100) NOT NULL UNIQUE,
     telefone CHAR(14) UNIQUE,
     senha VARCHAR(45) NOT NULL,
-    fkempresa CHAR(8) NOT NULL,
+    fkCodEmpresa CHAR(8) NOT NULL,
     fkresponsavel INT,
 	CONSTRAINT fk_idempresa
-		FOREIGN KEY (fkempresa)
+		FOREIGN KEY (fkCodEmpresa)
 		REFERENCES empresa(codempresa),
 	CONSTRAINT fkresponsavel_idusuario 
 		FOREIGN KEY (fkresponsavel)
@@ -44,11 +43,12 @@ CREATE TABLE endereco (
     bairro VARCHAR(50),
     cidade VARCHAR(50),
     estado VARCHAR(45),
-    dt_ultima_atualizacao DATETIME,
-    fkEnderecoEmpresa INT NOT NULL,
+    dt_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
+    dt_atualizacao DATETIME,
+    fkEnderecoEmpresa CHAR(8) NOT NULL,
     CONSTRAINT fkendereco_idempresa
     FOREIGN KEY (fkEnderecoEmpresa)
-    REFERENCES empresa(idempresa)
+    REFERENCES empresa(codempresa)
 );
 
 
@@ -70,18 +70,18 @@ CREATE TABLE sensor (
     nome VARCHAR(45) NOT NULL,
     tiposensor VARCHAR(45) NOT NULL,
     dtinstalacao DATETIME DEFAULT CURRENT_TIMESTAMP,
-    StatusSensor VARCHAR(45) DEFAULT 'Ativo',
+    StatusSensor VARCHAR(45) NOT NULL DEFAULT 'Ativo',
     fkcolmeia INT UNIQUE,
     fkEndereco_sExterno INT,
     CONSTRAINT chk_StatusSensor CHECK (StatusSensor IN  ('Ativo', 'Inativo')),
     CONSTRAINT fksensor_idcolmeia
         FOREIGN KEY (fkcolmeia) REFERENCES colmeia(idcolmeia),
     CONSTRAINT fksensorExterno_idendereco
-        FOREIGN KEY (fkEndereco_sExterno) REFERENCES endereco(idendereco),
+        FOREIGN KEY (fkendereco_sexterno) REFERENCES endereco(idendereco),
     CONSTRAINT chk_tiposensor CHECK (
-        (tiposensor = 'Interno' AND fkcolmeia IS NOT NULL AND fkendereco IS NULL)
+        (tiposensor = 'Interno' AND fkcolmeia IS NOT NULL AND fkEndereco_sExterno IS NULL)
         OR
-        (tiposensor = 'Externo' AND fkcolmeia IS NULL AND fkendereco IS NOT NULL)
+        (tiposensor = 'Externo' AND fkcolmeia IS NULL AND fkEndereco_sExterno IS NOT NULL)
     )
 );
         
@@ -99,7 +99,7 @@ CREATE TABLE coleta_dados (
 
 
 CREATE TABLE contato (
-	id INT PRIMARY KEY AUTO_INCREMENT,
+	idContato INT PRIMARY KEY AUTO_INCREMENT,
     solicitante VARCHAR(100),
     empresa VARCHAR(255),
     motivo VARCHAR(50),
@@ -118,18 +118,19 @@ INSERT INTO empresa (codempresa, nome_fantasia, razao_social, cnpj, email, telef
 ('EMP00004', 'Apiário Monte Verde', 'Monte Verde Apicultura Ltda', '12345678000104', 'fzdApiariomonteverde@gmail.com', '(11)98765-0004'),
 ('EMP00005', 'Fazenda Recanto das Abelhas', 'Recanto das Abelhas Produtos Naturais Ltda', '12345678000105', 'fazendaRecantodasabelhas@gmail.com', '(11)98765-0005');
 
--- DADOS ENDEREÇO (antes do Sensor, que depende dele)
-INSERT INTO endereco (cep, numero, complemento, logradouro, bairro, cidade, estado, dt_ultima_atualizacao, fkEnderecoEmpresa) VALUES
-('01310-100', '1500', 'Sala 10', 'Av. Paulista', 'Bela Vista', 'São Paulo', 'SP', NOW(), 1),
-('01311-200', '850', NULL, 'Rua Haddock Lobo', 'Cerqueira César', 'São Paulo', 'SP', NOW(), 1),
-('80010-000', '450', NULL, 'Rua XV de Novembro', 'Centro', 'Curitiba', 'PR', NOW(), 2),
-('22021-001', '800', 'Apto 302', 'Av. Atlântica', 'Copacabana', 'Rio de Janeiro', 'RJ', NOW(), 2),
-('30130-000', '1200', NULL, 'Rua da Bahia', 'Centro', 'Belo Horizonte', 'MG', NOW(), 3),
-('01426-001', '900', 'Sala 12', 'Rua Oscar Freire', 'Pinheiros', 'São Paulo', 'SP', NOW(), 4),
-('13010-000', '250', 'Sala 8', 'Rua das Palmeiras', 'Centro', 'Campinas', 'SP', NOW(), 5);
+-- DADOS ENDEREÇO 
+INSERT INTO endereco (cep, numero, complemento, logradouro, bairro, cidade, estado, fkenderecoempresa) VALUES
+('18600-000', 'Km 12', NULL, 'Estrada Municipal José Antônio Pereira', 'Bairro Rio Bonito', 'Botucatu', 'SP', 'EMP00001'),
+('18600-000', 'S/N', 'Sítio Santa Luzia', 'Estrada do Lajeado', 'Zona Rural', 'Botucatu', 'SP', 'EMP00001'),
+('83750-000', 'S/N', NULL, 'Estrada Municipal João Kaminski', 'Bairro Água Limpa', 'Lapa', 'PR', 'EMP00002'),
+('25950-000', 'Km 5', NULL, 'Estrada do Bonfim', 'Bairro Cascata', 'Teresópolis', 'RJ', 'EMP00002'),
+('35700-000', 'Km 22', NULL, 'Rodovia MG-424', 'Zona Rural', 'Sete Lagoas', 'MG', 'EMP00003'),
+('18150-000', 'S/N', 'Sítio Boa Vista', 'Estrada Municipal Antônio Marques', 'Bairro dos Pires', 'Ibiúna', 'SP', 'EMP00004'),
+('18800-000', 'Km 3', NULL, 'Estrada Vicinal Manoel Ferreira', 'Bairro Ribeirão Claro', 'Piraju', 'SP', 'EMP00005');
+
 
 -- DADOS USUARIO
-INSERT INTO usuario (nome, cpf, email, telefone, senha, fkempresa, fkresponsavel) VALUES
+INSERT INTO usuario (nome, cpf, email, telefone, senha, fkCodEmpresa, fkresponsavel) VALUES
 ('Joao Silva', '529.841.763-20', 'joaosilva@gmail.com', '(11)98765-1001', 'joao123', 'EMP00001', NULL),
 ('Beatriz Lima', '638.215.947-01', 'beatrizlima@gmail.com', '(11)98765-1002', 'bia123', 'EMP00001', 1),
 ('Maria Santos', '741.963.852-04', 'mariasantos@gmail.com', '(11)98765-1003', 'maria123', 'EMP00002', NULL),
@@ -154,7 +155,6 @@ INSERT INTO colmeia (codigo, localizacao, statuss, fkendereco) VALUES
 ('COL009', 'Área Leste', 1, 7),
 ('COL010', 'Área Central', 0, 7);
 
--- DADOS SENSOR
 -- DADOS SENSOR
 INSERT INTO sensor (nome, tiposensor, dtinstalacao, fkcolmeia, fkEndereco_sExterno, statussensor) VALUES
 ('DHT11 01', 'Interno', '2025-06-01 08:00:00', 1, NULL, 'Ativo'),
@@ -226,7 +226,7 @@ SELECT usuario.nome AS usuario,
        empresa.nome_fantasia AS fazenda
 FROM usuario
 JOIN empresa
-    ON usuario.fkempresa = empresa.codempresa;
+    ON usuario.fkCodEmpresa = empresa.codempresa;
 
 -- 5. Exiba todas as fazendas e seus endereços,
 -- incluindo as fazendas sem endereço.
@@ -236,7 +236,7 @@ SELECT empresa.nome_fantasia AS empresa,
        endereco.estado
 FROM empresa
 LEFT JOIN endereco
-    ON empresa.idempresa = endereco.fkEnderecoEmpresa;
+    ON empresa.codempresa = endereco.fkEnderecoEmpresa;
 
 -- 6. Liste as colmeias inativas e o nome da fazenda à qual pertencem.
 SELECT c.codigo,
@@ -245,7 +245,7 @@ FROM colmeia AS c
 JOIN endereco AS en
     ON c.fkendereco = en.idendereco
 JOIN empresa AS e
-    ON en.fkEnderecoEmpresa = e.idempresa
+    ON en.fkEnderecoEmpresa = e.codempresa
 WHERE c.statuss = 0;
 
 
@@ -267,10 +267,10 @@ SELECT e.nome_fantasia AS fazenda,
        COUNT(c.idcolmeia) AS quantidade_colmeias
 FROM empresa AS e
 LEFT JOIN endereco AS en
-    ON e.idempresa = en.fkEnderecoEmpresa
+    ON e.codempresa = en.fkEnderecoEmpresa
 LEFT JOIN colmeia AS c
     ON en.idendereco = c.fkendereco
-GROUP BY e.idempresa, e.nome_fantasia;
+GROUP BY e.codempresa, e.nome_fantasia;
 
 -- 10. Exiba a fazenda, o código da colmeia e os sensores internos associados.
 SELECT e.nome_fantasia AS fazenda,
@@ -278,7 +278,7 @@ SELECT e.nome_fantasia AS fazenda,
        s.nome AS sensor
 FROM empresa AS e
 JOIN endereco AS en
-    ON e.idempresa = en.fkEnderecoEmpresa
+    ON e.codempresa = en.fkEnderecoEmpresa
 JOIN colmeia AS c
     ON en.idendereco = c.fkendereco
 JOIN sensor AS s
@@ -288,7 +288,7 @@ WHERE s.tiposensor = 'Interno';
 
 -- SELECT CONTATO
 SELECT CONCAT(
-        'ID:', id,
+        'ID:', idContato,
         ' | O solicitante ', solicitante, ' da empresa ', empresa, ' entrou em contato pelo motivo: ', motivo,
         ' | E-mail: ', email,
         ' | Data: ', DATE_FORMAT(dtcontato, '%d/%m/%Y %H:%i'),
@@ -306,11 +306,12 @@ CASE
 	WHEN col.temperatura >= 33 AND col.temperatura <= 36
 		AND col.umidade >= 50 AND col.umidade <= 75 THEN 'Ideal'
 			ELSE 'Atenção'
-END AS 'Precisam de ação'
+END AS situacao
 FROM colmeia c JOIN sensor s
 ON c.idcolmeia = s.fkcolmeia
 JOIN coleta_dados col
-ON s.idsensor = col.fksensor; 	
+ON s.idsensor = col.fksensor
+WHERE s.tiposensor = 'Interno' AND s.StatusSensor = 'Ativo';
 
 -- SELECT QUANTIDADE DE COLMEIAS EM CADA ESTADO (IDEAL, ATENÇÃO E RISCO)
 
@@ -347,7 +348,7 @@ FROM colmeia c JOIN sensor s
 ON c.idcolmeia = s.fkcolmeia
 JOIN coleta_dados col
 ON s.idsensor = col.fksensor
-	WHERE col.temperatura < 32 OR col.temperatura > 38 OR col.umidade >= 85; 	
+	WHERE s.StatusSensor = 'Ativo' AND col.temperatura < 32 OR col.temperatura > 38 OR col.umidade >= 85; 	
     
 -- SELECT SENSORES ATIVOS E INATIVOS
 SELECT statusSensor, COUNT(*) as qtd_sensor
@@ -356,7 +357,7 @@ GROUP BY statusSensor;
 
 -- SELECT SENSORES INATIVOS
 SELECT idSensor, statusSensor, tipoSensor
-FROM Sensor
+FROM sensor
 WHERE statusSensor = 'Inativo';
 
--- DROP DATABASE Tetria;
+ -- DROP DATABASE tetria;
