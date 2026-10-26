@@ -1,20 +1,22 @@
 /* ================================= */
 /* VARIÁVEIS (CORES E MEDIDAS) */
 /* ================================= */
+/* base = cores do site (--yellow, --brown, --cream, --muted, --line, --brown-light) */
 :root {
-    --marrom: #2A1E16;
-    --texto_suave: #6F6358;
+    --marrom: #2B1E17;
+    --texto_suave: #716B63;
+    --texto_fraco: #9A928A;
+    --fundo: #FFFCF7;
     --creme: #FFF7EA;
-    --creme_card: #FCF4E4;
-    --borda: #F0E3C8;
-    --borda_forte: #E8DCC4;
-    --dourado: #E0AF1E;
-    --dourado_escuro: #8A6508;
-    --verde: #2A7A35;
-    --vermelho: #B3261E;
+    --borda: #E7DFD4;
+    --borda_forte: #DACFBF;
+    --dourado: #DCAE1D;
+    --dourado_escuro: #8A6A0C;
+    --verde: #2F7D3B;
+    --vermelho: #C4352B;
 
-    --altura_navbar: 64px;
-    --raio: 14px;
+    --altura_navbar: 56px;
+    --raio: 12px;
     --espaco: 16px;
 }
 
@@ -29,7 +31,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #FFFDF8;
+    background-color: var(--fundo);
     color: var(--marrom);
     line-height: 1.4;
 }
@@ -49,7 +51,7 @@ ul {
 }
 
 /* ================================= */
-/* NAVBAR (COM O TÍTULO DA PÁGINA) */
+/* NAVBAR */
 /* ================================= */
 .navbar {
     display: flex;
@@ -58,7 +60,7 @@ ul {
     gap: 16px;
     height: var(--altura_navbar);
     padding: 0 24px;
-    background-color: var(--creme);
+    background-color: #FFFFFF;
     border-bottom: 1px solid var(--borda);
 }
 
@@ -74,28 +76,25 @@ ul {
     display: flex;
     align-items: center;
     color: var(--marrom);
-    font-weight: 600;
     text-decoration: none;
 }
 
 .navbar_logo img {
     display: block;
-    height: 36px;
+    height: 50px;
     width: auto;
     object-fit: contain;
 }
 
-/* TÍTULO AO LADO DO LOGO, SEPARADO POR UMA LINHA */
 .navbar_titulo {
     padding-left: 16px;
-    border-left: 1px solid var(--borda_forte);
+    border-left: 1px solid var(--borda);
 }
 
 .navbar_titulo h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    font-weight: 400;
-    line-height: 1.1;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.2;
     white-space: nowrap;
 }
 
@@ -104,223 +103,327 @@ ul {
     color: var(--texto_suave);
 }
 
-/* FOTO DO USUÁRIO (REDONDA, COM BORDA DOURADA) */
 .navbar_usuario img {
     display: block;
-    width: 38px;
-    height: 38px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    border: 2px solid var(--dourado);
-    background-color: var(--creme_card);
+    border: 1px solid var(--borda_forte);
+    background-color: var(--creme);
     object-fit: cover;
     font-size: 0; /* esconde o texto alternativo se a imagem não carregar */
-}
-
-.botao_menu {
-    display: none;
-    width: 38px;
-    height: 38px;
-    background: none;
-    border: 1px solid var(--borda_forte);
-    border-radius: 10px;
-    color: var(--marrom);
-    font-size: 18px;
-    cursor: pointer;
 }
 
 .selo_ao_vivo {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 12px;
-    border: 1px solid var(--borda);
-    border-radius: 999px;
-    background-color: #FFFFFF;
     font-size: 12px;
-    font-weight: 500;
     color: var(--texto_suave);
     white-space: nowrap;
 }
 
 .selo_ao_vivo span {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background-color: var(--verde);
-    box-shadow: 0 0 0 4px rgba(42, 122, 53, 0.15);
+    box-shadow: 0 0 0 3px rgba(42, 122, 53, 0.15);
 }
 
 /* ================================= */
 /* CONTAINER PRINCIPAL */
 /* ================================= */
-/* KPIs em cima, painel embaixo; juntos ocupam a altura inteira da tela (a navbar fica acima) */
+/* KPIs em cima e painel embaixo ocupam exatamente a altura da tela (sem rolar) */
 main {
     display: flex;
     flex-direction: column;
     gap: var(--espaco);
-    height: 100vh;
+    height: calc(100vh - var(--altura_navbar));
     max-width: 1600px;
     margin: 0 auto;
     padding: var(--espaco) 24px;
 }
 
 /* ================================= */
-/* FAIXA DE KPIs (TOPO) */
+/* FAIXA DE KPIs */
 /* ================================= */
-/* situação atual (4 cards) e confiabilidade (2 cards) na mesma linha */
-
-
+/* risco ganha mais espaço por ser o mais importante */
 .faixa_kpis {
     display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
-    gap: 18px;
-    align-items: stretch;
+    grid-template-columns: 1.35fr 1fr 1fr 0.8fr;
+    gap: 14px;
 }
-
-
-
-.grupo_kpi {
-    display: flex;
-    flex-direction: column;
-}
-
-/* TÍTULO PEQUENO DE CADA GRUPO */
-.titulo_grupo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--texto_suave);
-}
-
-/* LINHA FINA QUE SEPARA O TÍTULO DO RESTO */
-.titulo_grupo::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background-color: var(--borda);
-}
-
-
-.grade_kpi {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-}
-
-.grupo_situacao .grade_kpi {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
-}
-.grupo_confiabilidade .grade_kpi {
-    grid-template-columns: minmax(0, 1fr);
-}
-
-
-
-/* ================================= */
-/* CARD DE KPI (COMPACTO) */
-/* ================================= */
-/* estrutura: topo (ícone + nome) → valor → detalhes em uma linha */
-
-
 
 .kpi {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 12px;
-    width: 100%;
+    gap: 10px;
     min-width: 0;
-    min-height: 216px;
-    margin: 0;
-    padding: 20px;
-    border-radius: 17px;
+    padding: 14px 18px;
+    border-radius: var(--raio);
     background-color: #FFFFFF;
     border: 1px solid var(--borda);
-    box-shadow: 0 4px 14px rgba(43, 30, 18, .05);
 }
 
+/* cor só onde importa: vermelho no risco, amarelo na atenção, marrom do site na comparação */
+.kpi_risco {
+    border-color: #F1C7C2;
+    border-top: 3px solid var(--vermelho);
+    background: linear-gradient(160deg, #FCE9E6 0%, #FFFFFF 65%);
+}
+
+.kpi_atencao {
+    border-color: #EEDBA6;
+    border-top: 3px solid var(--dourado);
+    background: linear-gradient(160deg, var(--creme) 0%, #FFFFFF 65%);
+}
+
+.kpi_comparacao {
+    border-color: var(--marrom);
+    background-color: var(--marrom);
+    color: var(--creme);
+}
+
+.kpi_comparacao .kpi_titulo,
+.kpi_comparacao .kpi_rodape {
+    color: #C9BCAD;
+}
+
+.kpi_comparacao .comparacao_rotulo {
+    color: #A39585;
+}
+
+.kpi_comparacao .comparacao_externa {
+    color: var(--dourado);
+}
+
+.kpi_comparacao .kpi_rodape strong {
+    color: var(--creme);
+}
+
+.kpi_comparacao .delta {
+    background-color: var(--dourado);
+    border-color: var(--dourado);
+    color: var(--marrom);
+}
+
+/* valor + botão "Ver todas" na mesma linha */
+.kpi_linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.ver_todas {
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--marrom);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.ver_todas:hover {
+    text-decoration: underline;
+}
+
+.kpi_risco .ver_todas {
+    color: var(--vermelho);
+}
+
+.kpi_atencao .ver_todas {
+    color: var(--dourado_escuro);
+}
 
 .kpi_topo {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 8px;
 }
 
-.kpi_icone {
-    flex-shrink: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 26px;
-    height: 26px;
-    border-radius: 7px;
-    background-color: var(--creme_card);
-    color: var(--dourado_escuro);
-}
-
-.kpi_icone svg {
-    width: 15px;
-    height: 15px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-/* NOME DO KPI */
 .kpi_titulo {
-    font-size: 17px;
-    font-weight: 600;
-    line-height: 1.3;
-    color: var(--texto_suave);
-}
-
-/* VALOR PRINCIPAL */
-.kpi_valor {
-    font-family: 'DM Serif Display', serif;
-    font-size: 48px;
-    line-height: 1;
-    color: var(--marrom);
-}
-
-/* UNIDADE AO LADO DO VALOR ("/10 colmeias") */
-.kpi_valor span {
-    margin-left: 5px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 19px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--texto_suave);
 }
 
-/* DETALHES NO FIM DO CARD, LADO A LADO */
-.kpi_detalhes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px 12px;
-    margin-top: auto;
+.kpi_selo {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.selo_risco {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--vermelho);
+    color: #FFFFFF;
+}
+
+/* ponto branco piscando: alerta ativo */
+.selo_risco i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    animation: piscar 1.6s ease-in-out infinite;
+}
+
+.selo_atencao {
+    background-color: var(--dourado);
+    color: var(--marrom);
+}
+
+.selo_ok {
+    background-color: rgba(47, 125, 59, 0.1);
+    color: var(--verde);
+}
+
+@keyframes piscar {
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* VALOR PRINCIPAL */
+.kpi_valor {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+.kpi_valor span {
+    margin-left: 8px;
     font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0;
     color: var(--texto_suave);
 }
 
-.kpi_detalhes li {
+.kpi_risco .kpi_valor {
+    color: var(--vermelho);
+}
+
+.kpi_atencao .kpi_valor {
+    color: var(--dourado_escuro);
+}
+
+.kpi_rodape {
+    margin-top: auto;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--texto_suave);
+}
+
+.kpi_rodape strong {
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+/* LISTA DE COLMEIAS COM ALERTA (CLICÁVEL) */
+.lista_alertas {
     display: flex;
+    flex-direction: column;
+    margin-top: auto;
+    border-top: 1px solid var(--borda);
+}
+
+.lista_alertas li {
+    display: grid;
+    grid-template-columns: 80px minmax(0, 1fr) auto;
     align-items: center;
-    gap: 6px;
+    gap: 10px;
+    padding: 5px 4px;
+    border-bottom: 1px solid var(--borda);
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.lista_alertas li:last-child {
+    border-bottom: none;
+}
+
+.lista_alertas li:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.kpi_risco .lista_alertas,
+.kpi_risco .lista_alertas li {
+    border-color: #F3D5D1;
+}
+
+.kpi_atencao .lista_alertas,
+.kpi_atencao .lista_alertas li {
+    border-color: #F1E3BC;
+}
+
+.lista_alertas strong {
+    font-weight: 600;
+}
+
+.alerta_motivo {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--texto_suave);
+}
+
+.alerta_tempo {
+    color: var(--texto_fraco);
+    font-variant-numeric: tabular-nums;
+}
+
+/* KPI INTERNA × EXTERNA */
+.comparacao {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.comparacao_rotulo {
+    margin-bottom: 4px;
+    font-size: 11px;
+    color: var(--texto_fraco);
+}
+
+.comparacao_valor {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+.comparacao_externa {
+    color: var(--dourado_escuro);
+}
+
+.delta {
+    display: inline-block;
+    padding: 0 6px;
+    border-radius: 6px;
+    background-color: var(--creme);
+    border: 1px solid var(--borda);
+    font-weight: 600;
+    color: var(--marrom);
 }
 
 /* BARRA DE PROGRESSO */
 .barra {
-    height: 5px;
+    height: 6px;
     border-radius: 999px;
-    background-color: var(--creme_card);
+    background-color: var(--borda);
     overflow: hidden;
 }
 
@@ -328,7 +431,7 @@ main {
     display: block;
     height: 100%;
     border-radius: 999px;
-    background-color: var(--dourado);
+    background-color: var(--verde);
 }
 
 /* PONTOS DE COR (SITUAÇÃO) */
@@ -337,7 +440,7 @@ main {
     display: inline-block;
     width: 8px;
     height: 8px;
-    border-radius: 50%;
+    border-radius: 2px;
 }
 
 .ponto.ideal { background-color: var(--verde); }
@@ -345,178 +448,81 @@ main {
 .ponto.risco { background-color: var(--vermelho); }
 
 /* ================================= */
-/* KPI EM DESTAQUE (PRECISAM DE AÇÃO) */
+/* PAINEL (FILTROS EM CIMA + GRÁFICOS) */
 /* ================================= */
-.kpi_destaque {
-    background-color: var(--marrom);
-    border-color: var(--marrom);
-}
-
-.kpi_destaque .kpi_icone {
-    background-color: rgba(224, 175, 30, 0.16);
-    color: var(--dourado);
-}
-
-.kpi_destaque .kpi_titulo,
-.kpi_destaque .kpi_detalhes,
-.kpi_destaque .kpi_valor span {
-    color: #CDBFAE;
-}
-
-.kpi_destaque .kpi_valor {
-    color: var(--dourado);
-}
-
-
-/* KPI: COLMEIAS EM RISCO */
-.kpi_risco {
-    position: relative;
-    overflow: hidden;
-    color: #FFFFFF;
-    background: linear-gradient(125deg, #E7352A, #B91F16);
-    border-color: #C9271D;
-}
-
-.kpi_risco .kpi_icone {
-    color: #FFFFFF;
-    background: rgba(255, 255, 255, .18);
-}
-
-.kpi_risco .kpi_titulo {
-    color: #FFFFFF;
-}
-
-.risco_etiqueta {
-    margin-left: auto;
-    padding: 5px 8px;
-    border-radius: 6px;
-    background: #FFFFFF;
-    color: #B3261E;
-    font-size: 9px;
-    font-weight: 700;
-    text-transform: uppercase;
-    white-space: nowrap;
-}
-
-.lista_colmeias_risco {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.lista_colmeias_risco span {
-    display: grid;
-    place-items: center;
-    width: 42px;
-    height: 42px;
-    border: 1px solid rgba(255, 255, 255, .45);
-    border-radius: 10px;
-    background: rgba(255, 255, 255, .13);
-    color: #FFFFFF;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.risco_resumo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.risco_resumo strong {
-    font-size: 30px;
-    line-height: 1;
-}
-
-.risco_resumo p {
-    font-size: 12px;
-    line-height: 1.3;
-    color: #FFFFFF;
-}
-
-.risco_rodape {
-    margin-top: auto;
-    font-size: 12px;
-    color: #FFF0E9;
-}
-
-
-
-
-/* ================================= */
-/* PAINEL (FILTROS + GRÁFICOS) */
-/* ================================= */
-/* ocupa toda a largura e toda a altura que sobra */
-/* 2 colunas: filtros numa coluna estreita à esquerda, gráfico no resto */
+/* ocupa toda a altura que sobra embaixo dos KPIs */
 .painel {
     flex: 1;
-    display: grid;
-    grid-template-columns: 220px minmax(0, 1fr);
-    gap: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     min-height: 0;
-    padding: 18px 20px;
+    padding: 14px 18px 16px;
     background-color: #FFFFFF;
     border: 1px solid var(--borda);
     border-radius: var(--raio);
 }
 
-/* as duas visões ficam na coluna da direita (só uma aparece por vez) */
-.painel .visao {
-    grid-column: 2;
-    grid-row: 1;
-}
-
-/* COLUNA DOS FILTROS */
 .painel_topo {
     display: flex;
-    flex-direction: column;
-    gap: 18px;
-    padding-right: 24px;
-    border-right: 1px solid var(--borda);
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--borda);
+}
+
+/* título + selo da situação na mesma linha */
+.titulo_linha {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .titulo_painel {
-    font-family: 'DM Serif Display', serif;
-    font-size: 20px;
-    font-weight: 400;
+    font-size: 17px;
+    font-weight: 600;
     line-height: 1.2;
 }
 
+.subtitulo_painel {
+    margin-top: 2px;
+    font-size: 12px;
+    color: var(--texto_suave);
+}
+
 /* ================================= */
-/* FILTROS */
+/* FILTROS (LADO A LADO) */
 /* ================================= */
-/* um campo embaixo do outro, rótulo em cima do select */
 .filtro {
     display: flex;
-    flex-direction: column;
-    gap: 14px;
+    gap: 12px;
 }
 
 .campo {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
+    width: 180px;
 }
 
 .campo label {
     font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    font-weight: 500;
     color: var(--texto_suave);
 }
 
 .campo select {
     width: 100%;
-    height: 38px;
-    padding: 0 36px 0 12px;
+    height: 34px;
+    padding: 0 34px 0 12px;
     background-color: #FFFFFF;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%232A1E16' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%232A1E16' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
     background-repeat: no-repeat;
     background-position: right 12px center;
     border: 1px solid var(--borda_forte);
-    border-radius: 10px;
-    font-size: 14px;
+    border-radius: 8px;
+    font-size: 13px;
     color: var(--marrom);
     outline: none;
     cursor: pointer;
@@ -526,75 +532,35 @@ main {
 }
 
 .campo select:hover {
-    border-color: #D4BE8A;
+    border-color: #C9B48A;
 }
 
 .campo select:focus {
     border-color: var(--dourado);
-    box-shadow: 0 0 0 3px rgba(224, 175, 30, 0.3);
-}
-
-/* BOTÃO VER DETALHES */
-.botao_selecionar {
-    height: 38px;
-    padding: 0 22px;
-    border: 1px solid var(--marrom);
-    border-radius: 10px;
-    background-color: var(--marrom);
-    color: var(--creme);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-}
-
-.botao_selecionar:hover {
-    background-color: var(--dourado);
-    border-color: var(--dourado);
-    color: var(--marrom);
-}
-
-.botao_selecionar:focus-visible {
-    outline: 3px solid rgba(224, 175, 30, 0.6);
-    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(217, 161, 26, 0.25);
 }
 
 /* ================================= */
 /* VISÕES (GERAL E INDIVIDUAL) */
 /* ================================= */
-/* a visão ocupa todo o resto do painel, e o gráfico estica junto */
 .visao {
     flex: 1;
     display: flex;
     flex-direction: column;
+    gap: 10px;
     min-height: 0;
 }
 
 #visao_geral:not(.oculto),
 #visao_individual:not(.oculto) {
-    animation: fadeIn 0.35s ease-out;
+    animation: fadeIn 0.3s ease-out;
 }
 
-.visao_cabecalho {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 12px;
-}
-
-.visao_cabecalho h3 {
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.3;
-}
-
-/* LEGENDA DO GRÁFICO GERAL */
+/* LEGENDA (UMA SÓ PARA OS DOIS GRÁFICOS) */
 .legenda {
     display: flex;
     flex-wrap: wrap;
-    gap: 14px;
+    gap: 6px 18px;
     font-size: 12px;
     color: var(--texto_suave);
 }
@@ -605,16 +571,37 @@ main {
     gap: 6px;
 }
 
-#mensagem_individual {
-    font-size: 13px;
-    color: var(--texto_suave);
+.marcador_interno,
+.marcador_externo {
+    width: 14px;
+    height: 3px;
+    border-radius: 2px;
+}
+
+.marcador_interno {
+    background-color: var(--marrom);
+}
+
+.marcador_externo {
+    background-color: var(--dourado_escuro);
+}
+
+.marcador_externo.tracejado {
+    background: repeating-linear-gradient(90deg, var(--dourado_escuro) 0 5px, transparent 5px 8px);
+}
+
+.marcador_faixa {
+    width: 14px;
+    height: 10px;
+    border: 1px dashed rgba(42, 122, 53, 0.5);
+    background-color: rgba(42, 122, 53, 0.08);
 }
 
 /* SELO DE SITUAÇÃO DA COLMEIA */
 /* o JavaScript coloca um <span> com a classe da situação dentro do #status_individual */
 #status_individual span {
     display: inline-block;
-    padding: 5px 12px;
+    padding: 2px 10px;
     border-radius: 999px;
     font-size: 12px;
     font-weight: 600;
@@ -622,81 +609,168 @@ main {
 }
 
 .status_ideal {
-    background-color: rgba(42, 122, 53, 0.12);
+    background-color: rgba(42, 122, 53, 0.1);
     color: var(--verde);
 }
 
 .status_atencao {
-    background-color: rgba(224, 175, 30, 0.22);
+    background-color: rgba(217, 161, 26, 0.16);
     color: var(--dourado_escuro);
 }
 
 .status_risco {
-    background-color: rgba(179, 38, 30, 0.1);
+    background-color: rgba(179, 38, 30, 0.08);
     color: var(--vermelho);
 }
 
 /* ================================= */
 /* GRÁFICOS */
 /* ================================= */
-/* o canvas precisa de uma caixa com position relative; a altura vem do espaço que sobra */
-.grafico {
-    position: relative;
-    flex: 1;
-    min-height: 0;
-}
-
-
-/* Gráficos da dashboard */
 .grade_graficos {
     flex: 1;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
+    gap: 14px;
     min-height: 0;
 }
 
-.grade_graficos .grafico {
-    position: relative;
-    flex: 1;
+.cartao_grafico {
+    display: flex;
+    flex-direction: column;
     min-width: 0;
     min-height: 0;
-    padding: 20px;
+    padding: 12px 16px 10px;
     border: 1px solid var(--borda);
     border-radius: var(--raio);
-    background: #FFFFFF;
-    box-shadow: 0 3px 12px rgba(42, 30, 22, 0.04);
 }
 
-/* Título e legenda */
-.visao_cabecalho {
+.cartao_grafico h3 {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* texto à direita do título: faixa ideal ou leituras atuais */
+.cartao_grafico h3 span {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--texto_fraco);
+    font-variant-numeric: tabular-nums;
+}
+
+.cartao_grafico h3 span strong {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+.cartao_grafico h3 span b {
+    margin-left: 2px;
+    padding: 1px 6px;
+    border-radius: 6px;
+    background-color: var(--creme);
+    border: 1px solid var(--borda);
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+/* ================================= */
+/* CONDIÇÕES DAS COLMEIAS (VISÃO GERAL) */
+/* ================================= */
+/* uma linha por condição: nome | barra | quantidade; as linhas dividem a altura do cartão */
+.lista_faixas {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    min-height: 0;
+}
+
+.faixa {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr) 72px;
     align-items: center;
     gap: 16px;
-    margin-bottom: 18px;
+    max-height: 64px;
+    flex: 1;
+    padding: 0 14px;
+    border-radius: 10px;
+    transition: background-color 0.15s ease;
 }
 
-.visao_cabecalho h3 {
-    color: var(--marrom);
-    font-size: 17px;
+.faixa:hover {
+    background-color: var(--fundo);
+}
+
+/* a condição ideal fica destacada como referência */
+.faixa_ideal,
+.faixa_ideal:hover {
+    background-color: rgba(47, 125, 59, 0.06);
+}
+
+.faixa_nome strong {
+    display: block;
+    font-size: 13px;
     font-weight: 600;
-    letter-spacing: -0.3px;
+    line-height: 1.2;
 }
 
-.legenda {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
+.faixa_nome span {
+    font-size: 11px;
+    color: var(--texto_fraco);
+}
+
+/* trilho = 100% das colmeias; a barra preenche a proporção */
+.faixa_trilho {
+    height: 12px;
+    border-radius: 999px;
+    background-color: #F2ECE3;
+    overflow: hidden;
+}
+
+.faixa_barra {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.6s ease;
+}
+
+.faixa_numero {
+    text-align: right;
     font-size: 12px;
-    color: var(--texto_suave);
+    color: var(--texto_fraco);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
 }
 
+.faixa_numero strong {
+    margin-right: 4px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+/* condição sem nenhuma colmeia fica apagada */
+.faixa_vazia .faixa_nome,
+.faixa_vazia .faixa_numero strong {
+    opacity: 0.45;
+}
+
+/* o canvas precisa de uma caixa com position relative; a altura vem do espaço que sobra */
+.grafico {
+    position: relative;
+    flex: 1;
+    min-height: 160px;
+}
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(8px);
+        transform: translateY(6px);
     }
     to {
         opacity: 1;
@@ -707,50 +781,45 @@ main {
 /* ================================= */
 /* RESPONSIVIDADE */
 /* ================================= */
-/* telas pequenas não têm altura para caber tudo: volta a rolar normalmente */
-@media (max-width: 1100px), (max-height: 600px) {
+/* telas pequenas não têm espaço para caber tudo: volta a rolar normalmente */
+@media (max-width: 1200px), (max-height: 640px) {
     main {
         height: auto;
     }
 
+    .grafico {
+        flex: none;
+        height: 280px;
+    }
+
+    .faixa {
+        min-height: 52px;
+    }
+}
+
+@media (max-width: 1200px) {
     .faixa_kpis {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+}
 
-    /* filtros voltam para cima do gráfico, em uma linha */
-    .painel {
-        display: flex;
-        flex-direction: column;
-        gap: 0;
-    }
-
+@media (max-width: 860px) {
     .painel_topo {
-        margin-bottom: 14px;
-        padding: 0 0 14px;
-        border-right: none;
-        border-bottom: 1px solid var(--borda);
-    }
-
-    .filtro {
-        flex-direction: row;
-        align-items: flex-end;
+        flex-direction: column;
+        align-items: stretch;
     }
 
     .campo {
         flex: 1;
-    }
-
-    .grafico {
-        flex: none;
-        height: 320px;
+        width: auto;
     }
 
     .grade_graficos {
-        flex: none;
+        grid-template-columns: 1fr;
     }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 640px) {
     main {
         padding: 16px;
     }
@@ -764,36 +833,12 @@ main {
         display: none;
     }
 
-    .navbar_titulo h1 {
-        font-size: 18px;
-    }
-
-    .grupo_situacao .grade_kpi {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .filtro,
-    .campo {
-        flex-direction: column;
-        align-items: stretch;
-        width: 100%;
-    }
-
-    .campo {
-        gap: 4px;
-    }
-
-    .campo select,
-    .botao_selecionar {
-        width: 100%;
-    }
-
-    .grade_graficos {
+    .faixa_kpis {
         grid-template-columns: 1fr;
     }
 
     .grafico {
-        height: 280px;
+        height: 240px;
     }
 }
 
@@ -801,11 +846,17 @@ main {
     .navbar_logo {
         display: none;
     }
+
+    .navbar_titulo {
+        padding-left: 0;
+        border-left: none;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
     #visao_geral:not(.oculto),
-    #visao_individual:not(.oculto) {
+    #visao_individual:not(.oculto),
+    .selo_risco i {
         animation: none;
     }
 }
