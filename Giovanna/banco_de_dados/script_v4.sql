@@ -6,7 +6,7 @@ USE tetria;
 CREATE TABLE empresa (
     nome_fantasia VARCHAR (100),
     razao_social VARCHAR(100) NOT NULL,
-    cnpj CHAR(14) NOT NULL,
+    cnpj CHAR(14) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     telefone CHAR(14) UNIQUE NOT NULL,
     dtcadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -72,7 +72,7 @@ CREATE TABLE sensor (
     dtinstalacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     StatusSensor VARCHAR(45) NOT NULL DEFAULT 'Ativo',
     fkcolmeia INT UNIQUE,
-    fkEndereco_sExterno INT,
+    fkEndereco_sExterno INT UNIQUE,
     CONSTRAINT chk_StatusSensor CHECK (StatusSensor IN  ('Ativo', 'Inativo')),
     CONSTRAINT fksensor_idcolmeia
         FOREIGN KEY (fkcolmeia) REFERENCES colmeia(idcolmeia),
@@ -85,13 +85,14 @@ CREATE TABLE sensor (
     )
 );
         
--- TABELA COLETA DE DADOS
+-- TABELA COLETA DE DADOS (entidade fraca: só existe ligada a um sensor)
 CREATE TABLE coleta_dados (
-	idcoleta INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  idcoleta INT NOT NULL AUTO_INCREMENT,
 	temperatura DECIMAL(10,2),
     umidade DECIMAL(10,2),
     dt_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
     fksensor INT NOT NULL,
+	PRIMARY KEY (idcoleta, fksensor),
     CONSTRAINT fksensor_idsensor 
 		FOREIGN KEY (fksensor)
         REFERENCES sensor(idsensor)
@@ -100,11 +101,11 @@ CREATE TABLE coleta_dados (
 
 CREATE TABLE contato (
 	idContato INT PRIMARY KEY AUTO_INCREMENT,
-    solicitante VARCHAR(100),
-    empresa VARCHAR(255),
-    motivo VARCHAR(50),
-    email VARCHAR(120),
-    mensagem VARCHAR(1048),
+    solicitante VARCHAR(100)NOT NULL,
+    empresa VARCHAR(255) NOT NULL,
+    motivo VARCHAR(50) NOT NULL,
+    email VARCHAR(120) NOT NULL,
+    mensagem VARCHAR(1048) NOT NULL,
     dtcontato DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT checkemail CHECK(email LIKE '%@%')
     );
@@ -337,18 +338,13 @@ GROUP BY classificacao;
 
 -- SELECT COLMEIAS EM RISCO
 SELECT
-CONCAT('Colmeia: ', c.codigo, ' - Localizada: ', localizacao, '  - Temperatura: ' ,col.temperatura, '  Umidade ', col.umidade, '%  ' ,  s.tiposensor) status_colmeias,
-CASE
-	WHEN col.temperatura < 32 OR col.temperatura > 38 OR col.umidade >= 85 THEN 'Risco'
-	WHEN col.temperatura >= 33 AND col.temperatura <= 36
-		AND col.umidade >= 50 AND col.umidade <= 75 THEN 'Ideal'
-			ELSE 'Atenção'
-END AS 'acao'
+CONCAT('Colmeia: ', c.codigo, ' - Localizada: ', localizacao, '  - Temperatura: ' ,col.temperatura, '  Umidade ', col.umidade, '%  ' ,  s.tiposensor) status_colmeias
 FROM colmeia c JOIN sensor s
 ON c.idcolmeia = s.fkcolmeia
 JOIN coleta_dados col
 ON s.idsensor = col.fksensor
-	WHERE s.StatusSensor = 'Ativo' AND col.temperatura < 32 OR col.temperatura > 38 OR col.umidade >= 85; 	
+	WHERE s.tiposensor = 'Interno' AND s.StatusSensor = 'Ativo'
+  AND (col.temperatura < 32 OR col.temperatura > 38 OR col.umidade >= 85);
     
 -- SELECT SENSORES ATIVOS E INATIVOS
 SELECT statusSensor, COUNT(*) as qtd_sensor

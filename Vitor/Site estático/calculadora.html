@@ -58,19 +58,19 @@
           <label for="ipt_qtd_mel_kg"
             >Quantos (kg) de mel é produzido por colmeia ao ano?</label
           >
-          <input type="text" id="ipt_qtd_mel_kg" />
+          <input type="number" id="ipt_qtd_mel_kg" />
           <span id="erro_qtd_mel_kg"></span>
         </div>
         <div class="campo">
           <label for="ipt_valor_mel_kg">Valor do mel por kg: </label>
-          <input type="text" id="ipt_valor_mel_kg" />
+          <input type="number" id="ipt_valor_mel_kg" />
           <span id="erro_valor_mel_kg"></span>
         </div>
         <div class="campo campo-perda">
           <label for="ipt_qtd_colmeias_perdidas"
             >Quantidade de colmeias perdidas ao ano:</label
           >
-          <input type="text" id="ipt_qtd_colmeias_perdidas" />
+          <input type="number" id="ipt_qtd_colmeias_perdidas" />
           <span
             ><b><i>*Por temperatura e umidade</i></b></span
           >
@@ -265,7 +265,7 @@
       let fracaoPerdida = mesesSemProduzir / 12;
 
       //receita de mel perdida: só a parte do ano em que as colmeias perdidas não produziram
-      // 1- valor do mel ao mês  2- multiplica pela qtd de meses perdidos
+      // 1- valor do mel ao ano  2- multiplica pela qtd de meses perdidos
       let valorProducaoPerdida =
         (qtdMelKgPorColmeia * valorMelKg) *
         qtdColmeiasPerdidas *
