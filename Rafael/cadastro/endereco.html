@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="cendereço.css">
+      <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="main-wrapper">
+
+        <aside class="imagem-container">
+            <img src="../src/colmeia.jpg" alt="Imagem Base">
+            <div class="painel-conteudo">
+                <div class="painel-topo">
+                    <h2>Comece sua jornada com a gente.</h2>
+                    <p>Acompanhe suas colmeias em tempo real, de qualquer lugar.</p>
+                </div>
+
+                <div class="destaque">
+                    <h3>Destaque da plataforma</h3>
+                    <p>Monitore temperatura, umidade e a saúde das suas colmeias com dados atualizados e alertas automáticos.</p>
+                    <div class="progresso">
+                        <span class="ativo"></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="cadastro-container">
+            <div class="header">
+                <img src="../src/tetria-logo-transparente.png" alt="Logo">
+               <div class="conta">
+                 <h1>
+                    Cadastro de Endereço
+                </h1>
+               </div>
+
+               <div class="cadastro">
+                <span>Cadastre-se para começar a acompanhar as suas colmeias.</span>
+               </div>
+            </div>
+
+            <div class="info">
+                <div class="campo">
+                    <label for="rua_input">Nome da Rua</label>
+                    <input type="text" placeholder="Digite a rua onde está" id="rua_input">
+                </div>
+
+                <div class="campo">
+                    <label for="cep_input">CEP</label>
+                    <input type="text" id="cep_input" placeholder="000.000.000-00">
+                </div>
+            </div> 
+            <div class="email">
+                <div class="campo">
+                    <label for="numero_input">E-mail</label>
+                    <input type="text"  id="numero_input" placeholder="000">
+                </div>
+                <div class="campo">
+                    <label for="cidade_input">Telefone</label>
+                    <input type="text" id="cidade_input" placeholder="Seu bairro aqui ">
+                </div>
+            </div>
+            <div class="endereço">
+                <div class="campo">
+                    <label for="end_input">Endereço</label>
+                    <input type="text"  id="end_input" placeholder="seu endereço">
+                </div>
+                <div class="campo">
+                    <label for="razaosocialempresa_input">Razão Social</label>
+                    <input type="text"  id="razaosocialempresa_input" placeholder="seu nome">
+                </div>
+            </div>
+           
+
+            <div class="termos-container">
+                <input type="checkbox" id="termos" name="termos" required>
+                <label for="termos">
+                Aceito os <a href="#">termos de uso</a> e a <a href="#">política de privacidade</a>.
+            </label>
+            </div>
+        <div class="btn">
+                <button onclick="cadastrar()">
+                    Criar conta
+                </button>
+            </div>
+            <div class="jconta">
+                <span>Já possui uma conta</span>
+                <button onclick="window.location.href='../login/logi.html'">
+                    Entrar
+                </button>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+<script>
+
+  // Array para armazenar empresas cadastradas para validação de código de ativação 
+  let listaEmpresasCadastradas = [];
+
+  function cadastrar() {
+
+    //Recupere o valor da nova input pelo nome do id
+    var nomeempresaVar = nomeempresa_input.value;
+    var razaosocialempresaVar = razaosocialempresa_input.value;
+    var endempresaVar = endempresa_input.value;
+    var emailempresaVar = emailempresa_input.value;
+    var telefoneempresaVar = telempresa_input.value;
+    var cnpjVar = cnpj_input.value;
+    var codigoempresa = ""
+    const carcteries = "ABCDEFGHIJKLMNOPQRSTUVWXY0123456789"
+
+    for (let i = 0; i < 8; i++) {
+      codigoempresa += carcteries.charAt(Math.floor(Math.random() * carcteries.length));
+      
+    }
+
+    // Verificando se há algum campo em branco
+    if (
+      nomeempresaVar == "" ||
+      razaosocialempresaVar == "" ||
+      endempresaVar == "" ||
+      emailempresaVar == "" ||
+      telefoneVar == "" ||
+      cnpjVar == "") {    
+      alert("Por favor, preencha todos os campos!");
+      return false;
+    }
+
+    // Enviando o valor da nova input
+    fetch("http://127.0.0.1:3333/usuarios/cadastrarempresa", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nomeempresaVar: nomeempresa_input,
+        razaosocialempresaVar: razaosocialempresa_input,
+        endempresaVar: endempresa_input,
+        emailempresaVar: emailempresa_input,
+        telefoneVar: telefoneempresaVar,
+        cnpjVar: cnpjVar,
+        codigoempresaVar: codigoempresa
+      }),
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          alert("Cadastro realizado com sucesso! Redirecionando...");
+          setTimeout(() => {
+            window.location = "../cadastro/cadastroempresa.html";
+          }, 2000);
+        } else {
+          throw new Error("Houve um erro ao tentar realizar o cadastro!");
+        }
+      })
+      .catch(function (erro) {
+        console.log(`#ERRO: ${erro}`);
+        alert(erro.message);
+      });
+
+    return false;
+  }
+
+
+  function sumirMensagem() {
+    cardErro.style.display = "none";
+  }
+</script>

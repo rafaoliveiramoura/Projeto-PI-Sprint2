@@ -145,4 +145,30 @@
         cardErro.style.display = "none"
     }
 
+    async function validarlogin (){
+        const inputemail = ipt_email.value;
+        const inputsenha = ipt_senha.value;
+
+        const respostabanco = await fetch(`/buscar-senha ${inputemail}`)
+        const dados = await respostabanco.json()
+        const senhaBanco = dados.senha
+        
+        //validação se ele erra a senha mais de 3 vezes
+          if (inputsenha  == senhaBanco){
+            window.location.href = "./dashboard/cards.html"
+        } 
+         else {
+            for (let i = 0; i < 3; i++){
+                if (i < 3){
+                     alert(`Erro! Tentativa ${i}. Você ainda tem ${3 - i} tentativas.`);
+                    }else if(i == 3 ) {
+                        alert("Você errou a senha 3 vezes, tente novamente mais tarde.");
+                          window.location.href = "./login.html";
+                    }
+       }
+            
+        }
+       
+    }
+
 </script>

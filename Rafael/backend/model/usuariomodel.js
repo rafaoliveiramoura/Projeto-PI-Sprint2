@@ -1,4 +1,5 @@
 
+const { valid } = require("semver");
 const database = require("../database/config");
 
 function autenticar(email, senha) {
@@ -34,7 +35,19 @@ function cadastrarempres (nomeempresa, emailempresa, telefoneempresa, codigo, cn
     return database.executar(entre)
 }
 
+ async function validarsenha(id, email, senha) {
+    console.log("Se der erro aqui verifique o bd", email, senha)
+    var instrucaoSql = `
+        SELECT id, email, senha FROM users WHERE  email = '${email}'  AND senha = '${senha}';
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    let resultado = await database.executar(instrucaoSql);
+    return (resultado && resultado.length > 0) ? resultado[0].senha : null
+    
+}
+
 module.exports = {
     autenticar,
-    cadastrar
+    cadastrar,
+    validarsenha
 };
