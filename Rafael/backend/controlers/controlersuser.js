@@ -85,15 +85,15 @@ function cadastrarempresa(req, res) {
     } else if (emailempresa == undefined) {
         res.status(400).send("Seu email está undefined!");
     } else if (endereco == undefined) {
-        res.status(400).send("Sua senha está undefined!");
-    } else if (telefone == undefined) {
-        res.status(400).send("Sua telefone está undefined!");
+        res.status(400).send("Seu endereço está undefined!");
+    } else if (telefoneempresa == undefined) {
+        res.status(400).send("Seu telefone está undefined!");
     } else {
         // Removida a validação obrigatória de CPF pois não existe no HTML
-        usuarioModel.cadastrar(nomeempresa, emailempresa, codigo, cnpj, telefoneempresa)
+        usuarioModel.cadastrarempres(nomeempresa, emailempresa, telefoneempresa, codigo, cnpj, razaosocial)
             .then(
                 function (resultadoemprea) {
-                    res.json(resultadoeempresa);
+                    res.json(resultadoemprea);
                 }
             ).catch(
                 function (erro) {
@@ -144,6 +144,56 @@ function cadastrar(req, res) {
     }
 }
 
+function cdastrarenderço(req, res) {
+    // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
+    var cep = req.body.cepServer;
+    var rua = req.body.ruaServer;
+    var numero = req.body.numeroServer;
+    var bairro = req.body.bairroServer; // Se vier undefined, vira string vazia
+    var cidade = req.body.cidadeServer;
+    var estado = req.body.estadoServer
+
+    if (cep == undefined) {
+        res.status(400).send("Seu cep está indefinido!");
+    } else if (rua == undefined) {
+        res.status(400).send("Sua rua está indefinido!");
+    } else if (numero == undefined) {
+        res.status(400).send("Seu numero está indefinido!");
+    } else if (bairro == undefined) {
+        res.status(400).send("Seu baiiro está indefinido!");
+    }else if(cidade == undefined){
+        res.status(400).send("Sua cidade esta indefinida")
+    }else if(estado == undefined){
+        res.status.send("Seu estado esta indefinido")
+    } else {
+        // Removida a validação obrigatória de CPF pois não existe no HTML
+        usuarioModel.cadastrar(cep, rua, numero, bairro, cidade, estado)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar o cadastro! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
+
+ async function validarsenha (resp,req){
+    try{
+        const email = req.parms.email
+        const senhaBanco = await usuarioModel.validarsenha(email)
+        res.json({senha: senhaBanco})
+    }catch (erro){
+        res.status(500).json({erro: "Erro ao buscar senha no banco"})
+    }
+}
     
     function listarUsuario (req,res){
         res.json(resultado)
@@ -153,5 +203,7 @@ module.exports = {
     autenticar,
     cadastrar,
     cadastrarempresa, 
-    autenticarempresa
+    autenticarempresa,
+    cdastrarenderço,
+    validarsenha
 }

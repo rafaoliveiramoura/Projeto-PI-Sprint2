@@ -12,7 +12,9 @@ function autenticar(email, senha) {
 }
 
 function autenticarempres (emailempresa, codigo){
-    var autenticar = `SELECT id, nome_fantasia, codEmpresa  FROM Empresa WHERE nome_fantasia  = ${emailempresa} AND codEmpresa = ${codigo}`
+    var instrucaoSql = `SELECT id, nome_fantasia, codEmpresa FROM Empresa WHERE nome_fantasia = '${emailempresa}' AND codEmpresa = '${codigo}'`
+    console.log("Executando a instrução SQL de autenticação empresa: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
 }
 
 // Coloque os mesmos parâmetros aqui. Vá para a var instrucaoSql
@@ -30,13 +32,19 @@ function cadastrar(nome, email, senha, cpf, telefone) {
 
 
 function cadastrarempres (nomeempresa, emailempresa, telefoneempresa, codigo, cnpj, razaosocial){
-    var entre = `INSERY INTO Empresa (nome_fantasia, razao_social, cnpj, email, telefone, codEmpresa) VALUES ('${nomeempresa}', '${emailempresa}', '${telefoneempresa}', '${codigo}', '${cnpj}', '${razaosocial}')`
+    var entre = `INSERT INTO Empresa (nome_fantasia, cnpj, email, telefone, razao_social,  codEmpresa) VALUES ('${nomeempresa}', '${emailempresa}', '${telefoneempresa}', '${codigo}', '${cnpj}', '${razaosocial}')`
     console.log("Executando a instrução SQL: \n" + entre)
     return database.executar(entre)
 }
 
+
+function cdastrarenderço(cep,rua,numero,bairro, cidade,estado){
+    var endereco = `INSERT INTO Endereco (cep,rua,numero,bairro,cidade,estado) VALUES ('${cep}', '${rua}', '${numero}', '${bairro}', '${cidade}', '${estado}')`
+    console.log(`Inserindo o endereço: ${endereco}`)
+    return database.executar(endereco);
+}
  async function validarsenha(id, email, senha) {
-    console.log("Se der erro aqui verifique o bd", email, senha)
+    console.log("Se der erro aqui verifique o bd")
     var instrucaoSql = `
         SELECT id, email, senha FROM users WHERE  email = '${email}'  AND senha = '${senha}';
     `;
@@ -49,5 +57,7 @@ function cadastrarempres (nomeempresa, emailempresa, telefoneempresa, codigo, cn
 module.exports = {
     autenticar,
     cadastrar,
-    validarsenha
+    cadastrarempres,
+    validarsenha,
+    cdastrarenderço
 };
