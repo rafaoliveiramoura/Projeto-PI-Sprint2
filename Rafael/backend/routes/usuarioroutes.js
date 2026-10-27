@@ -1,13 +1,12 @@
 const express = require("express")
-const UsuarioModel = require("../model/usuariomodel")
 const expressrouter = express.Router()
 const {cadastrar, autenticar, autenticarempresa, cadastrarempresa, validarsenha} = require("../controlers/controlersuser")
 let users = []
 
 expressrouter.post("/usuarios/cadastrar", cadastrar)
 expressrouter.post("/usuarios/autenticar", autenticar)
-expressrouter.post("/empresa/autenticar", cadastrarempresa)
-expressrouter.post("/empresa/cadastrar", autenticarempresa)
+expressrouter.post("/empresa/autenticar", autenticarempresa)
+expressrouter.post("/empresa/cadastrar", cadastrarempresa)
 expressrouter.post("/usuario/validarsenha", validarsenha)
 
 
@@ -18,17 +17,17 @@ expressrouter.get("/user", (req,res ) =>{
      res.json(users);
 })
 
-appendFile.get("/busacar-senha/:email", async (req,res) =>{
-    try{
-    const email = req.params.email
-    const senhabanco = await UsuarioModel.validarsenha(email)
-    res.json({senha: senhabanco})
-    }
-    catch(erro){
-        res.status(500).json ({erro: "Erro ao buscar a senha no banco"})
+expressrouter.get("empresa/cadastra", (res) => {
+    try {
+        res.json(empresas)
+    }catch(erro){
+        res.status(500).send({erro: "Não foi encontrada nenhuma empresa"})
 
     }
 })
+
+
+expressrouter.get("/busacar-senha/:email", validarsenha)
 
 module.exports = {
     expressrouter,
