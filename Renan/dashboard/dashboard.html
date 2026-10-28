@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard de monitoramento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="dashboard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="navbar_esquerda">
+        <a href="landing_page.html" class="navbar_logo">
+          <img src="src/tetria-logo-transparente.png" alt="Tetria" />
+        </a>
+        <div class="navbar_titulo">
+          <h1>Monitoramento das colmeias</h1>
+        </div>
+      </div>
+
+      <div class="navbar_direita">
+        <a href="(Tela da conta)" class="navbar_usuario">
+          <img src="(IMAGEM DO FRIZZA)" alt="Usuário" />
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <!-- ============ KPIs ============ -->
+      <section class="faixa_kpis">
+        <!-- EM RISCO: mostra quais colmeias e por quê, sem precisar do filtro -->
+        <article class="kpi kpi_risco">
+          <div class="kpi_topo">
+            <h2 class="kpi_titulo">Em risco</h2>
+            <span class="kpi_selo selo_risco"><i></i>Inspecionar agora</span>
+          </div>
+
+          <!-- a lista mostra as 3 mais antigas; "Ver todas" filtra o painel -->
+          <div class="kpi_linha">
+            <p class="kpi_valor">3<span>de 10 colmeias</span></p>
+            <button class="ver_todas" onclick="filtrarSituacao('Risco')">Ver todas →</button>
+          </div>
+
+          <ul class="lista_alertas">
+            <li onclick="abrirColmeia('02')">
+              <strong>Colmeia 02</strong>
+              <span class="alerta_motivo">Temp. 38,9 °C · acima de 38 °C</span>
+              <span class="alerta_tempo">há 1h40</span>
+            </li>
+            <li onclick="abrirColmeia('04')">
+              <strong>Colmeia 04</strong>
+              <span class="alerta_motivo">Temp. 31,4 °C · abaixo de 32 °C</span>
+              <span class="alerta_tempo">há 2h15</span>
+            </li>
+            <li onclick="abrirColmeia('08')">
+              <strong>Colmeia 08</strong>
+              <span class="alerta_motivo">Temp. 38,9 °C · umidade 78%</span>
+              <span class="alerta_tempo">há 1h05</span>
+            </li>
+          </ul>
+        </article>
+
+        <!-- EM ATENÇÃO -->
+        <article class="kpi kpi_atencao">
+          <div class="kpi_topo">
+            <h2 class="kpi_titulo">Em atenção</h2>
+            <span class="kpi_selo selo_atencao">Acompanhar</span>
+          </div>
+
+          <div class="kpi_linha">
+            <p class="kpi_valor">2<span>de 10 colmeias</span></p>
+            <button class="ver_todas" onclick="filtrarSituacao('Atenção')">Ver todas →</button>
+          </div>
+
+          <ul class="lista_alertas">
+            <li onclick="abrirColmeia('03')">
+              <strong>Colmeia 03</strong>
+              <span class="alerta_motivo">Temp. 36,9 °C</span>
+              <span class="alerta_tempo">há 25 min</span>
+            </li>
+            <li onclick="abrirColmeia('06')">
+              <strong>Colmeia 06</strong>
+              <span class="alerta_motivo">Umidade 79%</span>
+              <span class="alerta_tempo">há 1h30</span>
+            </li>
+          </ul>
+        </article>
+
+        <!-- INTERNA × EXTERNA: quanto a colônia está regulando em relação ao ambiente -->
+        <article class="kpi kpi_comparacao">
+          <div class="kpi_topo">
+            <h2 class="kpi_titulo">Interna × externa</h2>
+          </div>
+
+          <div class="comparacao">
+            <div>
+              <p class="comparacao_rotulo">Interna (média)</p>
+              <p class="comparacao_valor">35,5 °C</p>
+            </div>
+            <div>
+              <p class="comparacao_rotulo">Externa (média)</p>
+              <p class="comparacao_valor comparacao_externa">34,0 °C</p>
+            </div>
+          </div>
+
+          <p class="kpi_rodape">
+            <span class="delta">+1,5 °C</span> · maior:
+            <strong>Colmeia 02 (+3,4 °C)</strong>
+          </p>
+        </article>
+
+        <!-- CONFIABILIDADE DOS SENSORES -->
+        <article class="kpi">
+          <div class="kpi_topo">
+            <h2 class="kpi_titulo">Sensores online</h2>
+            <span class="kpi_selo selo_ok">Estável</span>
+          </div>
+
+          <p class="kpi_valor">20<span>de 20</span></p>
+
+          <div class="barra"><span style="width: 100%"></span></div>
+
+          <p class="kpi_rodape">10 internos · 10 externos</p>
+        </article>
+      </section>
+
+      <!-- ============ PAINEL: FILTROS EM CIMA, GRÁFICOS EMBAIXO ============ -->
+      <section class="painel">
+        <div class="painel_topo">
+          <div>
+            <div class="titulo_linha">
+              <h2 id="titulo_painel" class="titulo_painel">Visão geral do apiário</h2>
+              <p id="status_individual"></p>
+            </div>
+            <p id="subtitulo_painel" class="subtitulo_painel">
+              Em que condição as colmeias estão agora. Passe o mouse numa barra para ver quais.
+            </p>
+          </div>
+
+          <div class="filtro">
+            <div class="campo">
+              <label for="select_status">Situação</label>
+              <select id="select_status" onchange="filtrar()">
+                <option value="todas">Todas</option>
+                <option value="Ideal">Ideal</option>
+                <option value="Atenção">Atenção</option>
+                <option value="Risco">Risco</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="select_colmeia">Colmeia</label>
+              <select id="select_colmeia" onchange="visualizar()">
+                <option value="00">Todas as colmeias</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- VISÃO GERAL: todas as colmeias lado a lado -->
+        <div id="visao_geral" class="visao">
+          <div class="grade_graficos">
+            <div class="cartao_grafico">
+              <h3>
+                Temperatura dentro das colmeias
+                <span>Ambiente externo agora: <strong id="externo_temperatura"></strong></span>
+              </h3>
+              <div id="faixas_temperatura" class="lista_faixas"></div>
+            </div>
+            <div class="cartao_grafico">
+              <h3>
+                Umidade dentro das colmeias
+                <span>Ambiente externo agora: <strong id="externo_umidade"></strong></span>
+              </h3>
+              <div id="faixas_umidade" class="lista_faixas"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VISÃO INDIVIDUAL: uma colmeia ao longo do tempo -->
+        <div id="visao_individual" class="visao oculto">
+          <ul class="legenda">
+            <li><span class="marcador_interno"></span>Dentro da colmeia</li>
+            <li><span class="marcador_externo tracejado"></span>Ambiente externo</li>
+            <li><span class="marcador_faixa"></span>Faixa ideal</li>
+          </ul>
+
+          <div class="grade_graficos">
+            <div class="cartao_grafico">
+              <h3>Temperatura (°C) <span id="leitura_temperatura"></span></h3>
+              <div class="grafico">
+                <canvas id="graficoTemperatura"></canvas>
+              </div>
+            </div>
+            <div class="cartao_grafico">
+              <h3>Umidade (%) <span id="leitura_umidade"></span></h3>
+              <div class="grafico">
+                <canvas id="graficoUmidade"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      // fonte e cor padrão de todos os gráficos
+      Chart.defaults.font.family = "Poppins, sans-serif";
+      Chart.defaults.font.size = 12;
+      Chart.defaults.color = "#716B63";
+      Chart.defaults.maintainAspectRatio = false;
+      Chart.defaults.plugins.legend.display = false;
+      Chart.defaults.plugins.tooltip.backgroundColor = "#2B1E17";
+      Chart.defaults.plugins.tooltip.padding = 10;
+      Chart.defaults.plugins.tooltip.cornerRadius = 8;
+
+      // desenha a faixa ideal (retângulo sombreado) atrás das linhas
+      // cada gráfico de linha informa os limites em options.plugins.faixa = { min, max }
+      const pluginFaixa = {
+        id: "faixa",
+        beforeDatasetsDraw(grafico, args, opcoes) {
+          if (opcoes.min === undefined) {
+            return; // gráfico sem faixa
+          }
+          const area = grafico.chartArea;
+          const y = grafico.scales.y;
+          const topo = y.getPixelForValue(opcoes.max);
+          const base = y.getPixelForValue(opcoes.min);
+
+          grafico.ctx.save();
+          // não deixa a faixa passar das bordas do gráfico
+          grafico.ctx.beginPath();
+          grafico.ctx.rect(area.left, area.top, area.right - area.left, area.bottom - area.top);
+          grafico.ctx.clip();
+          grafico.ctx.fillStyle = "rgba(47, 125, 59, 0.08)";
+          grafico.ctx.fillRect(area.left, topo, area.right - area.left, base - topo);
+          grafico.ctx.strokeStyle = "rgba(47, 125, 59, 0.4)";
+          grafico.ctx.setLineDash([4, 4]);
+          grafico.ctx.beginPath();
+          grafico.ctx.moveTo(area.left, topo);
+          grafico.ctx.lineTo(area.right, topo);
+          grafico.ctx.moveTo(area.left, base);
+          grafico.ctx.lineTo(area.right, base);
+          grafico.ctx.stroke();
+          grafico.ctx.restore();
+        },
+      };
+
+      Chart.register(pluginFaixa);
+
+      const corIdeal = "#2F7D3B";
+      const corAtencao = "#DCAE1D";
+      const corRisco = "#C4352B";
+      const corExterna = "#A8800E";
+
+      const nomesColmeias = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"];
+
+      // última leitura de cada colmeia (01 a 10)
+      // com centenas de colmeias, estes vetores vêm do banco e o gráfico continua igual
+      const tempInternaAtual = [34.9, 38.9, 36.9, 31.4, 34.1, 34.7, 35.6, 38.9, 34.2, 35.5];
+      const tempExternaAtual = [34.3, 35.5, 35.2, 29.9, 33.2, 33.9, 34.8, 36.0, 33.2, 34.4];
+      const umidInternaAtual = [63, 71, 62, 55, 58, 79, 69, 78, 54, 73];
+      const umidExternaAtual = [61, 65, 60, 58, 56, 75, 66, 73, 53, 69];
+
+      function media(valores) {
+        let soma = 0;
+        for (let i = 0; i < valores.length; i++) {
+          soma += valores[i];
+        }
+        return soma / valores.length;
+      }
+
+      // ---------- VISÃO GERAL ----------
+      // cada barra é uma condição do Quadro 2 da documentação, de cima (quente/úmida) para baixo (fria/seca)
+      // o tamanho da barra é quantas colmeias estão nela, então serve para 10 ou 500 colmeias
+
+      const faixasTemperatura = [
+        ["Muito quente", "acima de 38 °C"],
+        ["Quente", "36 a 38 °C"],
+        ["Ideal", "33 a 36 °C"],
+        ["Fria", "32 a 33 °C"],
+        ["Muito fria", "abaixo de 32 °C"],
+      ];
+      const coresTemperatura = [corRisco, corAtencao, corIdeal, corAtencao, corRisco];
+
+      const faixasUmidade = [
+        ["Úmida", "acima de 75%"],
+        ["Ideal", "50 a 75%"],
+        ["Seca", "abaixo de 50%"],
+      ];
+      const coresUmidade = [corAtencao, corIdeal, corAtencao];
+
+      // devolve a posição da faixa (linha do gráfico) de cada leitura
+      function faixaDaTemperatura(valor) {
+        if (valor > 38) {
+          return 0;
+        } else if (valor > 36) {
+          return 1;
+        } else if (valor >= 33) {
+          return 2;
+        } else if (valor >= 32) {
+          return 3;
+        }
+        return 4;
+      }
+
+      function faixaDaUmidade(valor) {
+        if (valor > 75) {
+          return 0;
+        } else if (valor >= 50) {
+          return 1;
+        }
+        return 2;
+      }
+
+      // monta uma linha por condição: nome, barra (proporção do total) e quantidade
+      function montarFaixas(elemento, valores, faixas, cores, descobrirFaixa) {
+        let quantidades = [];
+        let colmeiasDaFaixa = [];
+        for (let i = 0; i < faixas.length; i++) {
+          quantidades.push(0);
+          colmeiasDaFaixa.push([]);
+        }
+
+        for (let i = 0; i < valores.length; i++) {
+          let posicao = descobrirFaixa(valores[i]);
+          quantidades[posicao]++;
+          colmeiasDaFaixa[posicao].push(nomesColmeias[i]);
+        }
+
+        let html = "";
+        for (let i = 0; i < faixas.length; i++) {
+          let porcentagem = Math.round((quantidades[i] / valores.length) * 100);
+
+          // ao passar o mouse, mostra quais colmeias estão na faixa (até 12)
+          let dica = quantidades[i] + " colmeia(s)";
+          if (quantidades[i] > 0 && quantidades[i] <= 12) {
+            dica = "Colmeias " + colmeiasDaFaixa[i].join(", ");
+          }
+
+          let classe = "faixa";
+          if (faixas[i][0] === "Ideal") {
+            classe += " faixa_ideal";
+          }
+          if (quantidades[i] === 0) {
+            classe += " faixa_vazia";
+          }
+
+          html +=
+            '<div class="' + classe + '" title="' + dica + '">' +
+            '  <div class="faixa_nome">' +
+            "    <strong>" + faixas[i][0] + "</strong>" +
+            "    <span>" + faixas[i][1] + "</span>" +
+            "  </div>" +
+            '  <div class="faixa_trilho">' +
+            '    <div class="faixa_barra" style="width: ' + porcentagem + "%; background-color: " + cores[i] + '"></div>' +
+            "  </div>" +
+            '  <p class="faixa_numero"><strong>' + quantidades[i] + "</strong> " + porcentagem + "%</p>" +
+            "</div>";
+        }
+
+        elemento.innerHTML = html;
+      }
+
+      montarFaixas(
+        faixas_temperatura,
+        tempInternaAtual, faixasTemperatura, coresTemperatura, faixaDaTemperatura
+      );
+      montarFaixas(
+        faixas_umidade,
+        umidInternaAtual, faixasUmidade, coresUmidade, faixaDaUmidade
+      );
+
+      // média do ambiente externo no título de cada gráfico
+      externo_temperatura.innerHTML = formatar(media(tempExternaAtual)) + " °C";
+      externo_umidade.innerHTML = Math.round(media(umidExternaAtual)) + "%";
+
+      // ---------- VISÃO INDIVIDUAL ----------
+      function criarGraficoLinha(id, faixaMin, faixaMax, unidade) {
+        return new Chart(document.getElementById(id), {
+          type: "line",
+          data: {
+            labels: ["08:00:00", "08:00:02", "08:00:04", "08:00:06", "08:00:08", "08:00:10"],
+            datasets: [
+              {
+                label: "Dentro da colmeia",
+                data: [0, 0, 0, 0, 0, 0],
+                borderColor: "#2A1E16",
+                borderWidth: 2.5,
+                tension: 0.35,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+              },
+              {
+                label: "Ambiente externo",
+                data: [0, 0, 0, 0, 0, 0],
+                borderColor: corExterna,
+                borderDash: [6, 4],
+                borderWidth: 2,
+                tension: 0.35,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+              },
+            ],
+          },
+          options: {
+            interaction: { mode: "index", intersect: false },
+            plugins: {
+              faixa: { min: faixaMin, max: faixaMax },
+              tooltip: {
+                callbacks: {
+                  label: (item) =>
+                    item.dataset.label + ": " +
+                    item.parsed.y.toLocaleString("pt-BR") + " " + unidade,
+                },
+              },
+            },
+            scales: {
+              x: { grid: { display: false }, border: { color: "#EAE1D5" } },
+              y: {
+                // garante que a faixa ideal sempre apareça no gráfico
+                suggestedMin: faixaMin - 1,
+                suggestedMax: faixaMax + 1,
+                grid: { color: "#F3ECE1", drawTicks: false },
+                border: { display: false },
+                ticks: { padding: 8 },
+              },
+            },
+          },
+        });
+      }
+
+      const GraficoTemperatura = criarGraficoLinha("graficoTemperatura", 33, 36, "°C");
+      const GraficoUmidade = criarGraficoLinha("graficoUmidade", 50, 75, "%");
+
+      // adiciona um status a cada colmeia
+      let status01 = "Ideal";
+      let status02 = "Risco";
+      let status03 = "Atenção";
+      let status04 = "Risco";
+      let status05 = "Ideal";
+      let status06 = "Atenção";
+      let status07 = "Ideal";
+      let status08 = "Risco";
+      let status09 = "Ideal";
+      let status10 = "Ideal";
+
+      function filtrar() {
+        let filtro = select_status.value;
+
+        select_colmeia.innerHTML =
+          '<option value="00">Todas as colmeias</option>';
+
+        // se a pessoa escolher todas - todas as colmeias são adicionadas +=
+        // se o statusx === ao filtro que a pessoa selecionou, apenas essas colmeias serão adicionadas
+
+        if (filtro === "todas" || status01 === filtro) {
+          select_colmeia.innerHTML += '<option value="01">Colmeia 01</option>';
+        }
+
+        if (filtro === "todas" || status02 === filtro) {
+          select_colmeia.innerHTML += '<option value="02">Colmeia 02</option>';
+        }
+
+        if (filtro === "todas" || status03 === filtro) {
+          select_colmeia.innerHTML += '<option value="03">Colmeia 03</option>';
+        }
+
+        if (filtro === "todas" || status04 === filtro) {
+          select_colmeia.innerHTML += '<option value="04">Colmeia 04</option>';
+        }
+
+        if (filtro === "todas" || status05 === filtro) {
+          select_colmeia.innerHTML += '<option value="05">Colmeia 05</option>';
+        }
+
+        if (filtro === "todas" || status06 === filtro) {
+          select_colmeia.innerHTML += '<option value="06">Colmeia 06</option>';
+        }
+
+        if (filtro === "todas" || status07 === filtro) {
+          select_colmeia.innerHTML += '<option value="07">Colmeia 07</option>';
+        }
+
+        if (filtro === "todas" || status08 === filtro) {
+          select_colmeia.innerHTML += '<option value="08">Colmeia 08</option>';
+        }
+
+        if (filtro === "todas" || status09 === filtro) {
+          select_colmeia.innerHTML += '<option value="09">Colmeia 09</option>';
+        }
+
+        if (filtro === "todas" || status10 === filtro) {
+          select_colmeia.innerHTML += '<option value="10">Colmeia 10</option>';
+        }
+      }
+
+      filtrar();
+
+      // chamada ao clicar numa colmeia dos KPIs ou numa barra do gráfico geral
+      function abrirColmeia(numero) {
+        select_status.value = "todas";
+        filtrar();
+        select_colmeia.value = numero;
+        visualizar();
+        document.querySelector(".painel").scrollIntoView({ behavior: "smooth" });
+      }
+
+      // botão "Ver todas" dos KPIs: deixa no select só as colmeias daquela situação
+      function filtrarSituacao(situacao) {
+        select_status.value = situacao;
+        filtrar();
+        select_colmeia.value = "00";
+        visualizar();
+        select_colmeia.focus();
+      }
+
+      // formata o número no padrão brasileiro (vírgula) com 1 casa decimal
+      function formatar(numero) {
+        return numero.toFixed(1).replace(".", ",");
+      }
+
+      // mostra o sinal + quando a diferença é positiva
+      function formatarDiferenca(numero) {
+        if (numero > 0) {
+          return "+" + formatar(numero);
+        }
+        return formatar(numero);
+      }
+
+      function visualizar() {
+        let selecao = select_colmeia.value;
+        let situacao = "";
+
+        let dadosTempInterna = [0, 0, 0, 0, 0, 0];
+        let dadosTempExterna = [0, 0, 0, 0, 0, 0];
+        let dadosUmidInterna = [0, 0, 0, 0, 0, 0];
+        let dadosUmidExterna = [0, 0, 0, 0, 0, 0];
+
+        if (selecao === "00") {
+          visao_geral.classList.remove("oculto");
+          visao_individual.classList.add("oculto");
+          titulo_painel.innerHTML = "Visão geral do apiário";
+          subtitulo_painel.innerHTML =
+            "Em que condição as colmeias estão agora. Passe o mouse numa barra para ver quais.";
+          status_individual.innerHTML = "";
+          return;
+        }
+
+        visao_geral.classList.add("oculto");
+        visao_individual.classList.remove("oculto");
+        titulo_painel.innerHTML = "Colmeia " + selecao;
+
+        if (selecao === "01") {
+          situacao = status01;
+          dadosTempInterna = [34.8, 34.9, 35.0, 35.1, 35.0, 34.9];
+          dadosTempExterna = [33.9, 34.0, 34.2, 34.1, 34.0, 34.3];
+          dadosUmidInterna = [60, 61, 61, 62, 62, 63];
+          dadosUmidExterna = [58, 59, 59, 60, 60, 61];
+        } else if (selecao === "02") {
+          situacao = status02;
+          dadosTempInterna = [38.2, 38.4, 38.6, 38.5, 38.7, 38.9];
+          dadosTempExterna = [35.1, 35.3, 35.2, 35.4, 35.3, 35.5];
+          dadosUmidInterna = [68, 69, 69, 70, 70, 71];
+          dadosUmidExterna = [62, 63, 63, 64, 64, 65];
+        } else if (selecao === "03") {
+          situacao = status03;
+          dadosTempInterna = [36.4, 36.6, 36.8, 36.7, 36.5, 36.9];
+          dadosTempExterna = [34.8, 35.0, 35.1, 35.0, 34.9, 35.2];
+          dadosUmidInterna = [60, 60, 61, 61, 62, 62];
+          dadosUmidExterna = [57, 58, 58, 59, 59, 60];
+        } else if (selecao === "04") {
+          situacao = status04;
+          dadosTempInterna = [31.2, 31.0, 30.9, 31.3, 31.1, 31.4];
+          dadosTempExterna = [29.5, 29.6, 29.8, 29.7, 29.6, 29.9];
+          dadosUmidInterna = [52, 53, 53, 54, 54, 55];
+          dadosUmidExterna = [55, 56, 56, 57, 57, 58];
+        } else if (selecao === "05") {
+          situacao = status05;
+          dadosTempInterna = [33.6, 33.8, 33.7, 33.9, 34.0, 34.1];
+          dadosTempExterna = [32.8, 32.9, 33.0, 33.1, 33.0, 33.2];
+          dadosUmidInterna = [55, 56, 56, 57, 57, 58];
+          dadosUmidExterna = [53, 54, 54, 55, 55, 56];
+        } else if (selecao === "06") {
+          situacao = status06;
+          dadosTempInterna = [34.6, 34.8, 34.7, 34.9, 34.8, 34.7];
+          dadosTempExterna = [33.5, 33.6, 33.8, 33.7, 33.6, 33.9];
+          dadosUmidInterna = [76, 77, 77, 78, 78, 79];
+          dadosUmidExterna = [72, 73, 73, 74, 74, 75];
+        } else if (selecao === "07") {
+          situacao = status07;
+          dadosTempInterna = [35.4, 35.5, 35.6, 35.8, 35.7, 35.6];
+          dadosTempExterna = [34.4, 34.5, 34.7, 34.6, 34.5, 34.8];
+          dadosUmidInterna = [66, 67, 67, 68, 68, 69];
+          dadosUmidExterna = [63, 64, 64, 65, 65, 66];
+        } else if (selecao === "08") {
+          situacao = status08;
+          dadosTempInterna = [38.4, 38.6, 38.8, 38.7, 39.0, 38.9];
+          dadosTempExterna = [35.6, 35.8, 35.9, 35.7, 35.8, 36.0];
+          dadosUmidInterna = [76, 77, 77, 78, 78, 78];
+          dadosUmidExterna = [70, 71, 71, 72, 72, 73];
+        } else if (selecao === "09") {
+          situacao = status09;
+          dadosTempInterna = [34.0, 34.1, 34.2, 34.1, 34.3, 34.2];
+          dadosTempExterna = [33.0, 33.1, 33.2, 33.1, 33.3, 33.2];
+          dadosUmidInterna = [51, 52, 52, 53, 53, 54];
+          dadosUmidExterna = [50, 51, 51, 52, 52, 53];
+        } else if (selecao === "10") {
+          situacao = status10;
+          dadosTempInterna = [35.0, 35.1, 35.2, 35.4, 35.3, 35.5];
+          dadosTempExterna = [34.0, 34.1, 34.3, 34.2, 34.1, 34.4];
+          dadosUmidInterna = [70, 71, 71, 72, 72, 73];
+          dadosUmidExterna = [66, 67, 67, 68, 68, 69];
+        }
+
+        //Atualiza os dados das variáveis do Chart.js e manda redesenhar a tela (.update())
+        // os gráficos nasceram escondidos: recalcula o tamanho agora que aparecem
+        GraficoTemperatura.resize();
+        GraficoUmidade.resize();
+
+        GraficoTemperatura.data.datasets[0].data = dadosTempInterna;
+        GraficoTemperatura.data.datasets[1].data = dadosTempExterna;
+        GraficoTemperatura.update();
+
+        GraficoUmidade.data.datasets[0].data = dadosUmidInterna;
+        GraficoUmidade.data.datasets[1].data = dadosUmidExterna;
+        GraficoUmidade.update();
+
+        // última leitura (posição 5) e a diferença entre dentro e fora
+        let tempInterna = dadosTempInterna[5];
+        let tempExterna = dadosTempExterna[5];
+        let umidInterna = dadosUmidInterna[5];
+        let umidExterna = dadosUmidExterna[5];
+
+        leitura_temperatura.innerHTML =
+          "<strong>" + formatar(tempInterna) + "</strong> dentro · " +
+          formatar(tempExterna) + " fora · <b>" +
+          formatarDiferenca(tempInterna - tempExterna) + " °C</b>";
+        leitura_umidade.innerHTML =
+          "<strong>" + umidInterna + "</strong> dentro · " +
+          umidExterna + " fora · <b>" +
+          formatarDiferenca(umidInterna - umidExterna) + " p.p.</b>";
+
+        if (situacao === "Ideal") {
+          status_individual.innerHTML =
+            '<span class="status_ideal">Ideal</span>';
+          subtitulo_painel.innerHTML =
+            "Temperatura e umidade dentro da faixa de referência.";
+        } else if (situacao === "Atenção") {
+          status_individual.innerHTML =
+            '<span class="status_atencao">Em atenção</span>';
+          subtitulo_painel.innerHTML =
+            "Valores próximos do limite. Acompanhar nas próximas horas.";
+        } else if (situacao === "Risco") {
+          status_individual.innerHTML =
+            '<span class="status_risco">Em risco</span>';
+          subtitulo_painel.innerHTML =
+            "Valores fora do limite seguro. Verificar a colmeia o quanto antes.";
+        }
+      }
+    </script>
+  </body>
+</html>

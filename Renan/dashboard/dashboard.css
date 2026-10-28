@@ -1,0 +1,862 @@
+/* ================================= */
+/* VARIÁVEIS (CORES E MEDIDAS) */
+/* ================================= */
+/* base = cores do site (--yellow, --brown, --cream, --muted, --line, --brown-light) */
+:root {
+    --marrom: #2B1E17;
+    --texto_suave: #716B63;
+    --texto_fraco: #9A928A;
+    --fundo: #FFFCF7;
+    --creme: #FFF7EA;
+    --borda: #E7DFD4;
+    --borda_forte: #DACFBF;
+    --dourado: #DCAE1D;
+    --dourado_escuro: #8A6A0C;
+    --verde: #2F7D3B;
+    --vermelho: #C4352B;
+
+    --altura_navbar: 56px;
+    --raio: 12px;
+    --espaco: 16px;
+}
+
+/* ================================= */
+/* CONFIGURAÇÕES GERAIS */
+/* ================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--fundo);
+    color: var(--marrom);
+    line-height: 1.4;
+}
+
+select,
+button {
+    font-family: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* ESCONDE UMA VISÃO (USADO PELO JAVASCRIPT) */
+.oculto {
+    display: none !important;
+}
+
+/* ================================= */
+/* NAVBAR */
+/* ================================= */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    height: var(--altura_navbar);
+    padding: 0 24px;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid var(--borda);
+}
+
+.navbar_esquerda,
+.navbar_direita {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+}
+
+.navbar a {
+    display: flex;
+    align-items: center;
+    color: var(--marrom);
+    text-decoration: none;
+}
+
+.navbar_logo img {
+    display: block;
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
+.navbar_titulo {
+    padding-left: 16px;
+    border-left: 1px solid var(--borda);
+}
+
+.navbar_titulo h1 {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.navbar_titulo p {
+    font-size: 12px;
+    color: var(--texto_suave);
+}
+
+.navbar_usuario img {
+    display: block;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--borda_forte);
+    background-color: var(--creme);
+    object-fit: cover;
+    font-size: 0; /* esconde o texto alternativo se a imagem não carregar */
+}
+
+.selo_ao_vivo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--texto_suave);
+    white-space: nowrap;
+}
+
+.selo_ao_vivo span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(42, 122, 53, 0.15);
+}
+
+/* ================================= */
+/* CONTAINER PRINCIPAL */
+/* ================================= */
+/* KPIs em cima e painel embaixo ocupam exatamente a altura da tela (sem rolar) */
+main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco);
+    height: calc(100vh - var(--altura_navbar));
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: var(--espaco) 24px;
+}
+
+/* ================================= */
+/* FAIXA DE KPIs */
+/* ================================= */
+/* risco ganha mais espaço por ser o mais importante */
+.faixa_kpis {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr 1fr 0.8fr;
+    gap: 14px;
+}
+
+.kpi {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    padding: 14px 18px;
+    border-radius: var(--raio);
+    background-color: #FFFFFF;
+    border: 1px solid var(--borda);
+}
+
+/* cor só onde importa: vermelho no risco, amarelo na atenção, marrom do site na comparação */
+.kpi_risco {
+    border-color: #F1C7C2;
+    border-top: 3px solid var(--vermelho);
+    background: linear-gradient(160deg, #FCE9E6 0%, #FFFFFF 65%);
+}
+
+.kpi_atencao {
+    border-color: #EEDBA6;
+    border-top: 3px solid var(--dourado);
+    background: linear-gradient(160deg, var(--creme) 0%, #FFFFFF 65%);
+}
+
+.kpi_comparacao {
+    border-color: var(--marrom);
+    background-color: var(--marrom);
+    color: var(--creme);
+}
+
+.kpi_comparacao .kpi_titulo,
+.kpi_comparacao .kpi_rodape {
+    color: #C9BCAD;
+}
+
+.kpi_comparacao .comparacao_rotulo {
+    color: #A39585;
+}
+
+.kpi_comparacao .comparacao_externa {
+    color: var(--dourado);
+}
+
+.kpi_comparacao .kpi_rodape strong {
+    color: var(--creme);
+}
+
+.kpi_comparacao .delta {
+    background-color: var(--dourado);
+    border-color: var(--dourado);
+    color: var(--marrom);
+}
+
+/* valor + botão "Ver todas" na mesma linha */
+.kpi_linha {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.ver_todas {
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--marrom);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.ver_todas:hover {
+    text-decoration: underline;
+}
+
+.kpi_risco .ver_todas {
+    color: var(--vermelho);
+}
+
+.kpi_atencao .ver_todas {
+    color: var(--dourado_escuro);
+}
+
+.kpi_topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.kpi_titulo {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--texto_suave);
+}
+
+.kpi_selo {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.selo_risco {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--vermelho);
+    color: #FFFFFF;
+}
+
+/* ponto branco piscando: alerta ativo */
+.selo_risco i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    animation: piscar 1.6s ease-in-out infinite;
+}
+
+.selo_atencao {
+    background-color: var(--dourado);
+    color: var(--marrom);
+}
+
+.selo_ok {
+    background-color: rgba(47, 125, 59, 0.1);
+    color: var(--verde);
+}
+
+@keyframes piscar {
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* VALOR PRINCIPAL */
+.kpi_valor {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+.kpi_valor span {
+    margin-left: 8px;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--texto_suave);
+}
+
+.kpi_risco .kpi_valor {
+    color: var(--vermelho);
+}
+
+.kpi_atencao .kpi_valor {
+    color: var(--dourado_escuro);
+}
+
+.kpi_rodape {
+    margin-top: auto;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--texto_suave);
+}
+
+.kpi_rodape strong {
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+/* LISTA DE COLMEIAS COM ALERTA (CLICÁVEL) */
+.lista_alertas {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+    border-top: 1px solid var(--borda);
+}
+
+.lista_alertas li {
+    display: grid;
+    grid-template-columns: 80px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 4px;
+    border-bottom: 1px solid var(--borda);
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.lista_alertas li:last-child {
+    border-bottom: none;
+}
+
+.lista_alertas li:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.kpi_risco .lista_alertas,
+.kpi_risco .lista_alertas li {
+    border-color: #F3D5D1;
+}
+
+.kpi_atencao .lista_alertas,
+.kpi_atencao .lista_alertas li {
+    border-color: #F1E3BC;
+}
+
+.lista_alertas strong {
+    font-weight: 600;
+}
+
+.alerta_motivo {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--texto_suave);
+}
+
+.alerta_tempo {
+    color: var(--texto_fraco);
+    font-variant-numeric: tabular-nums;
+}
+
+/* KPI INTERNA × EXTERNA */
+.comparacao {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.comparacao_rotulo {
+    margin-bottom: 4px;
+    font-size: 11px;
+    color: var(--texto_fraco);
+}
+
+.comparacao_valor {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+.comparacao_externa {
+    color: var(--dourado_escuro);
+}
+
+.delta {
+    display: inline-block;
+    padding: 0 6px;
+    border-radius: 6px;
+    background-color: var(--creme);
+    border: 1px solid var(--borda);
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+/* BARRA DE PROGRESSO */
+.barra {
+    height: 6px;
+    border-radius: 999px;
+    background-color: var(--borda);
+    overflow: hidden;
+}
+
+.barra span {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background-color: var(--verde);
+}
+
+/* PONTOS DE COR (SITUAÇÃO) */
+.ponto {
+    flex-shrink: 0;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+}
+
+.ponto.ideal { background-color: var(--verde); }
+.ponto.atencao { background-color: var(--dourado); }
+.ponto.risco { background-color: var(--vermelho); }
+
+/* ================================= */
+/* PAINEL (FILTROS EM CIMA + GRÁFICOS) */
+/* ================================= */
+/* ocupa toda a altura que sobra embaixo dos KPIs */
+.painel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+    padding: 14px 18px 16px;
+    background-color: #FFFFFF;
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+}
+
+.painel_topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--borda);
+}
+
+/* título + selo da situação na mesma linha */
+.titulo_linha {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.titulo_painel {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.subtitulo_painel {
+    margin-top: 2px;
+    font-size: 12px;
+    color: var(--texto_suave);
+}
+
+/* ================================= */
+/* FILTROS (LADO A LADO) */
+/* ================================= */
+.filtro {
+    display: flex;
+    gap: 12px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 180px;
+}
+
+.campo label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--texto_suave);
+}
+
+.campo select {
+    width: 100%;
+    height: 34px;
+    padding: 0 34px 0 12px;
+    background-color: #FFFFFF;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%232A1E16' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    border: 1px solid var(--borda_forte);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--marrom);
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campo select:hover {
+    border-color: #C9B48A;
+}
+
+.campo select:focus {
+    border-color: var(--dourado);
+    box-shadow: 0 0 0 3px rgba(217, 161, 26, 0.25);
+}
+
+/* ================================= */
+/* VISÕES (GERAL E INDIVIDUAL) */
+/* ================================= */
+.visao {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 0;
+}
+
+#visao_geral:not(.oculto),
+#visao_individual:not(.oculto) {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* LEGENDA (UMA SÓ PARA OS DOIS GRÁFICOS) */
+.legenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    font-size: 12px;
+    color: var(--texto_suave);
+}
+
+.legenda li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.marcador_interno,
+.marcador_externo {
+    width: 14px;
+    height: 3px;
+    border-radius: 2px;
+}
+
+.marcador_interno {
+    background-color: var(--marrom);
+}
+
+.marcador_externo {
+    background-color: var(--dourado_escuro);
+}
+
+.marcador_externo.tracejado {
+    background: repeating-linear-gradient(90deg, var(--dourado_escuro) 0 5px, transparent 5px 8px);
+}
+
+.marcador_faixa {
+    width: 14px;
+    height: 10px;
+    border: 1px dashed rgba(42, 122, 53, 0.5);
+    background-color: rgba(42, 122, 53, 0.08);
+}
+
+/* SELO DE SITUAÇÃO DA COLMEIA */
+/* o JavaScript coloca um <span> com a classe da situação dentro do #status_individual */
+#status_individual span {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status_ideal {
+    background-color: rgba(42, 122, 53, 0.1);
+    color: var(--verde);
+}
+
+.status_atencao {
+    background-color: rgba(217, 161, 26, 0.16);
+    color: var(--dourado_escuro);
+}
+
+.status_risco {
+    background-color: rgba(179, 38, 30, 0.08);
+    color: var(--vermelho);
+}
+
+/* ================================= */
+/* GRÁFICOS */
+/* ================================= */
+.grade_graficos {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    min-height: 0;
+}
+
+.cartao_grafico {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    padding: 12px 16px 10px;
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+}
+
+.cartao_grafico h3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* texto à direita do título: faixa ideal ou leituras atuais */
+.cartao_grafico h3 span {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--texto_fraco);
+    font-variant-numeric: tabular-nums;
+}
+
+.cartao_grafico h3 span strong {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+.cartao_grafico h3 span b {
+    margin-left: 2px;
+    padding: 1px 6px;
+    border-radius: 6px;
+    background-color: var(--creme);
+    border: 1px solid var(--borda);
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+/* ================================= */
+/* CONDIÇÕES DAS COLMEIAS (VISÃO GERAL) */
+/* ================================= */
+/* uma linha por condição: nome | barra | quantidade; as linhas dividem a altura do cartão */
+.lista_faixas {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    min-height: 0;
+}
+
+.faixa {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr) 72px;
+    align-items: center;
+    gap: 16px;
+    max-height: 64px;
+    flex: 1;
+    padding: 0 14px;
+    border-radius: 10px;
+    transition: background-color 0.15s ease;
+}
+
+.faixa:hover {
+    background-color: var(--fundo);
+}
+
+/* a condição ideal fica destacada como referência */
+.faixa_ideal,
+.faixa_ideal:hover {
+    background-color: rgba(47, 125, 59, 0.06);
+}
+
+.faixa_nome strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.faixa_nome span {
+    font-size: 11px;
+    color: var(--texto_fraco);
+}
+
+/* trilho = 100% das colmeias; a barra preenche a proporção */
+.faixa_trilho {
+    height: 12px;
+    border-radius: 999px;
+    background-color: #F2ECE3;
+    overflow: hidden;
+}
+
+.faixa_barra {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.6s ease;
+}
+
+.faixa_numero {
+    text-align: right;
+    font-size: 12px;
+    color: var(--texto_fraco);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.faixa_numero strong {
+    margin-right: 4px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--marrom);
+}
+
+/* condição sem nenhuma colmeia fica apagada */
+.faixa_vazia .faixa_nome,
+.faixa_vazia .faixa_numero strong {
+    opacity: 0.45;
+}
+
+/* o canvas precisa de uma caixa com position relative; a altura vem do espaço que sobra */
+.grafico {
+    position: relative;
+    flex: 1;
+    min-height: 160px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================= */
+/* RESPONSIVIDADE */
+/* ================================= */
+/* telas pequenas não têm espaço para caber tudo: volta a rolar normalmente */
+@media (max-width: 1200px), (max-height: 640px) {
+    main {
+        height: auto;
+    }
+
+    .grafico {
+        flex: none;
+        height: 280px;
+    }
+
+    .faixa {
+        min-height: 52px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .faixa_kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 860px) {
+    .painel_topo {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .campo {
+        flex: 1;
+        width: auto;
+    }
+
+    .grade_graficos {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    main {
+        padding: 16px;
+    }
+
+    .navbar {
+        padding: 0 16px;
+    }
+
+    .navbar_titulo p,
+    .selo_ao_vivo {
+        display: none;
+    }
+
+    .faixa_kpis {
+        grid-template-columns: 1fr;
+    }
+
+    .grafico {
+        height: 240px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar_logo {
+        display: none;
+    }
+
+    .navbar_titulo {
+        padding-left: 0;
+        border-left: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #visao_geral:not(.oculto),
+    #visao_individual:not(.oculto),
+    .selo_risco i {
+        animation: none;
+    }
+}
