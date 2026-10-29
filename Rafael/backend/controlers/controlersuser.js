@@ -74,18 +74,15 @@ function cadastrarempresa(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
     var nomeempresa = req.body.nomeempresaVar;
     var emailempresa = req.body.emailempresaVar;
-    var endereco = req.body.endempresaVar
     var codigo = req.body.codigoempresaVar;
     var cnpj = req.body.cnpjVar || ""; // Se vier undefined, vira string vazia
     var telefoneempresa = req.body.telefoneVar;
-    var razaosocial = req.body.razaosocialempresaVar
+    var razaosocial = req.body.razaosocialempresaVar;
 
     if (nomeempresa == undefined) {
         res.status(400).send("Seu nome está undefined!");
     } else if (emailempresa == undefined) {
         res.status(400).send("Seu email está undefined!");
-    } else if (endereco == undefined) {
-        res.status(400).send("Seu endereço está undefined!");
     } else if (telefoneempresa == undefined) {
         res.status(400).send("Seu telefone está undefined!");
     } else {
@@ -149,9 +146,10 @@ function cdastrarenderço(req, res) {
     var cep = req.body.cepServer;
     var rua = req.body.ruaServer;
     var numero = req.body.numeroServer;
-    var bairro = req.body.bairroServer; // Se vier undefined, vira string vazia
+    var bairro = req.body.bairroServer;
     var cidade = req.body.cidadeServer;
-    var estado = req.body.estadoServer
+    var estado = req.body.estadoServer;
+    var fkEmpresa = req.body.fkEnderecoEmpresa;
 
     if (cep == undefined) {
         res.status(400).send("Seu cep está indefinido!");
@@ -160,14 +158,13 @@ function cdastrarenderço(req, res) {
     } else if (numero == undefined) {
         res.status(400).send("Seu numero está indefinido!");
     } else if (bairro == undefined) {
-        res.status(400).send("Seu baiiro está indefinido!");
-    }else if(cidade == undefined){
-        res.status(400).send("Sua cidade esta indefinida")
-    }else if(estado == undefined){
-        res.status.send("Seu estado esta indefinido")
+        res.status(400).send("Seu bairro está indefinido!");
+    } else if (cidade == undefined) {
+        res.status(400).send("Sua cidade esta indefinida");
+    } else if (estado == undefined) {
+        res.status(400).send("Seu estado esta indefinido");
     } else {
-        // Removida a validação obrigatória de CPF pois não existe no HTML
-        usuarioModel.cadastrar(cep, rua, numero, bairro, cidade, estado)
+        usuarioModel.cdastrarenderço(cep, rua, numero, bairro, cidade, estado, fkEmpresa)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -176,7 +173,7 @@ function cdastrarenderço(req, res) {
                 function (erro) {
                     console.log(erro);
                     console.log(
-                        "\nHouve um erro ao realizar o cadastro! Erro: ",
+                        "\nHouve um erro ao realizar o cadastro do endereço! Erro: ",
                         erro.sqlMessage
                     );
                     res.status(500).json(erro.sqlMessage);
@@ -205,5 +202,6 @@ module.exports = {
     cadastrarempresa, 
     autenticarempresa,
     cdastrarenderço,
-    validarsenha
+    validarsenha,
+    listarUsuario
 }

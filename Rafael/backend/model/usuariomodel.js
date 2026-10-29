@@ -32,14 +32,14 @@ function cadastrar(nome, email, senha, cpf, telefone) {
 
 
 function cadastrarempres (nomeempresa, emailempresa, telefoneempresa, codigo, cnpj, razaosocial){
-    var entre = `INSERT INTO Empresa (nome_fantasia, cnpj, email, telefone, razao_social,  codEmpresa) VALUES ('${nomeempresa}', '${emailempresa}', '${telefoneempresa}', '${codigo}', '${cnpj}', '${razaosocial}')`
+    var entre = `INSERT INTO Empresa (nome_fantasia, razao_social, cnpj, email, telefone, codEmpresa) VALUES ('${nomeempresa}', '${razaosocial}', '${cnpj}', '${emailempresa}', '${telefoneempresa}', '${codigo}')`
     console.log("Executando a instrução SQL: \n" + entre)
     return database.executar(entre)
 }
 
 
-function cdastrarenderço(cep,rua,numero,bairro, cidade,estado){
-    var endereco = `INSERT INTO Endereco (cep,rua,numero,bairro,cidade,estado) VALUES ('${cep}', '${rua}', '${numero}', '${bairro}', '${cidade}', '${estado}')`
+function cdastrarenderço(cep, rua, numero, bairro, cidade, estado, fkEmpresa){
+    var endereco = `INSERT INTO Endereco (cep, logradouro, numero, bairro, cidade, estado, fkEnderecoEmpresa) VALUES ('${cep}', '${rua}', '${numero}', '${bairro}', '${cidade}', '${estado}', ${fkEmpresa})`
     console.log(`Inserindo o endereço: ${endereco}`)
     return database.executar(endereco);
 }
