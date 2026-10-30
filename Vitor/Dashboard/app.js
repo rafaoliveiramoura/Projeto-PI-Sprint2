@@ -1,0 +1,607 @@
+const defaultSettings = {
+  tempMin: 33,
+  tempMax: 36,
+  tempCold: 32,
+  tempHot: 38,
+  humMin: 50,
+  humMax: 75,
+  humDry: 50,
+  humWet: 75,
+};
+let settings = {
+  ...defaultSettings,
+  ...JSON.parse(localStorage.getItem("tetriaSettings") || "{}"),
+};
+const hives = [
+  { id: 1, t: 34.9, outT: 34.3, h: 63, outH: 61, status: "estavel" },
+  { id: 2, t: 38.9, outT: 34.0, h: 68, outH: 64, status: "risco" },
+  { id: 3, t: 36.9, outT: 34.2, h: 69, outH: 65, status: "atencao" },
+  { id: 4, t: 31.4, outT: 33.5, h: 55, outH: 58, status: "risco" },
+  { id: 5, t: 34.4, outT: 33.8, h: 62, outH: 60, status: "estavel" },
+  { id: 6, t: 35.7, outT: 34.1, h: 79, outH: 64, status: "atencao" },
+  { id: 7, t: 34.8, outT: 34.4, h: 58, outH: 62, status: "estavel" },
+  { id: 8, t: 38.9, outT: 34.6, h: 78, outH: 63, status: "risco" },
+  { id: 9, t: 35.2, outT: 34.5, h: 61, outH: 62, status: "estavel" },
+  { id: 10, t: 34.6, outT: 34.0, h: 66, outH: 60, status: "estavel" },
+];
+const labels = ["08:00", "08:02", "08:04", "08:06", "08:08", "08:10"];
+let charts = {};
+const $ = (id) => document.getElementById(id);
+const fmt = (n, d = 1) =>
+  Number(n).toLocaleString("pt-BR", {
+    minimumFractionDigits: d,
+    maximumFractionDigits: d,
+  });
+const statusName = (s) =>
+  ({ estavel: "Estável", atencao: "Em atenção", risco: "Em risco" })[s];
+function statusClass(h) {
+  if (
+    h.t < settings.tempCold ||
+    h.t > settings.tempHot ||
+    h.h < settings.humDry ||
+    h.h > settings.humWet
+  )
+    return "risco";
+  if (
+    h.t < settings.tempMin ||
+    h.t > settings.tempMax ||
+    h.h < settings.humMin ||
+    h.h > settings.humMax
+  )
+    return "atencao";
+  return "estavel";
+}
+function applyStatuses() {
+  hives.forEach((h) => (h.status = statusClass(h)));
+}
+function init() {
+  hives.forEach((h) =>
+    $("hive-select").insertAdjacentHTML(
+      "beforeend",
+      `<option value="${h.id}">Colmeia ${String(h.id).padStart(2, "0")}</option>`,
+    ),
+  );
+  document
+    .querySelectorAll(".nav-link")
+    .forEach((b) =>
+      b.addEventListener("click", () => showPage(b.dataset.page)),
+    );
+  $("hive-select").addEventListener("change", renderDashboard);
+  $("hive-filter").addEventListener("change", renderHives);
+  const openAllHives = () => {
+    showPage("colmeias");
+    $("hive-filter").value = "todas";
+    renderHives();
+  };
+  $("total-kpi").addEventListener("click", openAllHives);
+  $("total-kpi").addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      openAllHives();
+    }
+  });
+  $("total-link").addEventListener("click", (e) => {
+    e.stopPropagation();
+    openAllHives();
+  });
+  document.querySelectorAll("[data-goto]").forEach((b) =>
+    b.addEventListener("click", (e) => {
+      e.preventDefault();
+      showPage(b.dataset.goto);
+    }),
+  );
+  document.querySelectorAll("[data-filter]").forEach((b) =>
+    b.addEventListener("click", (e) => {
+      e.preventDefault();
+      showPage("colmeias");
+      $("hive-filter").value = b.dataset.filter;
+      renderHives();
+    }),
+  );
+  $("settings-form").addEventListener("submit", saveSettings);
+  $("reset-settings").addEventListener("click", resetSettings);
+  applyStatuses();
+  fillSettings();
+  renderDashboard();
+  renderHives();
+}
+function showPage(page) {
+  document.querySelectorAll(".page").forEach((p) => p.classList.add("hidden"));
+  $(page).classList.remove("hidden");
+  document
+    .querySelectorAll(".nav-link")
+    .forEach((b) => b.classList.toggle("active", b.dataset.page === page));
+  const titles = {
+    dashboard: [
+      "Visão geral do apiário",
+      "Acompanhe as condições das colmeias em tempo real.",
+    ],
+    colmeias: [
+      "Colmeias",
+      "Consulte as leituras e a situação de cada colmeia.",
+    ],
+    configuracoes: [
+      "Configurações",
+      "Ajuste os limiares de referência do monitoramento.",
+    ],
+  };
+  $("page-title").textContent = titles[page][0];
+  $("page-subtitle").textContent = titles[page][1];
+}
+function renderDashboard() {
+  const val = $("hive-select").value;
+  const overview = val === "all";
+  $("overview-view").classList.toggle("hidden", !overview);
+  $("detail-view").classList.toggle("hidden", overview);
+  if (overview) renderOverview();
+  else renderDetail(hives.find((h) => h.id === Number(val)));
+}
+function renderOverview() {
+  const counts = {
+    risco: hives.filter((h) => h.status === "risco").length,
+    atencao: hives.filter((h) => h.status === "atencao").length,
+    estavel: hives.filter((h) => h.status === "estavel").length,
+  };
+  $("risk-count").textContent = counts.risco;
+  $("attention-count").textContent = counts.atencao;
+  $("risk-total").textContent = hives.length;
+  $("attention-total").textContent = hives.length;
+  $("total-count").textContent = hives.length;
+  const summaryText = (h) => {
+    const tempBad = h.t < settings.tempMin || h.t > settings.tempMax;
+    return tempBad
+      ? `Temp. ${fmt(h.t)} °C · ${h.t > settings.tempMax ? "acima de " + fmt(settings.tempHot) + " °C" : "abaixo de " + fmt(settings.tempCold) + " °C"}`
+      : `Umidade ${h.h}% · ${h.h > settings.humMax ? "acima de " + settings.humMax + "%" : "abaixo de " + settings.humMin + "%"}`;
+  };
+  const elapsed = (h) =>
+    ({
+      2: "há 1h40",
+      3: "há 25 min",
+      4: "há 2h15",
+      6: "há 1h30",
+      8: "há 1h05",
+    })[h.id] || "há 40 min";
+  const fillSummary = (id, status) => {
+    $(id).innerHTML =
+      hives
+        .filter((h) => h.status === status)
+        .sort((a, b) => severity(b.status) - severity(a.status))
+        .slice(0, 3)
+        .map(
+          (h) =>
+            `<button type="button" class="alert-row" data-summary-hive="${h.id}" aria-label="Abrir Colmeia ${String(h.id).padStart(2, "0")}"><strong>Colmeia ${String(h.id).padStart(2, "0")}</strong><span>${summaryText(h)}</span><time>${elapsed(h)}</time></button>`,
+        )
+        .join("") ||
+      '<div class="alert-row empty">Nenhuma colmeia nesta condição.</div>';
+  };
+  fillSummary("risk-list", "risco");
+  fillSummary("attention-list", "atencao");
+  document.querySelectorAll("[data-summary-hive]").forEach((row) =>
+    row.addEventListener("click", () => {
+      $("hive-select").value = row.dataset.summaryHive;
+      renderDashboard();
+    }),
+  );
+  const tempBins = [
+    hives.filter((h) => h.t > settings.tempHot).length,
+    hives.filter((h) => h.t >= settings.tempMax && h.t <= settings.tempHot)
+      .length,
+    hives.filter((h) => h.t >= settings.tempMin && h.t < settings.tempMax)
+      .length,
+    hives.filter((h) => h.t >= settings.tempCold && h.t < settings.tempMin)
+      .length,
+    hives.filter((h) => h.t < settings.tempCold).length,
+  ];
+  makeChart(
+    "overviewBar",
+    "bar",
+    {
+      labels: ["Muito quente", "Quente", "Ideal", "Fria", "Muito fria"],
+      datasets: [
+        {
+          data: tempBins,
+          backgroundColor: [
+            "#cf3329",
+            "#e0ad17",
+            "#2f8045",
+            "#b9c7b7",
+            "#cf3329",
+          ],
+          maxBarThickness: 50,
+        },
+      ],
+    },
+    {
+      indexAxis: "x",
+      plugins: { legend: { display: false } },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: "Poppins", size: 15 }, color: "#857a70" },
+        },
+        y: {
+          beginAtZero: true,
+          ticks: { stepSize: 1, color: "#857a70" },
+          grid: { color: "#eee4d8" },
+        },
+      },
+    },
+  );
+  const humBins = [
+    hives.filter((h) => h.h > settings.humMax).length,
+    hives.filter((h) => h.h >= settings.humMin && h.h <= settings.humMax)
+      .length,
+    hives.filter((h) => h.h < settings.humMin).length,
+  ];
+  makeChart(
+  "humidityBar",
+  "doughnut",
+  {
+    labels: ["Úmida", "Ideal", "Seca"],
+    datasets: [
+      {
+        data: humBins,
+        backgroundColor: ["#e0ad17", "#2f8045", "#cf3329"],
+        borderWidth: 2,
+        borderColor: "#fff",
+        hoverOffset: 5,
+      },
+    ],
+  },
+  {
+    cutout: "65%",
+    plugins: {
+      legend: {
+        display: true,
+        position: "bottom",
+        labels: {
+          font: { family: "Poppins", size: 15 },
+          color: "#857a70",
+          usePointStyle: true,
+          padding: 16,
+        },
+      },
+    },
+  },
+);
+  const incidents = hives
+    .filter((h) => h.status !== "estavel")
+    .sort((a, b) => severity(b.status) - severity(a.status));
+  $("incidents-body").innerHTML =
+    incidents
+      .slice(0, 5)
+      .map((h) => {
+        const tempBad = h.t < settings.tempMin || h.t > settings.tempMax;
+        const occ = tempBad
+          ? h.t > settings.tempMax
+            ? "Temperatura elevada"
+            : "Temperatura baixa"
+          : h.h > settings.humMax
+            ? "Umidade elevada"
+            : "Umidade baixa";
+        return `<tr><td class="hive-name">Colmeia ${String(h.id).padStart(2, "0")}</td><td><span class="occurrence ${h.status === "atencao" ? "warning" : ""}"><i></i>${occ}</span></td><td class="reading">${tempBad ? fmt(h.t) + " °C" : h.h + "%"}</td><td>${tempBad ? `${h.t > settings.tempMax ? "≤" : "≥"} ${fmt(h.t > settings.tempMax ? settings.tempMax : settings.tempMin)} °C` : `${h.h > settings.humMax ? "≤" : "≥"} ${h.h > settings.humMax ? settings.humMax : settings.humMin}%`}</td><td>há ${["1h40", "2h15", "1h05", "1h30", "25 min"][h.id % 5]}</td><td><button class="table-link" data-hive="${h.id}">Detalhes</button></td></tr>`;
+      })
+      .join("") ||
+    '<tr><td colspan="6">Nenhuma ocorrência no momento.</td></tr>';
+  $("incidents-body")
+    .querySelectorAll("[data-hive]")
+    .forEach((b) =>
+      b.addEventListener("click", () => {
+        $("hive-select").value = b.dataset.hive;
+        renderDashboard();
+      }),
+    );
+}
+function severity(s) {
+  return s === "risco" ? 2 : s === "atencao" ? 1 : 0;
+}
+function renderDetail(h) {
+  if (!h) return;
+  const s = h.status;
+  $("detail-badge").textContent = statusName(s);
+  $("detail-badge").className = "status-badge " + s;
+  $("detail-description").textContent =
+    s === "estavel"
+      ? "Temperatura e umidade estão dentro dos limites configurados."
+      : s === "risco"
+        ? "Temperatura ou umidade ultrapassou um limite crítico. Os trechos fora da faixa aparecem em vermelho."
+        : "Há leitura fora da faixa ideal ou próxima de um limite. Acompanhe os gráficos e compare com as linhas de referência.";
+  const tempSeries = [
+      h.t - 0.25,
+      h.t - 0.12,
+      h.t - 0.08,
+      h.t + 0.18,
+      h.t + 0.2,
+      h.t,
+    ],
+    outTemp = [
+      h.outT - 0.4,
+      h.outT - 0.2,
+      h.outT + 0.1,
+      h.outT + 0.05,
+      h.outT - 0.1,
+      h.outT,
+    ];
+  const humSeries = [h.h - 3, h.h - 2, h.h - 2.2, h.h - 0.8, h.h - 1, h.h],
+    outHum = [
+      h.outH - 3,
+      h.outH - 1.5,
+      h.outH - 2,
+      h.outH - 1,
+      h.outH - 1.5,
+      h.outH,
+    ];
+  const tempMax = Math.max(...tempSeries),
+    tempMin = Math.min(...tempSeries),
+    humMax = Math.max(...humSeries),
+    humMin = Math.min(...humSeries);
+  $("detail-kpis").innerHTML =
+    `<article class="kpi-card"><div class="kpi-top"><span>Temperatura interna</span><span class="kpi-icon">℃</span></div><strong class="metric">${fmt(h.t)}<span class="metric-unit">°C</span></strong><small>Externa: ${fmt(h.outT)} °C</small><span class="peak">Pico máx. ${fmt(tempMax)} °C · mín. ${fmt(tempMin)} °C</span></article><article class="kpi-card"><div class="kpi-top"><span>Umidade interna</span><span class="kpi-icon">％</span></div><strong class="metric">${h.h}<span class="metric-unit">%</span></strong><small>Externa: ${h.outH}%</small><span class="peak">Pico máx. ${humMax}% · mín. ${humMin}%</span></article><article class="kpi-card condition-card ${s === "risco" ? "danger" : s === "atencao" ? "warning" : ""}"><div class="kpi-top"><span>Condição atual</span><span class="kpi-icon">◉</span></div><strong class="condition-value">${statusName(s)}</strong><small>Colmeia ${String(h.id).padStart(2, "0")} · atualização recente</small><span class="peak">${s === "risco" ? "Verifique esta colmeia" : s === "atencao" ? "Acompanhe esta colmeia" : "Condições dentro da faixa ideal"}</span></article>`;
+  makeChart(
+    "temperatureChart",
+    "line",
+    {
+      labels,
+      datasets: [
+        {
+          label: "Dentro da colmeia",
+          data: tempSeries,
+          borderColor: "#2b1e17",
+          backgroundColor: "#2b1e17",
+          segment: {
+            borderColor: (ctx) =>
+              ctx.p0.parsed.y < settings.tempMin ||
+              ctx.p0.parsed.y > settings.tempMax ||
+              ctx.p1.parsed.y < settings.tempMin ||
+              ctx.p1.parsed.y > settings.tempMax
+                ? "#cf3329"
+                : "#2b1e17",
+          },
+          pointBackgroundColor: (ctx) =>
+            ctx.parsed.y < settings.tempMin || ctx.parsed.y > settings.tempMax
+              ? "#cf3329"
+              : "#2b1e17",
+          pointBorderColor: (ctx) =>
+            ctx.parsed.y < settings.tempMin || ctx.parsed.y > settings.tempMax
+              ? "#cf3329"
+              : "#2b1e17",
+          tension: 0.35,
+          pointRadius: 3,
+          borderWidth: 2.5,
+        },
+        {
+          label: "Ambiente externo",
+          data: outTemp,
+          borderColor: "#ae8100",
+          backgroundColor: "#ae8100",
+          borderDash: [6, 5],
+          tension: 0.35,
+          pointRadius: 2,
+          borderWidth: 2,
+        },
+        {
+          label: `Limite mínimo (${fmt(settings.tempMin)} °C)`,
+          data: labels.map(() => settings.tempMin),
+          borderColor: "#78a77b",
+          borderDash: [5, 4],
+          pointRadius: 0,
+          borderWidth: 1.5,
+          tension: 0,
+        },
+        {
+          label: `Limite máximo (${fmt(settings.tempMax)} °C)`,
+          data: labels.map(() => settings.tempMax),
+          borderColor: "#78a77b",
+          borderDash: [5, 4],
+          pointRadius: 0,
+          borderWidth: 1.5,
+          tension: 0,
+        },
+      ],
+    },
+    {
+      plugins: {
+        legend: {
+          position: "top",
+          align: "start",
+          labels: {
+            usePointStyle: false,
+            boxWidth: 20,
+            boxHeight: 3,
+            padding: 14,
+            color: "#71665d",
+            font: { family: "Poppins", size: 10, weight: "500" },
+          },
+        },
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: "Poppins", size: 9 }, color: "#857a70" },
+        },
+        y: {
+          grid: { color: "#eee4d8" },
+          ticks: { font: { family: "Poppins", size: 10 }, color: "#857a70" },
+        },
+      },
+    },
+  );
+  makeChart(
+    "humidityChart",
+    "line",
+    {
+      labels,
+      datasets: [
+        {
+          label: "Dentro da colmeia",
+          data: humSeries,
+          borderColor: "#2b1e17",
+          backgroundColor: "#2b1e17",
+          segment: {
+            borderColor: (ctx) =>
+              ctx.p0.parsed.y < settings.humMin ||
+              ctx.p0.parsed.y > settings.humMax ||
+              ctx.p1.parsed.y < settings.humMin ||
+              ctx.p1.parsed.y > settings.humMax
+                ? "#cf3329"
+                : "#2b1e17",
+          },
+          pointBackgroundColor: (ctx) =>
+            ctx.parsed.y < settings.humMin || ctx.parsed.y > settings.humMax
+              ? "#cf3329"
+              : "#2b1e17",
+          pointBorderColor: (ctx) =>
+            ctx.parsed.y < settings.humMin || ctx.parsed.y > settings.humMax
+              ? "#cf3329"
+              : "#2b1e17",
+          tension: 0.35,
+          pointRadius: 3,
+          borderWidth: 2.5,
+        },
+        {
+          label: "Ambiente externo",
+          data: outHum,
+          borderColor: "#ae8100",
+          backgroundColor: "#ae8100",
+          borderDash: [6, 5],
+          tension: 0.35,
+          pointRadius: 2,
+          borderWidth: 2,
+        },
+        {
+          label: `Limite mínimo (${settings.humMin}%)`,
+          data: labels.map(() => settings.humMin),
+          borderColor: "#78a77b",
+          borderDash: [5, 4],
+          pointRadius: 0,
+          borderWidth: 1.5,
+          tension: 0,
+        },
+        {
+          label: `Limite máximo (${settings.humMax}%)`,
+          data: labels.map(() => settings.humMax),
+          borderColor: "#78a77b",
+          borderDash: [5, 4],
+          pointRadius: 0,
+          borderWidth: 1.5,
+          tension: 0,
+        },
+      ],
+    },
+    {
+      plugins: {
+        legend: {
+          position: "top",
+          align: "start",
+          labels: {
+            usePointStyle: false,
+            boxWidth: 20,
+            boxHeight: 3,
+            padding: 14,
+            color: "#71665d",
+            font: { family: "Poppins", size: 10, weight: "500" },
+          },
+        },
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: "Poppins", size: 9 }, color: "#857a70" },
+        },
+        y: {
+          min: 35,
+          max: 85,
+          grid: { color: "#eee4d8" },
+          ticks: { font: { family: "Poppins", size: 10 }, color: "#857a70" },
+        },
+      },
+    },
+  );
+}
+function makeChart(id, type, data, options) {
+  if (charts[id]) charts[id].destroy();
+  charts[id] = new Chart($(id), {
+    type,
+    data,
+    options: { responsive: true, maintainAspectRatio: false, ...options },
+  });
+}
+function renderHives() {
+  const filter = $("hive-filter").value;
+  const list = hives.filter((h) => filter === "todas" || h.status === filter);
+  $("hive-cards").innerHTML = list
+    .map(
+      (h) =>
+        `<article class="hive-card" data-open-hive="${h.id}"><div class="hive-card-head">Colmeia ${String(h.id).padStart(2, "0")}<span class="legend-dot" style="background:${h.status === "risco" ? "#cf3329" : h.status === "atencao" ? "#e0ad17" : "#2f8045"}"></span></div><div class="hive-reading">${fmt(h.t)} °C</div><small>Temperatura interna</small><div class="status-text ${h.status}">${statusName(h.status)}</div></article>`,
+    )
+    .join("");
+  $("hives-body").innerHTML = list
+    .map(
+      (h) =>
+        `<tr><td class="hive-name">Colmeia ${String(h.id).padStart(2, "0")}</td><td>${fmt(h.t)} °C</td><td>${fmt(h.outT)} °C</td><td>${h.h}%</td><td>${h.outH}%</td><td><span class="status-badge ${h.status}">${statusName(h.status)}</span></td></tr>`,
+    )
+    .join("");
+  document.querySelectorAll("[data-open-hive]").forEach((c) =>
+    c.addEventListener("click", () => {
+      showPage("dashboard");
+      $("hive-select").value = c.dataset.openHive;
+      renderDashboard();
+    }),
+  );
+}
+function fillSettings() {
+  for (const [key, id] of Object.entries({
+    tempMin: "temp-min",
+    tempMax: "temp-max",
+    tempCold: "temp-cold",
+    tempHot: "temp-hot",
+    humMin: "hum-min",
+    humMax: "hum-max",
+    humDry: "hum-dry",
+    humWet: "hum-wet",
+  }))
+    $(id).value = settings[key];
+}
+function saveSettings(e) {
+  e.preventDefault();
+  const map = {
+    tempMin: "temp-min",
+    tempMax: "temp-max",
+    tempCold: "temp-cold",
+    tempHot: "temp-hot",
+    humMin: "hum-min",
+    humMax: "hum-max",
+    humDry: "hum-dry",
+    humWet: "hum-wet",
+  };
+  const next = {};
+  for (const [k, id] of Object.entries(map)) next[k] = Number($(id).value);
+  if (
+    next.tempMin >= next.tempMax ||
+    next.tempCold >= next.tempMin ||
+    next.tempHot <= next.tempMax ||
+    next.humMin >= next.humMax ||
+    next.humDry > next.humMin ||
+    next.humWet < next.humMax
+  ) {
+    $("settings-message").textContent =
+      "Confira os limites: mínimo deve ser menor que máximo.";
+    return;
+  }
+  settings = next;
+  localStorage.setItem("tetriaSettings", JSON.stringify(settings));
+  applyStatuses();
+  renderDashboard();
+  renderHives();
+  $("settings-message").textContent = "Configurações salvas com sucesso.";
+}
+function resetSettings() {
+  settings = { ...defaultSettings };
+  localStorage.removeItem("tetriaSettings");
+  fillSettings();
+  applyStatuses();
+  renderDashboard();
+  renderHives();
+  $("settings-message").textContent = "Valores padrão restaurados.";
+}
+init();

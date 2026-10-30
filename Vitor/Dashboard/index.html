@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tetria | Monitoramento de colmeias</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="bee">🐝</div>
+        <h1>TETRIA</h1>
+        <p>Monitoramento de colmeias</p>
+      </div>
+      <nav>
+        <button class="nav-link active" data-page="dashboard">
+          ▦ <span>Dashboard</span></button
+        ><button class="nav-link" data-page="colmeias">
+          ▤ <span>Colmeias</span></button
+        ><button class="nav-link" data-page="configuracoes">
+          ⚙ <span>Configurações</span>
+        </button>
+      </nav>
+      <div class="side-foot">
+        <span class="live-dot"></span> Sistema de monitoramento
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">PAINEL DE CONTROLE</span>
+          <h2 id="page-title">Visão geral do apiário</h2>
+          <p id="page-subtitle">
+            Acompanhe as condições das colmeias em tempo real.
+          </p>
+        </div>
+        <div class="top-actions">
+          <span class="status-pill"><i></i> Sistema ativo</span>
+          <div class="avatar">T</div>
+        </div>
+      </header>
+      <section id="dashboard" class="page active">
+        <div class="toolbar compact-toolbar">
+          <div>
+            <h3>Monitoramento</h3>
+            <p>Selecione uma colmeia para consultar os dados detalhados.</p>
+          </div>
+          <label class="select-wrap"
+            >Colmeia<select id="hive-select">
+              <option value="all">Todas as colmeias</option>
+            </select></label
+          >
+        </div>
+        <div id="overview-view">
+          <div class="overview-alert-grid">
+            <article class="alert-summary danger">
+              <div class="alert-summary-head">
+                <span>Em risco</span
+                ><span class="alert-action">● Inspecionar agora</span>
+              </div>
+              <div class="alert-summary-count">
+                <strong id="risk-count">3</strong
+                ><span>de <b id="risk-total">10</b> colmeias</span
+                ><a href="#" data-filter="risco">Ver todas →</a>
+              </div>
+              <div class="alert-summary-list" id="risk-list"></div>
+            </article>
+            <article class="alert-summary warning">
+              <div class="alert-summary-head">
+                <span>Em atenção</span
+                ><span class="alert-action">Acompanhar</span>
+              </div>
+              <div class="alert-summary-count">
+                <strong id="attention-count">2</strong
+                ><span>de <b id="attention-total">10</b> colmeias</span
+                ><a href="#" data-filter="atencao">Ver todas →</a>
+              </div>
+              <div class="alert-summary-list" id="attention-list"></div>
+            </article>
+            <article
+              class="alert-summary total-summary"
+              role="button"
+              tabindex="0"
+              id="total-kpi"
+              aria-label="Ver todas as colmeias"
+            >
+              <div class="alert-summary-head">
+                <span>Apiário monitorado</span
+                ><span class="total-kpi-icon">⌂</span>
+              </div>
+              <div class="total-kpi-value" id="total-count">10</div>
+              <p class="total-kpi-caption">colmeias cadastradas no sistema</p>
+              <button class="total-kpi-link" type="button" id="total-link">
+                Ver todas as colmeias →
+              </button>
+            </article>
+          </div>
+          <div class="overview-grid">
+            <article class="panel" style="height: 400px;">
+              <div class="panel-heading" >
+                <div>
+                  <h3>Visão geral do apiário</h3>
+                  <p>Colmeias por faixa de temperatura</p>
+                </div>
+                <span class="mini-label">TEMPERATURA</span>
+              </div>
+              <div class="chart-area"><canvas id="overviewBar"></canvas></div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h3>Visão geral da umidade</h3>
+                  <p>Colmeias por faixa de umidade</p>
+                </div>
+                <span class="mini-label">UMIDADE</span>
+              </div>
+              <div class="chart-area"><canvas id="humidityBar"></canvas></div>
+            </article>
+          </div>
+          <article class="panel incidents">
+            <div class="panel-heading">
+              <div>
+                <h3>Ocorrências em destaque</h3>
+                <p>Leituras que merecem atenção</p>
+              </div>
+              <button class="text-button" data-goto="colmeias">
+                Ver todas →
+              </button>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Colmeia</th>
+                    <th>Ocorrência</th>
+                    <th>Leitura</th>
+                    <th>Referência</th>
+                    <th>Última leitura</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="incidents-body"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+        <div id="detail-view" class="hidden">
+          <div class="detail-status">
+            <span class="status-badge" id="detail-badge">Ideal</span
+            ><span id="detail-description"
+              >Temperatura e umidade dentro da faixa de referência.</span
+            >
+          </div>
+          <div class="kpi-grid three detail-kpis" id="detail-kpis"></div>
+          <div class="detail-grid">
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h3>Temperatura</h3>
+                  <p>Ambiente interno e externo (°C)</p>
+                </div>
+                <span class="mini-label">ÚLTIMAS LEITURAS</span>
+              </div>
+              <div class="chart-area tall">
+                <canvas id="temperatureChart"></canvas>
+              </div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h3>Umidade</h3>
+                  <p>Ambiente interno e externo (%)</p>
+                </div>
+                <span class="mini-label">ÚLTIMAS LEITURAS</span>
+              </div>
+              <div class="chart-area tall">
+                <canvas id="humidityChart"></canvas>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section id="colmeias" class="page hidden">
+        <div class="toolbar">
+          <div>
+            <h3>Todas as colmeias</h3>
+            <p>
+              Consulte as leituras mais recentes e a situação de cada unidade.
+            </p>
+          </div>
+          <label class="select-wrap"
+            >Situação<select id="hive-filter">
+              <option value="todas">Todas</option>
+              <option value="risco">Em risco</option>
+              <option value="atencao">Em atenção</option>
+              <option value="estavel">Estáveis</option>
+            </select></label
+          >
+        </div>
+        <div class="hive-cards" id="hive-cards"></div>
+        <article class="panel">
+          <div class="panel-heading">
+            <div>
+              <h3>Dados das colmeias</h3>
+              <p>Valores simulados para demonstração da interface.</p>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Colmeia</th>
+                  <th>Temperatura interna</th>
+                  <th>Temperatura externa</th>
+                  <th>Umidade interna</th>
+                  <th>Umidade externa</th>
+                  <th>Situação</th>
+                </tr>
+              </thead>
+              <tbody id="hives-body"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+      <section id="configuracoes" class="page hidden">
+        <div class="settings-intro">
+          <h3>Configurações de monitoramento</h3>
+          <p>
+            Defina as faixas de referência usadas para classificar as leituras e
+            destacar possíveis ocorrências.
+          </p>
+        </div>
+        <form id="settings-form" class="settings-grid">
+          <article class="panel settings-panel">
+            <div class="settings-icon">℃</div>
+            <h3>Temperatura interna</h3>
+            <p>Faixa considerada ideal para o ambiente interno das colmeias.</p>
+            <div class="field-row">
+              <label
+                >Limite mínimo (°C)<input
+                  id="temp-min"
+                  type="number"
+                  step="0.1"
+                  required /></label
+              ><label
+                >Limite máximo (°C)<input
+                  id="temp-max"
+                  type="number"
+                  step="0.1"
+                  required
+              /></label>
+            </div>
+            <div class="field-row">
+              <label
+                >Alerta de frio abaixo de (°C)<input
+                  id="temp-cold"
+                  type="number"
+                  step="0.1"
+                  required /></label
+              ><label
+                >Alerta de calor acima de (°C)<input
+                  id="temp-hot"
+                  type="number"
+                  step="0.1"
+                  required
+              /></label>
+            </div>
+          </article>
+          <article class="panel settings-panel">
+            <div class="settings-icon">％</div>
+            <h3>Umidade interna</h3>
+            <p>Faixa de umidade relativa recomendada para o monitoramento.</p>
+            <div class="field-row">
+              <label
+                >Limite mínimo (%)<input
+                  id="hum-min"
+                  type="number"
+                  required /></label
+              ><label
+                >Limite máximo (%)<input id="hum-max" type="number" required
+              /></label>
+            </div>
+            <div class="field-row">
+              <label
+                >Alerta de baixa umidade (%)<input
+                  id="hum-dry"
+                  type="number"
+                  required /></label
+              ><label
+                >Alerta de alta umidade (%)<input
+                  id="hum-wet"
+                  type="number"
+                  required
+              /></label>
+            </div>
+          </article>
+          <div class="settings-actions">
+            <span id="settings-message"
+              >As alterações serão salvas neste navegador.</span
+            ><button class="button secondary" type="button" id="reset-settings">
+              Restaurar padrão</button
+            ><button class="button primary" type="submit">
+              Salvar configurações
+            </button>
+          </div>
+        </form>
+      </section>
+      <footer>
+        TETRIA <span>•</span> Monitoramento de colmeias
+        <span class="footer-right"
+          >Interface demonstrativa · dados fictícios</span
+        >
+      </footer>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
