@@ -82,13 +82,13 @@
           <!-- VALOR DO ENXAME -->
 
           <div class="campo">
-            <label for="ipt_enxame_Jatai">
-              Valor médio do enxame de abelha Jataí:
+            <label for="ipt_enxame_Europeiai">
+              Valor médio do enxame de abelha Europeiaí:
             </label>
 
-            <input type="" value="275" id="ipt_enxame_Jatai" />
+            <input type="" value="275" id="ipt_enxame_Europeiai" />
 
-            <span class="error-message" id="err_ipt_enxame_Jatai"> </span>
+            <span class="error-message" id="err_ipt_enxame_Europeiai"> </span>
           </div>
 
           <!-- PRODUÇÃO DE MEL -->
@@ -174,7 +174,7 @@
           <!-- VALOR DO ENXAME -->
 
           <div class="campo">
-            <label for="ipt_enxame2"> Quanto custa o enxame de Jataí: </label>
+            <label for="ipt_enxame2"> Quanto custa o enxame de Europeiaí: </label>
 
             <input type="" id="ipt_enxame2" />
 
@@ -206,7 +206,7 @@
       function Calculo1() {
         // Pegando os valores dos campos
         let qtdColmeias = Number(ipt_qtd_colmeia.value);
-        let valorEnxame = Number(ipt_enxame_Jatai.value);
+        let valorEnxame = Number(ipt_enxame_Europeiai.value);
         let qtdMelMes = Number(ipt_qtd_Mel.value);
         let valorMel = Number(ipt_valor_mel.value);
         let colmeiaPerdida = Number(input_colmeia_perdida.value);
@@ -230,15 +230,15 @@
         // VALIDAÇÃO DO VALOR DO ENXAME
 
         if (valorEnxame == "") {
-          err_ipt_enxame_Jatai.innerHTML = "Digite o valor do enxame.";
+          err_ipt_enxame_Europeiai.innerHTML = "Digite o valor do enxame.";
           valido = false;
 
         } else if (valorEnxame < 0) {
-          err_ipt_enxame_Jatai.innerHTML = "O valor não pode ser negativo.";
+          err_ipt_enxame_Europeiai.innerHTML = "O valor não pode ser negativo.";
           valido = false;
 
         } else {
-          err_ipt_enxame_Jatai.innerHTML = "";
+          err_ipt_enxame_Europeiai.innerHTML = "";
         }
 
         // VALIDAÇÃO DA PRODUÇÃO DE MEL
@@ -330,12 +330,12 @@
 
       function limparCampos1() {
         ipt_qtd_colmeia.value = "";
-        ipt_enxame_Jatai.value = "";
+        ipt_enxame_Europeiai.value = "";
         ipt_qtd_Mel.value = "";
         ipt_valor_mel.value = "";
         input_colmeia_perdida.value = "";
         err_ipt_qtd_colmeia.innerHTML = "";
-        err_ipt_enxame_Jatai.innerHTML = "";
+        err_ipt_enxame_Europeiai.innerHTML = "";
         err_ipt_qtd_Mel.innerHTML = "";
         err_ipt_valor_mel.innerHTML = "";
         err_input_colmeia_perdida.innerHTML = "";
