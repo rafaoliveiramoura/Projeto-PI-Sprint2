@@ -63,6 +63,7 @@ button {
 .app {
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
+  min-height: 100vh;
 }
 
 .sidebar {
@@ -163,6 +164,7 @@ button {
 .main {
   margin-left: 30px;
   padding: 18px 32px 16px;
+  min-height: 100vh;
 }
 
 .title-line {
