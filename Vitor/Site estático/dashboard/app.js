@@ -544,7 +544,7 @@ let graficoBarras = new Chart(document.getElementById("graficoBarras"), {
 let graficoRosca = new Chart(document.getElementById("graficoRosca"), {
   type: "doughnut",
   data: {
-    labels: ["Úmida", "Ideal", "Seca"],
+    labels: ["Acima do indicado", "Ideal", "Abaixo do indicado"],
     datasets: [{ data: [], backgroundColor: [corAmarela, corVerde, corVermelha] }],
   },
   options: {
