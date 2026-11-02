@@ -8,6 +8,7 @@ let tempCalor = 38;
 let umidMin = 50;
 let umidMax = 75;
 let umidRisco = 85;
+let umidSeca = 40;
 
 // ================== DADOS (simulados) ==================
 // uma leitura a cada 3 horas (a última posição é a leitura atual)
@@ -86,7 +87,7 @@ function calcularSituacoes() {
     let temp = atual(tempInterna[i]);
     let umid = atual(umidInterna[i]);
 
-    if (temp < tempFrio || temp > tempCalor || (umid >= umidRisco && temp < tempFrio)) {
+    if (temp < tempFrio || temp > tempCalor || umid >= umidRisco || umid < umidSeca) {
       situacoes.push("Risco");
     } else if (temp < tempMin || temp > tempMax || umid < umidMin || umid > umidMax) {
       situacoes.push("Atenção");
@@ -98,26 +99,22 @@ function calcularSituacoes() {
 
 // ================== NAVEGAÇÃO ==================
 function mostrarPagina(pagina) {
-  dashboard.classList.add("hidden");
-  colmeias.classList.add("hidden");
-  configuracoes.classList.add("hidden");
-  nav_dashboard.classList.remove("active");
-  nav_colmeias.classList.remove("active");
-  nav_configuracoes.classList.remove("active");
+  ["dashboard", "colmeias", "configuracoes"].forEach((nome) => {
+    const secao = document.getElementById(nome);
+    const link = document.getElementById("nav_" + nome);
+    if (secao) secao.classList.toggle("hidden", nome !== pagina);
+    if (link) link.classList.toggle("active", nome === pagina);
+  });
 
-  document.getElementById(pagina).classList.remove("hidden");
-  document.getElementById("nav_" + pagina).classList.add("active");
-
-  if (pagina == "dashboard") {
-    area_select.classList.remove("hidden");
-    mostrarDashboard();
-  } else {
-    area_select.classList.add("hidden");
+  const ehDashboard = pagina === "dashboard";
+  area_select.classList.toggle("hidden", !ehDashboard);
+  if (!ehDashboard) {
     badge_situacao.classList.add("hidden");
     btn_voltar.classList.add("hidden");
     document.body.classList.remove("sem-rolagem");
-    if (pagina == "colmeias") titulo_pagina.innerHTML = "Colmeias";
-    if (pagina == "configuracoes") titulo_pagina.innerHTML = "Configurações";
+    titulo_pagina.textContent = pagina === "colmeias" ? "Colmeias" : "Configurações";
+  } else {
+    mostrarDashboard();
   }
 }
 
@@ -259,6 +256,24 @@ function mostrarColmeia(i) {
     if (temps[p] < temps[menor]) menor = p;
   }
 
+  
+  // procura a posição da umidade mais alta e mais baixa do dia
+  let maiorUmid = 0;
+  let menorUmid = 0;
+
+  for (let p = 1; p < umids.length; p++) {
+    if (umids[p] > umids[maiorUmid]) maiorUmid = p;
+    if (umids[p] < umids[menorUmid]) menorUmid = p;
+  }
+
+  // preenche a KPI de picos de umidade
+  kpi_umid_alta.innerHTML = umids[maiorUmid] + "%";
+  kpi_hora_umid_alta.innerHTML = horarios[maiorUmid];
+
+  kpi_umid_baixa.innerHTML = umids[menorUmid] + "%";
+  kpi_hora_umid_baixa.innerHTML = horarios[menorUmid];
+
+
   kpi_temp.innerHTML = formatar(atual(temps));
   kpi_temp_ideal.innerHTML = tempMin + " a " + tempMax;
   kpi_umid.innerHTML = atual(umids);
@@ -327,44 +342,184 @@ let corExterno = "#495057"; // cinza escuro: sensor externo (ambiente)
 
 // molde dos dois gráficos de linha (temperatura e umidade)
 // a escala do eixo Y é fixa (minimo e maximo) para o gráfico não mudar de forma entre uma colmeia e outra
+
 function criarGraficoLinha(idCanvas, minimo, maximo) {
+  let unidade = idCanvas === "graficoTemperatura" ? " °C" : "%";
+
   return new Chart(document.getElementById(idCanvas), {
     type: "line",
+
     data: {
       labels: horarios,
       datasets: [
-        { label: "Colmeia", data: [], borderColor: corColmeia, backgroundColor: corColmeia, borderWidth: 3, tension: 0.2 },
-        { label: "Externo", data: [], borderColor: corExterno, backgroundColor: corExterno, borderWidth: 3, tension: 0.2 },
-        { label: "Ideal", data: [], borderColor: corVerde, borderDash: [5, 4], borderWidth: 1.5, pointRadius: 0 },
-        { label: "", data: [], borderColor: corVerde, borderDash: [5, 4], borderWidth: 1.5, pointRadius: 0 },
-        { label: "Risco", data: [], borderColor: corVermelha, borderDash: [5, 4], borderWidth: 1.5, pointRadius: 0 },
-        { label: "", data: [], borderColor: corVermelha, borderDash: [5, 4], borderWidth: 1.5, pointRadius: 0 },
-      ],
+        // 0 - Temperatura/umidade interna
+        {
+          label: "Interna",
+          data: [],
+          borderColor: corColmeia,
+          backgroundColor: "#ffffff",
+          borderWidth: 2.5,
+          tension: 0.35,
+          fill: false,
+          pointRadius: 3,
+          pointBackgroundColor: "#ffffff",
+          pointBorderColor: corColmeia,
+          pointBorderWidth: 2
+        },
+
+        // 1 - Temperatura/umidade externa
+        {
+          label: "Externa",
+          data: [],
+          borderColor: corExterno,
+          backgroundColor: "#ffffff",
+          borderWidth: 2,
+          tension: 0.35,
+          fill: false,
+          pointRadius: 2.5,
+          pointBackgroundColor: "#ffffff",
+          pointBorderColor: corExterno,
+          pointBorderWidth: 1.5
+        },
+
+        // 2 - Limite inferior ideal
+        {
+          label: "Ideal",
+          data: [],
+          borderColor: corVerde,
+          borderWidth: 1,
+          pointRadius: 0,
+          fill: false
+        },
+
+        // 3 - Limite superior ideal + preenchimento
+        {
+          label: "",
+          data: [],
+          borderColor: corVerde,
+          backgroundColor: "rgba(47, 128, 69, 0.13)",
+          borderWidth: 1,
+          pointRadius: 0,
+          fill: {
+            target: 2,
+            above: "rgba(47, 128, 69, 0.13)"
+          }
+        },
+
+        // 4 - Limite inferior de risco
+        {
+          label: "Risco",
+          data: [],
+          borderColor: corVermelha,
+          borderDash: [4, 4],
+          borderWidth: 1,
+          pointRadius: 0,
+          fill: false
+        },
+
+        // 5 - Limite superior de risco
+        {
+          label: "",
+          data: [],
+          borderColor: corVermelha,
+          borderDash: [4, 4],
+          borderWidth: 1,
+          pointRadius: 0,
+          fill: false
+        }
+      ]
     },
+
     options: {
       responsive: true,
       maintainAspectRatio: false,
+
+      interaction: {
+        mode: "index",
+        intersect: false
+      },
+
       plugins: {
         legend: {
-          align: "start",
+          display: true,
+          position: "top",
+          align: "center",
+
           labels: {
-            boxWidth: 18,
-            boxHeight: 3,
-            font: { family: "Poppins", size: 11 },
-            // linhas sem nome (o segundo limite de cada par) não aparecem na legenda
-            filter: function (item) {
-              return item.text != "";
+            usePointStyle: false,
+            boxWidth: 20,
+            boxHeight: 8,
+            padding: 10,
+            color: "#716b63",
+
+            font: {
+              family: "Poppins",
+              size: 10
             },
-          },
+
+            filter: function (item) {
+              return item.text !== "";
+            }
+          }
         },
+
+        tooltip: {
+          backgroundColor: "#2b1e17",
+          titleFont: {
+            family: "Poppins"
+          },
+          bodyFont: {
+            family: "Poppins"
+          },
+          padding: 10,
+          cornerRadius: 6
+        }
       },
+
       scales: {
-        x: { grid: { display: false } },
-        y: { min: minimo, max: maximo },
-      },
-    },
+        x: {
+          grid: {
+            display: false
+          },
+
+          ticks: {
+            color: "#716b63",
+            font: {
+              family: "Poppins",
+              size: 11
+            },
+
+            callback: function(value) {
+              return this.getLabelForValue(value).replace(":00", "h");
+            }
+          }
+        },
+
+        y: {
+          min: minimo,
+          max: maximo,
+
+          grid: {
+            color: "#f0e8dd"
+          },
+
+          ticks: {
+            color: "#716b63",
+            font: {
+              family: "Poppins",
+              size: 11
+            },
+
+            callback: function(value) {
+              return value + unidade;
+            }
+          }
+        }
+      }
+    }
   });
 }
+
 
 let graficoTemperatura = criarGraficoLinha("graficoTemperatura", 26, 42);
 let graficoUmidade = criarGraficoLinha("graficoUmidade", 40, 90);
@@ -396,11 +551,157 @@ let graficoRosca = new Chart(document.getElementById("graficoRosca"), {
     responsive: true,
     maintainAspectRatio: false,
     cutout: "65%",
-    plugins: { legend: { position: "right", labels: { usePointStyle: true, font: { family: "Poppins", size: 12 } } } },
+    plugins: { legend: { position: "bottom", labels: { usePointStyle: true, font: { family: "Poppins", size: 14 } } } },
   },
 });
 
+// ================== CONFIGURAÇÕES ==================
+const configuracaoPadrao = {
+  tempMin: 33, tempMax: 36, tempFrio: 32, tempCalor: 38,
+  umidMin: 50, umidMax: 75, umidSeca: 40, umidRisco: 85
+};
+
+const camposConfiguracao = {
+  tempMin: "ipt_temp_min",
+  tempMax: "ipt_temp_max",
+  tempFrio: "ipt_temp_frio",
+  tempCalor: "ipt_temp_calor",
+  umidMin: "ipt_umid_min",
+  umidMax: "ipt_umid_max",
+  umidSeca: "ipt_umid_seca",
+  umidRisco: "ipt_umid_risco"
+};
+
+function obterConfiguracoesSalvas() {
+  try {
+    const salvas = JSON.parse(localStorage.getItem("tetria_configuracoes") || "null");
+    if (!salvas || typeof salvas !== "object") return { ...configuracaoPadrao };
+    return {
+      ...configuracaoPadrao,
+      ...salvas,
+      umidRisco: Number(salvas.umidRisco ?? salvas.umidUmida ?? configuracaoPadrao.umidRisco)
+    };
+  } catch (erro) {
+    console.warn("Não foi possível ler as configurações salvas.", erro);
+    return { ...configuracaoPadrao };
+  }
+}
+
+function preencherCamposConfiguracao(valores) {
+  Object.entries(camposConfiguracao).forEach(([chave, id]) => {
+    const campo = document.getElementById(id);
+    if (campo) campo.value = valores[chave];
+  });
+}
+
+function carregarConfiguracoes() {
+  const valores = obterConfiguracoesSalvas();
+
+  tempMin = Number(valores.tempMin);
+  tempMax = Number(valores.tempMax);
+  tempFrio = Number(valores.tempFrio);
+  tempCalor = Number(valores.tempCalor);
+  umidMin = Number(valores.umidMin);
+  umidMax = Number(valores.umidMax);
+  umidSeca = Number(valores.umidSeca);
+  umidRisco = Number(valores.umidRisco);
+
+  preencherCamposConfiguracao(valores);
+}
+
+function lerCamposConfiguracao() {
+  const valores = {};
+  for (const [chave, id] of Object.entries(camposConfiguracao)) {
+    const campo = document.getElementById(id);
+    if (!campo || campo.value.trim() === "") return null;
+    valores[chave] = Number(campo.value);
+  }
+  return valores;
+}
+
+function validarConfiguracoes(valores) {
+  if (!valores || Object.values(valores).some(v => !Number.isFinite(v))) {
+    return "Preencha todos os campos com números válidos.";
+  }
+
+  if (!(valores.tempFrio < valores.tempMin &&
+        valores.tempMin < valores.tempMax &&
+        valores.tempMax < valores.tempCalor)) {
+    return "Temperatura: risco frio < mínimo ideal < máximo ideal < risco calor.";
+  }
+
+  if (!(valores.umidSeca >= 0 &&
+        valores.umidSeca < valores.umidMin &&
+        valores.umidMin < valores.umidMax &&
+        valores.umidMax < valores.umidRisco &&
+        valores.umidRisco <= 100)) {
+    return "Umidade: ar seco < mínimo ideal < máximo ideal < umidade excessiva (até 100%).";
+  }
+
+  if (valores.tempFrio < -20 || valores.tempCalor > 80 ||
+      valores.tempMin < -20 || valores.tempMax > 80) {
+    return "Informe temperaturas entre -20 °C e 80 °C.";
+  }
+
+  return "";
+}
+
+function atualizarMonitoramentoComConfiguracoes() {
+  calcularSituacoes();
+  listarColmeias();
+  filtrarColmeias();
+
+  // Atualiza os gráficos de uma colmeia caso a visão individual esteja aberta.
+  const selecao = document.getElementById("select_colmeia");
+  if (selecao && selecao.value !== "todas") {
+    mostrarDashboard();
+  }
+}
+
+function salvarConfiguracoes() {
+  const novo = lerCamposConfiguracao();
+  const erro = validarConfiguracoes(novo);
+
+  if (erro) {
+    alert(erro);
+    return;
+  }
+
+  try {
+    localStorage.setItem("tetria_configuracoes", JSON.stringify(novo));
+  } catch (erroArmazenamento) {
+    alert("Não foi possível salvar as configurações neste navegador.");
+    return;
+  }
+
+  carregarConfiguracoes();
+  atualizarMonitoramentoComConfiguracoes();
+  alert("Configurações salvas e aplicadas ao Dashboard!");
+}
+
+function restaurarPadrao() {
+  try {
+    localStorage.setItem("tetria_configuracoes", JSON.stringify({ ...configuracaoPadrao }));
+  } catch (erro) {
+    alert("Não foi possível restaurar as configurações.");
+    return;
+  }
+
+  carregarConfiguracoes();
+  atualizarMonitoramentoComConfiguracoes();
+  alert("Valores padrão restaurados e aplicados ao Dashboard!");
+}
+
+// Atualiza o dashboard aberto em outra aba quando as configurações forem alteradas.
+window.addEventListener("storage", function(evento) {
+  if (evento.key === "tetria_configuracoes") {
+    carregarConfiguracoes();
+    atualizarMonitoramentoComConfiguracoes();
+  }
+});
+
 // ================== INÍCIO ==================
+carregarConfiguracoes();
 calcularSituacoes();
 listarColmeias();
 filtrarColmeias();

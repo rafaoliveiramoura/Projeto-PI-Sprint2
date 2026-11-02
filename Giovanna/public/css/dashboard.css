@@ -12,16 +12,18 @@
   --red-bg: #fff0ee;
   --yellow-bg: #fff7e4;
   --shadow: 0 8px 26px #4c2b0b08;
+  --marrom: #2b1e17;
+  --creme: #fff7ea;
 }
 * {
   box-sizing: border-box;
 }
 body {
   margin: 0;
-  background: #fbf6ee;
-  color: var(--brown);
-  font-family: Poppins, Arial, sans-serif;
-  font-size: 14px;
+  background: var(--creme);
+  color: var(--marrom);
+  font-family: Poppins, Montserrat, sans-serif;
+  font-size: 13px;
 }
 .hidden {
   display: none !important;
@@ -39,17 +41,17 @@ body {
   flex-direction: column;
   z-index: 5;
 }
-.brand {
-  text-align: center;
-  padding: 4px 0 26px;
-  border-bottom: 1px solid #ffffff26;
-}
 .logo {
   display: block;
   width: 84px;
   height: 84px;
   object-fit: contain;
   margin: 0 auto 10px;
+}
+.brand {
+  text-align: center;
+  padding: 4px 0 26px;
+  border-bottom: 1px solid #ffffff26;
 }
 .brand h1 {
   letter-spacing: 5px;
@@ -514,7 +516,7 @@ tbody tr:last-child td {
 /* ================== COLMEIA INDIVIDUAL ================== */
 .detail-kpis {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   margin-bottom: 14px;
 }

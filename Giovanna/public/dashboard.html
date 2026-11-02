@@ -7,7 +7,10 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    />
     <link rel="stylesheet" href="css/dashboard.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   </head>
@@ -23,12 +26,18 @@
       </div>
 
       <nav>
-        <button class="nav-link active" id="nav_dashboard" onclick="mostrarPagina('dashboard')">▦ <span>Dashboard</span></button>
-        <button class="nav-link" id="nav_colmeias" onclick="mostrarPagina('colmeias')">▤ <span>Colmeias</span></button>
-        <button class="nav-link" id="nav_configuracoes" onclick="mostrarPagina('configuracoes')">⚙ <span>Configurações</span></button>
+        <a id="nav_dashboard" class="nav-link active" href="dashboard.html"
+          >▦<span>Dashboard</span></a
+        >
+        <a id="nav_colmeias" class="nav-link" href="colmeias.html">▤ <span>Colmeias</span></a>
+        <a id="nav_configuracoes" class="nav-link" href="configuracoes.html"
+          >⚙ <span>Configurações</span></a
+        >
       </nav>
 
-      <div class="side-foot"><span class="live-dot"></span> Sistema de monitoramento</div>
+      <div class="side-foot">
+        <span class="live-dot"></span> Sistema de monitoramento
+      </div>
     </aside>
 
     <main class="main">
@@ -36,7 +45,13 @@
       <header class="topbar">
         <!-- esquerda: botão voltar (só na colmeia individual), título e situação -->
         <div class="title-line">
-          <button class="back-button hidden" id="btn_voltar" onclick="voltarVisaoGeral()">← Voltar</button>
+          <button
+            class="back-button hidden"
+            id="btn_voltar"
+            onclick="voltarVisaoGeral()"
+          >
+            ← Voltar
+          </button>
           <h2 id="titulo_pagina">Visão geral</h2>
           <span class="status-badge hidden" id="badge_situacao">Ideal</span>
         </div>
@@ -97,14 +112,19 @@
               <div class="alert-summary-list" id="lista_atencao"></div>
             </article>
 
-            <article class="alert-summary total-summary" onclick="verColmeias('todas')">
+            <article
+              class="alert-summary total-summary"
+              onclick="verColmeias('todas')"
+            >
               <div class="alert-summary-head">
                 <span>Apiário monitorado</span>
                 <span class="total-kpi-icon">⌂</span>
               </div>
               <div class="total-kpi-value" id="qtd_total3">0</div>
               <p class="total-kpi-caption">colmeias monitoradas</p>
-              <button class="total-kpi-link" type="button">Ver todas as colmeias →</button>
+              <button class="total-kpi-link" type="button">
+                Ver todas as colmeias →
+              </button>
             </article>
           </div>
 
@@ -112,14 +132,14 @@
           <div class="overview-grid">
             <article class="panel">
               <div class="panel-heading">
-                <h3>Temperatura</h3>
+                <h3>Visão geral da Temperatura</h3>
               </div>
               <div class="chart-area"><canvas id="graficoBarras"></canvas></div>
             </article>
 
             <article class="panel">
               <div class="panel-heading">
-                <h3>Umidade</h3>
+                <h3>Visão geral da Umidade</h3>
               </div>
               <div class="chart-area"><canvas id="graficoRosca"></canvas></div>
             </article>
@@ -129,7 +149,9 @@
           <article class="panel incidents">
             <div class="panel-heading">
               <h3>Alertas</h3>
-              <button class="text-button" onclick="verColmeias('todas')">Ver todas →</button>
+              <button class="text-button" onclick="verColmeias('todas')">
+                Ver todas →
+              </button>
             </div>
             <div class="table-scroll">
               <table>
@@ -157,7 +179,10 @@
                 <span>Temperatura interna</span>
                 <span class="kpi-icon">℃</span>
               </div>
-              <strong><span id="kpi_temp"></span><span class="metric-unit">°C</span></strong>
+              <strong
+                ><span id="kpi_temp"></span
+                ><span class="metric-unit">°C</span></strong
+              >
               <p class="externo">Externa: <b id="kpi_temp_ext"></b></p>
               <small>Ideal: <span id="kpi_temp_ideal"></span> °C</small>
             </article>
@@ -167,7 +192,10 @@
                 <span>Umidade interna</span>
                 <span class="kpi-icon">％</span>
               </div>
-              <strong><span id="kpi_umid"></span><span class="metric-unit">%</span></strong>
+              <strong
+                ><span id="kpi_umid"></span
+                ><span class="metric-unit">%</span></strong
+              >
               <p class="externo">Externa: <b id="kpi_umid_ext"></b></p>
               <small>Ideal: <span id="kpi_umid_ideal"></span>%</small>
             </article>
@@ -190,6 +218,26 @@
                 </div>
               </div>
             </article>
+            <article class="kpi-card">
+              <div class="kpi-top">
+                <span>Picos de umidade</span>
+                <span class="kpi-icon">◷</span>
+              </div>
+
+              <div class="pico-grid">
+                <div class="pico alto">
+                  <span>▲ Mais alta</span>
+                  <strong id="kpi_umid_alta"></strong>
+                  <small>às <b id="kpi_hora_umid_alta"></b></small>
+                </div>
+
+                <div class="pico baixo">
+                  <span>▼ Mais baixa</span>
+                  <strong id="kpi_umid_baixa"></strong>
+                  <small>às <b id="kpi_hora_umid_baixa"></b></small>
+                </div>
+              </div>
+            </article>
           </div>
 
           <!-- gráficos de linha: colmeia × sensor externo -->
@@ -198,14 +246,18 @@
               <div class="panel-heading">
                 <h3>Temperatura <small>°C</small></h3>
               </div>
-              <div class="chart-area"><canvas id="graficoTemperatura"></canvas></div>
+              <div class="chart-area">
+                <canvas id="graficoTemperatura"></canvas>
+              </div>
             </article>
 
             <article class="panel">
               <div class="panel-heading">
                 <h3>Umidade <small>%</small></h3>
               </div>
-              <div class="chart-area"><canvas id="graficoUmidade"></canvas></div>
+              <div class="chart-area">
+                <canvas id="graficoUmidade"></canvas>
+              </div>
             </article>
           </div>
         </div>
@@ -246,19 +298,51 @@
       </section>
 
       <!-- ================== PÁGINA: CONFIGURAÇÕES ================== -->
-      <!-- só visual: os limites usados de verdade ficam fixos no começo do app.js -->
+      <!-- Limites aplicados ao monitoramento e persistidos no navegador. -->
       <section id="configuracoes" class="hidden">
-        <form class="settings-grid">
+        <form class="settings-grid" onsubmit="return false;">
           <article class="panel settings-panel">
             <div class="settings-icon">℃</div>
             <h3>Temperatura interna</h3>
             <div class="field-row">
-              <label>Ideal a partir de (°C) <input id="ipt_temp_min" value="33" type="number" step="0.1" required /></label>
-              <label>Ideal até (°C) <input id="ipt_temp_max" value="36" type="number" step="0.1" required /></label>
+              <label
+                >Ideal a partir de (°C)
+                <input
+                  id="ipt_temp_min"
+                  value="33"
+                  type="number"
+                  step="0.1"
+                  required
+              /></label>
+              <label
+                >Ideal até (°C)
+                <input
+                  id="ipt_temp_max"
+                  value="36"
+                  type="number"
+                  step="0.1"
+                  required
+              /></label>
             </div>
             <div class="field-row">
-              <label>Risco abaixo de (°C) <input id="ipt_temp_frio" value="32" type="number" step="0.1" required /></label>
-              <label>Risco acima de (°C) <input id="ipt_temp_calor" value="38" type="number" step="0.1" required /></label>
+              <label
+                >Risco abaixo de (°C)
+                <input
+                  id="ipt_temp_frio"
+                  value="32"
+                  type="number"
+                  step="0.1"
+                  required
+              /></label>
+              <label
+                >Risco acima de (°C)
+                <input
+                  id="ipt_temp_calor"
+                  value="38"
+                  type="number"
+                  step="0.1"
+                  required
+              /></label>
             </div>
           </article>
 
@@ -266,18 +350,35 @@
             <div class="settings-icon">％</div>
             <h3>Umidade interna</h3>
             <div class="field-row">
-              <label>Ideal a partir de (%) <input id="ipt_umid_min" value="50" type="number" required /></label>
-              <label>Ideal até (%) <input id="ipt_umid_max" value="75" type="number" required /></label>
+              <label
+                >Ideal a partir de (%)
+                <input id="ipt_umid_min" value="50" type="number" required
+              /></label>
+              <label
+                >Ideal até (%)
+                <input id="ipt_umid_max" value="75" type="number" required
+              /></label>
             </div>
             <div class="field-row">
-              <label>Risco a partir de (%) com temp. baixa <input id="ipt_umid_risco" value="85" type="number" required /></label>
+              <label>
+                Alerta de ar seco abaixo de (%)
+                <input id="ipt_umid_seca" value="40" type="number" min="0" max="100" required />
+              </label>
+              <label>
+                Alerta de umidade excessiva acima de (%)
+                <input id="ipt_umid_risco" value="85" type="number" min="0" max="100" required />
+              </label>
             </div>
           </article>
 
           <div class="settings-actions">
             <span></span>
-            <button class="button secondary" type="button">Restaurar padrão</button>
-            <button class="button primary" type="button">Salvar configurações</button>
+            <button class="button secondary" type="button" onclick="restaurarPadrao()">
+              Restaurar padrão
+            </button>
+            <button class="button primary" type="button" onclick="salvarConfiguracoes()">
+              Salvar configurações
+            </button>
           </div>
         </form>
       </section>
