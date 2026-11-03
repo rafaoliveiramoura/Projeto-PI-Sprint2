@@ -53,7 +53,7 @@
     <script>
         document.getElementById('form-endereco').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Endereço salvo com sucesso!');
+            cadastrar();
         });
 
          let listaEmpresasCadastradas = [];
@@ -67,7 +67,9 @@
     var bairroVar = bairro.value;
     var cidadeVar = cidade.value;
     var estadoVar = estado.value;
-    
+
+    // O ID da empresa deve vir de algum lugar (ex: localStorage) para vincular o endereço
+    var fkEmpresa =  1;
 
     // Verificando se há algum campo em branco
     if (
@@ -76,7 +78,7 @@
       numeroVar == "" ||
       bairroVar == "" ||
       cidadeVar == "" ||
-      estadoVar == "") {    
+      estadoVar == "") {
       alert("Por favor, preencha todos os campos!");
       return false;
     }
@@ -88,20 +90,20 @@
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        cepVar: cep,
-        ruaVar: rua,
-        numeroVar: numero,
-        bairroVar: bairro,
-        cidadeVar: cidade,
-        estadoVar: estado
-    
+        cepServer: cepVar,
+        ruaServer: ruaVar,
+        numeroServer: numeroVar,
+        bairroServer: bairroVar,
+        cidadeServer: cidadeVar,
+        estadoServer: estadoVar,
+        fkEnderecoEmpresa: fkEmpresa
       }),
     })
       .then(function (resposta) {
         if (resposta.ok) {
-          alert("Cadastro realizado com sucesso! Redirecionando...");
+          alert("Endereço salvo com sucesso!");
           setTimeout(() => {
-            window.location = "../cadastro/cadastroempresa.html";
+            window.location = "../login/logi.html"; // Redireciona para login após completar tudo
           }, 2000);
         } else {
           throw new Error("Houve um erro ao tentar realizar o cadastro!");
