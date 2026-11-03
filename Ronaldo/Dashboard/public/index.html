@@ -1,0 +1,814 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tetria | Monitoramento de colmeias</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="./style/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">🐝</div>
+        <div><strong>TETRIA</strong><small>Monitoramento de colmeias</small></div>
+      </div>
+      <nav class="nav" aria-label="Navegação principal">
+        <a href="index.html" class="active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg><span>Dashboard</span></a>
+        <a href="colmeias.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l7.5 4.5v9L12 20l-7.5-4.5v-9L12 2z"></path>
+            <path d="M12 11v9"></path>
+            <path d="M12 11l7.5-4.5"></path>
+            <path d="M12 11L4.5 6.5"></path>
+          </svg><span>Colmeias</span></a>
+        <a href="configuracoes.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+            </path>
+          </svg><span>Configurações</span></a>
+      </nav>
+      <div class="sidebar-foot">Sistema de monitoramento</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">PAINEL DE CONTROLE</span>
+          <h1 id="titulo_pagina" style="margin:0 0 4px;font-size:24px">Visão geral do apiário</h1>
+          <p id="subtitulo_pagina" style="margin:0;color:var(--cinza)">Acompanhe as condições das colmeias em tempo
+            real.</p>
+        </div>
+        <div class="top-actions">
+          <span class="status-sistema"><span class="ponto-verde"></span><span>Sistema ativo</span></span>
+          <div class="usuario-topo">
+            <span class="usuario-nome">Lucas Frederico</span>
+            <div class="avatar">L</div>
+          </div>
+        </div>
+      </header>
+
+      <section id="dashboard" class="page active">
+        <div class="toolbar" style="margin-bottom:18px">
+          <div>
+            <h3 style="margin:0 0 3px;font-size:15px">Monitoramento</h3>
+            <p style="margin:0;font-size:12px;color:var(--cinza)">Selecione uma colmeia para consultar os dados
+              detalhados.</p>
+          </div>
+          <div class="select-wrap">
+            <label for="select_colmeia">Colmeia</label>
+            <select id="select_colmeia" onchange="aoMudarColmeia()">
+              <option value="todas">Todas as colmeias</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="visao_geral">
+          <div class="overview-alert-grid">
+            <article class="alert-summary danger">
+              <div class="alert-summary-head">
+                <span>Em risco</span>
+                <span class="alert-action">Inspecionar agora</span>
+              </div>
+              <div class="alert-summary-count">
+                <strong id="contador_risco">3</strong>
+                <span>de <b>10</b> colmeias</span>
+                <a href="colmeias.html">Ver todas</a>
+              </div>
+              <div class="alert-summary-list" id="lista_risco"></div>
+            </article>
+
+            <article class="alert-summary warning">
+              <div class="alert-summary-head">
+                <span>Em atenção</span>
+                <span class="alert-action">Acompanhar</span>
+              </div>
+              <div class="alert-summary-count">
+                <strong id="contador_atencao">2</strong>
+                <span>de <b>10</b> colmeias</span>
+                <a href="colmeias.html">Ver todas</a>
+              </div>
+              <div class="alert-summary-list" id="lista_atencao"></div>
+            </article>
+
+            <article class="alert-summary total-summary">
+              <div class="alert-summary-head">
+                <span>Apiário monitorado</span>
+                <span class="total-kpi-icon">⌂</span>
+              </div>
+              <div class="total-kpi-value">10</div>
+              <p class="total-kpi-caption">colmeias cadastradas no sistema</p>
+              <a href="colmeias.html" class="total-kpi-link">Ver todas as colmeias</a>
+            </article>
+          </div>
+
+          <div class="overview-grid">
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h3>Visão geral do apiário</h3>
+                  <p>Colmeias por faixa de temperatura</p>
+                </div>
+                <span class="mini-label">TEMPERATURA</span>
+              </div>
+              <div class="chart-area">
+                <canvas id="grafico_barras_temp"></canvas>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h3>Visão geral da umidade</h3>
+                  <p>Colmeias por faixa de umidade</p>
+                </div>
+                <span class="mini-label">UMIDADE</span>
+              </div>
+              <div class="chart-area">
+                <canvas id="grafico_rosca_umid"></canvas>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div id="visao_detalhes" class="hidden">
+          <div class="detail-kpis" style="margin-bottom:18px">
+            <article class="card kpi-detalhe">
+              <div class="kpi-detalhe-head">
+                <span>Temperatura interna</span>
+                <span class="kpi-detalhe-tag">℃</span>
+              </div>
+              <div class="kpi-detalhe-valor">
+                <span id="detalhe_temp_valor">36,9</span><small>°C</small>
+              </div>
+              <div class="kpi-detalhe-sub" id="detalhe_temp_externa">Externa: 34,2 °C</div>
+              <div class="kpi-detalhe-pico" id="detalhe_temp_pico">Pico máx. 37,1 °C · mín. 36,7 °C</div>
+            </article>
+
+            <article class="card kpi-detalhe">
+              <div class="kpi-detalhe-head">
+                <span>Umidade interna</span>
+                <span class="kpi-detalhe-tag">%</span>
+              </div>
+              <div class="kpi-detalhe-valor">
+                <span id="detalhe_umid_valor">69</span><small>%</small>
+              </div>
+              <div class="kpi-detalhe-sub" id="detalhe_umid_externa">Externa: 65%</div>
+              <div class="kpi-detalhe-pico" id="detalhe_umid_pico">Pico máx. 69% · mín. 66%</div>
+            </article>
+            <article class="card kpi-detalhe">
+              <div class="kpi-detalhe-head">
+                <span>Condição atual</span>
+                <span class="kpi-detalhe-tag-icon">🐝</span>
+              </div>
+              <div class="kpi-detalhe-valor status-atencao" id="detalhe_status_valor">
+                Em atenção
+              </div>
+              <div class="kpi-detalhe-sub" id="detalhe_status_colmeia">Colmeia 03 · atualização recente</div>
+              <div class="kpi-detalhe-pico" id="detalhe_status_recomendacao">Acompanhe esta colmeia</div>
+            </article>
+          </div>
+
+          <div class="detail-grid">
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h3>Temperatura</h3>
+                  <p>Ambiente interno e externo (°C)</p>
+                </div>
+                <span class="mini-label">ÚLTIMAS LEITURAS</span>
+              </div>
+              <div class="chart-area tall">
+                <canvas id="grafico_linha_temp"></canvas>
+              </div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h3>Umidade</h3>
+                  <p>Ambiente interno e externo (%)</p>
+                </div>
+                <span class="mini-label">ÚLTIMAS LEITURAS</span>
+              </div>
+              <div class="chart-area tall">
+                <canvas id="grafico_linha_umid"></canvas>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer-note">Tetria · Monitoramento de Colmeias</div>
+    </main>
+
+  </div>
+  
+    <script>
+    let colmeias = [
+      {
+        id: 1,
+        nome: "Colmeia 01",
+        temp: 34.2,
+        umidade: 62,
+        situacao: "estavel",
+        rotulo: "Ideal",
+        tempo: "há 1 min",
+        tempExterna: 23.0,
+        umidExterna: 68,
+        historicoTempInterna: [34.5, 34.2, 34.0, 34.4, 34.3, 34.1, 34.2],
+        historicoTempExterna: [22.0, 21.0, 24.5, 30.0, 28.5, 25.0, 23.0],
+        historicoUmidInterna: [63, 64, 63, 61, 62, 63, 62],
+        historicoUmidExterna: [75, 78, 68, 52, 58, 68, 72]
+      },
+      {
+        id: 2,
+        nome: "Colmeia 02",
+        temp: 38.9,
+        umidade: 64,
+        situacao: "risco",
+        rotulo: "Em risco",
+        motivo: "Temp. 38,9 °C · acima de 38,0 °C",
+        tempo: "há 1h40",
+        tempExterna: 25.0,
+        umidExterna: 62,
+        historicoTempInterna: [35.0, 35.8, 36.9, 38.2, 39.4, 39.0, 38.9],
+        historicoTempExterna: [23.0, 22.0, 26.0, 32.5, 31.0, 27.0, 25.0],
+        historicoUmidInterna: [66, 65, 64, 63, 64, 64, 64],
+        historicoUmidExterna: [72, 75, 62, 48, 50, 62, 68]
+      },
+      {
+        id: 3,
+        nome: "Colmeia 03",
+        temp: 36.9,
+        umidade: 70,
+        situacao: "atencao",
+        rotulo: "Em atenção",
+        motivo: "Temp. 36,9 °C · acima de 36,0 °C",
+        tempo: "há 25 min",
+        tempExterna: 24.0,
+        umidExterna: 70,
+        historicoTempInterna: [35.2, 35.4, 36.0, 36.8, 37.1, 37.0, 36.9],
+        historicoTempExterna: [22.5, 21.5, 25.0, 30.5, 29.0, 26.0, 24.0],
+        historicoUmidInterna: [72, 71, 70, 69, 70, 71, 70],
+        historicoUmidExterna: [76, 79, 69, 54, 60, 70, 74]
+      },
+      {
+        id: 4,
+        nome: "Colmeia 04",
+        temp: 31.4,
+        umidade: 68,
+        situacao: "risco",
+        rotulo: "Em risco",
+        motivo: "Temp. 31,4 °C · abaixo de 32,0 °C",
+        tempo: "há 2h15",
+        tempExterna: 20.0,
+        umidExterna: 74,
+        historicoTempInterna: [33.8, 32.9, 32.0, 31.8, 31.5, 31.4, 31.4],
+        historicoTempExterna: [19.0, 18.0, 21.0, 26.0, 24.5, 22.0, 20.0],
+        historicoUmidInterna: [70, 69, 68, 67, 68, 68, 68],
+        historicoUmidExterna: [78, 82, 72, 58, 64, 74, 76]
+      },
+      {
+        id: 5,
+        nome: "Colmeia 05",
+        temp: 34.8,
+        umidade: 59,
+        situacao: "estavel",
+        rotulo: "Ideal",
+        tempo: "há 2 min",
+        tempExterna: 23.0,
+        umidExterna: 66,
+        historicoTempInterna: [34.9, 34.7, 34.6, 34.8, 35.0, 34.9, 34.8],
+        historicoTempExterna: [22.0, 21.0, 24.0, 29.5, 28.0, 25.0, 23.0],
+        historicoUmidInterna: [60, 61, 60, 58, 59, 60, 59],
+        historicoUmidExterna: [74, 77, 66, 50, 56, 66, 70]
+      },
+      {
+        id: 6,
+        nome: "Colmeia 06",
+        temp: 35.1,
+        umidade: 79,
+        situacao: "atencao",
+        rotulo: "Em atenção",
+        motivo: "Umidade 79% · acima de 75%",
+        tempo: "há 1h30",
+        tempExterna: 23.5,
+        umidExterna: 78,
+        historicoTempInterna: [34.8, 34.9, 35.0, 35.2, 35.2, 35.1, 35.1],
+        historicoTempExterna: [22.0, 21.0, 24.5, 30.0, 28.5, 25.5, 23.5],
+        historicoUmidInterna: [74, 76, 78, 81, 80, 79, 79],
+        historicoUmidExterna: [80, 84, 76, 64, 70, 78, 82]
+      },
+      {
+        id: 7,
+        nome: "Colmeia 07",
+        temp: 33.8,
+        umidade: 60,
+        situacao: "estavel",
+        rotulo: "Ideal",
+        tempo: "há 1 min",
+        tempExterna: 22.5,
+        umidExterna: 68,
+        historicoTempInterna: [34.0, 33.7, 33.6, 33.8, 34.0, 33.9, 33.8],
+        historicoTempExterna: [21.5, 20.5, 23.5, 28.5, 27.0, 24.0, 22.5],
+        historicoUmidInterna: [61, 62, 61, 59, 60, 61, 60],
+        historicoUmidExterna: [75, 78, 68, 52, 58, 68, 72]
+      },
+      {
+        id: 8,
+        nome: "Colmeia 08",
+        temp: 38.9,
+        umidade: 78,
+        situacao: "risco",
+        rotulo: "Em risco",
+        motivo: "Temp. 38,9 °C · umidade 78%",
+        tempo: "há 1h05",
+        tempExterna: 25.5,
+        umidExterna: 75,
+        historicoTempInterna: [36.0, 36.8, 37.5, 38.6, 39.2, 39.0, 38.9],
+        historicoTempExterna: [23.5, 22.5, 26.5, 33.0, 31.5, 28.0, 25.5],
+        historicoUmidInterna: [72, 75, 76, 80, 79, 78, 78],
+        historicoUmidExterna: [80, 82, 74, 60, 66, 75, 78]
+      },
+      {
+        id: 9,
+        nome: "Colmeia 09",
+        temp: 34.5,
+        umidade: 63,
+        situacao: "estavel",
+        rotulo: "Ideal",
+        tempo: "há 2 min",
+        tempExterna: 23.0,
+        umidExterna: 70,
+        historicoTempInterna: [34.6, 34.4, 34.3, 34.5, 34.7, 34.6, 34.5],
+        historicoTempExterna: [22.0, 21.0, 24.0, 29.0, 28.0, 25.0, 23.0],
+        historicoUmidInterna: [64, 65, 64, 62, 63, 64, 63],
+        historicoUmidExterna: [76, 79, 68, 54, 60, 70, 74]
+      },
+      {
+        id: 10,
+        nome: "Colmeia 10",
+        temp: 33.9,
+        umidade: 57,
+        situacao: "estavel",
+        rotulo: "Ideal",
+        tempo: "há 1 min",
+        tempExterna: 22.0,
+        umidExterna: 64,
+        historicoTempInterna: [34.1, 33.8, 33.7, 33.9, 34.1, 34.0, 33.9],
+        historicoTempExterna: [21.0, 20.0, 23.0, 28.0, 27.0, 24.0, 22.0],
+        historicoUmidInterna: [58, 59, 58, 56, 57, 58, 57],
+        historicoUmidExterna: [72, 75, 64, 48, 54, 64, 68]
+      }
+    ];
+
+    let htmlRisco = '';
+    let htmlAtencao = '';
+    let contRisco = 0;
+    let contAtencao = 0;
+
+    for (let i = 0; i < colmeias.length; i++) {
+      let c = colmeias[i];
+      let num = c.id < 10 ? '0' + c.id : c.id;
+
+      let opcao = document.createElement('option');
+      opcao.value = c.id;
+      opcao.textContent = 'Colmeia ' + num;
+      select_colmeia.appendChild(opcao);
+
+      if (c.situacao === 'risco') {
+        contRisco++;
+        htmlRisco += '<div class="alert-item" style="cursor:pointer" onclick="selecionarColmeia(' + c.id + ')">' +
+          '<strong>Colmeia ' + num + '</strong>' +
+          '<span class="motivo">' + (c.motivo || 'Temperatura anormal') + '</span>' +
+          '<span class="tempo">' + c.tempo + '</span>' +
+          '</div>';
+      } else if (c.situacao === 'atencao') {
+        contAtencao++;
+        htmlAtencao += '<div class="alert-item" style="cursor:pointer" onclick="selecionarColmeia(' + c.id + ')">' +
+          '<strong>Colmeia ' + num + '</strong>' +
+          '<span class="motivo">' + (c.motivo || 'Acompanhar parâmetros') + '</span>' +
+          '<span class="tempo">' + c.tempo + '</span>' +
+          '</div>';
+      }
+    }
+
+    contador_risco.textContent = contRisco;
+    lista_risco.innerHTML = htmlRisco;
+
+    contador_atencao.textContent = contAtencao;
+    lista_atencao.innerHTML = htmlAtencao;
+
+    new Chart(grafico_barras_temp, {
+      type: 'bar',
+      data: {
+        labels: ['Muito quente', 'Quente', 'Ideal', 'Fria', 'Muito fria'],
+        datasets: [{
+          data: [2, 1, 6, 0, 1],
+          backgroundColor: ['#c83228', '#dcae1d', '#2e7d42', '#81756b', '#c83228'],
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { stepSize: 1 }
+          }
+        }
+      }
+    });
+
+    new Chart(grafico_rosca_umid, {
+      type: 'doughnut',
+      data: {
+        labels: ['Úmida', 'Ideal', 'Seca'],
+        datasets: [{
+          data: [2, 8, 0],
+          backgroundColor: ['#dcae1d', '#2e7d42', '#c83228'],
+          borderWidth: 2,
+          borderColor: '#fff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              usePointStyle: true,
+              boxWidth: 8
+            }
+          }
+        }
+      }
+    });
+
+    let pluginFaixasLimites = {
+      id: 'faixasLimites',
+      beforeDatasetsDraw: function (chart, args, options) {
+        if (!options || !chart.chartArea || !chart.scales || !chart.scales.y) return;
+        let ctx = chart.ctx;
+        let area = chart.chartArea;
+        let y = chart.scales.y;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(area.left, area.top, area.right - area.left, area.bottom - area.top);
+        ctx.clip();
+
+        if (options.idealMin !== undefined && options.idealMax !== undefined) {
+          let topoIdeal = y.getPixelForValue(options.idealMax);
+          let baseIdeal = y.getPixelForValue(options.idealMin);
+          ctx.fillStyle = 'rgba(46, 125, 66, 0.12)';
+          ctx.fillRect(area.left, topoIdeal, area.right - area.left, baseIdeal - topoIdeal);
+        }
+
+        if (options.linhasAtencao) {
+          ctx.strokeStyle = 'rgba(220, 174, 29, 0.75)';
+          ctx.lineWidth = 1.2;
+          ctx.setLineDash([5, 5]);
+          for (let i = 0; i < options.linhasAtencao.length; i++) {
+            let yAtencao = y.getPixelForValue(options.linhasAtencao[i]);
+            ctx.beginPath();
+            ctx.moveTo(area.left, yAtencao);
+            ctx.lineTo(area.right, yAtencao);
+            ctx.stroke();
+          }
+        }
+
+        if (options.linhasRisco) {
+          ctx.strokeStyle = 'rgba(200, 50, 40, 0.75)';
+          ctx.lineWidth = 1.2;
+          ctx.setLineDash([4, 4]);
+          for (let j = 0; j < options.linhasRisco.length; j++) {
+            let yRisco = y.getPixelForValue(options.linhasRisco[j]);
+            ctx.beginPath();
+            ctx.moveTo(area.left, yRisco);
+            ctx.lineTo(area.right, yRisco);
+            ctx.stroke();
+          }
+        }
+
+        ctx.restore();
+      }
+    };
+
+    Chart.register(pluginFaixasLimites);
+
+    let graficoTempDetalhe = null;
+    let graficoUmidDetalhe = null;
+    let horarios24h = ['00h', '04h', '08h', '12h', '16h', '20h', '24h'];
+
+    function criarGraficosDetalhe(dadosIniciais) {
+      let tempInt = dadosIniciais ? dadosIniciais.historicoTempInterna : [34.5, 34.2, 34.0, 34.4, 34.3, 34.1, 34.2];
+      let tempExt = dadosIniciais ? dadosIniciais.historicoTempExterna : [22.0, 21.0, 24.5, 30.0, 28.5, 25.0, 23.0];
+      let umidInt = dadosIniciais ? dadosIniciais.historicoUmidInterna : [63, 64, 63, 61, 62, 63, 62];
+      let umidExt = dadosIniciais ? dadosIniciais.historicoUmidExterna : [75, 78, 68, 52, 58, 68, 72];
+
+      // Gráfico de Temperatura
+      graficoTempDetalhe = new Chart(grafico_linha_temp, {
+        type: 'line',
+        data: {
+          labels: horarios24h,
+          datasets: [
+            {
+              label: 'Interna (°C)',
+              data: tempInt,
+              borderColor: '#e67e22',
+              backgroundColor: 'rgba(230, 126, 34, 0.1)',
+              borderWidth: 2.5,
+              tension: 0.35,
+              fill: false,
+              pointRadius: 3,
+              pointBackgroundColor: '#ffffff',
+              pointBorderColor: '#e67e22',
+              pointBorderWidth: 2
+            },
+            {
+              label: 'Externa (°C)',
+              data: tempExt,
+              borderColor: '#5d6d7e',
+              backgroundColor: 'rgba(93, 109, 126, 0.1)',
+              borderWidth: 2,
+              tension: 0.35,
+              fill: false,
+              pointRadius: 2.5,
+              pointBackgroundColor: '#ffffff',
+              pointBorderColor: '#5d6d7e',
+              pointBorderWidth: 1.5
+            },
+            {
+              label: 'Ideal (33–36 °C)',
+              data: [],
+              borderColor: '#2e7d42',
+              backgroundColor: 'rgba(46, 125, 66, 0.45)',
+              borderWidth: 1.5
+            },
+            {
+              label: 'Atenção (32 e 37 °C)',
+              data: [],
+              borderColor: '#dcae1d',
+              backgroundColor: '#dcae1d',
+              borderWidth: 2,
+              borderDash: [5, 5]
+            },
+            {
+              label: 'Risco (31 e 38,5 °C)',
+              data: [],
+              borderColor: '#c83228',
+              backgroundColor: '#c83228',
+              borderWidth: 2,
+              borderDash: [4, 4]
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              onClick: function (e, item, legend) {
+                if (item.datasetIndex >= 2) return;
+                Chart.defaults.plugins.legend.onClick.call(this, e, item, legend);
+              },
+              labels: {
+                usePointStyle: false,
+                boxWidth: 20,
+                boxHeight: 8,
+                padding: 10,
+                color: '#716b63',
+                font: { family: 'Poppins', size: 10 }
+              }
+            },
+            faixasLimites: {
+              idealMin: 33,
+              idealMax: 36,
+              linhasAtencao: [32, 37],
+              linhasRisco: [31, 38.5]
+            }
+          },
+          scales: {
+            y: {
+              suggestedMin: 28,
+              suggestedMax: 41,
+              grid: { color: '#f0e8dd' },
+              ticks: {
+                stepSize: 2,
+                callback: function (v) { return v + ' °C'; }
+              }
+            },
+            x: {
+              grid: { display: false }
+            }
+          }
+        }
+      });
+
+      // Gráfico de Umidade
+      graficoUmidDetalhe = new Chart(grafico_linha_umid, {
+        type: 'line',
+        data: {
+          labels: horarios24h,
+          datasets: [
+            {
+              label: 'Interna (%)',
+              data: umidInt,
+              borderColor: '#2980b9',
+              backgroundColor: 'rgba(41, 128, 185, 0.1)',
+              borderWidth: 2.5,
+              tension: 0.35,
+              fill: false,
+              pointRadius: 3,
+              pointBackgroundColor: '#ffffff',
+              pointBorderColor: '#2980b9',
+              pointBorderWidth: 2
+            },
+            {
+              label: 'Externa (%)',
+              data: umidExt,
+              borderColor: '#16a085',
+              backgroundColor: 'rgba(22, 160, 133, 0.1)',
+              borderWidth: 2,
+              tension: 0.35,
+              fill: false,
+              pointRadius: 2.5,
+              pointBackgroundColor: '#ffffff',
+              pointBorderColor: '#16a085',
+              pointBorderWidth: 1.5
+            },
+            {
+              label: 'Ideal (50–75%)',
+              data: [],
+              borderColor: '#2e7d42',
+              backgroundColor: 'rgba(46, 125, 66, 0.45)',
+              borderWidth: 1.5
+            },
+            {
+              label: 'Atenção (45 e 80%)',
+              data: [],
+              borderColor: '#dcae1d',
+              backgroundColor: '#dcae1d',
+              borderWidth: 2,
+              borderDash: [5, 5]
+            },
+            {
+              label: 'Risco (40 e 85%)',
+              data: [],
+              borderColor: '#c83228',
+              backgroundColor: '#c83228',
+              borderWidth: 2,
+              borderDash: [4, 4]
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top',
+              onClick: function (e, item, legend) {
+                if (item.datasetIndex >= 2) return;
+                Chart.defaults.plugins.legend.onClick.call(this, e, item, legend);
+              },
+              labels: {
+                usePointStyle: false,
+                boxWidth: 20,
+                boxHeight: 8,
+                padding: 10,
+                color: '#716b63',
+                font: { family: 'Poppins', size: 10 }
+              }
+            },
+            faixasLimites: {
+              idealMin: 50,
+              idealMax: 75,
+              linhasAtencao: [45, 80],
+              linhasRisco: [40, 85]
+            }
+          },
+          scales: {
+            y: {
+              suggestedMin: 35,
+              suggestedMax: 90,
+              grid: { color: '#f0e8dd' },
+              ticks: {
+                stepSize: 10,
+                callback: function (v) { return v + '%'; }
+              }
+            },
+            x: {
+              grid: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    function aoMudarColmeia() {
+      let valor = select_colmeia.value;
+      if (valor === 'todas') {
+        visao_geral.classList.remove('hidden');
+        visao_detalhes.classList.add('hidden');
+      } else {
+        let id = parseInt(valor, 10);
+        mostrarDetalhe(id);
+      }
+    }
+
+    function selecionarColmeia(id) {
+      select_colmeia.value = id;
+      aoMudarColmeia();
+    }
+
+    function mostrarDetalhe(id) {
+      visao_geral.classList.add('hidden');
+      visao_detalhes.classList.remove('hidden');
+
+      let c = null;
+      for (let i = 0; i < colmeias.length; i++) {
+        if (colmeias[i].id === id) {
+          c = colmeias[i];
+          break;
+        }
+      }
+
+      if (c) {
+        let num = c.id < 10 ? '0' + c.id : c.id;
+
+        let minTemp = Math.min(...c.historicoTempInterna);
+        let maxTemp = Math.max(...c.historicoTempInterna);
+
+        let minUmid = Math.min(...c.historicoUmidInterna);
+        let maxUmid = Math.max(...c.historicoUmidInterna);
+
+        let tempStr = c.temp.toFixed(1).replace('.', ',');
+        detalhe_temp_valor.textContent = tempStr;
+        detalhe_temp_externa.textContent = 'Externa: ' + c.tempExterna.toFixed(1).replace('.', ',') + ' °C';
+        detalhe_temp_pico.textContent = 'Pico máx. ' + maxTemp.toFixed(1).replace('.', ',') + ' °C · mín. ' + minTemp.toFixed(1).replace('.', ',') + ' °C';
+
+        detalhe_umid_valor.textContent = c.umidade;
+        detalhe_umid_externa.textContent = 'Externa: ' + c.umidExterna + '%';
+        detalhe_umid_pico.textContent = 'Pico máx. ' + maxUmid + '% · mín. ' + minUmid + '%';
+
+        detalhe_status_valor.textContent = c.rotulo;
+        detalhe_status_valor.className = 'kpi-detalhe-valor';
+
+        let recomendacao = 'Condições estáveis e adequadas';
+        if (c.situacao === 'risco') {
+          detalhe_status_valor.classList.add('status-risco');
+          recomendacao = 'Inspecione esta colmeia imediatamente';
+        } else if (c.situacao === 'atencao') {
+          detalhe_status_valor.classList.add('status-atencao');
+          recomendacao = 'Acompanhe esta colmeia';
+        } else {
+          detalhe_status_valor.classList.add('status-ideal');
+        }
+
+        detalhe_status_colmeia.textContent = 'Colmeia ' + num + ' · atualização recente';
+        detalhe_status_recomendacao.textContent = recomendacao;
+
+        if (!graficoTempDetalhe) {
+          criarGraficosDetalhe(c);
+        } else {
+          graficoTempDetalhe.data.datasets[0].data = c.historicoTempInterna;
+          graficoTempDetalhe.data.datasets[1].data = c.historicoTempExterna;
+          graficoTempDetalhe.update();
+
+          graficoUmidDetalhe.data.datasets[0].data = c.historicoUmidInterna;
+          graficoUmidDetalhe.data.datasets[1].data = c.historicoUmidExterna;
+          graficoUmidDetalhe.update();
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
