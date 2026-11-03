@@ -43,24 +43,23 @@ let umidInterna = [
   [57, 58, 59, 56, 53, 52, 53, 54],
   [72, 73, 74, 71, 69, 68, 71, 73],
 ];
-// há quantos minutos cada colmeia está em alerta (0 = sem alerta)
+// há quantos minutos cada colmeia está em alerta
 let minutosEmAlerta = [0, 100, 25, 135, 0, 90, 0, 65, 0, 0];
 
 // situação de cada colmeia: "Ideal", "Atenção" ou "Risco"
 let situacoes = [];
 
-// ================== FUNÇÕES DE APOIO ==================
 function nomeColmeia(i) {
   if (i + 1 < 10) return "Colmeia 0" + (i + 1);
   return "Colmeia " + (i + 1);
 }
 
-// 34.5 -> "34,5"
+
 function formatar(numero) {
   return numero.toFixed(1).replace(".", ",");
 }
 
-// 100 -> "1h40" | 25 -> "25 min"
+
 function formatarTempo(minutos) {
   let horas = Math.floor(minutos / 60);
   let resto = minutos % 60;
@@ -700,7 +699,7 @@ window.addEventListener("storage", function(evento) {
   }
 });
 
-// ================== INÍCIO ==================
+
 carregarConfiguracoes();
 calcularSituacoes();
 listarColmeias();
