@@ -3,6 +3,7 @@ const expressrouter = express.Router()
 const {cadastrar, autenticar, autenticarempresa, cadastrarempresa, validarsenha, cdastrarenderço} = require("../controlers/controlersuser")
 let users = []
 let empresa = []
+let endereco = []
 
 expressrouter.post("/usuarios/cadastrar", cadastrar)
 expressrouter.post("/usuarios/autenticar", autenticar)
@@ -29,8 +30,23 @@ expressrouter.get("empresa/cadastrar", (res) => {
     }
 })
 
+expressrouter.get("usuarios/cadastrarenderco", (res) => {
+    try {
+        endereco.push(endereco)
+        res.json(empresa)
+    } catch (erro){
+        res.status(500).send ({erro: "Não foi encontrado nenhum enderço"})
+    }
+})
 
-expressrouter.get("/busacar-senha/:email", validarsenha)
+
+expressrouter.get("usuario/validarsenha", validarsenha, (res) =>{
+    try {
+        
+    } catch (error) {
+        
+    }
+})
 
 module.exports = {
     expressrouter,
