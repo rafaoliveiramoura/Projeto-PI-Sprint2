@@ -6,33 +6,28 @@
     <title>Tetria | Colmeias</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/config.css" />
+    <link rel="stylesheet" href="/Giovanna/public/css/dashboard.css" />
   </head>
   <body>
     <div class="app">
       <aside class="sidebar">
         <div class="brand">
-          <!-- logo do grupo -->
-          <img class="logo" src="src/logo-tetria-icone.png" alt="Logo Tetria" />
+        <img class="logo" src="src/logo-tetria-icone.png" alt="Logo Tetria" />
+        <div>
           <h1>TETRIA</h1>
           <p>Monitoramento de colmeias</p>
         </div>
+      </div>
         <nav>
-          <a class="nav-link" href="dashboard.html">▦<span>Dashboard</span></a>
-          <a class="nav-link active" href="colmeias.html"
-            >▤ <span>Colmeias</span></a
-          >
-          <a class="nav-link" href="configuracoes.html"
-            >⚙ <span>Configurações</span></a
-          >
-        </nav>
+        <a id="nav_dashboard" class="nav-link" href="dashboard.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Dashboard</span></a>
+        <a id="nav_colmeias" class="nav-link active" href="colmeias.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z"/></svg><span>Colmeias</span></a>
+        <a id="nav_configuracoes" class="nav-link" href="configuracoes.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Configurações</span></a>
+      </nav>
 
-        <div class="side-foot">
-          <span class="live-dot"></span> Sistema de monitoramento
-        </div>
+        <div class="side-foot"><span class="live-dot"></span> Sensores online</div>
       </aside>
 
       <main class="main">
@@ -44,7 +39,6 @@
 
           <!-- direita: filtros (só no dashboard), sensor e usuário -->
           <div class="top-actions">
-            <span class="status-pill"><i></i> Sensor ativo</span>
             <div class="avatar">T</div>
           </div>
         </header>
@@ -52,27 +46,23 @@
         <article class="card tabela-dashboard-card">
           <div class="tabela-dashboard-topo">
             <div>
-              <h2>Condições e Parâmetros em Tempo Real</h2>
-              <p class="subtitulo-tabela">
-                Comparação direta dos sensores com as faixas ideais de manejo
-                (Temperatura ideal: 33 °C a 36 °C · Umidade ideal: 50% a 75%)
-              </p>
+              <h2>Leituras atuais por colmeia</h2>
             </div>
             <div class="filtro-rapido-tabela">
-              <label for="select_filtro">Filtrar situação:</label>
+              <label for="select_filtro">Situação</label>
               <select id="select_filtro" onchange="filtrarTabelaDashboard()">
                 <option value="todas">Todas as colmeias (10)</option>
                 <option value="Risco">Em risco (3)</option>
                 <option value="Atenção">Em atenção (2)</option>
-                <option value="Estável">Estáveis (5)</option>
+                <option value="Ideal">Ideais (5)</option>
               </select>
               <button
                 type="button"
                 class="botao-reset-filtro"
                 onclick="resetarFiltroDashboard()"
-                title="Voltar ao filtro normal com todas as colmeias"
+                title="Mostrar todas as colmeias"
               >
-                Voltar ao normal
+                Limpar filtro
               </button>
             </div>
           </div>
@@ -90,11 +80,11 @@
                 </tr>
               </thead>
               <tbody id="listaTabelaDashboard">
-                <tr data-situacao="Estável">
+                <tr data-situacao="Ideal">
                   <td><span class="nome-colmeia">Colmeia 01</span></td>
                   <td>
                     <span class="tag-status tag-verde"
-                      ><i class="ponto verde"></i> Estável</span
+                      ><i class="ponto verde"></i> Ideal</span
                     >
                   </td>
                   <td class="col-valor">34,2 °C</td>
@@ -170,11 +160,11 @@
                     >
                   </td>
                 </tr>
-                <tr data-situacao="Estável">
+                <tr data-situacao="Ideal">
                   <td><span class="nome-colmeia">Colmeia 05</span></td>
                   <td>
                     <span class="tag-status tag-verde"
-                      ><i class="ponto verde"></i> Estável</span
+                      ><i class="ponto verde"></i> Ideal</span
                     >
                   </td>
                   <td class="col-valor">34,8 °C</td>
@@ -210,11 +200,11 @@
                     >
                   </td>
                 </tr>
-                <tr data-situacao="Estável">
+                <tr data-situacao="Ideal">
                   <td><span class="nome-colmeia">Colmeia 07</span></td>
                   <td>
                     <span class="tag-status tag-verde"
-                      ><i class="ponto verde"></i> Estável</span
+                      ><i class="ponto verde"></i> Ideal</span
                     >
                   </td>
                   <td class="col-valor">33,8 °C</td>
@@ -250,11 +240,11 @@
                     >
                   </td>
                 </tr>
-                <tr data-situacao="Estável">
+                <tr data-situacao="Ideal">
                   <td><span class="nome-colmeia">Colmeia 09</span></td>
                   <td>
                     <span class="tag-status tag-verde"
-                      ><i class="ponto verde"></i> Estável</span
+                      ><i class="ponto verde"></i> Ideal</span
                     >
                   </td>
                   <td class="col-valor">34,5 °C</td>
@@ -270,11 +260,11 @@
                     >
                   </td>
                 </tr>
-                <tr data-situacao="Estável">
+                <tr data-situacao="Ideal">
                   <td><span class="nome-colmeia">Colmeia 10</span></td>
                   <td>
                     <span class="tag-status tag-verde"
-                      ><i class="ponto verde"></i> Estável</span
+                      ><i class="ponto verde"></i> Ideal</span
                     >
                   </td>
                   <td class="col-valor">33,9 °C</td>
@@ -295,7 +285,7 @@
           </div>
         </article>
 
-        <div class="footer-note">Tetria · Monitoramento de Colmeias</div>
+        <div class="footer-note">Tetria · Monitoramento de colmeias</div>
       </main>
     </div>
 
@@ -350,15 +340,16 @@
           limiteAlto,
           unidade,
         ) {
+          const num = (n) => n.toFixed(1).replace(".", ",").replace(",0", "");
           if (valor < limiteBaixo)
-            return `<span class="tag-comparacao comp-vermelho">▼ Crítica (${(minimo - valor).toFixed(2)}${unidade} abaixo do ideal)</span>`;
+            return `<span class="tag-comparacao comp-vermelho">▼ Crítica · ${num(minimo - valor)}${unidade} abaixo</span>`;
           if (valor > limiteAlto)
-            return `<span class="tag-comparacao comp-vermelho">▲ Crítica (${(valor - maximo).toFixed(2)}${unidade} acima do ideal)</span>`;
+            return `<span class="tag-comparacao comp-vermelho">▲ Crítica · ${num(valor - maximo)}${unidade} acima</span>`;
           if (valor < minimo)
-            return `<span class="tag-comparacao comp-amarelo">▼ Atenção (${(minimo - valor).toFixed(2)}${unidade} abaixo do ideal)</span>`;
+            return `<span class="tag-comparacao comp-amarelo">▼ Atenção · ${num(minimo - valor)}${unidade} abaixo</span>`;
           if (valor > maximo)
-            return `<span class="tag-comparacao comp-amarelo">▲ Atenção (${(valor - maximo).toFixed(2)}${unidade} acima do ideal)</span>`;
-          return `<span class="tag-comparacao comp-verde">✓ Na faixa ideal (${minimo.toFixed(2)}–${maximo.toFixed(2)}${unidade})</span>`;
+            return `<span class="tag-comparacao comp-amarelo">▲ Atenção · ${num(valor - maximo)}${unidade} acima</span>`;
+          return `<span class="tag-comparacao comp-verde">Na faixa · ${num(minimo)}–${num(maximo)}${unidade}</span>`;
         }
 
         linhas.forEach((linha) => {
@@ -379,7 +370,7 @@
             umidade < c.umidMin ||
             umidade > c.umidMax;
           const status =
-            riscoTemp || riscoUmid ? "Risco" : atencao ? "Atenção" : "Estável";
+            riscoTemp || riscoUmid ? "Risco" : atencao ? "Atenção" : "Ideal";
           linha.dataset.situacao = status;
           const statusClass =
             status === "Risco"
@@ -412,11 +403,27 @@
           );
         });
 
-        const subtitulo = document.querySelector(".subtitulo-tabela");
-        if (subtitulo)
-          subtitulo.textContent = `Comparação direta dos sensores com as faixas ideais de manejo (Temperatura ideal: ${c.tempMin} °C a ${c.tempMax} °C · Umidade ideal: ${c.umidMin}% a ${c.umidMax}%)`;
         filtrarTabelaDashboard();
       }
+      // clicar (ou Enter) numa linha abre a tela daquela colmeia no dashboard
+      // a ordem das linhas é a mesma dos dados: linha 0 = Colmeia 01...
+      document.querySelectorAll("#listaTabelaDashboard tr").forEach((linha, i) => {
+        linha.classList.add("linha-clicavel");
+        linha.tabIndex = 0;
+        linha.title = "Abrir " + linha.querySelector(".nome-colmeia").textContent;
+        const abrir = () => (location.href = "dashboard.html?colmeia=" + i);
+        linha.addEventListener("click", abrir);
+        linha.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") abrir();
+        });
+      });
+
+      // vindo do "Ver todas" das KPIs (colmeias.html?filtro=Risco): já abre filtrado
+      const filtroDaUrl = new URLSearchParams(location.search).get("filtro");
+      if (filtroDaUrl && select_filtro.querySelector(`option[value="${filtroDaUrl}"]`)) {
+        select_filtro.value = filtroDaUrl;
+      }
+
       window.addEventListener("storage", (e) => {
         if (e.key === "tetria_configuracoes") carregarLimitesColmeias();
       });
