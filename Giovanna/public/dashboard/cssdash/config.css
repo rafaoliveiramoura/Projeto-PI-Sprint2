@@ -1,3 +1,11 @@
+/* ícones de linha (SVG) */
+.icone {
+  width: 16px;
+  height: 16px;
+  display: block;
+  flex-shrink: 0;
+}
+
 :root {
   /* Cores e variáveis em Português */
   --mel: #dcae1d;
@@ -37,7 +45,8 @@ body {
   margin: 0;
   background: var(--creme);
   color: var(--marrom);
-  font-family: Poppins, Montserrat, sans-serif;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-variant-numeric: tabular-nums;
   font-size: 13px;
 }
 
@@ -60,26 +69,26 @@ button {
   cursor: pointer;
 }
 
+/* mesma estrutura do dashboard.css: sidebar fixa e conteúdo com margem igual à largura dela */
 .app {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
   min-height: 100vh;
 }
 
 .sidebar {
+  position: fixed;
   inset: 0 auto 0 0;
-  width: 248px;
+  width: 196px;
   background: var(--brown);
   color: white;
-  padding: 28px 18px;
+  padding: 20px 12px;
   display: flex;
   flex-direction: column;
   z-index: 5;
 }
 .sidebar nav {
   display: grid;
-  gap: 8px;
-  margin-top: 28px;
+  gap: 6px;
+  margin-top: 18px;
 }
 
 .side-foot {
@@ -91,10 +100,11 @@ button {
 
 .logo {
   display: block;
-  width: 84px;
-  height: 84px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
-  margin: 0 auto 10px;
+  margin: 0;
+  flex-shrink: 0;
 }
 
 .settings-page .settings-actions {
@@ -108,18 +118,23 @@ button {
 .nav-link {
   border: 0;
   background: transparent;
-  color: #fff;
+  color: #e9dfd4;
+  text-decoration: none;
   text-align: left;
-  padding: 15px 16px;
-  border-radius: 10px;
-  font: 500 15px Poppins;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font: 500 14px Inter;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 .nav-link span {
-  font-size: 14px;
+  font-size: 13px;
+}
+.nav-link .icone {
+  width: 18px;
+  height: 18px;
 }
 .nav-link.active,
 .nav-link:hover {
@@ -128,20 +143,22 @@ button {
 }
 
 .brand {
-  text-align: center;
-  padding: 4px 0 26px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px 18px;
   border-bottom: 1px solid #ffffff26;
 }
 .brand h1 {
-  letter-spacing: 5px;
-  font-size: 25px;
+  letter-spacing: 2px;
+  font-size: 16px;
   margin: 0;
   font-weight: 700;
 }
 .brand p {
-  font-size: 12px;
-  color: #e5d8cb;
-  margin: 4px 0 0;
+  font-size: 10.5px;
+  color: #cbbcae;
+  margin: 2px 0 0;
 }
 
 .sidebar-foot {
@@ -162,7 +179,7 @@ button {
 }
 
 .main {
-  margin-left: 30px;
+  margin-left: 196px;
   padding: 18px 32px 16px;
   min-height: 100vh;
 }
@@ -208,7 +225,7 @@ button {
 }
 .status-pill {
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: 6px;
   padding: 8px 12px;
   background: white;
   font-size: 11px;
@@ -240,7 +257,7 @@ button {
 .icon-btn {
   border: 1px solid var(--borda);
   background: var(--branco);
-  border-radius: 99px;
+  border-radius: 6px;
   padding: 9px 12px;
   color: var(--marrom);
   display: inline-flex;
@@ -294,7 +311,7 @@ button {
 .filters input {
   background: var(--branco);
   border: 1px solid var(--borda);
-  border-radius: 9px;
+  border-radius: 8px;
   padding: 9px 12px;
   color: var(--marrom);
   min-width: 132px;
@@ -314,7 +331,7 @@ button {
 .card {
   background: var(--branco);
   border: 1px solid var(--borda);
-  border-radius: 16px;
+  border-radius: 10px;
   padding: 17px;
   box-shadow: var(--sombra);
   min-width: 0;
@@ -350,7 +367,7 @@ button {
 .kpi-icon {
   width: 31px;
   height: 31px;
-  border-radius: 10px;
+  border-radius: 8px;
   display: grid;
   place-items: center;
   font-size: 17px;
@@ -374,7 +391,7 @@ button {
   align-items: center;
   gap: 5px;
   padding: 4px 8px;
-  border-radius: 99px;
+  border-radius: 6px;
   font-size: 10px;
   font-weight: 700;
   white-space: nowrap;
@@ -555,14 +572,14 @@ tbody tr:hover {
 .bar {
   height: 9px;
   background: #f1e9de;
-  border-radius: 99px;
+  border-radius: 6px;
   overflow: hidden;
 }
 
 .bar span {
   height: 100%;
   display: block;
-  border-radius: 99px;
+  border-radius: 6px;
 }
 
 .hive-section {
@@ -578,7 +595,7 @@ tbody tr:hover {
 .hive-tile {
   border: 1px solid var(--borda);
   background: #fffdfa;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 12px;
   text-align: left;
   min-width: 0;
@@ -670,7 +687,7 @@ tbody tr:hover {
   background: var(--marrom);
   color: white;
   padding: 12px 16px;
-  border-radius: 10px;
+  border-radius: 8px;
   box-shadow: 0 10px 30px #0002;
   opacity: 0;
   transform: translateY(10px);
@@ -701,7 +718,7 @@ tbody tr:hover {
 
 .modal {
   background: var(--branco);
-  border-radius: 18px;
+  border-radius: 10px;
   max-width: 540px;
   width: 100%;
   padding: 24px;
@@ -736,7 +753,7 @@ tbody tr:hover {
 
 .metric {
   border: 1px solid var(--borda);
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 14px;
 }
 
@@ -753,7 +770,7 @@ tbody tr:hover {
 .primary-btn {
   background: var(--mel);
   border: 0;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px 14px;
   font-weight: 700;
   color: var(--marrom);
@@ -762,7 +779,7 @@ tbody tr:hover {
 .secondary-btn {
   background: white;
   border: 1px solid var(--borda);
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px 14px;
   color: var(--marrom);
   font-weight: 600;
@@ -772,7 +789,7 @@ tbody tr:hover {
   background: #fff8e6;
   border: 1px solid #f0d89a;
   padding: 11px 13px;
-  border-radius: 10px;
+  border-radius: 8px;
   color: #6d4b00;
   font-size: 11px;
   margin-top: 13px;
@@ -796,7 +813,7 @@ tbody tr:hover {
 .field input,
 .field select {
   border: 1px solid var(--borda);
-  border-radius: 9px;
+  border-radius: 8px;
   padding: 10px;
   background: white;
   color: var(--marrom);
@@ -810,10 +827,6 @@ tbody tr:hover {
 }
 
 @media (max-width: 1200px) {
-  .app {
-    grid-template-columns: 185px minmax(0, 1fr);
-  }
-
   .kpis {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -836,10 +849,6 @@ tbody tr:hover {
 }
 
 @media (max-width: 760px) {
-  .app {
-    grid-template-columns: 1fr;
-  }
-
   .nav {
     display: flex;
     overflow: auto;
@@ -906,15 +915,15 @@ tbody tr:hover {
 /* KPIs de alertas */
 .kpi.kpi_risco {
   border-top: 3px solid var(--vermelho);
-  background: linear-gradient(160deg, #fff2f0 0%, var(--branco) 65%);
+  background: var(--branco);
 }
 .kpi.kpi_atencao {
   border-top: 3px solid var(--amarelo);
-  background: linear-gradient(160deg, #fffbf0 0%, var(--branco) 65%);
+  background: var(--branco);
 }
 .kpi.kpi_ideal {
   border-top: 3px solid var(--verde);
-  background: linear-gradient(160deg, #f2faf3 0%, var(--branco) 65%);
+  background: var(--branco);
 }
 .kpi_topo {
   display: flex;
@@ -929,7 +938,7 @@ tbody tr:hover {
 }
 .kpi_selo {
   padding: 3px 8px;
-  border-radius: 99px;
+  border-radius: 6px;
   font-size: 10px;
   font-weight: 700;
 }
@@ -1004,7 +1013,7 @@ tbody tr:hover {
   color: var(--verde);
   background: var(--verde-fundo);
   padding: 3px 8px;
-  border-radius: 99px;
+  border-radius: 6px;
   margin-left: 8px;
 }
 
@@ -1039,7 +1048,7 @@ tbody tr:hover {
 .select-wrap select {
   background: var(--branco);
   border: 1px solid var(--borda);
-  border-radius: 9px;
+  border-radius: 8px;
   padding: 8px 14px;
   color: var(--marrom);
   font-size: 13px;
@@ -1056,7 +1065,7 @@ tbody tr:hover {
 .alert-summary {
   background: var(--branco);
   border: 1px solid var(--borda);
-  border-radius: 14px;
+  border-radius: 10px;
   padding: 16px 18px;
   display: flex;
   flex-direction: column;
@@ -1064,11 +1073,11 @@ tbody tr:hover {
 }
 .alert-summary.danger {
   border-top: 3px solid var(--vermelho);
-  background: linear-gradient(160deg, #fff2f0 0%, var(--branco) 65%);
+  background: var(--branco);
 }
 .alert-summary.warning {
   border-top: 3px solid var(--amarelo);
-  background: linear-gradient(160deg, #fffbf0 0%, var(--branco) 65%);
+  background: var(--branco);
 }
 .alert-summary.total-summary {
   background: var(--branco);
@@ -1083,7 +1092,7 @@ tbody tr:hover {
 }
 .alert-action {
   padding: 3px 10px;
-  border-radius: 99px;
+  border-radius: 6px;
   font-size: 10px;
   font-weight: 700;
 }
@@ -1202,7 +1211,7 @@ tbody tr:hover {
 .panel {
   background: var(--branco);
   border: 1px solid var(--borda);
-  border-radius: 14px;
+  border-radius: 10px;
   padding: 18px;
   box-shadow: var(--sombra);
 }
@@ -1245,7 +1254,7 @@ tbody tr:hover {
 .detail-status {
   background: var(--branco);
   border: 1px solid var(--borda);
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 12px 16px;
   display: flex;
   align-items: center;
@@ -1254,7 +1263,7 @@ tbody tr:hover {
 }
 .status-badge {
   padding: 4px 10px;
-  border-radius: 99px;
+  border-radius: 6px;
   font-size: 11px;
   font-weight: 700;
 }
@@ -1365,6 +1374,14 @@ tbody tr:hover {
 .tabela-dashboard tbody tr:hover {
   background-color: #fff9ef;
 }
+/* linha que abre a colmeia ao clicar */
+.tabela-dashboard tbody tr.linha-clicavel {
+  cursor: pointer;
+}
+.tabela-dashboard tbody tr.linha-clicavel:focus-visible {
+  outline: 2px solid var(--gold, #dfad16);
+  outline-offset: -2px;
+}
 .nome-colmeia {
   font-weight: 700;
   color: var(--marrom);
@@ -1444,7 +1461,7 @@ tbody tr:hover {
 .kpi-detalhe {
   border-top: 3px solid var(--mel) !important;
   background: var(--branco);
-  border-radius: 14px;
+  border-radius: 10px;
   padding: 18px 20px;
 }
 .kpi-detalhe-head {
@@ -1459,7 +1476,7 @@ tbody tr:hover {
   background: #fff6df;
   color: #a87900;
   border-radius: 6px;
-  padding: 3px 8px;
+  padding: 5px;
   font-size: 11px;
   font-weight: 700;
 }
@@ -1541,7 +1558,9 @@ tbody tr:hover {
   }
   .brand {
     padding-bottom: 18px;
+    justify-content: center;
   }
+  .brand > div,
   .brand h1,
   .brand p,
   .sidebar nav span,
@@ -1584,18 +1603,18 @@ tbody tr:hover {
   }
 }
 
-@media (max-width: 1200px) {
+/* entre 801 e 1200px (abaixo disso vale a sidebar compacta de 68px) */
+@media (min-width: 801px) and (max-width: 1200px) {
   .sidebar {
-    width: 210px;
+    width: 180px;
   }
   .main {
-    margin-left: 210px;
+    margin-left: 180px;
     padding: 18px 24px 24px;
   }
 }
 @media (min-width: 900px) {
   .main {
-    height: 100vh;
     display: flex;
     flex-direction: column;
     overflow: hidden;

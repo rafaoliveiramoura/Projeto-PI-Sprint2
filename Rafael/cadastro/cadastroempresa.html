@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -48,7 +49,7 @@
             <div class="info">
                 <div class="campo">
                     <label for="nome">Nome da Empresa</label>
-                    <input type="text" placeholder="Digite o nome da sua empresa" id="nome_input">
+                    <input type="text" placeholder="Digite o nome da sua empresa" id="nomeempresa_input">
                 </div>
 
                 <div class="campo">
@@ -66,14 +67,10 @@
                     <input type="text" id="telempresa_input" placeholder="(00) 00000-0000">
                 </div>
             </div>
-            <div class="endereço">
-                <div class="campo">
-                    <label for="end_input">Endereço</label>
-                    <input type="text"  id="end_input" placeholder="seu endereço">
-                </div>
+            <div class="razao-social-container">
                 <div class="campo">
                     <label for="razaosocialempresa_input">Razão Social</label>
-                    <input type="text"  id="razaosocialempresa_input" placeholder="seu nome">
+                    <input type="text"  id="razaosocialempresa_input" placeholder="Digite a razão social da empresa">
                 </div>
             </div>
            
@@ -99,56 +96,8 @@
 
     </div>
 
-    <script>
-       function Vsenha() {
-            let senha = senha_input.value;
-            let tamanho = senha.length;
-            let criterio = 0;
-
-            // 1. Validação de Tamanho (8 caracteres ou mais)
-            if (tamanho >= 8) {
-                exibir.innerHTML = `<span style="color: #28a745;">✓ Senha com 8 caracteres</span>`;
-                criterio++;
-            } else {
-                exibir.innerHTML = `<span style="color: #dc3545;">✕ Pelo menos 8 caracteres</span>`;
-            }
-
-            // 2. Validação de Letra Maiúscula
-            if (/[A-Z]/.test(senha)) {  
-                exibir2.innerHTML = `<span style="color: #28a745;">✓ Contém letra maiúscula</span>`;
-                criterio++;
-            } else {
-                exibir2.innerHTML = `<span style="color: #dc3545;">✕ Deve conter uma letra Maiúscula</span>`;
-            }
-
-            // 3. Validação de Letra Minúscula
-            if (/[a-z]/.test(senha)) {
-                exibir3.innerHTML = `<span style="color: #28a745;">✓ Contém letra minúscula</span>`;
-                criterio++;
-            } else {
-                exibir3.innerHTML = `<span style="color: #dc3545;">✕ Deve conter uma letra Minúscula</span>`;
-            }
-
-            // 4. Validação de Caractere Especial
-            if (/[!@#$%^&*(),.?":{}|<>]/.test(senha)) {
-                exibir4.innerHTML = `<span style="color: #28a745;">✓ Contém caractere especial</span>`;
-                criterio++;
-            } else {
-                exibir4.innerHTML = `<span style="color: #dc3545;">✕ Deve conter um caractere especial</span>`;
-            }
-
-            // 5. Avaliação do Nível da Senha
-            if (senha === "") {
-                exibir5.innerHTML = `<span style="color: #dc3545; font-weight: bold;">Insegura</span>`;
-            } else if (criterio === 4) {
-                exibir5.innerHTML = `<span style="color: #28a745; font-weight: bold;">Forte</span>`;
-            } else if (criterio >= 2) {
-                exibir5.innerHTML = `<span style="color: #E5A823; font-weight: bold;">Média</span>`;
-            } else {
-                exibir5.innerHTML = `<span style="color: #dc3545; font-weight: bold;">Fraca</span>`;
-            }
-        }
-    </script>
+    
+      
 </body>
 </html>
 <script>
@@ -161,7 +110,6 @@
     //Recupere o valor da nova input pelo nome do id
     var nomeempresaVar = nomeempresa_input.value;
     var razaosocialempresaVar = razaosocialempresa_input.value;
-    var endempresaVar = endempresa_input.value;
     var emailempresaVar = emailempresa_input.value;
     var telefoneempresaVar = telempresa_input.value;
     var cnpjVar = cnpj_input.value;
@@ -177,25 +125,23 @@
     if (
       nomeempresaVar == "" ||
       razaosocialempresaVar == "" ||
-      endempresaVar == "" ||
       emailempresaVar == "" ||
-      telefoneVar == "" ||
-      cnpjVar == "") {    
+      telefoneempresaVar == "" ||
+      cnpjVar == "") {
       alert("Por favor, preencha todos os campos!");
       return false;
     }
 
     // Enviando o valor da nova input
-    fetch("http://127.0.0.1:3333/usuarios/cadastrarempresa", {
+    fetch("http://127.0.0.1:3333/empresa/cadastrar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        nomeempresaVar: nomeempresa_input,
-        razaosocialempresaVar: razaosocialempresa_input,
-        endempresaVar: endempresa_input,
-        emailempresaVar: emailempresa_input,
+        nomeempresaVar: nomeempresaVar,
+        razaosocialempresaVar: razaosocialempresaVar,
+        emailempresaVar: emailempresaVar,
         telefoneVar: telefoneempresaVar,
         cnpjVar: cnpjVar,
         codigoempresaVar: codigoempresa
@@ -205,7 +151,7 @@
         if (resposta.ok) {
           alert("Cadastro realizado com sucesso! Redirecionando...");
           setTimeout(() => {
-            window.location = "../cadastro/cadastroempresa.html";
+            window.location = "../cadastro/enderco.html";
           }, 2000);
         } else {
           throw new Error("Houve um erro ao tentar realizar o cadastro!");

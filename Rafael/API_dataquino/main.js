@@ -1,7 +1,7 @@
-// importa os bibliotecas necessários
 
 
 
+//variaveis de inicialização
 require("dotenv").config()
 const serialport = require('serialport');
 const express = require('express');
@@ -105,7 +105,7 @@ const servidor = (
 
     // define os endpoints da API para cada tipo de sensor
     app.get('/sensores/analogico', (_, response) => {
-        return response.json(valoresSensorAnalogico, valoresSensorDigital );
+        return res.status(200).json(valoresSensorAnalogico, valoresSensorDigital );
     });
    
 }

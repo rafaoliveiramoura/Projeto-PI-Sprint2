@@ -9,7 +9,7 @@
 
 <body>
     <div id="container">
-        <h1>Graphics</h1>
+        <h1>Dashboard</h1>
     </div>
     
     <div style="display: flex;">
@@ -26,7 +26,7 @@
             type: 'line',
             data: {
                 datasets: [{
-                    label: 'Analogico',
+                    label: 'Temperatura',
                     borderColor: '#63B1BC',
                     backgroundColor: '#ED145B'
                 }]
@@ -51,7 +51,7 @@
             type: 'line',
             data: {
                 datasets: [{
-                    label: 'Digital',
+                    label: 'Umidade',
                     borderColor: '#63B1BC',
                     backgroundColor: '#0762C8'
                 }]
@@ -105,8 +105,8 @@
         }
 
         setInterval(() => {
-            obterDados(sensorAnalogico, 'analogico');
-            obterDados(sensorDigital, 'digital');
+            obterDados(sensorAnalogico, 'temperatura');
+            obterDados(sensorDigital, 'umidade');
         }, 1000);
 
     </script>

@@ -6,27 +6,28 @@
   <title>Tetria | Configurações</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="css/config.css">
+  <link rel="stylesheet" href="/Giovanna/public/css/config.css">
 </head>
 <body class="settings-page">
   <div class="app">
     <aside class="sidebar">
       <div class="brand">
-        <!-- logo do grupo -->
         <img class="logo" src="src/logo-tetria-icone.png" alt="Logo Tetria" />
-        <h1>TETRIA</h1>
-        <p>Monitoramento de colmeias</p>
+        <div>
+          <h1>TETRIA</h1>
+          <p>Monitoramento de colmeias</p>
+        </div>
       </div>
 
       <nav>
-        <a class="nav-link" href="dashboard.html">▦<span>Dashboard</span></a>
-        <a class="nav-link" href="colmeias.html">▤ <span>Colmeias</span></a>
-        <a class="nav-link active" href="configuracoes.html">⚙ <span>Configurações</span></a>
+        <a id="nav_dashboard" class="nav-link" href="dashboard.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Dashboard</span></a>
+        <a id="nav_colmeias" class="nav-link" href="colmeias.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z"/></svg><span>Colmeias</span></a>
+        <a id="nav_configuracoes" class="nav-link active" href="configuracoes.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Configurações</span></a>
       </nav>
 
-      <div class="side-foot"><span class="live-dot"></span> Sistema de monitoramento</div>
+      <div class="side-foot"><span class="live-dot"></span> Sensores online</div>
     </aside>
 
     <main class="main">
@@ -38,7 +39,6 @@
 
         <!-- direita: filtros (só no dashboard), sensor e usuário -->
         <div class="top-actions">
-          <span class="status-pill"><i></i> Sensor ativo</span>
           <div class="avatar">T</div>
         </div>
       </header>
@@ -47,7 +47,7 @@
         <article class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
             <h2 class="section-title" style="margin:0">Temperatura interna</h2>
-            <span class="kpi-detalhe-tag">℃</span>
+            <span class="kpi-detalhe-tag"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 14.76V4.5a2 2 0 0 0-4 0v10.26a4 4 0 1 0 4 0z"/></svg></span>
           </div>
           <p class="section-sub">Faixas térmicas recomendadas e limites para emissão de alertas</p>
           <div class="field">
@@ -71,7 +71,7 @@
         <article class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
             <h2 class="section-title" style="margin:0">Umidade interna</h2>
-            <span class="kpi-detalhe-tag">%</span>
+            <span class="kpi-detalhe-tag"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.7s-6 6.4-6 11.3a6 6 0 0 0 12 0c0-4.9-6-11.3-6-11.3z"/></svg></span>
           </div>
           <p class="section-sub">Faixas de umidade relativa recomendadas e limites de segurança</p>
           <div class="field">
@@ -98,7 +98,7 @@
         <button type="button" class="primary-btn" onclick="salvarConfiguracoes()">Salvar configurações</button>
       </div>
 
-      <div class="footer-note">Tetria · Monitoramento de Colmeias</div>
+      <div class="footer-note">Tetria · Monitoramento de colmeias</div>
     </main>
   </div>
 

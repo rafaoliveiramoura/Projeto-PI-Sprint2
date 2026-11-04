@@ -9,9 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="/Giovanna/public/dashboard/" />
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   </head>
 
@@ -19,25 +20,20 @@
     <!-- ================== MENU LATERAL ================== -->
     <aside class="sidebar">
       <div class="brand">
-        <!-- logo do grupo -->
         <img class="logo" src="src/logo-tetria-icone.png" alt="Logo Tetria" />
-        <h1>TETRIA</h1>
-        <p>Monitoramento de colmeias</p>
+        <div>
+          <h1>TETRIA</h1>
+          <p>Monitoramento de colmeias</p>
+        </div>
       </div>
 
       <nav>
-        <a id="nav_dashboard" class="nav-link active" href="dashboard.html"
-          >▦<span>Dashboard</span></a
-        >
-        <a id="nav_colmeias" class="nav-link" href="colmeias.html">▤ <span>Colmeias</span></a>
-        <a id="nav_configuracoes" class="nav-link" href="configuracoes.html"
-          >⚙ <span>Configurações</span></a
-        >
+        <a id="nav_dashboard" class="nav-link active" href="dashboard.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Dashboard</span></a>
+        <a id="nav_colmeias" class="nav-link" href="colmeias.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z"/></svg><span>Colmeias</span></a>
+        <a id="nav_configuracoes" class="nav-link" href="configuracoes.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Configurações</span></a>
       </nav>
 
-      <div class="side-foot">
-        <span class="live-dot"></span> Sistema de monitoramento
-      </div>
+      <div class="side-foot"><span class="live-dot"></span> Sensores online</div>
     </aside>
 
     <main class="main">
@@ -52,30 +48,21 @@
           >
             ← Voltar
           </button>
-          <h2 id="titulo_pagina">Visão geral</h2>
+          <h2 id="titulo_pagina">Colmeias em estado de risco e atenção</h2>
           <span class="status-badge hidden" id="badge_situacao">Ideal</span>
         </div>
 
         <!-- direita: filtros (só no dashboard), sensor e usuário -->
         <div class="top-actions">
           <div class="selects" id="area_select">
-            <label class="filtro">
-              <span>Situação</span>
-              <select id="select_situacao" onchange="filtrarColmeias()">
-                <option value="todas">Todas</option>
-                <option value="Ideal">Ideal</option>
-                <option value="Atenção">Atenção</option>
-                <option value="Risco">Risco</option>
-              </select>
-            </label>
+            <!-- um select só: visão geral ou uma colmeia, agrupadas por situação -->
             <label class="filtro">
               <span>Colmeia</span>
               <select id="select_colmeia" onchange="mostrarDashboard()">
-                <option value="todas">Todas</option>
+                <option value="todas">Todas as colmeias</option>
               </select>
             </label>
           </div>
-          <span class="status-pill"><i></i> Sensor ativo</span>
           <div class="avatar">T</div>
         </div>
       </header>
@@ -89,12 +76,12 @@
             <article class="alert-summary danger">
               <div class="alert-summary-head">
                 <span>Em risco</span>
-                <span class="alert-action">● Inspecionar agora</span>
+                <span class="alert-action">Ação imediata</span>
               </div>
               <div class="alert-summary-count">
                 <strong id="qtd_risco">0</strong>
                 <span>de <b id="qtd_total1">0</b> colmeias</span>
-                <a href="#" onclick="verColmeias('Risco')">Ver todas →</a>
+                <a href="colmeias.html?filtro=Risco">Ver todas →</a>
               </div>
               <div class="alert-summary-list" id="lista_risco"></div>
             </article>
@@ -102,46 +89,28 @@
             <article class="alert-summary warning">
               <div class="alert-summary-head">
                 <span>Em atenção</span>
-                <span class="alert-action">Acompanhar</span>
+                <span class="alert-action">Monitorar</span>
               </div>
               <div class="alert-summary-count">
                 <strong id="qtd_atencao">0</strong>
                 <span>de <b id="qtd_total2">0</b> colmeias</span>
-                <a href="#" onclick="verColmeias('Atenção')">Ver todas →</a>
+                <a href="colmeias.html?filtro=Atenção">Ver todas →</a>
               </div>
               <div class="alert-summary-list" id="lista_atencao"></div>
             </article>
 
             <article
               class="alert-summary total-summary"
-              onclick="verColmeias('todas')"
             >
               <div class="alert-summary-head">
                 <span>Apiário monitorado</span>
-                <span class="total-kpi-icon">⌂</span>
+                <span class="total-kpi-icon"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z"/></svg></span>
               </div>
               <div class="total-kpi-value" id="qtd_total3">0</div>
               <p class="total-kpi-caption">colmeias monitoradas</p>
-              <button class="total-kpi-link" type="button">
+              <a class="total-kpi-link" href="colmeias.html">
                 Ver todas as colmeias →
-              </button>
-            </article>
-          </div>
-
-          <!-- gráficos: barras (temperatura) e rosca (umidade) -->
-          <div class="overview-grid">
-            <article class="panel">
-              <div class="panel-heading">
-                <h3>Visão geral da Temperatura</h3>
-              </div>
-              <div class="chart-area"><canvas id="graficoBarras"></canvas></div>
-            </article>
-
-            <article class="panel">
-              <div class="panel-heading">
-                <h3>Visão geral da Umidade</h3>
-              </div>
-              <div class="chart-area"><canvas id="graficoRosca"></canvas></div>
+              </a>
             </article>
           </div>
 
@@ -149,9 +118,19 @@
           <article class="panel incidents">
             <div class="panel-heading">
               <h3>Alertas</h3>
-              <button class="text-button" onclick="verColmeias('todas')">
-                Ver todas →
-              </button>
+              <div class="alertas-acoes">
+                <label class="filtro">
+                  <span>Mostrar</span>
+                  <select id="select_alertas" onchange="mostrarVisaoGeral()">
+                    <option value="todos">Todos</option>
+                    <option value="Risco">Críticos</option>
+                    <option value="Atenção">Atenção</option>
+                  </select>
+                </label>
+                <a class="text-button" id="link_alertas" href="colmeias.html">
+                  Ver todas →
+                </a>
+              </div>
             </div>
             <div class="table-scroll">
               <table>
@@ -177,42 +156,42 @@
             <article class="kpi-card">
               <div class="kpi-top">
                 <span>Temperatura interna</span>
-                <span class="kpi-icon">℃</span>
+                <span class="kpi-icon"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 14.76V4.5a2 2 0 0 0-4 0v10.26a4 4 0 1 0 4 0z"/></svg></span>
               </div>
               <strong
                 ><span id="kpi_temp"></span
                 ><span class="metric-unit">°C</span></strong
               >
               <p class="externo">Externa: <b id="kpi_temp_ext"></b></p>
-              <small>Ideal: <span id="kpi_temp_ideal"></span> °C</small>
+              <small>Ideal: <span id="kpi_temp_ideal"></span></small>
             </article>
 
             <article class="kpi-card">
               <div class="kpi-top">
                 <span>Umidade interna</span>
-                <span class="kpi-icon">％</span>
+                <span class="kpi-icon"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.7s-6 6.4-6 11.3a6 6 0 0 0 12 0c0-4.9-6-11.3-6-11.3z"/></svg></span>
               </div>
               <strong
                 ><span id="kpi_umid"></span
                 ><span class="metric-unit">%</span></strong
               >
               <p class="externo">Externa: <b id="kpi_umid_ext"></b></p>
-              <small>Ideal: <span id="kpi_umid_ideal"></span>%</small>
+              <small>Ideal: <span id="kpi_umid_ideal"></span></small>
             </article>
 
             <article class="kpi-card">
               <div class="kpi-top">
                 <span>Picos de temperatura</span>
-                <span class="kpi-icon">◷</span>
+                <span class="kpi-icon"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></span>
               </div>
               <div class="pico-grid">
                 <div class="pico alto">
-                  <span>▲ Mais alta</span>
+                  <span>▲ Máxima</span>
                   <strong id="kpi_pico_alto"></strong>
                   <small>às <b id="kpi_hora_alto"></b></small>
                 </div>
                 <div class="pico baixo">
-                  <span>▼ Mais baixa</span>
+                  <span>▼ Mínima</span>
                   <strong id="kpi_pico_baixo"></strong>
                   <small>às <b id="kpi_hora_baixo"></b></small>
                 </div>
@@ -221,18 +200,18 @@
             <article class="kpi-card">
               <div class="kpi-top">
                 <span>Picos de umidade</span>
-                <span class="kpi-icon">◷</span>
+                <span class="kpi-icon"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></span>
               </div>
 
               <div class="pico-grid">
                 <div class="pico alto">
-                  <span>▲ Mais alta</span>
+                  <span>▲ Máxima</span>
                   <strong id="kpi_umid_alta"></strong>
                   <small>às <b id="kpi_hora_umid_alta"></b></small>
                 </div>
 
                 <div class="pico baixo">
-                  <span>▼ Mais baixa</span>
+                  <span>▼ Mínima</span>
                   <strong id="kpi_umid_baixa"></strong>
                   <small>às <b id="kpi_hora_umid_baixa"></b></small>
                 </div>
@@ -302,7 +281,7 @@
       <section id="configuracoes" class="hidden">
         <form class="settings-grid" onsubmit="return false;">
           <article class="panel settings-panel">
-            <div class="settings-icon">℃</div>
+            <div class="settings-icon"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 14.76V4.5a2 2 0 0 0-4 0v10.26a4 4 0 1 0 4 0z"/></svg></div>
             <h3>Temperatura interna</h3>
             <div class="field-row">
               <label
@@ -347,7 +326,7 @@
           </article>
 
           <article class="panel settings-panel">
-            <div class="settings-icon">％</div>
+            <div class="settings-icon"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.7s-6 6.4-6 11.3a6 6 0 0 0 12 0c0-4.9-6-11.3-6-11.3z"/></svg></div>
             <h3>Umidade interna</h3>
             <div class="field-row">
               <label

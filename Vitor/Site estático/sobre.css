@@ -115,7 +115,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: bold;  /*mto tampo reescrever tudo no html*/
+    font-weight: bold;  
     background-color: #221E19;
     color: #e7dfd4;
     width: 30px;

@@ -17,12 +17,11 @@ function autenticarempres (emailempresa, codigo){
     return database.executar(instrucaoSql);
 }
 
-// Coloque os mesmos parâmetros aqui. Vá para a var instrucaoSql
-function cadastrar(nome, email, senha, cpf, telefone) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email, senha, cpf, telefone);
 
-    // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
-    // e na ordem de inserção dos dados.
+function cadastrar(nome, email, senha, cpf, telefone) {
+    console.log("ACESSO O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email, senha, cpf, telefone);
+
+    // Cadasatrando o admin da empresa
     var instrucaoSql = `
         INSERT INTO Usuario2 (nome, email, senha, cpf, telefone) VALUES ('${nome}', '${email}', '${senha}', '${cpf}', '${telefone}');
     `;
@@ -30,14 +29,14 @@ function cadastrar(nome, email, senha, cpf, telefone) {
     return database.executar(instrucaoSql);
 };
 
-
+//Cadastro das empresas
 function cadastrarempres (nomeempresa, emailempresa, telefoneempresa, codigo, cnpj, razaosocial){
     var entre = `INSERT INTO Empresa (nome_fantasia, razao_social, cnpj, email, telefone, codEmpresa) VALUES ('${nomeempresa}', '${razaosocial}', '${cnpj}', '${emailempresa}', '${telefoneempresa}', '${codigo}')`
     console.log("Executando a instrução SQL: \n" + entre)
     return database.executar(entre)
 }
 
-
+//cadastro do endereço
 function cdastrarenderço(cep, rua, numero, bairro, cidade, estado, fkEmpresa){
     var endereco = `INSERT INTO Endereco (cep, logradouro, numero, bairro, cidade, estado, fkEnderecoEmpresa) VALUES ('${cep}', '${rua}', '${numero}', '${bairro}', '${cidade}', '${estado}', ${fkEmpresa})`
     console.log(`Inserindo o endereço: ${endereco}`)
