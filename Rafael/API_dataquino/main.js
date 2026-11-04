@@ -1,7 +1,7 @@
-// importa os bibliotecas necessários
 
 
 
+//variaveis de inicialização
 require("dotenv").config()
 const serialport = require('serialport');
 const express = require('express');
