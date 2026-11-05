@@ -154,34 +154,38 @@
         }
 
         function avancarParaEmpresa() {
-            var nomeVar = nome_input.value.trim();
-            var emailVar = email_input.value.trim();
-            var senhaVar = senha_input.value;
-            var telefoneVar = tel_input.value.trim();
-            var cpfVar = cpf_input.value.trim();
+            console.log("Tentando avançar...");
 
-            if (nomeVar == "" || emailVar == "" || senhaVar == "" || telefoneVar == "" || cpfVar == "") {
-                alert("Por favor, preencha todos os campos!");
+            // Pega os valores dos inputs
+            const nome = document.getElementById('nome_input').value;
+            const cpf = document.getElementById('cpf_input').value;
+            const email = document.getElementById('email_input').value;
+            const tel = document.getElementById('tel_input').value;
+            const termos = document.getElementById('termos').checked;
+
+            console.log({nome, cpf, email, tel, termos, senhaValida});
+
+            // Valida se os campos básicos estão preenchidos
+            if (!nome || !cpf || !email || !tel) {
+                alert("Por favor, preencha todos os seus dados pessoais.");
                 return false;
             }
 
+            // Valida se a senha passou pelos critérios mínimos
             if (!senhaValida) {
-                alert("A sua senha precisa atender aos requisitos de segurança mínimos!");
+                alert("Por favor, preencha a senha corretamente para que ela seja considerada válida (Média ou Forte).");
                 return false;
             }
 
-            // Armazena dados temporariamente no sessionStorage para o fluxo de cadastro
-            sessionStorage.setItem("CADASTRO_USUARIO", JSON.stringify({
-                nome: nomeVar,
-                email: emailVar,
-                senha: senhaVar,
-                telefone: telefoneVar,
-                cpf: cpfVar
-            }));
+            // Valida se aceitou os termos
+            if (!termos) {
+                alert("Você precisa aceitar os termos de uso e política de privacidade.");
+                return false;
+            }
 
-            // Redireciona para o Passo 2: Cadastro de Empresa
-            window.location.href = "cadastroempresa.html";
-            return false;
+            alert("Cadastro de usuário concluído com sucesso!");
+            console.log("Redirecionando...");
+            window.location.assign("cadastroempresa.html");
         }
     </script>
 </body>
