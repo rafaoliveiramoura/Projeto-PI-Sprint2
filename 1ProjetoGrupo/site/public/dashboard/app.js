@@ -1,4 +1,4 @@
-//  LIMITES (documentação de medidas) 
+// ================== LIMITES (documentação de medidas) ==================
 // Temperatura: ideal 33 a 36 °C | risco abaixo de 32 ou acima de 38 °C (entre os dois: atenção)
 // Umidade:     ideal 50 a 75 %  | fora disso: atenção | risco a partir de 85 % com temperatura abaixo de 32 °C
 let tempMin = 33;
@@ -10,7 +10,7 @@ let umidMax = 75;
 let umidRisco = 85;
 let umidSeca = 40;
 
-//  DADOS (simulados) 
+// ================== DADOS (simulados) ==================
 // uma leitura a cada 3 horas (a última posição é a leitura atual)
 let horarios = ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00"];
 
@@ -96,7 +96,7 @@ function calcularSituacoes() {
   }
 }
 
-//  NAVEGAÇÃO 
+// ================== NAVEGAÇÃO ==================
 function mostrarPagina(pagina) {
   ["dashboard", "colmeias", "configuracoes"].forEach((nome) => {
     const secao = document.getElementById(nome);
@@ -180,7 +180,7 @@ function mostrarDashboard() {
   }
 }
 
-//  VISÃO GERAL 
+// ================== VISÃO GERAL ==================
 function mostrarVisaoGeral() {
   let qtdRisco = 0;
   let qtdAtencao = 0;
@@ -216,15 +216,11 @@ function mostrarVisaoGeral() {
         // a tabela respeita o filtro "Mostrar" (todos, críticos ou atenção)
         if (filtroAlertas != "todos" && filtroAlertas != ordem[o]) continue;
 
-        let tagCor = situacoes[i] == "Risco" ? "tag-vermelho" : (situacoes[i] == "Atenção" ? "tag-amarelo" : "tag-verde");
-        let pontoCor = situacoes[i] == "Risco" ? "vermelho" : (situacoes[i] == "Atenção" ? "amarelo" : "verde");
-        let textoSituacao = situacoes[i] == "Risco" ? "Em risco" : (situacoes[i] == "Atenção" ? "Em atenção" : "Ideal");
-
         tabela_alertas.innerHTML += `<tr class="linha-clicavel" onclick="abrirColmeia(${i})">
-            <td><span class="nome-colmeia">${nomeColmeia(i)}</span></td>
-            <td><span class="tag-status ${tagCor}"><i class="ponto ${pontoCor}"></i> ${textoSituacao}</span></td>
-            <td class="col-valor">${formatar(atual(tempInterna[i]))} °C</td>
-            <td class="col-valor">${atual(umidInterna[i])}%</td>
+            <td class="hive-name">${nomeColmeia(i)}</td>
+            <td><span class="status-badge ${classeCss(situacoes[i])}">${situacoes[i]}</span></td>
+            <td>${formatar(atual(tempInterna[i]))} °C</td>
+            <td>${atual(umidInterna[i])}%</td>
             <td>${tempo}</td>
           </tr>`;
       }
@@ -237,22 +233,17 @@ function mostrarVisaoGeral() {
 
   qtd_risco.innerHTML = qtdRisco;
   qtd_atencao.innerHTML = qtdAtencao;
-  qtd_total1.innerHTML = situacoes.length;
-  qtd_total2.innerHTML = situacoes.length;
   qtd_total3.innerHTML = situacoes.length;
 }
 
-//  COLMEIA INDIVIDUAL 
+// ================== COLMEIA INDIVIDUAL ==================
 function mostrarColmeia(i) {
   let temps = tempInterna[i];
   let umids = umidInterna[i];
 
   titulo_pagina.innerHTML = nomeColmeia(i);
-  let tagCorBadge = situacoes[i] == "Risco" ? "tag-vermelho" : (situacoes[i] == "Atenção" ? "tag-amarelo" : "tag-verde");
-  let pontoCorBadge = situacoes[i] == "Risco" ? "vermelho" : (situacoes[i] == "Atenção" ? "amarelo" : "verde");
-  let textoSituacaoBadge = situacoes[i] == "Risco" ? "Em risco" : (situacoes[i] == "Atenção" ? "Em atenção" : "Ideal");
-  badge_situacao.innerHTML = `<i class="ponto ${pontoCorBadge}"></i> ${textoSituacaoBadge}`;
-  badge_situacao.className = "tag-status " + tagCorBadge;
+  badge_situacao.innerHTML = situacoes[i];
+  badge_situacao.className = "status-badge " + classeCss(situacoes[i]);
 
   // procura a posição da temperatura mais alta e da mais baixa do dia
   let maior = 0;
@@ -304,7 +295,8 @@ function mostrarColmeia(i) {
   graficoUmidade.data.datasets[1].data = umidExterna;
   graficoUmidade.data.datasets[2].data = linhaReta(umidMin);
   graficoUmidade.data.datasets[3].data = linhaReta(umidMax);
-  graficoUmidade.data.datasets[4].data = linhaReta(umidRisco);
+  graficoUmidade.data.datasets[4].data = linhaReta(umidSeca);
+  graficoUmidade.data.datasets[5].data = linhaReta(umidRisco);
   graficoUmidade.update();
 }
 
@@ -317,30 +309,26 @@ function linhaReta(valor) {
   return vetor;
 }
 
-//  PÁGINA COLMEIAS 
+// ================== PÁGINA COLMEIAS ==================
 function listarColmeias() {
   let filtro = select_status.value;
   tabela_colmeias.innerHTML = "";
 
   for (let i = 0; i < situacoes.length; i++) {
     if (filtro == "todas" || situacoes[i] == filtro) {
-      let tagCorColm = situacoes[i] == "Risco" ? "tag-vermelho" : (situacoes[i] == "Atenção" ? "tag-amarelo" : "tag-verde");
-      let pontoCorColm = situacoes[i] == "Risco" ? "vermelho" : (situacoes[i] == "Atenção" ? "amarelo" : "verde");
-      let textoSituacaoColm = situacoes[i] == "Risco" ? "Em risco" : (situacoes[i] == "Atenção" ? "Em atenção" : "Ideal");
-
       tabela_colmeias.innerHTML += `<tr class="linha-clicavel" onclick="abrirColmeia(${i})">
-          <td><span class="nome-colmeia">${nomeColmeia(i)}</span></td>
-          <td class="col-valor">${formatar(atual(tempInterna[i]))} °C</td>
-          <td class="col-valor">${formatar(atual(tempExterna))} °C</td>
-          <td class="col-valor">${atual(umidInterna[i])}%</td>
-          <td class="col-valor">${atual(umidExterna)}%</td>
-          <td><span class="tag-status ${tagCorColm}"><i class="ponto ${pontoCorColm}"></i> ${textoSituacaoColm}</span></td>
+          <td class="hive-name">${nomeColmeia(i)}</td>
+          <td>${formatar(atual(tempInterna[i]))} °C</td>
+          <td>${formatar(atual(tempExterna))} °C</td>
+          <td>${atual(umidInterna[i])}%</td>
+          <td>${atual(umidExterna)}%</td>
+          <td><span class="status-badge ${classeCss(situacoes[i])}">${situacoes[i]}</span></td>
         </tr>`;
     }
   }
 }
 
-//  GRÁFICOS (Chart.js) 
+// ================== GRÁFICOS (Chart.js) ==================
 Chart.defaults.font.family = "Inter";
 Chart.defaults.color = "#857a70";
 
@@ -534,7 +522,7 @@ function criarGraficoLinha(idCanvas, minimo, maximo) {
 let graficoTemperatura = criarGraficoLinha("graficoTemperatura", 26, 42);
 let graficoUmidade = criarGraficoLinha("graficoUmidade", 40, 90);
 
-//  CONFIGURAÇÕES 
+// ================== CONFIGURAÇÕES ==================
 const configuracaoPadrao = {
   tempMin: 33, tempMax: 36, tempFrio: 32, tempCalor: 38,
   umidMin: 50, umidMax: 75, umidSeca: 40, umidRisco: 85

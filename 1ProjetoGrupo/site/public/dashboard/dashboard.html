@@ -3,24 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tetria | Dashboard</title>
+    <title>Tetria | Monitoramento de colmeias</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
     />
-    <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="cssdash/dashboard.css" />
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   </head>
 
   <body>
-    
+    <!-- ================== MENU LATERAL ================== -->
     <aside class="sidebar">
       <div class="brand">
-        <img class="logo" src="assets/logo-tetria-icone.png" alt="Logo Tetria" />
+        <img class="logo" src="src/logo-tetria-icone.png" alt="Logo Tetria" />
         <div>
           <h1>TETRIA</h1>
           <p>Monitoramento de colmeias</p>
@@ -31,16 +31,19 @@
         <a id="nav_dashboard" class="nav-link active" href="dashboard.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Dashboard</span></a>
         <a id="nav_colmeias" class="nav-link" href="colmeias.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z"/></svg><span>Colmeias</span></a>
         <a id="nav_configuracoes" class="nav-link" href="configuracoes.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Configurações</span></a>
-        <a id="nav_sair" class="nav-link" href="../login.html" onclick="sessionStorage.clear()"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Sair</span></a>
       </nav>
 
-      <div class="side-foot"><span class="live-dot"></span> Sensores online</div>
+      <div class="side-foot"></div>
+      <a class="nav-link logout-link" href="../index.html">
+        <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>Sair</span>
+      </a>
     </aside>
 
     <main class="main">
-      
+      <!-- ================== TOPO ================== -->
       <header class="topbar">
-        
+        <!-- esquerda: botão voltar (só na colmeia individual), título e situação -->
         <div class="title-line">
           <button
             class="back-button hidden"
@@ -50,13 +53,13 @@
             ← Voltar
           </button>
           <h2 id="titulo_pagina">Colmeias em estado de risco e atenção</h2>
-          <span class="tag-status hidden" id="badge_situacao"></span>
+          <span class="status-badge hidden" id="badge_situacao">Ideal</span>
         </div>
 
-        
+        <!-- direita: filtros (só no dashboard), sensor e usuário -->
         <div class="top-actions">
           <div class="selects" id="area_select">
-            
+            <!-- um select só: visão geral ou uma colmeia, agrupadas por situação -->
             <label class="filtro">
               <span>Colmeia</span>
               <select id="select_colmeia" onchange="mostrarDashboard()">
@@ -68,11 +71,11 @@
         </div>
       </header>
 
-      
+      <!-- ================== PÁGINA: DASHBOARD ================== -->
       <section id="dashboard">
-        
+        <!-- ---------- visão geral (todas as colmeias) ---------- -->
         <div id="visao_geral">
-          
+          <!-- KPIs: em risco, em atenção e total -->
           <div class="overview-alert-grid">
             <article class="alert-summary danger">
               <div class="alert-summary-head">
@@ -81,7 +84,6 @@
               </div>
               <div class="alert-summary-count">
                 <strong id="qtd_risco">0</strong>
-                <span>de <b id="qtd_total1">0</b> colmeias</span>
                 <a href="colmeias.html?filtro=Risco">Ver todas →</a>
               </div>
               <div class="alert-summary-list" id="lista_risco"></div>
@@ -94,28 +96,27 @@
               </div>
               <div class="alert-summary-count">
                 <strong id="qtd_atencao">0</strong>
-                <span>de <b id="qtd_total2">0</b> colmeias</span>
                 <a href="colmeias.html?filtro=Atenção">Ver todas →</a>
               </div>
               <div class="alert-summary-list" id="lista_atencao"></div>
             </article>
 
-            <article
-              class="alert-summary total-summary"
-            >
+            <article class="alert-summary total-summary">
               <div class="alert-summary-head">
                 <span>Apiário monitorado</span>
                 <span class="total-kpi-icon"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z"/></svg></span>
               </div>
-              <div class="total-kpi-value" id="qtd_total3">0</div>
-              <p class="total-kpi-caption">colmeias monitoradas</p>
+              <div class="total-kpi-body">
+                <div class="total-kpi-value" id="qtd_total3">0</div>
+                <p class="total-kpi-caption">colmeias monitoradas</p>
+              </div>
               <a class="total-kpi-link" href="colmeias.html">
                 Ver todas as colmeias →
               </a>
             </article>
           </div>
 
-          
+          <!-- lista de alertas (preenchida pelo JS, da mais crítica para a menos crítica) -->
           <article class="panel incidents">
             <div class="panel-heading">
               <h3>Alertas</h3>
@@ -133,8 +134,8 @@
                 </a>
               </div>
             </div>
-            <div class="table-scroll tabela-container">
-              <table class="tabela-dashboard">
+            <div class="table-scroll">
+              <table>
                 <thead>
                   <tr>
                     <th>Colmeia</th>
@@ -150,9 +151,9 @@
           </article>
         </div>
 
-        
+        <!-- ---------- colmeia individual ---------- -->
         <div id="visao_individual" class="hidden">
-          
+          <!-- 3 KPIs (os valores são preenchidos pelo JS) -->
           <div class="detail-kpis">
             <article class="kpi-card">
               <div class="kpi-top">
@@ -183,7 +184,7 @@
             <article class="kpi-card">
               <div class="kpi-top">
                 <span>Picos de temperatura</span>
-                <span class="kpi-icon"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></span>
+                <span class="kpi-icon"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 20V4"/><path d="M3 8l4-4 4 4"/><path d="M17 4v16"/><path d="M13 16l4 4 4-4"/></svg></span>
               </div>
               <div class="pico-grid">
                 <div class="pico alto">
@@ -201,7 +202,7 @@
             <article class="kpi-card">
               <div class="kpi-top">
                 <span>Picos de umidade</span>
-                <span class="kpi-icon"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></span>
+                <span class="kpi-icon"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 20V4"/><path d="M3 8l4-4 4 4"/><path d="M17 4v16"/><path d="M13 16l4 4 4-4"/></svg></span>
               </div>
 
               <div class="pico-grid">
@@ -220,7 +221,7 @@
             </article>
           </div>
 
-          
+          <!-- gráficos de linha: colmeia × sensor externo -->
           <div class="detail-grid">
             <article class="panel">
               <div class="panel-heading">
@@ -243,7 +244,7 @@
         </div>
       </section>
 
-      
+      <!-- ================== PÁGINA: COLMEIAS ================== -->
       <section id="colmeias" class="hidden">
         <div class="toolbar">
           <h3>Todas as colmeias</h3>
@@ -259,8 +260,8 @@
         </div>
 
         <article class="panel">
-          <div class="table-scroll tabela-container">
-            <table class="tabela-dashboard">
+          <div class="table-scroll">
+            <table>
               <thead>
                 <tr>
                   <th>Colmeia</th>
@@ -277,8 +278,8 @@
         </article>
       </section>
 
-      
-      
+      <!-- ================== PÁGINA: CONFIGURAÇÕES ================== -->
+      <!-- Limites aplicados ao monitoramento e persistidos no navegador. -->
       <section id="configuracoes" class="hidden">
         <form class="settings-grid" onsubmit="return false;">
           <article class="panel settings-panel">
@@ -362,18 +363,8 @@
           </div>
         </form>
       </section>
-      <div class="footer-note">Tetria · Monitoramento de colmeias</div>
     </main>
 
     <script src="app.js"></script>
-    <script>
-      if (sessionStorage.NOME_USUARIO) {
-        const avatarEl = document.querySelector(".avatar");
-        if (avatarEl) {
-          avatarEl.innerText = sessionStorage.NOME_USUARIO.trim().charAt(0).toUpperCase();
-          avatarEl.title = sessionStorage.NOME_USUARIO;
-        }
-      }
-    </script>
   </body>
 </html>

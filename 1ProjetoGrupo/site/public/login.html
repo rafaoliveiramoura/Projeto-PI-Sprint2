@@ -90,48 +90,8 @@
       setTimeout(sumirMensagem, 5000);
       return false;
     }
-
-    const endpoint = (window.location.port === "3333") ? "/usuarios/autenticar" : "http://localhost:3333/usuarios/autenticar";
-
-    fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        emailServer: emailVar,
-        senhaServer: senhaVar,
-      }),
-    })
-      .then(function (resposta) {
-        if (resposta.ok) {
-          resposta.json().then((json) => {
-            sessionStorage.EMAIL_USUARIO = json.email;
-            sessionStorage.NOME_USUARIO = json.nome;
-            sessionStorage.ID_USUARIO = json.id;
-            sessionStorage.FK_EMPRESA = json.fkcodempresa;
-
-            window.location.href = "dashboard/dashboard.html";
-          });
-        } else {
-          cardErro.style.display = "block";
-          resposta.text().then((texto) => {
-            mensagem_erro.innerHTML = texto || "E-mail e/ou senha inválido(s)!";
-            setTimeout(sumirMensagem, 5000);
-          });
-        }
-      })
-      .catch(function (erro) {
-        console.log(erro);
-        cardErro.style.display = "block";
-        mensagem_erro.innerHTML = "Não foi possível conectar ao servidor backend.";
-        setTimeout(sumirMensagem, 5000);
-      });
-
-    return false;
-  }
-
-  function sumirMensagem() {
-    cardErro.style.display = "none";
+    alert("Redirecionando para DashBoard...")
+    window.location.assign("./dashboard/dashboard.html")
+    
   }
 </script>

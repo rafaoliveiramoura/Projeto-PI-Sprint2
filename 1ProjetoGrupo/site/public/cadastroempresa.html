@@ -89,14 +89,6 @@
     </div>
 
     <script>
-        // Validação se o Passo 1 foi cumprido
-        window.onload = function() {
-            if (!sessionStorage.getItem("CADASTRO_USUARIO")) {
-                alert("Por favor, preencha primeiro seus dados pessoais!");
-                window.location.href = "cadastro.html";
-            }
-        };
-
         function gerarCodigoEmpresa() {
             const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             let codigo = "EMP";
@@ -107,59 +99,9 @@
         }
 
         function cadastrarEmpresa() {
-            var nomeempresaVar = nomeempresa_input.value.trim();
-            var razaosocialempresaVar = razaosocialempresa_input.value.trim();
-            var emailempresaVar = emailempresa_input.value.trim();
-            var telefoneempresaVar = telempresa_input.value.trim();
-            var cnpjVar = cnpj_input.value.trim();
-
-            if (
-                nomeempresaVar == "" ||
-                razaosocialempresaVar == "" ||
-                emailempresaVar == "" ||
-                telefoneempresaVar == "" ||
-                cnpjVar == ""
-            ) {
-                alert("Por favor, preencha todos os campos da empresa!");
-                return false;
-            }
-
-            // Gera código único de 8 caracteres compatível com codempresa char(8)
-            var codigoempresa = gerarCodigoEmpresa();
-
-            const endpoint = (window.location.port === "3333") ? "/empresa/cadastrar" : "http://localhost:3333/empresa/cadastrar";
-
-            fetch(endpoint, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    nomeempresaVar: nomeempresaVar,
-                    razaosocialempresaVar: razaosocialempresaVar,
-                    emailempresaVar: emailempresaVar,
-                    telefoneVar: telefoneempresaVar,
-                    cnpjVar: cnpjVar,
-                    codigoempresaVar: codigoempresa
-                }),
-            })
-            .then(function (resposta) {
-                if (resposta.ok) {
-                    sessionStorage.setItem("CADASTRO_COD_EMPRESA", codigoempresa);
-                    alert("Empresa registrada com sucesso! Código gerado: " + codigoempresa);
-                    window.location.href = "endereco.html";
-                } else {
-                    return resposta.text().then(text => {
-                        throw new Error(text || "Erro ao cadastrar empresa!");
-                    });
-                }
-            })
-            .catch(function (erro) {
-                console.log(`#ERRO: ${erro}`);
-                alert("Erro ao cadastrar empresa: " + erro.message);
-            });
-
-            return false;
+            alert("Redirecionando para cadastrar a endereço...")
+            window.location.assign("./endereco.html");
+            return true;
         }
     </script>
 </body>

@@ -8,7 +8,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="/Giovanna/public/css/config.css">
+  <link rel="stylesheet" href="cssdash/config.css">
 </head>
 <body class="settings-page">
   <div class="app">
@@ -27,14 +27,18 @@
         <a id="nav_configuracoes" class="nav-link active" href="configuracoes.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Configurações</span></a>
       </nav>
 
-      <div class="side-foot"><span class="live-dot"></span> Sensores online</div>
+      <div class="side-foot"></div>
+      <a class="nav-link logout-link" href="../index.html">
+        <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>Sair</span>
+      </a>
     </aside>
 
     <main class="main">
       <header class="topbar">
         <!-- esquerda: botão voltar (só na colmeia individual), título e situação -->
         <div class="title-line">
-          <h2 id="titulo_pagina">Configurações do monitoramento</h2>
+          <h2 id="titulo_pagina">Configurações das métricas</h2>
         </div>
 
         <!-- direita: filtros (só no dashboard), sensor e usuário -->
@@ -98,7 +102,6 @@
         <button type="button" class="primary-btn" onclick="salvarConfiguracoes()">Salvar configurações</button>
       </div>
 
-      <div class="footer-note">Tetria · Monitoramento de colmeias</div>
     </main>
   </div>
 
