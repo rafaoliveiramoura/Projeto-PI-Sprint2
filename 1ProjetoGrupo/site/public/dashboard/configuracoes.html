@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tetria | Configurações</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/config.css">
+</head>
+<body class="settings-page">
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <img class="logo" src="assets/logo-tetria-icone.png" alt="Logo Tetria" />
+        <div>
+          <h1>TETRIA</h1>
+          <p>Monitoramento de colmeias</p>
+        </div>
+      </div>
+
+      <nav>
+        <a id="nav_dashboard" class="nav-link" href="dashboard.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Dashboard</span></a>
+        <a id="nav_colmeias" class="nav-link" href="colmeias.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z"/></svg><span>Colmeias</span></a>
+        <a id="nav_configuracoes" class="nav-link active" href="configuracoes.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Configurações</span></a>
+        <a id="nav_sair" class="nav-link" href="../login.html" onclick="sessionStorage.clear()"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Sair</span></a>
+      </nav>
+
+      <div class="side-foot"><span class="live-dot"></span> Sensores online</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        
+        <div class="title-line">
+          <h2 id="titulo_pagina">Configurações do monitoramento</h2>
+        </div>
+
+        
+        <div class="top-actions">
+          <div class="avatar">T</div>
+        </div>
+      </header>
+
+      <div class="grid settings-grid">
+        <article class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <h2 class="section-title" style="margin:0">Temperatura interna</h2>
+            <span class="kpi-detalhe-tag"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 14.76V4.5a2 2 0 0 0-4 0v10.26a4 4 0 1 0 4 0z"/></svg></span>
+          </div>
+          <p class="section-sub">Faixas térmicas recomendadas e limites para emissão de alertas</p>
+          <div class="field">
+            <label for="input_temp_min">Temperatura mínima ideal (°C)</label>
+            <input id="input_temp_min" type="number" value="33.0" step="0.5">
+          </div>
+          <div class="field">
+            <label for="input_temp_max">Temperatura máxima ideal (°C)</label>
+            <input id="input_temp_max" type="number" value="36.0" step="0.5">
+          </div>
+          <div class="field">
+            <label for="input_temp_frio">Alerta de frio abaixo de (°C)</label>
+            <input id="input_temp_frio" type="number" value="32.0" step="0.5">
+          </div>
+          <div class="field">
+            <label for="input_temp_calor">Alerta de calor acima de (°C)</label>
+            <input id="input_temp_calor" type="number" value="38.0" step="0.5">
+          </div>
+        </article>
+
+        <article class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <h2 class="section-title" style="margin:0">Umidade interna</h2>
+            <span class="kpi-detalhe-tag"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.7s-6 6.4-6 11.3a6 6 0 0 0 12 0c0-4.9-6-11.3-6-11.3z"/></svg></span>
+          </div>
+          <p class="section-sub">Faixas de umidade relativa recomendadas e limites de segurança</p>
+          <div class="field">
+            <label for="input_umid_min">Umidade mínima ideal (%)</label>
+            <input id="input_umid_min" type="number" value="50" min="0" max="100">
+          </div>
+          <div class="field">
+            <label for="input_umid_max">Umidade máxima ideal (%)</label>
+            <input id="input_umid_max" type="number" value="75" min="0" max="100">
+          </div>
+          <div class="field">
+            <label for="input_umid_seca">Alerta de ar seco abaixo de (%)</label>
+            <input id="input_umid_seca" type="number" value="40" min="0" max="100">
+          </div>
+          <div class="field">
+            <label for="input_umid_umida">Alerta de umidade excessiva acima de (%)</label>
+            <input id="input_umid_umida" type="number" value="85" min="0" max="100">
+          </div>
+        </article>
+      </div>
+
+      <div class="settings-actions">
+        <button type="button" class="secondary-btn" onclick="restaurarPadrao()">Restaurar padrão</button>
+        <button type="button" class="primary-btn" onclick="salvarConfiguracoes()">Salvar configurações</button>
+      </div>
+
+      <div class="footer-note">Tetria · Monitoramento de colmeias</div>
+    </main>
+  </div>
+
+  <script>
+    const padrao = {
+      tempMin: 33, tempMax: 36, tempFrio: 32, tempCalor: 38,
+      umidMin: 50, umidMax: 75, umidSeca: 40, umidUmida: 85
+    };
+
+    const campos = {
+      tempMin: "input_temp_min", tempMax: "input_temp_max",
+      tempFrio: "input_temp_frio", tempCalor: "input_temp_calor",
+      umidMin: "input_umid_min", umidMax: "input_umid_max",
+      umidSeca: "input_umid_seca", umidUmida: "input_umid_umida"
+    };
+
+    function obterConfiguracoes() {
+      try {
+        const salvas = JSON.parse(localStorage.getItem("tetria_configuracoes"));
+        return salvas && typeof salvas === "object" ? { ...padrao, ...salvas } : { ...padrao };
+      } catch (erro) {
+        return { ...padrao };
+      }
+    }
+
+    function preencher(valores) {
+      Object.entries(campos).forEach(([chave, id]) => {
+        document.getElementById(id).value = valores[chave];
+      });
+    }
+
+    function lerFormulario() {
+      const valores = {};
+      Object.entries(campos).forEach(([chave, id]) => {
+        const campo = document.getElementById(id);
+        valores[chave] = campo.value.trim() === "" ? NaN : Number(campo.value);
+      });
+      return valores;
+    }
+
+    function validarConfiguracoes(v) {
+      if (Object.values(v).some(valor => !Number.isFinite(valor))) {
+        return "Preencha todos os campos com números válidos.";
+      }
+      if (!(v.tempFrio < v.tempMin && v.tempMin < v.tempMax && v.tempMax < v.tempCalor)) {
+        return "Temperatura: o alerta de frio deve ser menor que a faixa ideal, e o alerta de calor deve ser maior.";
+      }
+      if (!(v.umidSeca >= 0 && v.umidSeca < v.umidMin &&
+            v.umidMin < v.umidMax && v.umidMax < v.umidUmida &&
+            v.umidUmida <= 100)) {
+        return "Umidade: use seca < mínimo ideal < máximo ideal < excessiva (até 100%).";
+      }
+      if (v.tempFrio < -20 || v.tempCalor > 80 || v.tempMin < -20 || v.tempMax > 80) {
+        return "Informe temperaturas entre -20 °C e 80 °C.";
+      }
+      return "";
+    }
+
+    function salvarConfiguracoes() {
+      const valores = lerFormulario();
+      const erro = validarConfiguracoes(valores);
+      if (erro) {
+        alert(erro);
+        return;
+      }
+      try {
+        // Mantém os nomes compatíveis com o dashboard e salva todos os limites.
+        const dados = {
+          ...valores,
+          umidRisco: valores.umidUmida
+        };
+        localStorage.setItem("tetria_configuracoes", JSON.stringify(dados));
+        mostrarMensagem("Configurações salvas e aplicadas ao dashboard.");
+      } catch (erro) {
+        alert("Não foi possível salvar. Verifique se o navegador permite armazenamento local.");
+      }
+    }
+
+    function restaurarPadrao() {
+      preencher(padrao);
+      try {
+        localStorage.setItem("tetria_configuracoes", JSON.stringify({
+          ...padrao, umidRisco: padrao.umidUmida
+        }));
+        mostrarMensagem("Padrões restaurados e aplicados ao dashboard.");
+      } catch (erro) {
+        alert("Não foi possível restaurar as configurações.");
+      }
+    }
+
+    function mostrarMensagem(mensagem) {
+      let aviso = document.getElementById("mensagem_configuracoes");
+      if (!aviso) {
+        aviso = document.createElement("p");
+        aviso.id = "mensagem_configuracoes";
+        aviso.setAttribute("role", "status");
+        aviso.style.cssText = "margin:14px 0 0;text-align:right;color:#2f8045;font-weight:600";
+        document.querySelector(".settings-grid").after(aviso);
+      }
+      aviso.textContent = mensagem;
+    }
+
+    preencher(obterConfiguracoes());
+  </script>
+</body>
+
+</html>

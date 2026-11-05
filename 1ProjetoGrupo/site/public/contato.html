@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="css/contato.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Tetria | Fale Conosco</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <a href="index.html"
+              ><img src="assets/logo-icon.svg" alt="Logo Tetria" class="nav-img"
+            /></a>
+          </div>
+          <ul class="nav-links">
+            <a href="index.html">Início</a>
+            <a href="sobre.html">Sobre</a>
+            <a href="calculadora.html">Calculadora</a>
+            <a href="contato.html">Contato</a>
+            <span><a class="btn btn-login" href="login.html">Login</a></span>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div class="main">
+        <div class="top-us">
+            <div class="title">
+                <p><b>FALE COM A TETRIA</b></p>
+                <h1>Conecte seu apiário à apicultura de precisão.</h1>
+                <div class="subtitle">
+                    <p>Fale com nossa equipe técnica e comercial para solicitar um orçamento, agendar uma demonstração ou tirar dúvidas sobre o monitoramento das suas colmeias.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="contato">
+        <div class="left">
+            <p><b>ATENDIMENTO ESPECIALIZADO</b></p>
+            <h2>Pronto para proteger suas colmeias?</h2>
+            <p>Seja para apicultores individuais, associações ou cooperativas apícolas, nossos consultores estão à disposição para apresentar como a telemetria contínua previne perdas e amplia sua safra.</p>
+            <p><b>E-mail:</b> contato@tetria.com.br</p>
+            <p><b>Telefone / WhatsApp:</b> (11) 98765-4321</p>
+            <p><b>Horário:</b> Segunda a Sexta, das 08h às 18h</p>
+        </div>
+
+        <div class="right">
+            <form class="formulario" id="formulario">
+                <div class="campo">
+                    <span>Nome completo:</span>
+                    <input id="nome_input" type="text" placeholder="Seu nome completo" required />
+                </div>
+                <div class="campo">
+                    <span>Nome do Apiário ou Empresa:</span>
+                    <input id="empresa_input" type="text" placeholder="Ex: Apiário Flor da Serra" required />
+                </div>
+                <div class="campo">
+                    <span>Motivo do contato:</span>
+                    <select id="select_contatinhos" required>
+                        <option value="" disabled selected>Selecione uma opção...</option>
+                        <option value="Orçamento">Solicitar orçamento de sensores</option>
+                        <option value="Implantação">Implantação e demonstração</option>
+                        <option value="Dúvida">Dúvidas sobre o sistema</option>
+                        <option value="Parceria">Parceria comercial / Cooperativa</option>
+                        <option value="Suporte">Suporte técnico</option>
+                        <option value="Outro">Outro assunto</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <span>E-mail para resposta:</span>
+                    <input id="email_input" type="email" placeholder="seu@email.com" required />
+                </div>
+                <div class="campo">
+                    <span>Mensagem:</span>
+                    <textarea id="textarea_mensagem" placeholder="Descreva sua necessidade ou quantidade de colmeias que deseja monitorar." required></textarea>
+                </div>
+                <div class="butao">
+                    <button type="button" onclick="entrar_contato()">Enviar mensagem</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer>
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <div class="brand">
+            <img
+              class="brand-logo"
+              src="assets/logo-tetria-icone.png"
+              alt="Logo Tetria"
+              width="40"
+              height="40"
+            />
+            <span>TETRIA</span>
+          </div>
+          <p>
+            Monitoramento ambiental contínuo para o cuidado e produtividade das abelhas Europeias.
+          </p>
+        </div>
+        <div>
+          <h4>Navegação</h4>
+          <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="calculadora.html">Calculadora</a></li>
+            <li><a href="contato.html">Contato</a></li>
+            <li><a href="login.html">Login</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contato</h4>
+          <p>contato@tetria.com.br</p>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <small>© 2026 Tetria - Todos os direitos reservados</small>
+      </div>
+    </footer>
+    <script>
+      function limparFormulario() {
+        document.getElementById("formulario").reset();
+      }
+
+      function entrar_contato() {
+        let nomeLet = nome_input.value.trim();
+        let empresaLet = empresa_input.value.trim();
+        let motivoContatoLet = select_contatinhos.value;
+        let emailLet = email_input.value.trim();
+        let mensagemContatoLet = textarea_mensagem.value.trim();
+
+        if (nomeLet == '') {
+          alert('Por favor, informe seu nome!');
+        } else if (empresaLet == '') {
+          alert('Por favor, informe sua empresa ou apiário!');
+        } else if (motivoContatoLet == '') {
+          alert('Selecione o motivo do contato!');
+        } else if (emailLet == '') {
+          alert('Por favor, informe seu e-mail!');
+        } else if (mensagemContatoLet == '') {
+          alert('Por favor, escreva sua mensagem!');
+        } else {
+          const endpoint = (window.location.port === "3333") ? "/contato" : "http://localhost:3333/contato";
+
+          fetch(endpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              nomeServer: nomeLet,
+              empresaServer: empresaLet,
+              motivoContatoServer: motivoContatoLet,
+              emailServer: emailLet,
+              mensagemContatoServer: mensagemContatoLet
+            }),
+          })
+          .then(function (resposta) {
+            if (resposta.ok) {
+              alert('Mensagem enviada com sucesso à equipe da Tetria!\nEm breve entraremos em contato.');
+              limparFormulario();
+            } else {
+              throw new Error("Houve um erro ao tentar enviar o contato!");
+            }
+          })
+          .catch(function (erro) {
+            console.log(`#ERRO: ${erro}`);
+            alert('Não foi possível enviar a mensagem no momento. Verifique sua conexão ou tente mais tarde.');
+          });
+
+          return false;
+        }
+      }
+    </script>
+  </body>
+</html>

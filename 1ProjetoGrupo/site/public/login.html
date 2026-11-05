@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/login.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap"
+    />
+    <title>Tetria | Login</title>
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="login-container">
+        <div class="header">
+          <a href="index.html"
+            ><img
+              src="assets/tetria-logo-transparente.png"
+              alt="Logo Tetria"
+              class="nav-img"
+          /></a>
+          <div class="Boasvindas">
+            <h1>Bem-Vindo ao TETRIA</h1>
+          </div>
+          <div class="acesse">
+            <span>Acesse sua conta para acompanhar as colmeias.</span>
+          </div>
+          <div
+            id="cardErro"
+            style="display: none; color: #dc3545; margin-bottom: 10px; font-weight: 500;"
+            class="campo"
+          >
+            <span id="mensagem_erro">Erro</span>
+          </div>
+          <div class="campo">
+            <label for="ipt_email">E-mail</label>
+            <input type="email" id="ipt_email" placeholder="seu@email.com" />
+          </div>
+          <div class="campo">
+            <label for="ipt_senha">Senha</label>
+            <input type="password" id="ipt_senha" placeholder="*******" />
+          </div>
+          <div class="esqueci">
+            <input type="checkbox" id="lembrar" />
+            <label for="lembrar">Lembre de mim</label>
+            <a href="#" class="esqueci-senha"><span>Esqueci minha senha</span></a>
+          </div>
+          <div class="btn">
+            <button onclick="entrar()">Entrar</button>
+          </div>
+          <div class="criar-conta">
+            <span>Ainda não tem uma conta?</span>
+            <a href="cadastro.html">Crie sua conta aqui</a>
+          </div>
+        </div>
+      </div>
+      <aside class="imagem-container">
+        <img src="assets/colmeia2.jpg" alt="Imagem Base" />
+        <div class="painel-conteudo">
+          <div class="painel-topo">
+            <h2>Bom te ver de volta.</h2>
+            <p>Acompanhe suas colmeias em tempo real, de qualquer lugar.</p>
+          </div>
+          <div class="destaque">
+            <h3>Destaque da plataforma</h3>
+            <p>
+              Monitore temperatura, umidade e a saúde das suas colmeias com
+              dados atualizados e alertas automáticos.
+            </p>
+            <div class="progresso">
+              <span class="ativo"></span><span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </body>
+</html>
+<script>
+  function entrar() {
+    var emailVar = ipt_email.value.trim();
+    var senhaVar = ipt_senha.value;
+
+    if (emailVar == "" || senhaVar == "") {
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML = "Por favor, preencha todos os campos!";
+      setTimeout(sumirMensagem, 5000);
+      return false;
+    }
+
+    const endpoint = (window.location.port === "3333") ? "/usuarios/autenticar" : "http://localhost:3333/usuarios/autenticar";
+
+    fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        emailServer: emailVar,
+        senhaServer: senhaVar,
+      }),
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          resposta.json().then((json) => {
+            sessionStorage.EMAIL_USUARIO = json.email;
+            sessionStorage.NOME_USUARIO = json.nome;
+            sessionStorage.ID_USUARIO = json.id;
+            sessionStorage.FK_EMPRESA = json.fkcodempresa;
+
+            window.location.href = "dashboard/dashboard.html";
+          });
+        } else {
+          cardErro.style.display = "block";
+          resposta.text().then((texto) => {
+            mensagem_erro.innerHTML = texto || "E-mail e/ou senha inválido(s)!";
+            setTimeout(sumirMensagem, 5000);
+          });
+        }
+      })
+      .catch(function (erro) {
+        console.log(erro);
+        cardErro.style.display = "block";
+        mensagem_erro.innerHTML = "Não foi possível conectar ao servidor backend.";
+        setTimeout(sumirMensagem, 5000);
+      });
+
+    return false;
+  }
+
+  function sumirMensagem() {
+    cardErro.style.display = "none";
+  }
+</script>

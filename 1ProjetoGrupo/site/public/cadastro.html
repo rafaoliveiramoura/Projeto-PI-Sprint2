@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/cadastro.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Tetria | Cadastro de Usuário</title>
+</head>
+<body>
+    <div class="main-wrapper">
+
+        <aside class="imagem-container">
+            <img src="assets/colmeia.jpg" alt="Imagem Colmeia">
+            <div class="painel-conteudo">
+                <div class="painel-topo">
+                    <h2>Comece sua jornada com a gente.</h2>
+                    <p>Acompanhe suas colmeias em tempo real, de qualquer lugar.</p>
+                </div>
+
+                <div class="destaque">
+                    <h3>Destaque da plataforma</h3>
+                    <p>Monitore temperatura, umidade e a saúde das suas colmeias com dados atualizados e alertas automáticos.</p>
+                    <div class="progresso">
+                        <span class="ativo"></span><span></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="cadastro-container">
+            <div class="header">
+                <a href="index.html">
+                    <img src="assets/tetria-logo-transparente.png" alt="Logo Tetria">
+                </a>
+               <div class="conta">
+                 <h1>Crie sua conta</h1>
+               </div>
+
+               <div class="cadastro">
+                <span>Passo 1 de 3: Seus dados pessoais</span>
+               </div>
+            </div>
+
+            <div class="info">
+                <div class="campo">
+                    <label for="nome_input">Nome completo</label>
+                    <input type="text" placeholder="Seu nome completo" id="nome_input">
+                </div>
+
+                <div class="campo">
+                    <label for="cpf_input">CPF</label>
+                    <input type="text" id="cpf_input" placeholder="000.000.000-00" value="894.616.690-89">
+                </div>
+            </div>
+            <div class="email">
+                <label for="email_input">E-mail</label>
+                <input type="email" id="email_input" placeholder="seu@gmail.com">
+
+                <label for="tel_input">Telefone</label>
+                <input type="text" id="tel_input" placeholder="(00) 00000-0000" value="(11)99876-5432">
+            </div>
+            <div class="senha">
+                <label for="senha_input">Senha</label>
+                <input type="password" id="senha_input" oninput="Vsenha()" placeholder="******">
+            </div>
+            <div class="validacoes-senha">
+                <div id="exibir" class="vsenha" style="color: red;">Pelo menos 8 caracteres</div>
+                <div id="exibir2" class="vsenha" style="color: red;">Deve conter uma letra Maiúscula</div>
+                <div id="exibir3" class="vsenha" style="color: red;">Deve conter uma letra Minúscula</div>
+                <div id="exibir4" class="vsenha" style="color: red;">Um caractere especial</div>
+                <div id="exibir5" class="vsenha" style="color: red;">Insegura</div>
+            </div>
+
+            <div class="termos-container">
+                <input type="checkbox" id="termos" name="termos">
+                <label for="termos">
+                    Aceito os <a href="#">termos de uso</a> e a <a href="#">política de privacidade</a>.
+                </label>
+            </div>
+
+            <div class="btn">
+                <button onclick="avancarParaEmpresa()">
+                    Avançar para Empresa
+                </button>
+            </div>
+            <div class="jconta">
+                <span>Já possui uma conta?</span>
+                <button onclick="window.location.href='login.html'">
+                    Entrar
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let senhaValida = false;
+
+        function Vsenha() {
+            let senha = senha_input.value;
+            let tamanho = senha.length;
+            let criterio = 0;
+
+            // 1. Validação de Tamanho (8 caracteres ou mais)
+            if (tamanho >= 8) {
+                exibir.innerHTML = `<span style="color: #28a745;">✓ Senha com 8 caracteres</span>`;
+                criterio++;
+            } else {
+                exibir.innerHTML = `<span style="color: #dc3545;">✕ Pelo menos 8 caracteres</span>`;
+            }
+
+            // 2. Validação de Letra Maiúscula
+            if (/[A-Z]/.test(senha)) {  
+                exibir2.innerHTML = `<span style="color: #28a745;">✓ Contém letra maiúscula</span>`;
+                criterio++;
+            } else {
+                exibir2.innerHTML = `<span style="color: #dc3545;">✕ Deve conter uma letra Maiúscula</span>`;
+            }
+
+            // 3. Validação de Letra Minúscula
+            if (/[a-z]/.test(senha)) {
+                exibir3.innerHTML = `<span style="color: #28a745;">✓ Contém letra minúscula</span>`;
+                criterio++;
+            } else {
+                exibir3.innerHTML = `<span style="color: #dc3545;">✕ Deve conter uma letra Minúscula</span>`;
+            }
+
+            // 4. Validação de Caractere Especial
+            if (/[!@#$%^&*(),.?":{}|<>]/.test(senha)) {
+                exibir4.innerHTML = `<span style="color: #28a745;">✓ Contém caractere especial</span>`;
+                criterio++;
+            } else {
+                exibir4.innerHTML = `<span style="color: #dc3545;">✕ Deve conter um caractere especial</span>`;
+            }
+
+            // 5. Avaliação do Nível da Senha
+            if (senha === "") {
+                exibir5.innerHTML = `<span style="color: #dc3545; font-weight: bold;">Insegura</span>`;
+                senhaValida = false;
+            } else if (criterio === 4) {
+                exibir5.innerHTML = `<span style="color: #28a745; font-weight: bold;">Forte</span>`;
+                senhaValida = true;
+            } else if (criterio >= 2) {
+                exibir5.innerHTML = `<span style="color: #E5A823; font-weight: bold;">Média</span>`;
+                senhaValida = true;
+            } else {
+                exibir5.innerHTML = `<span style="color: #dc3545; font-weight: bold;">Fraca</span>`;
+                senhaValida = false;
+            }
+        }
+
+        function avancarParaEmpresa() {
+            var nomeVar = nome_input.value.trim();
+            var emailVar = email_input.value.trim();
+            var senhaVar = senha_input.value;
+            var telefoneVar = tel_input.value.trim();
+            var cpfVar = cpf_input.value.trim();
+
+            if (nomeVar == "" || emailVar == "" || senhaVar == "" || telefoneVar == "" || cpfVar == "") {
+                alert("Por favor, preencha todos os campos!");
+                return false;
+            }
+
+            if (!senhaValida) {
+                alert("A sua senha precisa atender aos requisitos de segurança mínimos!");
+                return false;
+            }
+
+            // Armazena dados temporariamente no sessionStorage para o fluxo de cadastro
+            sessionStorage.setItem("CADASTRO_USUARIO", JSON.stringify({
+                nome: nomeVar,
+                email: emailVar,
+                senha: senhaVar,
+                telefone: telefoneVar,
+                cpf: cpfVar
+            }));
+
+            // Redireciona para o Passo 2: Cadastro de Empresa
+            window.location.href = "cadastroempresa.html";
+            return false;
+        }
+    </script>
+</body>
+</html>

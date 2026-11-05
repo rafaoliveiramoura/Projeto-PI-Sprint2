@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/cadastroempresa.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Tetria | Cadastro da Empresa</title>
+</head>
+<body>
+    <div class="main-wrapper">
+
+        <aside class="imagem-container">
+            <img src="assets/colmeia.jpg" alt="Imagem Colmeia">
+            <div class="painel-conteudo">
+                <div class="painel-topo">
+                    <h2>Comece sua jornada com a gente.</h2>
+                    <p>Acompanhe suas colmeias em tempo real, de qualquer lugar.</p>
+                </div>
+
+                <div class="destaque">
+                    <h3>Destaque da plataforma</h3>
+                    <p>Monitore temperatura, umidade e a saúde das suas colmeias com dados atualizados e alertas automáticos.</p>
+                    <div class="progresso">
+                        <span class="ativo"></span><span class="ativo"></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="cadastro-container">
+            <div class="header">
+                <a href="index.html">
+                    <img src="assets/tetria-logo-transparente.png" alt="Logo Tetria">
+                </a>
+               <div class="conta">
+                 <h1>Cadastro da Empresa</h1>
+               </div>
+
+               <div class="cadastro">
+                <span>Passo 2 de 3: Informações do apiário ou empresa</span>
+               </div>
+            </div>
+
+            <div class="info">
+                <div class="campo">
+                    <label for="nomeempresa_input">Nome Fantasia</label>
+                    <input type="text" placeholder="Nome do seu apiário ou empresa" id="nomeempresa_input" value="Apiário Flor da Serra">
+                </div>
+
+                <div class="campo">
+                    <label for="cnpj_input">CNPJ</label>
+                    <input type="text" id="cnpj_input" placeholder="00.000.000/0001-00" value="12.345.678/0001-99">
+                </div>
+            </div>
+            <div class="email">
+                <div class="campo">
+                    <label for="emailempresa_input">E-mail corporativo</label>
+                    <input type="email" id="emailempresa_input" placeholder="contato@empresa.com" value="contato@flordaserra.com.br">
+                </div>
+                <div class="campo">
+                    <label for="telempresa_input">Telefone</label>
+                    <input type="text" id="telempresa_input" placeholder="(00) 00000-0000" value="(11)98765-4321">
+                </div>
+            </div>
+            <div class="razao-social-container">
+                <div class="campo">
+                    <label for="razaosocialempresa_input">Razão Social</label>
+                    <input type="text" id="razaosocialempresa_input" placeholder="Razão social da empresa" value="Flor da Serra Apicultura e Comércio Ltda">
+                </div>
+            </div>
+
+            <div class="btn">
+                <button onclick="cadastrarEmpresa()">
+                    Avançar para Endereço
+                </button>
+            </div>
+            <div class="jconta">
+                <span>Já possui uma conta?</span>
+                <button onclick="window.location.href='login.html'">
+                    Entrar
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Validação se o Passo 1 foi cumprido
+        window.onload = function() {
+            if (!sessionStorage.getItem("CADASTRO_USUARIO")) {
+                alert("Por favor, preencha primeiro seus dados pessoais!");
+                window.location.href = "cadastro.html";
+            }
+        };
+
+        function gerarCodigoEmpresa() {
+            const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let codigo = "EMP";
+            for (let i = 0; i < 5; i++) {
+                codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+            }
+            return codigo;
+        }
+
+        function cadastrarEmpresa() {
+            var nomeempresaVar = nomeempresa_input.value.trim();
+            var razaosocialempresaVar = razaosocialempresa_input.value.trim();
+            var emailempresaVar = emailempresa_input.value.trim();
+            var telefoneempresaVar = telempresa_input.value.trim();
+            var cnpjVar = cnpj_input.value.trim();
+
+            if (
+                nomeempresaVar == "" ||
+                razaosocialempresaVar == "" ||
+                emailempresaVar == "" ||
+                telefoneempresaVar == "" ||
+                cnpjVar == ""
+            ) {
+                alert("Por favor, preencha todos os campos da empresa!");
+                return false;
+            }
+
+            // Gera código único de 8 caracteres compatível com codempresa char(8)
+            var codigoempresa = gerarCodigoEmpresa();
+
+            const endpoint = (window.location.port === "3333") ? "/empresa/cadastrar" : "http://localhost:3333/empresa/cadastrar";
+
+            fetch(endpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    nomeempresaVar: nomeempresaVar,
+                    razaosocialempresaVar: razaosocialempresaVar,
+                    emailempresaVar: emailempresaVar,
+                    telefoneVar: telefoneempresaVar,
+                    cnpjVar: cnpjVar,
+                    codigoempresaVar: codigoempresa
+                }),
+            })
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    sessionStorage.setItem("CADASTRO_COD_EMPRESA", codigoempresa);
+                    alert("Empresa registrada com sucesso! Código gerado: " + codigoempresa);
+                    window.location.href = "endereco.html";
+                } else {
+                    return resposta.text().then(text => {
+                        throw new Error(text || "Erro ao cadastrar empresa!");
+                    });
+                }
+            })
+            .catch(function (erro) {
+                console.log(`#ERRO: ${erro}`);
+                alert("Erro ao cadastrar empresa: " + erro.message);
+            });
+
+            return false;
+        }
+    </script>
+</body>
+</html>
