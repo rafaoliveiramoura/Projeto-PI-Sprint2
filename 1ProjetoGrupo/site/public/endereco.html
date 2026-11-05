@@ -62,13 +62,6 @@
     </div>
 
     <script>
-        window.onload = function() {
-            if (!sessionStorage.getItem("CADASTRO_USUARIO") || !sessionStorage.getItem("CADASTRO_COD_EMPRESA")) {
-                alert("Etapa anterior não identificada. Redirecionando para o início do cadastro.");
-                window.location.href = "cadastro.html";
-            }
-        };
-
         function concluirCadastro() {
             var cepVar = cep.value.trim();
             var ruaVar = rua.value.trim();
@@ -94,77 +87,8 @@
                 return false;
             }
 
-            if (!codEmpresa || !usuarioObj.email) {
-                alert("Sessão de cadastro expirada! Por favor, reinicie o cadastro.");
-                window.location.href = "cadastro.html";
-                return false;
-            }
 
-            document.getElementById("btn_concluir").disabled = true;
-            document.getElementById("btn_concluir").innerText = "Cadastrando...";
-
-            const baseApi = (window.location.port === "3333") ? "" : "http://localhost:3333";
-
-            // 1. Cadastra o Endereço vinculado à Empresa
-            fetch(baseApi + "/usuarios/cadastrarenderco", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    cepServer: cepVar,
-                    ruaServer: ruaVar,
-                    numeroServer: numeroVar,
-                    complementoServer: complementoVar,
-                    bairroServer: bairroVar,
-                    cidadeServer: cidadeVar,
-                    estadoServer: estadoVar,
-                    fkEnderecoEmpresa: codEmpresa
-                }),
-            })
-            .then(function (respostaEndereco) {
-                if (!respostaEndereco.ok) {
-                    throw new Error("Erro ao salvar endereço da empresa!");
-                }
-                
-                // 2. Com a empresa e endereço cadastrados, cadastra o Usuário vinculado ao codempresa
-                return fetch(baseApi + "/usuarios/cadastrar", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        nomeServer: usuarioObj.nome,
-                        emailServer: usuarioObj.email,
-                        senhaServer: usuarioObj.senha,
-                        cpfServer: usuarioObj.cpf,
-                        telefoneServer: usuarioObj.telefone,
-                        fkEmpresaServer: codEmpresa
-                    }),
-                });
-            })
-            .then(function (respostaUsuario) {
-                if (!respostaUsuario.ok) {
-                    throw new Error("Erro ao salvar usuário administrador!");
-                }
-
-                // Limpa o estado temporário do cadastro
-                sessionStorage.removeItem("CADASTRO_USUARIO");
-                sessionStorage.removeItem("CADASTRO_COD_EMPRESA");
-
-                alert("Cadastro concluído com sucesso! Redirecionando para o login...");
-                setTimeout(function() {
-                    window.location.href = "login.html";
-                }, 1500);
-            })
-            .catch(function (erro) {
-                console.log(`#ERRO: ${erro}`);
-                alert("Ocorreu um erro: " + erro.message);
-                document.getElementById("btn_concluir").disabled = false;
-                document.getElementById("btn_concluir").innerText = "Finalizar Cadastro";
-            });
-
-            return false;
+           window.location.assign("./login.html")
         }
     </script>
 </body>

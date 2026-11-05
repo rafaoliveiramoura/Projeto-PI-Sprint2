@@ -153,35 +153,18 @@
             }
         }
 
+        
+
         function avancarParaEmpresa() {
-            var nomeVar = nome_input.value.trim();
-            var emailVar = email_input.value.trim();
-            var senhaVar = senha_input.value;
-            var telefoneVar = tel_input.value.trim();
-            var cpfVar = cpf_input.value.trim();
-
-            if (nomeVar == "" || emailVar == "" || senhaVar == "" || telefoneVar == "" || cpfVar == "") {
-                alert("Por favor, preencha todos os campos!");
-                return false;
-            }
-
-            if (!senhaValida) {
+                if (!senhaValida) {
                 alert("A sua senha precisa atender aos requisitos de segurança mínimos!");
                 return false;
             }
+           alert("Redirecionando para cadastrar a empresa...")
+            window.location.assign("./cadastroempresa.html");
+            return true;
 
-            // Armazena dados temporariamente no sessionStorage para o fluxo de cadastro
-            sessionStorage.setItem("CADASTRO_USUARIO", JSON.stringify({
-                nome: nomeVar,
-                email: emailVar,
-                senha: senhaVar,
-                telefone: telefoneVar,
-                cpf: cpfVar
-            }));
 
-            // Redireciona para o Passo 2: Cadastro de Empresa
-            window.location.href = "cadastroempresa.html";
-            return false;
         }
     </script>
 </body>
