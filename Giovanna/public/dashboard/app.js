@@ -233,8 +233,6 @@ function mostrarVisaoGeral() {
 
   qtd_risco.innerHTML = qtdRisco;
   qtd_atencao.innerHTML = qtdAtencao;
-  qtd_total1.innerHTML = situacoes.length;
-  qtd_total2.innerHTML = situacoes.length;
   qtd_total3.innerHTML = situacoes.length;
 }
 
@@ -297,7 +295,8 @@ function mostrarColmeia(i) {
   graficoUmidade.data.datasets[1].data = umidExterna;
   graficoUmidade.data.datasets[2].data = linhaReta(umidMin);
   graficoUmidade.data.datasets[3].data = linhaReta(umidMax);
-  graficoUmidade.data.datasets[4].data = linhaReta(umidRisco);
+  graficoUmidade.data.datasets[4].data = linhaReta(umidSeca);
+  graficoUmidade.data.datasets[5].data = linhaReta(umidRisco);
   graficoUmidade.update();
 }
 

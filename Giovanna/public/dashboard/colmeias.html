@@ -9,7 +9,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/Giovanna/public/css/dashboard.css" />
+    <link rel="stylesheet" href="cssdash/colmeias.css" />
   </head>
   <body>
     <div class="app">
@@ -27,7 +27,11 @@
         <a id="nav_configuracoes" class="nav-link" href="configuracoes.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Configurações</span></a>
       </nav>
 
-        <div class="side-foot"><span class="live-dot"></span> Sensores online</div>
+        <div class="side-foot"></div>
+        <a class="nav-link logout-link" href="../index.html">
+          <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Sair</span>
+        </a>
       </aside>
 
       <main class="main">
@@ -284,8 +288,6 @@
             </table>
           </div>
         </article>
-
-        <div class="footer-note">Tetria · Monitoramento de colmeias</div>
       </main>
     </div>
 
@@ -352,6 +354,10 @@
           return `<span class="tag-comparacao comp-verde">Na faixa · ${num(minimo)}–${num(maximo)}${unidade}</span>`;
         }
 
+        let qtdRisco = 0;
+        let qtdAtencao = 0;
+        let qtdIdeal = 0;
+
         linhas.forEach((linha) => {
           const celulas = linha.querySelectorAll("td");
           if (celulas.length < 6) return;
@@ -371,6 +377,9 @@
             umidade > c.umidMax;
           const status =
             riscoTemp || riscoUmid ? "Risco" : atencao ? "Atenção" : "Ideal";
+          if (status === "Risco") qtdRisco++;
+          else if (status === "Atenção") qtdAtencao++;
+          else qtdIdeal++;
           linha.dataset.situacao = status;
           const statusClass =
             status === "Risco"
@@ -402,6 +411,15 @@
             "%",
           );
         });
+
+        const optTodas = select_filtro.querySelector('option[value="todas"]');
+        const optRisco = select_filtro.querySelector('option[value="Risco"]');
+        const optAtencao = select_filtro.querySelector('option[value="Atenção"]');
+        const optIdeal = select_filtro.querySelector('option[value="Ideal"]');
+        if (optTodas) optTodas.textContent = `Todas as colmeias (${linhas.length})`;
+        if (optRisco) optRisco.textContent = `Em risco (${qtdRisco})`;
+        if (optAtencao) optAtencao.textContent = `Em atenção (${qtdAtencao})`;
+        if (optIdeal) optIdeal.textContent = `Ideais (${qtdIdeal})`;
 
         filtrarTabelaDashboard();
       }
