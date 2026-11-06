@@ -53,6 +53,15 @@ insert into usuario (nome, cpf, email, telefone, senha, fkcodempresa, fkresponsa
 ('Camila Alves', '538.261.749-11', 'camila.alves@colmeiareal.com.br', '(14)98765-1010', 'cami123', 'emp00005', 9);
 
 
+-- create login
+create table login (
+idlogin int primary key auto_increment,
+email varchar(100) not null unique,
+senha varchar(45) not null
+);
+
+
+
 -- tabela endereço 
 create table endereco (
     idendereco int not null primary key auto_increment,
@@ -151,7 +160,20 @@ create table coleta_dados (
   primary key (idcoleta, fksensor),
   constraint fksensor_idsensor 
 	foreign key (fksensor) references sensor(idsensor)
-	);
+);
+
+insert into coleta_dados (temperatura, umidade, fksensor) values
+(34.9, 63.0, 1),   -- Colmeia 01 - Ideal
+(38.9, 71.0, 2),   -- Colmeia 02 - Risco
+(36.9, 62.0, 3),   -- Colmeia 03 - Atenção
+(31.4, 55.0, 4),   -- Colmeia 04 - Risco
+(34.1, 58.0, 5),   -- Colmeia 05 - Ideal
+(34.7, 79.0, 6),   -- Colmeia 06 - Atenção
+(35.6, 69.0, 7),   -- Colmeia 07 - Ideal
+(38.9, 78.0, 8),   -- Colmeia 08 - Risco
+(34.2, 54.0, 9),   -- Colmeia 09 - Ideal
+(35.5, 73.0, 10),  -- Colmeia 10 - Ideal
+(30.3, 70.0, 11);  -- sensor externo do apiário
 
 
 create table contato (
