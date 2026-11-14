@@ -10,7 +10,7 @@ const SERVIDOR_PORTA = 3300;
 
 // habilita ou desabilita a inserção de dados no banco de dados
 const HABILITAR_OPERACAO_INSERIR = true;
-const MODO_MOCK = false; // Altere para false quando for usar o Arduino real
+const MODO_MOCK = true; // Altere para false quando for usar o Arduino real
 
 // função para simulação de dados (MOCK)
 const serialMock = async (valoresSensorAnalogico, valoresSensorDigital) => {
@@ -27,7 +27,7 @@ const serialMock = async (valoresSensorAnalogico, valoresSensorDigital) => {
     ).promise();
 
     setInterval(async () => {
-        const sensorAnalogico = parseFloat((Math.random() * (30 - 20) + 20).toFixed(2));
+        const sensorAnalogico = parseFloat((Math.random() * (50 - 20) + 20).toFixed(2));
         const sensorDigital = Math.floor(Math.random() * 100);
 
         console.log(`Mock Data -> Temperatura: ${sensorAnalogico}, Umidade: ${sensorDigital}`);

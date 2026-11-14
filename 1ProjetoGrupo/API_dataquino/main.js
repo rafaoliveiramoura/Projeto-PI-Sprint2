@@ -1,4 +1,5 @@
-// importa os bibliotecas necessários
+//variaveis de inicialização
+require("dotenv").config()
 const serialport = require('serialport');
 const express = require('express');
 const mysql = require('mysql2');
@@ -9,21 +10,58 @@ const SERVIDOR_PORTA = 3300;
 
 // habilita ou desabilita a inserção de dados no banco de dados
 const HABILITAR_OPERACAO_INSERIR = true;
+const MODO_MOCK = true; // Altere para false quando for usar o Arduino real
 
-// função para comunicação serial
+// função para simulação de dados (MOCK)
+const serialMock = async (valoresSensorAnalogico, valoresSensorDigital) => {
+    console.log("--- MODO MOCK ATIVADO: Simulando dados do Arduino ---");
+
+    let poolBancoDados = mysql.createPool(
+        {
+            host: process.env.DB_HOST,
+            database: process.env.DB_DATABASE,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            port: process.env.DB_PORT
+        }
+    ).promise();
+
+    setInterval(async () => {
+        const sensorAnalogico = parseFloat((Math.random() * (50 - 20) + 20).toFixed(2));
+        const sensorDigital = Math.floor(Math.random() * 100);
+
+        console.log(`Mock Data -> Temperatura: ${sensorAnalogico}, Umidade: ${sensorDigital}`);
+
+        valoresSensorAnalogico.push(sensorAnalogico);
+        valoresSensorDigital.push(sensorDigital);
+
+        if (HABILITAR_OPERACAO_INSERIR) {
+            try {
+                await poolBancoDados.execute(
+                    'INSERT INTO medida (outro, lm35_temperatura) VALUES (?, ?)',
+                    [sensorDigital, sensorAnalogico]
+                );
+                console.log("Valores Mock inseridos no banco!");
+            } catch (err) {
+                console.error("Erro ao inserir mock no banco:", err.message);
+            }
+        }
+    }, 2000);
+}
+
+// função para comunicação serial real
 const serial = async (
     valoresSensorAnalogico,
     valoresSensorDigital,
 ) => {
-
     // conexão com o banco de dados MySQL
     let poolBancoDados = mysql.createPool(
         {
-            host: 'HOST_DO_BANCO',
-            user: 'USUARIO_DO_BANCO',
-            password: 'SENHA_DO_BANCO',
-            database: 'DATABASE_DO_BANCO',
-            port: 3306
+            host: process.env.DB_HOST,
+            database: process.env.DB_DATABASE,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            port: process.env.DB_PORT
         }
     ).promise();
 
@@ -52,23 +90,24 @@ const serial = async (
         console.log(data);
         const valores = data.split(';');
         const sensorAnalogico = parseFloat(valores[1]);
+        const sensorDigital = parseInt(valores[0]);
 
         // armazena os valores dos sensores nos arrays correspondentes
         valoresSensorAnalogico.push(sensorAnalogico);
-        
+        valoresSensorDigital.push(sensorDigital);
 
         // insere os dados no banco de dados (se habilitado)
         if (HABILITAR_OPERACAO_INSERIR) {
-
-            // este insert irá inserir os dados na tabela "medida"
-            await poolBancoDados.execute(
-                'INSERT INTO medida (sensor_analogico) VALUES (?, ?)',
-                [sensorAnalogico]
-            );
-            console.log("valores inseridos no banco: ", sensorAnalogico );
-
+            try {
+                await poolBancoDados.execute(
+                    'INSERT INTO coleta_dados (umidade, temperatura) VALUES (?, ?)',
+                    [sensorDigital, sensorAnalogico ]
+                );
+                console.log("valores inseridos no banco: ", sensorAnalogico, sensorDigital );
+            } catch (err) {
+                console.error("Erro ao inserir dados reais no banco:", err.message);
+            }
         }
-
     });
 
     // evento para lidar com erros na comunicação serial
@@ -80,7 +119,7 @@ const serial = async (
 // função para criar e configurar o servidor web
 const servidor = (
     valoresSensorAnalogico,
-    
+    valoresSensorDigital
 ) => {
     const app = express();
 
@@ -98,26 +137,40 @@ const servidor = (
 
     // define os endpoints da API para cada tipo de sensor
     app.get('/sensores/analogico', (_, response) => {
-        return response.json(valoresSensorAnalogico);
+        return response.status(200).json({
+            temperatura: valoresSensorAnalogico,
+            umidade: valoresSensorDigital
+        });
     });
-   
 }
 
 // função principal assíncrona para iniciar a comunicação serial e o servidor web
 (async () => {
     // arrays para armazenar os valores dos sensores
     const valoresSensorAnalogico = [];
-    
+    const valoresSensorDigital = []
 
-    // inicia a comunicação serial
-    await serial(
-        valoresSensorAnalogico,
-        
-    );
+    // inicia a comunicação serial ou simulação
+    if (MODO_MOCK) {
+        await serialMock(
+            valoresSensorAnalogico,
+            valoresSensorDigital
+        );
+    } else {
+        try {
+            await serial(
+                valoresSensorAnalogico,
+                valoresSensorDigital
+            );
+        } catch (err) {
+            console.error("Erro ao iniciar serial:", err.message);
+            process.exit(1);
+        }
+    }
 
     // inicia o servidor web
     servidor(
         valoresSensorAnalogico,
-        
+        valoresSensorDigital
     );
 })();

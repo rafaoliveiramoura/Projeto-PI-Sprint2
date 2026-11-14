@@ -9,7 +9,7 @@
 
 <body>
     <div id="container">
-        <h1>Graphics</h1>
+        <h1>Dashboard</h1>
     </div>
     
     <div style="display: flex;">
@@ -26,7 +26,7 @@
             type: 'line',
             data: {
                 datasets: [{
-                    label: 'Analogico',
+                    label: 'Temperatura',
                     borderColor: '#63B1BC',
                     backgroundColor: '#ED145B'
                 }]
@@ -51,7 +51,7 @@
             type: 'line',
             data: {
                 datasets: [{
-                    label: 'Digital',
+                    label: 'Umidade',
                     borderColor: '#63B1BC',
                     backgroundColor: '#0762C8'
                 }]
@@ -75,28 +75,30 @@
         var paginacao = {};
         var tempo = {};
 
-        function obterDados(grafico, endpoint) {
-            fetch('http://localhost:3300/sensores/' + endpoint)
+        function obterDados(grafico, propriedade) {
+            fetch('http://localhost:3300/sensores/analogico')
                 .then(response => response.json())
-                .then(valores => {
-                    if (paginacao[endpoint] == null) {
-                        paginacao[endpoint] = 0;
+                .then(dados => {
+                    const valores = dados[propriedade];
+
+                    if (paginacao[propriedade] == null) {
+                        paginacao[propriedade] = 0;
                     }
-                    if (tempo[endpoint] == null) {
-                        tempo[endpoint] = 0;
+                    if (tempo[propriedade] == null) {
+                        tempo[propriedade] = 0;
                     }
 
-                    var ultimaPaginacao = paginacao[endpoint];
-                    paginacao[endpoint] = valores.length;
-                    valores = valores.slice(ultimaPaginacao);
+                    var ultimaPaginacao = paginacao[propriedade];
+                    paginacao[propriedade] = valores.length;
+                    var novosValores = valores.slice(ultimaPaginacao);
 
-                    valores.forEach((valor) => {
+                    novosValores.forEach((valor) => {
                         if (grafico.data.labels.length == 10 && grafico.data.datasets[0].data.length == 10) {
                             grafico.data.labels.shift();
                             grafico.data.datasets[0].data.shift();
                         }
 
-                        grafico.data.labels.push(tempo[endpoint]++);
+                        grafico.data.labels.push(tempo[propriedade]++);
                         grafico.data.datasets[0].data.push(parseFloat(valor));
                         grafico.update();
                     });
@@ -105,8 +107,8 @@
         }
 
         setInterval(() => {
-            obterDados(sensorAnalogico, 'analogico');
-            obterDados(sensorDigital, 'digital');
+            obterDados(sensorAnalogico, 'temperatura');
+            obterDados(sensorDigital, 'umidade');
         }, 1000);
 
     </script>
