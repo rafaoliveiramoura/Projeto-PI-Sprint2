@@ -287,6 +287,10 @@ function calcularHistoricoAlertas() {
           aberto = { colmeia: i, diasAtras: a.d, minuto: minutoDoDia, leituras: 0, situacao: situacao, temp: temp, umid: umid, emAndamento: false };
         }
         aberto.leituras++;
+        // guarda a última leitura: alertas em andamento mostram a situação atual (igual aos cards)
+        aberto.ultimaSituacao = situacao;
+        aberto.ultimaTemp = temp;
+        aberto.ultimaUmid = umid;
         // guarda a leitura do momento mais grave do alerta
         if (situacao == "Risco" && aberto.situacao != "Risco") {
           aberto.situacao = "Risco";
@@ -321,6 +325,13 @@ function fecharAlerta(periodo, emAndamento) {
   if (emAndamento) periodo.duracao = periodo.diasAtras * 24 * 60 + minutoAgora - periodo.minuto;
   if (periodo.duracao <= tempoMinimoAlerta) return;
   periodo.emAndamento = emAndamento;
+  // em andamento: mostra a situação e a leitura de agora, para bater com os cards do topo.
+  // encerrado: mantém o momento mais grave do alerta
+  if (emAndamento) {
+    periodo.situacao = periodo.ultimaSituacao;
+    periodo.temp = periodo.ultimaTemp;
+    periodo.umid = periodo.ultimaUmid;
+  }
   historicoAlertas.push(periodo);
 }
 
