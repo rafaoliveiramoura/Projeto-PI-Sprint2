@@ -317,7 +317,7 @@ main > section {
 /* Bloco 1: KPIs lado a lado */
 main > section:nth-of-type(1) {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--esp-6);
 }
 
@@ -404,6 +404,15 @@ main > section:nth-of-type(1) > .Card_de_KPI:nth-child(3) {
   --cor-status: var(--folha-500);
   --cor-status-escura: var(--folha-700);
   --cor-status-fundo: var(--folha-100);
+}
+
+/* 4º card: KPI do mel (dourado/mel, crescimento de produção) */
+main > section:nth-of-type(1) > .Card_de_KPI:nth-child(4),
+.Card_de_KPI.kpi-mel-card {
+  --cor-status: var(--mel-500);
+  --cor-status-escura: var(--mel-600);
+  --cor-status-fundo: var(--mel-100);
+  cursor: pointer;
 }
 
 /* Ícone ------------------------------------------------------------------- */
@@ -705,6 +714,7 @@ main > section:nth-of-type(1) > .Card_de_KPI:nth-child(2):hover .icone_da_KPI {
   }
 
   main > section:nth-of-type(1) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--esp-4);
   }
 
