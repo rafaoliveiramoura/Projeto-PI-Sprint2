@@ -1,0 +1,77 @@
+/* =============================================================
+   ACRÉSCIMO: KPI DO MEL
+   O cssdash/dashboard.css é cópia exata do original do grupo.
+   Tudo o que foi adicionado para a KPI do mel fica neste arquivo.
+   ============================================================= */
+
+/* a visão geral passa a ter 4 cards (risco, atenção, total e mel) */
+.overview-alert-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* card do mel: mesmo visual dos outros, com borda dourada e clicável */
+.alert-summary.honey-summary {
+  border-top-color: var(--gold);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.alert-summary.honey-summary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(64, 38, 16, 0.08);
+}
+
+.total-kpi-value small {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* selo de crescimento ▲ / queda ▼ */
+.honey-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  width: fit-content;
+  margin-bottom: 6px;
+}
+
+.honey-badge.subiu {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.honey-badge.caiu {
+  background: var(--red-bg);
+  color: var(--red);
+}
+
+.honey-badge.neutro {
+  background: #f4ede4;
+  color: var(--muted);
+}
+
+.honey-badge small {
+  font-weight: 500;
+  color: var(--muted);
+}
+
+/* com 4 cards, em telas médias fica 2 x 2 (sem o card total ocupar a linha toda) */
+@media (max-width: 1250px) {
+  .overview-alert-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .overview-alert-grid .total-summary {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 800px) {
+  .overview-alert-grid {
+    grid-template-columns: 1fr;
+  }
+}

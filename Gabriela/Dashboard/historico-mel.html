@@ -11,13 +11,26 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     />
-    <link rel="stylesheet" href="dashboard.css" />
     <link rel="stylesheet" href="cssdash/dashboard.css" />
+    <link rel="stylesheet" href="cssdash/mel.css" />
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
     <style>
       /* Estilos complementares específicos da página de histórico do mel */
+
+      /* métricas principais um pouco menores que no dashboard */
+      #conteudo_historico_mel .total-kpi-value {
+        font-size: 34px;
+      }
+      #conteudo_historico_mel .total-kpi-value small {
+        font-size: 14px;
+      }
+      #conteudo_historico_mel .honey-badge {
+        font-size: 12.5px;
+        padding: 4px 10px;
+      }
+
       .honey-chart-panel {
         margin-bottom: 20px;
       }
@@ -27,57 +40,118 @@
         width: 100%;
         margin-top: 14px;
       }
-      .honey-table th, .honey-table td {
+      .honey-table th,
+      .honey-table td {
         vertical-align: middle;
       }
-      .badge-qualidade {
-        display: inline-block;
-        padding: 3px 8px;
-        border-radius: 6px;
-        font-size: 11px;
-        font-weight: 600;
-        white-space: nowrap;
-      }
-      .badge-qualidade.exportacao {
-        background: #eef7ee;
-        color: #2f8045;
-        border: 1px solid #bce2c6;
-      }
-      .badge-qualidade.grau-a {
-        background: #fff9ea;
-        color: #a87900;
-        border: 1px solid #fedc84;
-      }
-      .honey-info-grid {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 16px;
-        margin-top: 16px;
-      }
-      .info-box {
-        background: #faf6ef;
-        border: 1px solid #e9decb;
-        border-radius: 10px;
-        padding: 16px 18px;
-      }
-      .info-box h4 {
-        margin: 0 0 8px;
+      .qtd-coleta {
+        font-size: 15px;
+        font-weight: 700;
         color: var(--brown);
-        font-size: 14px;
-        display: flex;
+      }
+
+      /* ---------- botão "Adicionar coleta" ---------- */
+      .botao-adicionar {
+        display: inline-flex;
         align-items: center;
         gap: 8px;
+        border: 0;
+        border-radius: 8px;
+        padding: 9px 16px;
+        background: var(--gold);
+        color: var(--brown);
+        font: 700 13px Inter, sans-serif;
+        cursor: pointer;
+        white-space: nowrap;
+        box-shadow: var(--shadow);
       }
-      .info-box p {
-        margin: 0;
+      .botao-adicionar:hover {
+        background: #ecbb22;
+      }
+      .botao-adicionar:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+      .botao-secundario {
+        border: 1px solid #dfcdb8;
+        border-radius: 8px;
+        padding: 9px 16px;
+        background: var(--paper);
+        color: var(--brown);
+        font: 600 13px Inter, sans-serif;
+        cursor: pointer;
+      }
+      .botao-secundario:hover {
+        border-color: var(--gold);
+        background: #fff7e4;
+      }
+
+      /* ---------- modal ---------- */
+      .modal-fundo {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(43, 30, 23, 0.45);
+      }
+      .modal-fundo.hidden {
+        display: none;
+      }
+      .modal {
+        width: 100%;
+        max-width: 420px;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-top: 3px solid var(--gold);
+        border-radius: 12px;
+        padding: 22px 24px 20px;
+        box-shadow: 0 18px 50px rgba(43, 30, 23, 0.25);
+      }
+      .modal h3 {
+        margin: 0 0 4px;
+        font-size: 18px;
+      }
+      .modal-subtitulo {
+        margin: 0 0 18px;
+        color: var(--muted);
         font-size: 12.5px;
-        line-height: 1.5;
-        color: #5c4e43;
       }
-      @media (max-width: 950px) {
-        .honey-info-grid {
-          grid-template-columns: 1fr;
-        }
+      .campo {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 14px;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--brown);
+      }
+      .campo input {
+        border: 1px solid #dfcdb8;
+        border-radius: 8px;
+        padding: 9px 12px;
+        background: white;
+        color: var(--brown);
+        font: 500 14px Inter, sans-serif;
+      }
+      .campo input:focus {
+        outline: 2px solid var(--gold);
+        outline-offset: -1px;
+        border-color: var(--gold);
+      }
+      .modal-mensagem {
+        min-height: 18px;
+        margin: 0 0 12px;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--red);
+      }
+      .modal-acoes {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
       }
     </style>
   </head>
@@ -94,7 +168,7 @@
       </div>
 
       <nav>
-        <a id="nav_dashboard" class="nav-link" href="dashboard.html">
+        <a id="nav_dashboard" class="nav-link" href="index.html">
           <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>
           </svg>
@@ -136,16 +210,20 @@
       <!-- ================== TOPO ================== -->
       <header class="topbar">
         <div class="title-line">
-          <a class="back-button" href="dashboard.html" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+          <a class="back-button" href="index.html" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
             ← Voltar ao Dashboard
           </a>
           <h2>Histórico de Coletas de Mel</h2>
-          <span class="status-badge estavel" style="display: inline-flex; align-items: center; gap: 6px;">
-            Safra 2026 Ativa
+          <span class="status-badge estavel" id="badge_safra" style="display: inline-flex; align-items: center; gap: 6px;">
+            Safra ativa
           </span>
         </div>
 
         <div class="top-actions">
+          <button class="botao-adicionar" type="button" onclick="abrirModalColeta()">
+            <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            Adicionar coleta
+          </button>
           <div class="avatar" title="Tetria Apicultura">T</div>
         </div>
       </header>
@@ -155,7 +233,7 @@
         <!-- 4 CARDS DE INDICADORES (seguindo o mesmo padrão do dashboard) -->
         <div class="overview-alert-grid">
           <!-- Card 1: Última Coleta -->
-          <article class="alert-summary total-summary" style="border-top-color: var(--gold);">
+          <article class="alert-summary total-summary">
             <div class="alert-summary-head">
               <span>Última Coleta</span>
               <span class="total-kpi-icon">
@@ -168,16 +246,16 @@
               </span>
             </div>
             <div class="total-kpi-body">
-              <div class="total-kpi-value" id="resumo_ultima_qtd">145 <small style="font-size: 16px; font-weight: 600; color: var(--muted);">kg</small></div>
-              <p class="total-kpi-caption" id="resumo_ultima_data">Realizada em 14/11/2026</p>
+              <div class="total-kpi-value" id="resumo_ultima_qtd">— <small>kg</small></div>
+              <p class="total-kpi-caption" id="resumo_ultima_data">Carregando...</p>
             </div>
             <span class="total-kpi-link" style="color: var(--muted); cursor: default;">
               Extração mais recente
             </span>
           </article>
 
-          <!-- Card 2: Crescimento vs Penúltima (KPI Central) -->
-          <article class="alert-summary honey-summary" style="border-top-color: var(--green);">
+          <!-- Card 2: Crescimento vs coleta anterior -->
+          <article class="alert-summary total-summary" style="border-top-color: var(--green);">
             <div class="alert-summary-head">
               <span>Crescimento de Produção</span>
               <span class="total-kpi-icon" style="background: #eef7ee; color: var(--green);">
@@ -188,22 +266,15 @@
               </span>
             </div>
             <div class="total-kpi-body">
-              <div class="honey-badge subiu" id="resumo_badge_crescimento" style="font-size: 14px; padding: 4px 10px;">
-                <span id="resumo_seta">▲</span>
-                <strong id="resumo_perc">+18,4%</strong>
-              </div>
-              <div class="total-kpi-value" id="resumo_diff_kg" style="color: var(--green); font-size: 32px;">+22,5 <small style="font-size: 15px; color: var(--muted); font-weight: 600;">kg</small></div>
-              <p class="total-kpi-caption" id="resumo_comp_detalhe">145 kg vs 122,5 kg (22/10)</p>
+              <div class="honey-badge neutro" id="resumo_badge_crescimento">—</div>
+              <div class="total-kpi-value" id="resumo_diff_kg" style="color: var(--muted);">— <small>kg</small></div>
             </div>
-            <span class="total-kpi-link" style="color: var(--green); cursor: default;">
-              Comparação vs penúltima coleta
-            </span>
           </article>
 
-          <!-- Card 3: Total Safra 2026 -->
-          <article class="alert-summary total-summary" style="border-top-color: var(--gold);">
+          <!-- Card 3: Total da Safra -->
+          <article class="alert-summary total-summary">
             <div class="alert-summary-head">
-              <span>Total da Safra 2026</span>
+              <span id="resumo_titulo_safra">Total da Safra</span>
               <span class="total-kpi-icon">
                 <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z"/>
@@ -211,16 +282,16 @@
               </span>
             </div>
             <div class="total-kpi-body">
-              <div class="total-kpi-value" id="resumo_total_safra">818 <small style="font-size: 16px; font-weight: 600; color: var(--muted);">kg</small></div>
-              <p class="total-kpi-caption">7 extrações registradas</p>
+              <div class="total-kpi-value" id="resumo_total_safra">— <small>kg</small></div>
+              <p class="total-kpi-caption" id="resumo_qtd_extracoes">—</p>
             </div>
             <span class="total-kpi-link" style="color: var(--muted); cursor: default;">
               Volume acumulado no ano
             </span>
           </article>
 
-          <!-- Card 4: Média e Qualidade -->
-          <article class="alert-summary total-summary" style="border-top-color: var(--gold);">
+          <!-- Card 4: Média por Coleta -->
+          <article class="alert-summary total-summary">
             <div class="alert-summary-head">
               <span>Média por Coleta</span>
               <span class="total-kpi-icon">
@@ -230,12 +301,8 @@
               </span>
             </div>
             <div class="total-kpi-body">
-              <div class="total-kpi-value" id="resumo_media_coleta">116,9 <small style="font-size: 16px; font-weight: 600; color: var(--muted);">kg</small></div>
-              <p class="total-kpi-caption">Umidade média: 17,2%</p>
+              <div class="total-kpi-value" id="resumo_media_coleta">— <small>kg</small></div>
             </div>
-            <span class="total-kpi-link" style="color: var(--muted); cursor: default;">
-              Qualidade: Grau A (Padrão Exportação)
-            </span>
           </article>
         </div>
 
@@ -245,7 +312,7 @@
             <div>
               <h3>Evolução da Colheita de Mel (kg)</h3>
               <p style="margin: 4px 0 0; font-size: 12.5px; color: var(--muted);">
-                Acompanhamento do rendimento em quilogramas a cada extração da safra 2026
+                Acompanhamento do rendimento em quilogramas a cada extração
               </p>
             </div>
           </div>
@@ -273,152 +340,176 @@
                   <th>Data da Coleta</th>
                   <th>Quantidade Colhida</th>
                   <th>Crescimento vs Anterior</th>
-                  <th>Colmeias</th>
-                  <th>Florada Principal</th>
-                  <th>Teor de Umidade</th>
-                  <th>Classificação</th>
                 </tr>
               </thead>
               <tbody id="tabela_coletas_corpo">
-                <!-- Inserido dinamicamente pelo JavaScript -->
+                <tr><td colspan="4" class="sem-alertas">Carregando coletas...</td></tr>
               </tbody>
             </table>
-          </div>
-
-          <!-- BLOCO TÉCNICO INFORMATIVO -->
-          <div class="honey-info-grid">
-            <div class="info-box">
-              <h4>
-                <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px; color:var(--gold-dark);"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                Como funciona a KPI do Mel
-              </h4>
-              <p>
-                O indicador no painel principal calcula a variação percentual entre a <strong>última coleta (14/11 - 145 kg)</strong> e a <strong>penúltima coleta (22/10 - 122,5 kg)</strong>: um salto positivo de <strong>+18,4% (+22,5 kg)</strong>. A setinha <strong>▲</strong> sinaliza crescimento no rendimento das colmeias, refletindo o controle adequado de temperatura e umidade no apiário.
-              </p>
-            </div>
-            <div class="info-box">
-              <h4>
-                <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px; color:var(--green);"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                Padrão de Qualidade
-              </h4>
-              <p>
-                O teor de umidade abaixo de 18% é certificado pelo Ministério da Agricultura e pela norma internacional do Codex Alimentarius, prevenindo fermentação e garantindo máxima pureza.
-              </p>
-            </div>
           </div>
         </article>
       </section>
     </main>
 
+    <!-- ================== MODAL: ADICIONAR COLETA ================== -->
+    <div class="modal-fundo hidden" id="modal_coleta" onclick="if (event.target === this) fecharModalColeta()">
+      <form class="modal" id="form_coleta" onsubmit="salvarColeta(event)" role="dialog" aria-modal="true" aria-labelledby="titulo_modal_coleta">
+        <h3 id="titulo_modal_coleta">Adicionar coleta</h3>
+        <p class="modal-subtitulo">Registre uma nova extração de mel do apiário.</p>
+
+        <label class="campo">
+          Data da coleta
+          <input type="date" id="ipt_data_coleta" required />
+        </label>
+
+        <label class="campo">
+          Quantidade colhida (kg)
+          <input type="number" id="ipt_qtd_coleta" min="0.1" step="0.1" placeholder="Ex.: 130,5" required />
+        </label>
+
+        <p class="modal-mensagem" id="msg_coleta"></p>
+
+        <div class="modal-acoes">
+          <button class="botao-secundario" type="button" onclick="fecharModalColeta()">Cancelar</button>
+          <button class="botao-adicionar" type="submit" id="btn_salvar_coleta">Salvar coleta</button>
+        </div>
+      </form>
+    </div>
+
     <!-- ================== SCRIPT DE DADOS E GRÁFICOS ================== -->
     <script>
-      // Base de dados das coletas da safra (ordenada cronologicamente)
-      const coletasMelHistorico = [
-        { id: 1, data: "15/06/2026", qtd: 95.0, colmeias: "Todas (01-10)", florada: "Silvestre", umidadeMel: 17.8, umidadeTexto: "17,8%" },
-        { id: 2, data: "10/07/2026", qtd: 110.0, colmeias: "Todas (01-10)", florada: "Eucalipto", umidadeMel: 17.5, umidadeTexto: "17,5%" },
-        { id: 3, data: "05/08/2026", qtd: 102.5, colmeias: "Todas (01-10)", florada: "Silvestre", umidadeMel: 17.4, umidadeTexto: "17,4%" },
-        { id: 4, data: "28/08/2026", qtd: 125.0, colmeias: "Todas (01-10)", florada: "Laranjeira", umidadeMel: 17.0, umidadeTexto: "17,0%" },
-        { id: 5, data: "20/09/2026", qtd: 118.0, colmeias: "Todas (01-10)", florada: "Silvestre", umidadeMel: 17.2, umidadeTexto: "17,2%" },
-        { id: 6, data: "22/10/2026", qtd: 122.5, colmeias: "Todas (01-10)", florada: "Assa-peixe", umidadeMel: 16.8, umidadeTexto: "16,8%" },
-        { id: 7, data: "14/11/2026", qtd: 145.0, colmeias: "Todas (01-10)", florada: "Silvestre", umidadeMel: 16.5, umidadeTexto: "16,5%" }
-      ];
+      // apiário exibido (idendereco na tabela endereco)
+      const ID_APIARIO = 1;
 
+      // preenchido pelo backend, ordenado da mais antiga para a mais recente
+      let coletasMelHistorico = [];
+      let graficoMel = null;
+
+      function formatarKg(numero) {
+        return numero.toFixed(1).replace(".", ",");
+      }
+
+      // ================== BACKEND ==================
+      function carregarColetas() {
+        fetch(`/coletaMel/listar/${ID_APIARIO}`)
+          .then(function (resposta) {
+            if (!resposta.ok) throw new Error("HTTP " + resposta.status);
+            return resposta.json();
+          })
+          .then(function (coletas) {
+            coletasMelHistorico = coletas;
+            renderizarHistorico();
+            renderizarGraficoMel();
+          })
+          .catch(function (erro) {
+            console.error("Erro ao carregar coletas:", erro);
+            document.getElementById("tabela_coletas_corpo").innerHTML =
+              `<tr><td colspan="4" class="sem-alertas">Não foi possível carregar as coletas. Verifique se o servidor está rodando.</td></tr>`;
+          });
+      }
+
+      // ================== CARDS E TABELA ==================
       function renderizarHistorico() {
         const corpoTabela = document.getElementById("tabela_coletas_corpo");
-        if (!corpoTabela) return;
+        const n = coletasMelHistorico.length;
 
-        let totalSafra = 0;
-        let somaUmidade = 0;
+        if (n == 0) {
+          corpoTabela.innerHTML = `<tr><td colspan="4" class="sem-alertas">Nenhuma coleta registrada ainda. Clique em "Adicionar coleta".</td></tr>`;
+          return;
+        }
+
         let linhasHtml = "";
-
-        // Processa as coletas para cálculo e renderização da tabela
-        for (let i = 0; i < coletasMelHistorico.length; i++) {
+        for (let i = 0; i < n; i++) {
           const item = coletasMelHistorico[i];
-          totalSafra += item.qtd;
-          somaUmidade += item.umidadeMel;
-
-          let diffTexto = "—";
-          let badgeCrescimento = `<span class="honey-badge" style="background:#f4ede4; color:var(--muted);">● Coleta inicial</span>`;
+          let badgeCrescimento = `<span class="honey-badge neutro">● Coleta inicial</span>`;
 
           if (i > 0) {
             const anterior = coletasMelHistorico[i - 1];
-            const diff = item.qtd - anterior.qtd;
-            const perc = ((diff / anterior.qtd) * 100);
+            const diff = item.quantidade - anterior.quantidade;
+            const perc = (diff / anterior.quantidade) * 100;
             const subiu = diff >= 0;
             const sinal = subiu ? "+" : "";
 
             badgeCrescimento = `
-              <span class="honey-badge ${subiu ? 'subiu' : 'caiu'}">
-                <span>${subiu ? '▲' : '▼'}</span>
+              <span class="honey-badge ${subiu ? "subiu" : "caiu"}">
+                <span>${subiu ? "▲" : "▼"}</span>
                 <strong>${sinal}${perc.toFixed(1).replace(".", ",")}%</strong>
-                <small>(${sinal}${diff.toFixed(1).replace(".", ",")} kg)</small>
+                <small>(${sinal}${formatarKg(diff)} kg)</small>
               </span>
             `;
           }
 
-          const classeQualidade = item.umidadeMel <= 17.0 ? "exportacao" : "grau-a";
-          const rotuloQualidade = item.umidadeMel <= 17.0 ? "Padrão Exportação" : "Grau A (Excelente)";
-
-          // Linhas da tabela (da mais recente para a mais antiga para leitura facilitada)
-          const trHtml = `
+          // as mais recentes ficam no topo
+          linhasHtml = `
             <tr>
-              <td><strong>#${item.id}</strong></td>
+              <td><strong>#${i + 1}</strong></td>
               <td><strong>${item.data}</strong></td>
-              <td><span style="font-size: 15px; font-weight: 700; color: var(--brown);">${item.qtd.toFixed(1).replace(".", ",")} kg</span></td>
+              <td><span class="qtd-coleta">${formatarKg(item.quantidade)} kg</span></td>
               <td>${badgeCrescimento}</td>
-              <td>${item.colmeias}</td>
-              <td><span style="font-weight: 500;">${item.florada}</span></td>
-              <td><strong>${item.umidadeTexto}</strong></td>
-              <td><span class="badge-qualidade ${classeQualidade}">${rotuloQualidade}</span></td>
             </tr>
-          `;
-          linhasHtml = trHtml + linhasHtml; // coloca as mais recentes no topo
+          ` + linhasHtml;
         }
-
         corpoTabela.innerHTML = linhasHtml;
 
-        // Atualização dos cards de resumo
-        const n = coletasMelHistorico.length;
+        // ---------- cards de resumo ----------
+        const ultima = coletasMelHistorico[n - 1];
+        document.getElementById("resumo_ultima_qtd").innerHTML = `${formatarKg(ultima.quantidade)} <small>kg</small>`;
+        document.getElementById("resumo_ultima_data").textContent = `Realizada em ${ultima.data}`;
+
+        const badge = document.getElementById("resumo_badge_crescimento");
+        const elDiff = document.getElementById("resumo_diff_kg");
         if (n >= 2) {
-          const ultima = coletasMelHistorico[n - 1];
           const penultima = coletasMelHistorico[n - 2];
-          const diffUltima = ultima.qtd - penultima.qtd;
-          const percUltima = ((diffUltima / penultima.qtd) * 100);
-          const subiuUltima = diffUltima >= 0;
+          const diff = ultima.quantidade - penultima.quantidade;
+          const perc = (diff / penultima.quantidade) * 100;
+          const subiu = diff >= 0;
+          const sinal = subiu ? "+" : "";
 
-          document.getElementById("resumo_ultima_qtd").innerHTML = `${ultima.qtd.toFixed(0)} <small style="font-size: 16px; font-weight: 600; color: var(--muted);">kg</small>`;
-          document.getElementById("resumo_ultima_data").textContent = `Realizada em ${ultima.data}`;
-
-          document.getElementById("resumo_badge_crescimento").className = `honey-badge ${subiuUltima ? 'subiu' : 'caiu'}`;
-          document.getElementById("resumo_seta").textContent = subiuUltima ? "▲" : "▼";
-          document.getElementById("resumo_perc").textContent = `${subiuUltima ? '+' : ''}${percUltima.toFixed(1).replace(".", ",")}%`;
-          
-          const elDiff = document.getElementById("resumo_diff_kg");
-          elDiff.style.color = subiuUltima ? "var(--green)" : "var(--red)";
-          elDiff.innerHTML = `${subiuUltima ? '+' : ''}${diffUltima.toFixed(1).replace(".", ",")} <small style="font-size: 15px; color: var(--muted); font-weight: 600;">kg</small>`;
-
-          document.getElementById("resumo_comp_detalhe").textContent = `${ultima.qtd.toFixed(1).replace(".", ",")} kg vs ${penultima.qtd.toFixed(1).replace(".", ",")} kg (${penultima.data})`;
-
-          document.getElementById("resumo_total_safra").innerHTML = `${totalSafra.toFixed(0)} <small style="font-size: 16px; font-weight: 600; color: var(--muted);">kg</small>`;
-
-          const media = (totalSafra / n).toFixed(1).replace(".", ",");
-          document.getElementById("resumo_media_coleta").innerHTML = `${media} <small style="font-size: 16px; font-weight: 600; color: var(--muted);">kg</small>`;
+          badge.className = "honey-badge " + (subiu ? "subiu" : "caiu");
+          badge.innerHTML = `<span>${subiu ? "▲" : "▼"}</span><strong>${sinal}${perc.toFixed(1).replace(".", ",")}%</strong>`;
+          elDiff.style.color = subiu ? "var(--green)" : "var(--red)";
+          elDiff.innerHTML = `${sinal}${formatarKg(diff)} <small>kg</small>`;
+        } else {
+          badge.className = "honey-badge neutro";
+          badge.textContent = "● Primeira coleta";
+          elDiff.style.color = "var(--muted)";
+          elDiff.innerHTML = `— <small>kg</small>`;
         }
+
+        // safra = ano da coleta mais recente
+        const ano = ultima.ano;
+        const coletasDaSafra = coletasMelHistorico.filter(c => c.ano == ano);
+        const totalSafra = coletasDaSafra.reduce((soma, c) => soma + c.quantidade, 0);
+        const qtdExtracoes = coletasDaSafra.length;
+
+        document.getElementById("badge_safra").textContent = `Safra ${ano} Ativa`;
+        document.getElementById("resumo_titulo_safra").textContent = `Total da Safra ${ano}`;
+        document.getElementById("resumo_total_safra").innerHTML = `${formatarKg(totalSafra)} <small>kg</small>`;
+        document.getElementById("resumo_qtd_extracoes").textContent =
+          `${qtdExtracoes} ${qtdExtracoes == 1 ? "extração registrada" : "extrações registradas"}`;
+        document.getElementById("resumo_media_coleta").innerHTML = `${formatarKg(totalSafra / qtdExtracoes)} <small>kg</small>`;
       }
 
-      function inicializarGraficoMel() {
+      // ================== GRÁFICO ==================
+      function renderizarGraficoMel() {
+        // no gráfico aparece só dia e mês (dd/mm)
+        const labels = coletasMelHistorico.map(c => c.data.slice(0, 5));
+        const valores = coletasMelHistorico.map(c => c.quantidade);
+
+        if (graficoMel) {
+          graficoMel.data.labels = labels;
+          graficoMel.data.datasets[0].data = valores;
+          graficoMel.update();
+          return;
+        }
+
         const canvas = document.getElementById("graficoMelHistorico");
-        if (!canvas) return;
-
-        const labels = coletasMelHistorico.map(c => c.data);
-        const valores = coletasMelHistorico.map(c => c.qtd);
-
         const ctx = canvas.getContext("2d");
         const gradiente = ctx.createLinearGradient(0, 0, 0, 300);
         gradiente.addColorStop(0, "rgba(223, 173, 22, 0.45)");
         gradiente.addColorStop(1, "rgba(223, 173, 22, 0.02)");
 
-        new Chart(canvas, {
+        graficoMel = new Chart(canvas, {
           type: "line",
           data: {
             labels: labels,
@@ -443,9 +534,7 @@
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-              legend: {
-                display: false
-              },
+              legend: { display: false },
               tooltip: {
                 backgroundColor: "#2b1e17",
                 titleColor: "#ffffff",
@@ -453,12 +542,13 @@
                 padding: 12,
                 displayColors: false,
                 callbacks: {
-                  label: function(context) {
+                  label: function (context) {
                     const idx = context.dataIndex;
-                    let txt = `Produção: ${context.parsed.y.toFixed(1).replace(".", ",")} kg`;
+                    const dados = context.dataset.data;
+                    let txt = `Produção: ${formatarKg(context.parsed.y)} kg`;
                     if (idx > 0) {
-                      const diff = context.parsed.y - valores[idx - 1];
-                      const perc = (diff / valores[idx - 1]) * 100;
+                      const diff = context.parsed.y - dados[idx - 1];
+                      const perc = (diff / dados[idx - 1]) * 100;
                       const sinal = diff >= 0 ? "+" : "";
                       txt += ` (${sinal}${perc.toFixed(1).replace(".", ",")}% vs anterior)`;
                     }
@@ -470,44 +560,108 @@
             scales: {
               y: {
                 beginAtZero: false,
-                min: 80,
-                max: 160,
+                grace: "15%",
                 ticks: {
-                  callback: function(val) {
+                  callback: function (val) {
                     return val + " kg";
                   },
-                  font: {
-                    family: "Inter",
-                    size: 11
-                  },
+                  font: { family: "Inter", size: 11 },
                   color: "#776b60"
                 },
-                grid: {
-                  color: "#f0e6da"
-                }
+                grid: { color: "#f0e6da" }
               },
               x: {
                 ticks: {
-                  font: {
-                    family: "Inter",
-                    size: 12,
-                    weight: "600"
-                  },
+                  font: { family: "Inter", size: 12, weight: "600" },
                   color: "#402610"
                 },
-                grid: {
-                  display: false
-                }
+                grid: { display: false }
               }
             }
           }
         });
       }
 
-      window.addEventListener("DOMContentLoaded", () => {
-        renderizarHistorico();
-        inicializarGraficoMel();
+      // ================== MODAL: ADICIONAR COLETA ==================
+      function dataDeHoje() {
+        const hoje = new Date();
+        const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+        const dia = String(hoje.getDate()).padStart(2, "0");
+        return `${hoje.getFullYear()}-${mes}-${dia}`;
+      }
+
+      function abrirModalColeta() {
+        document.getElementById("form_coleta").reset();
+        ipt_data_coleta.max = dataDeHoje();
+        ipt_data_coleta.value = dataDeHoje();
+        msg_coleta.textContent = "";
+        modal_coleta.classList.remove("hidden");
+        ipt_qtd_coleta.focus();
+      }
+
+      function fecharModalColeta() {
+        modal_coleta.classList.add("hidden");
+      }
+
+      document.addEventListener("keydown", function (evento) {
+        if (evento.key === "Escape" && !modal_coleta.classList.contains("hidden")) {
+          fecharModalColeta();
+        }
       });
+
+      function salvarColeta(evento) {
+        evento.preventDefault();
+
+        const dataColeta = ipt_data_coleta.value;
+        const quantidade = Number(ipt_qtd_coleta.value);
+
+        if (!dataColeta) {
+          msg_coleta.textContent = "Informe a data da coleta.";
+          return;
+        }
+        if (dataColeta > dataDeHoje()) {
+          msg_coleta.textContent = "A data da coleta não pode estar no futuro.";
+          return;
+        }
+        if (!(quantidade > 0)) {
+          msg_coleta.textContent = "Informe uma quantidade maior que 0 kg.";
+          return;
+        }
+
+        msg_coleta.textContent = "";
+        btn_salvar_coleta.disabled = true;
+        btn_salvar_coleta.textContent = "Salvando...";
+
+        fetch("/coletaMel/cadastrar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            dataServer: dataColeta,
+            quantidadeServer: quantidade,
+            idEnderecoServer: ID_APIARIO
+          })
+        })
+          .then(function (resposta) {
+            if (resposta.ok) {
+              fecharModalColeta();
+              carregarColetas();
+            } else {
+              return resposta.text().then(function (texto) {
+                msg_coleta.textContent = texto || "Não foi possível salvar a coleta.";
+              });
+            }
+          })
+          .catch(function (erro) {
+            console.error("Erro ao salvar coleta:", erro);
+            msg_coleta.textContent = "Erro de conexão com o servidor.";
+          })
+          .finally(function () {
+            btn_salvar_coleta.disabled = false;
+            btn_salvar_coleta.textContent = "Salvar coleta";
+          });
+      }
+
+      carregarColetas();
     </script>
   </body>
 </html>
