@@ -17,9 +17,11 @@ app.use(express.static(path.join(__dirname, "../public")));
 // Rotas da API
 const usuarioroutes = require("./routes/usuarioroutes");
 const contatoroutes = require("./routes/contato");
+const coletaMelRouter = require("./routes/coletaMel");
 
 app.use("/", usuarioroutes);
 app.use("/contato", contatoroutes);
+app.use("/coletaMel", coletaMelRouter);
 
 app.listen(PORT, () => {
     console.log(`

@@ -1040,3 +1040,11 @@ let colmeiaDaUrl = new URLSearchParams(location.search).get("colmeia");
 if (colmeiaDaUrl !== null && tempInterna[Number(colmeiaDaUrl)]) {
   abrirColmeia(Number(colmeiaDaUrl));
 }
+
+app.use(express.static(path.join(__dirname, "../Dashboard")));
+
+// rotas da API
+const coletaMelRouter = require("./src/routes/coletaMel");
+app.use("/coletaMel", coletaMelRouter);
+
+app.listen(PORTA, function () )
