@@ -37,12 +37,10 @@
 
       <main class="main">
         <header class="topbar">
-          <!-- esquerda: botão voltar (só na colmeia individual), título e situação -->
           <div class="title-line">
             <h2 id="titulo_pagina">Monitoramento das colmeias</h2>
           </div>
 
-          <!-- direita: filtros (só no dashboard), sensor e usuário -->
           <div class="top-actions">
             <div class="avatar">T</div>
           </div>
@@ -424,8 +422,6 @@
 
         filtrarTabelaDashboard();
       }
-      // clicar (ou Enter) numa linha abre a tela daquela colmeia no dashboard
-      // a ordem das linhas é a mesma dos dados: linha 0 = Colmeia 01...
       document.querySelectorAll("#listaTabelaDashboard tr").forEach((linha, i) => {
         linha.classList.add("linha-clicavel");
         linha.tabIndex = 0;
@@ -437,7 +433,6 @@
         });
       });
 
-      // vindo do "Ver todas" das KPIs (colmeias.html?filtro=Risco): já abre filtrado
       const filtroDaUrl = new URLSearchParams(location.search).get("filtro");
       if (filtroDaUrl && select_filtro.querySelector(`option[value="${filtroDaUrl}"]`)) {
         select_filtro.value = filtroDaUrl;

@@ -20,7 +20,6 @@
   </head>
 
   <body>
-    <!-- ================== MENU LATERAL ================== -->
     <aside class="sidebar">
       <div class="brand">
         <img class="logo" src="src/logo-tetria-icone.png" alt="Logo Tetria" onerror="this.style.display='none'" />
@@ -70,7 +69,6 @@
     </aside>
 
     <main class="main">
-      <!-- ================== TOPO ================== -->
       <header class="topbar">
         <div class="title-line">
           <a class="back-button" href="dashboard.html" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
@@ -91,11 +89,8 @@
         </div>
       </header>
 
-      <!-- ================== CONTEÚDO PRINCIPAL ================== -->
       <section id="conteudo_historico_mel">
-        <!-- 4 CARDS DE INDICADORES (seguindo o mesmo padrão do dashboard) -->
         <div class="overview-alert-grid">
-          <!-- Card 1: Última Coleta -->
           <article class="alert-summary total-summary">
             <div class="alert-summary-head">
               <span>Última Coleta</span>
@@ -117,7 +112,6 @@
             </span>
           </article>
 
-          <!-- Card 2: Crescimento vs coleta anterior -->
           <article class="alert-summary total-summary" style="border-top-color: var(--green);">
             <div class="alert-summary-head">
               <span>Crescimento de Produção</span>
@@ -134,7 +128,6 @@
             </div>
           </article>
 
-          <!-- Card 3: Total da Safra -->
           <article class="alert-summary total-summary">
             <div class="alert-summary-head">
               <span id="resumo_titulo_safra">Total da Safra</span>
@@ -153,7 +146,6 @@
             </span>
           </article>
 
-          <!-- Card 4: Média por Coleta -->
           <article class="alert-summary total-summary">
             <div class="alert-summary-head">
               <span>Média por Coleta</span>
@@ -169,7 +161,6 @@
           </article>
         </div>
 
-        <!-- GRÁFICO DE EVOLUÇÃO DAS COLETAS -->
         <article class="panel honey-chart-panel">
           <div class="panel-heading">
             <div>
@@ -184,7 +175,6 @@
           </div>
         </article>
 
-        <!-- TABELA DETALHADA COM TODO O HISTÓRICO -->
         <article class="panel incidents">
           <div class="panel-heading">
             <div>
@@ -214,7 +204,6 @@
       </section>
     </main>
 
-    <!-- ================== MODAL: ADICIONAR COLETA ================== -->
     <div class="modal-fundo hidden" id="modal_coleta" onclick="if (event.target === this) fecharModalColeta()">
       <form class="modal" id="form_coleta" onsubmit="salvarColeta(event)" role="dialog" aria-modal="true" aria-labelledby="titulo_modal_coleta">
         <h3 id="titulo_modal_coleta">Adicionar coleta</h3>

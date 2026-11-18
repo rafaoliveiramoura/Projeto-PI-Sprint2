@@ -1,15 +1,7 @@
-/* =============================================================
-   ACRÉSCIMO: KPI DO MEL
-   O cssdash/dashboard.css é cópia exata do original do grupo.
-   Tudo o que foi adicionado para a KPI do mel fica neste arquivo.
-   ============================================================= */
-
-/* a visão geral passa a ter 4 cards (risco, atenção, total e mel) */
 .overview-alert-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-/* card do mel: mesmo visual dos outros, com borda dourada e clicável */
 .alert-summary.honey-summary {
   border-top-color: var(--gold);
   cursor: pointer;
@@ -27,7 +19,6 @@
   color: var(--muted);
 }
 
-/* selo de crescimento ▲ / queda ▼ */
 .honey-badge {
   display: inline-flex;
   align-items: center;
@@ -60,7 +51,6 @@
   color: var(--muted);
 }
 
-/* com 4 cards, em telas médias fica 2 x 2 (sem o card total ocupar a linha toda) */
 @media (max-width: 1250px) {
   .overview-alert-grid {
     grid-template-columns: 1fr 1fr;

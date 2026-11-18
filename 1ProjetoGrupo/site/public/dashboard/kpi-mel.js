@@ -1,8 +1,3 @@
-// ================== KPI DO MEL ==================
-// Busca as coletas no backend (web-data-viz) e mostra no card:
-// quantidade da última coleta e o crescimento em relação à penúltima.
-
-// apiário exibido no dashboard (idendereco na tabela endereco)
 const ID_APIARIO = 1;
 
 function formatarKg(numero) {

@@ -1,8 +1,5 @@
-// ================== HISTÓRICO DO MEL ==================
-// apiário exibido (idendereco na tabela endereco)
 const ID_APIARIO = 1;
 
-// preenchido pelo backend, ordenado da mais antiga para a mais recente
 let coletasMelHistorico = [];
 let graficoMel = null;
 
@@ -10,7 +7,6 @@ function formatarKg(numero) {
   return numero.toFixed(1).replace(".", ",");
 }
 
-// ================== BACKEND ==================
 function carregarColetas() {
   fetch(`/coletaMel/listar/${ID_APIARIO}`)
     .then(function (resposta) {
@@ -29,7 +25,6 @@ function carregarColetas() {
     });
 }
 
-// ================== CARDS E TABELA ==================
 function renderizarHistorico() {
   const corpoTabela = document.getElementById("tabela_coletas_corpo");
   const n = coletasMelHistorico.length;
@@ -60,7 +55,6 @@ function renderizarHistorico() {
       `;
     }
 
-    // as mais recentes ficam no topo
     linhasHtml = `
       <tr>
         <td><strong>#${i + 1}</strong></td>
@@ -72,7 +66,6 @@ function renderizarHistorico() {
   }
   corpoTabela.innerHTML = linhasHtml;
 
-  // ---------- cards de resumo ----------
   const ultima = coletasMelHistorico[n - 1];
   document.getElementById("resumo_ultima_qtd").innerHTML = `${formatarKg(ultima.quantidade)} <small>kg</small>`;
   document.getElementById("resumo_ultima_data").textContent = `Realizada em ${ultima.data}`;
@@ -97,7 +90,6 @@ function renderizarHistorico() {
     elDiff.innerHTML = `— <small>kg</small>`;
   }
 
-  // safra = ano da coleta mais recente
   const ano = ultima.ano;
   const coletasDaSafra = coletasMelHistorico.filter(c => c.ano == ano);
   const totalSafra = coletasDaSafra.reduce((soma, c) => soma + c.quantidade, 0);
@@ -111,9 +103,7 @@ function renderizarHistorico() {
   document.getElementById("resumo_media_coleta").innerHTML = `${formatarKg(totalSafra / qtdExtracoes)} <small>kg</small>`;
 }
 
-// ================== GRÁFICO ==================
 function renderizarGraficoMel() {
-  // no gráfico aparece só dia e mês (dd/mm)
   const labels = coletasMelHistorico.map(c => c.data.slice(0, 5));
   const valores = coletasMelHistorico.map(c => c.quantidade);
 
@@ -203,7 +193,6 @@ function renderizarGraficoMel() {
   });
 }
 
-// ================== MODAL: ADICIONAR COLETA ==================
 function dataDeHoje() {
   const hoje = new Date();
   const mes = String(hoje.getMonth() + 1).padStart(2, "0");

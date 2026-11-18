@@ -18,7 +18,6 @@
   </head>
 
   <body>
-    <!-- ================== MENU LATERAL ================== -->
     <aside class="sidebar">
       <div class="brand">
         <img class="logo" src="src/logo-tetria-icone.png" alt="Logo Tetria" />
@@ -43,9 +42,7 @@
     </aside>
 
     <main class="main">
-      <!-- ================== TOPO ================== -->
       <header class="topbar">
-        <!-- esquerda: botão voltar (só na colmeia individual), título e situação -->
         <div class="title-line">
           <button
             class="back-button hidden"
@@ -58,22 +55,18 @@
           <span class="status-badge hidden" id="badge_situacao">Ideal</span>
         </div>
 
-        <!-- direita: filtros (só no dashboard), sensor e usuário -->
         <div class="top-actions">
-          <!-- indicador da última leitura dos sensores (preenchido pelo JS) -->
           <div class="ultima-leitura" id="ultima_leitura">
             <span class="ponto"></span>
             <span>Atualizado às <b id="hora_leitura">--:--</b></span>
           </div>
           <div class="selects" id="area_select">
-            <!-- um select só: visão geral ou uma colmeia, agrupadas por situação -->
             <label class="filtro">
               <span>Colmeia</span>
               <select id="select_colmeia" onchange="mostrarDashboard()">
                 <option value="todas">Todas as colmeias</option>
               </select>
             </label>
-            <!-- dia do histórico (só aparece na colmeia individual) -->
             <label class="filtro hidden" id="filtro_dia">
               <span>Dia</span>
               <select id="select_dia" onchange="mostrarDashboard()"></select>
@@ -83,11 +76,8 @@
         </div>
       </header>
 
-      <!-- ================== PÁGINA: DASHBOARD ================== -->
       <section id="dashboard">
-        <!-- ---------- visão geral (todas as colmeias) ---------- -->
         <div id="visao_geral">
-          <!-- KPIs: em risco, em atenção e total -->
           <div class="overview-alert-grid">
             <article class="alert-summary danger">
               <div class="alert-summary-head">
@@ -127,7 +117,6 @@
               </a>
             </article>
 
-            <!-- KPI do mel: última coleta e crescimento vs anterior (dados do backend) -->
             <article class="alert-summary honey-summary" onclick="location.href='historico-mel.html'" title="Ver o histórico completo de coletas">
               <div class="alert-summary-head">
                 <span>Coleta de mel</span>
@@ -144,7 +133,6 @@
             </article>
           </div>
 
-          <!-- histórico de alertas (preenchido pelo JS, do mais recente para o mais antigo) -->
           <article class="panel incidents">
             <div class="panel-heading">
               <h3>Histórico de alertas</h3>
@@ -186,9 +174,7 @@
           </article>
         </div>
 
-        <!-- ---------- colmeia individual ---------- -->
         <div id="visao_individual" class="hidden">
-          <!-- 3 KPIs (os valores são preenchidos pelo JS) -->
           <div class="detail-kpis">
             <article class="kpi-card">
               <div class="kpi-top">
@@ -256,7 +242,6 @@
             </article>
           </div>
 
-          <!-- gráficos de linha: colmeia × sensor externo -->
           <div class="detail-grid">
             <article class="panel">
               <div class="panel-heading">
@@ -279,7 +264,6 @@
         </div>
       </section>
 
-      <!-- ================== PÁGINA: COLMEIAS ================== -->
       <section id="colmeias" class="hidden">
         <div class="toolbar">
           <h3>Todas as colmeias</h3>
@@ -313,8 +297,6 @@
         </article>
       </section>
 
-      <!-- ================== PÁGINA: CONFIGURAÇÕES ================== -->
-      <!-- Limites aplicados ao monitoramento e persistidos no navegador. -->
       <section id="configuracoes" class="hidden">
         <form class="settings-grid" onsubmit="return false;">
           <article class="panel settings-panel">
