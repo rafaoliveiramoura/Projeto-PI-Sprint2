@@ -9,8 +9,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const {expressrouter} = require("./routes/usuarioroutes")
-app.use(expressrouter)
+const {expressrouter: usuariosrouter} = require("./routes/usuarioroutes");
+const dashgeralrouter = require("./routes/dashGeralModel");
+
+
+app.use(usuariosrouter)
+app.use("/dashgeral", dashgeralrouter)
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}

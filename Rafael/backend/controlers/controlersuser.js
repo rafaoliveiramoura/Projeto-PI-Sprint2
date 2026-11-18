@@ -1,5 +1,4 @@
 var usuarioModel = require("../model/usuariomodel");
-const {addUser} = require("../routes/usuarioroutes")
 
 
 function autenticar(req, res) {
@@ -182,9 +181,9 @@ function cdastrarenderço(req, res) {
     }
 }
 
- async function validarsenha (resp,req){
+ async function validarsenha (req, res){
     try{
-        const email = req.parms.email
+        const email = req.body.email
         const senhaBanco = await usuarioModel.validarsenha(email)
         res.json({senha: senhaBanco})
     }catch (erro){
