@@ -211,6 +211,48 @@ body {
   gap: 8px;
 }
 
+/* indicador da última leitura: bolinha muda de cor conforme o atraso */
+.ultima-leitura {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  background: #fff;
+  border: 1px solid #dfcdb8;
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  cursor: default;
+}
+
+.ultima-leitura b {
+  color: var(--brown);
+}
+
+.ultima-leitura .ponto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 3px var(--green-bg);
+}
+
+.ultima-leitura.atrasado .ponto {
+  background: var(--gold);
+  box-shadow: 0 0 0 3px var(--yellow-bg);
+}
+
+.ultima-leitura.offline .ponto {
+  background: var(--red);
+  box-shadow: 0 0 0 3px var(--red-bg);
+}
+
+.ultima-leitura.offline b {
+  color: var(--red);
+}
+
 /* filtro: rótulo pequeno + select sem a borda padrão do navegador */
 .filtro {
   display: flex;
@@ -306,6 +348,7 @@ body {
 .alertas-acoes {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 14px;
 }
 
@@ -849,6 +892,9 @@ tbody tr:last-child td {
   }
   .filtro select {
     flex: 1;
+  }
+  .top-actions {
+    flex-wrap: wrap;
   }
   .avatar {
     display: none;

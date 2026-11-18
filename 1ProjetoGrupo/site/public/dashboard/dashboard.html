@@ -58,6 +58,11 @@
 
         <!-- direita: filtros (só no dashboard), sensor e usuário -->
         <div class="top-actions">
+          <!-- indicador da última leitura dos sensores (preenchido pelo JS) -->
+          <div class="ultima-leitura" id="ultima_leitura">
+            <span class="ponto"></span>
+            <span>Atualizado às <b id="hora_leitura">--:--</b></span>
+          </div>
           <div class="selects" id="area_select">
             <!-- um select só: visão geral ou uma colmeia, agrupadas por situação -->
             <label class="filtro">
@@ -65,6 +70,11 @@
               <select id="select_colmeia" onchange="mostrarDashboard()">
                 <option value="todas">Todas as colmeias</option>
               </select>
+            </label>
+            <!-- dia do histórico (só aparece na colmeia individual) -->
+            <label class="filtro hidden" id="filtro_dia">
+              <span>Dia</span>
+              <select id="select_dia" onchange="mostrarDashboard()"></select>
             </label>
           </div>
           <div class="avatar">T</div>
@@ -116,10 +126,10 @@
             </article>
           </div>
 
-          <!-- lista de alertas (preenchida pelo JS, da mais crítica para a menos crítica) -->
+          <!-- histórico de alertas (preenchido pelo JS, do mais recente para o mais antigo) -->
           <article class="panel incidents">
             <div class="panel-heading">
-              <h3>Alertas</h3>
+              <h3>Histórico de alertas</h3>
               <div class="alertas-acoes">
                 <label class="filtro">
                   <span>Mostrar</span>
@@ -129,9 +139,15 @@
                     <option value="Atenção">Atenção</option>
                   </select>
                 </label>
-                <a class="text-button" id="link_alertas" href="colmeias.html">
-                  Ver todas →
-                </a>
+                <label class="filtro">
+                  <span>Período</span>
+                  <select id="select_periodo" onchange="mostrarVisaoGeral()">
+                    <option value="dia">Hoje</option>
+                    <option value="semana">Última semana</option>
+                    <option value="mes">Último mês</option>
+                    <option value="ano">Último ano</option>
+                  </select>
+                </label>
               </div>
             </div>
             <div class="table-scroll">
@@ -140,9 +156,10 @@
                   <tr>
                     <th>Colmeia</th>
                     <th>Situação</th>
+                    <th>Início</th>
+                    <th>Duração</th>
                     <th>Temperatura</th>
                     <th>Umidade</th>
-                    <th>Em alerta há</th>
                   </tr>
                 </thead>
                 <tbody id="tabela_alertas"></tbody>

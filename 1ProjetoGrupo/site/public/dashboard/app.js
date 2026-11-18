@@ -11,15 +11,20 @@ let umidRisco = 85;
 let umidSeca = 40;
 
 // ================== DADOS (simulados) ==================
-// uma leitura a cada 3 horas (a última posição é a leitura atual)
+// horário da leitura atual: header, KPIs, gráficos e alertas usam todos este mesmo horário
+let agora = new Date();
+let minutoAgora = agora.getHours() * 60 + agora.getMinutes();
+
+// curva de um dia inteiro, com um ponto a cada 3 horas.
+// "hoje" usa essa curva só de 00:00 até o horário atual (ver montarHoje)
 let horarios = ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00"];
 
 // só existe UM sensor externo para todas as colmeias
-let tempExterna = [29.2, 28.6, 28.1, 30.4, 32.6, 33.8, 32.1, 30.3];
-let umidExterna = [74, 76, 78, 71, 64, 60, 65, 70];
+let tempExternaBase = [29.2, 28.6, 28.1, 30.4, 32.6, 33.8, 32.1, 30.3];
+let umidExternaBase = [74, 76, 78, 71, 64, 60, 65, 70];
 
 // cada linha é uma colmeia: posição 0 = Colmeia 01, posição 1 = Colmeia 02...
-let tempInterna = [
+let tempInternaBase = [
   [34.2, 33.9, 33.6, 34.3, 35.2, 35.6, 35.1, 34.9],
   [36.8, 36.2, 35.9, 37.0, 38.3, 39.4, 39.1, 38.9],
   [35.4, 35.0, 34.8, 35.6, 36.5, 37.2, 37.0, 36.9],
@@ -31,7 +36,7 @@ let tempInterna = [
   [33.9, 33.6, 33.4, 34.0, 34.6, 34.8, 34.5, 34.2],
   [34.6, 34.3, 34.1, 34.9, 35.6, 35.9, 35.7, 35.5],
 ];
-let umidInterna = [
+let umidInternaBase = [
   [65, 66, 67, 64, 61, 60, 62, 63],
   [64, 65, 66, 67, 68, 69, 70, 71],
   [63, 64, 65, 62, 60, 59, 61, 62],
@@ -43,8 +48,305 @@ let umidInterna = [
   [57, 58, 59, 56, 53, 52, 53, 54],
   [72, 73, 74, 71, 69, 68, 71, 73],
 ];
+
+// leituras de HOJE (de 00:00 até agora): a última posição é a leitura atual
+let horariosHoje = [];
+let minutosHoje = [];
+let tempExterna = [];
+let umidExterna = [];
+let tempInterna = [];
+let umidInterna = [];
+
+// valor da curva base em qualquer minuto do dia (interpola entre os pontos de 3 em 3 horas)
+function valorNoMinuto(vetor, minuto) {
+  let p = Math.floor(minuto / minutosEntrePontos);
+  let fracao = (minuto % minutosEntrePontos) / minutosEntrePontos;
+  let antes = vetor[p];
+  let depois = vetor[(p + 1) % vetor.length]; // depois das 21:00 volta para a curva das 00:00
+  return antes + (depois - antes) * fracao;
+}
+
+// monta o dia de hoje: os pontos de 3 em 3 horas que já passaram + a leitura atual
+function montarHoje() {
+  minutosHoje = [];
+  for (let h = 0; h < horarios.length && h * minutosEntrePontos < minutoAgora; h++) {
+    minutosHoje.push(h * minutosEntrePontos);
+  }
+  minutosHoje.push(minutoAgora);
+
+  horariosHoje = [];
+  tempExterna = [];
+  umidExterna = [];
+  tempInterna = [];
+  umidInterna = [];
+  for (let i = 0; i < tempInternaBase.length; i++) {
+    tempInterna.push([]);
+    umidInterna.push([]);
+  }
+
+  for (let m = 0; m < minutosHoje.length; m++) {
+    let minuto = minutosHoje[m];
+    horariosHoje.push(formatarMinutoDoDia(minuto));
+    tempExterna.push(arredondar1(valorNoMinuto(tempExternaBase, minuto)));
+    umidExterna.push(Math.round(valorNoMinuto(umidExternaBase, minuto)));
+    for (let i = 0; i < tempInternaBase.length; i++) {
+      tempInterna[i].push(arredondar1(valorNoMinuto(tempInternaBase[i], minuto)));
+      umidInterna[i].push(Math.round(valorNoMinuto(umidInternaBase[i], minuto)));
+    }
+  }
+}
+// ================== HISTÓRICO (dias anteriores, simulados) ==================
+// posição 0 = hoje (os vetores acima), 1 = ontem, 2 = anteontem... até 1 ano atrás
+let qtdDias = 7;          // dias que aparecem no select "Dia" da colmeia
+let diasHistorico = 365;  // dias guardados no histórico (usado no histórico de alertas)
+let historico = [];
+
+// gerador "aleatório" com semente: gera sempre os mesmos números ao recarregar a página
+let semente = 42;
+function aleatorio() {
+  semente = (semente * 9301 + 49297) % 233280;
+  return semente / 233280; // número entre 0 e 1
+}
+
+function arredondar1(valor) {
+  return Math.round(valor * 10) / 10;
+}
+
+function limitarUmid(valor) {
+  return Math.min(100, Math.max(0, Math.round(valor)));
+}
+
+// data (meia-noite) de "d" dias atrás
+function dataDoDia(d) {
+  let data = new Date();
+  data.setHours(0, 0, 0, 0);
+  data.setDate(data.getDate() - d);
+  return data;
+}
+
+// estação do ano: +1 no auge do verão (meados de janeiro), -1 no auge do inverno (julho)
+function estacao(d) {
+  let data = dataDoDia(d);
+  let inicioAno = new Date(data.getFullYear(), 0, 1);
+  let diaDoAno = Math.floor((data - inicioAno) / 86400000);
+  return Math.cos((2 * Math.PI * (diaDoAno - 15)) / 365);
+}
+
+// umidade "normal" de cada colmeia (média de hoje, sem os exageros)
+function umidadeBase(i) {
+  let soma = 0;
+  for (let h = 0; h < umidInternaBase[i].length; h++) soma += umidInternaBase[i][h];
+  return Math.min(68, Math.max(56, soma / umidInternaBase[i].length));
+}
+
+// gera um dia passado: clima do dia + colmeias regulando a temperatura + incidentes raros
+function gerarDia(d) {
+  // diferença de clima em relação a hoje (estação do ano + sorte do dia)
+  let difTemp = 2.5 * (estacao(d) - estacao(0)) + (aleatorio() - 0.5) * 2;
+  let difUmid = 8 * (estacao(d) - estacao(0)) + (aleatorio() - 0.5) * 8;
+
+  let dia = { horarios: horarios, minutos: [], tempExterna: [], umidExterna: [], tempInterna: [], umidInterna: [] };
+  let somaExt = 0;
+  for (let h = 0; h < horarios.length; h++) {
+    dia.minutos.push(h * minutosEntrePontos);
+    dia.tempExterna.push(arredondar1(tempExternaBase[h] + difTemp + (aleatorio() - 0.5) * 0.8));
+    dia.umidExterna.push(limitarUmid(umidExternaBase[h] + difUmid + (aleatorio() - 0.5) * 4));
+    somaExt += dia.tempExterna[h];
+  }
+  let mediaExt = somaExt / horarios.length;
+
+  for (let i = 0; i < tempInternaBase.length; i++) {
+    let temps = [];
+    let umids = [];
+    // as abelhas seguram a temperatura perto de 34,6 °C; o clima de fora influencia pouco
+    for (let h = 0; h < horarios.length; h++) {
+      temps.push(34.6 + 0.2 * (dia.tempExterna[h] - mediaExt) + 0.15 * difTemp + (aleatorio() - 0.5) * 0.6);
+      umids.push(umidadeBase(i) + 0.4 * difUmid + (aleatorio() - 0.5) * 4);
+    }
+
+    // ~3% de chance por dia de um incidente (calor, frio, umidade alta ou ar seco)
+    if (aleatorio() < 0.03) {
+      let tipo = Math.floor(aleatorio() * 4);
+      let inicio = Math.floor(aleatorio() * 6);
+      let duracao = 1 + Math.floor(aleatorio() * 3); // de 1 a 3 leituras (3 a 9 horas)
+      let forca = aleatorio();
+      for (let h = inicio; h < inicio + duracao && h < horarios.length; h++) {
+        if (tipo == 0) temps[h] += 2.5 + forca * 2;    // calor
+        if (tipo == 1) temps[h] -= 2 + forca * 1.5;    // frio
+        if (tipo == 2) umids[h] += 14 + forca * 8;     // umidade alta
+        if (tipo == 3) umids[h] -= 16 + forca * 8;     // ar seco
+      }
+    }
+
+    for (let h = 0; h < horarios.length; h++) {
+      temps[h] = arredondar1(temps[h]);
+      umids[h] = limitarUmid(umids[h]);
+    }
+    dia.tempInterna.push(temps);
+    dia.umidInterna.push(umids);
+  }
+  return dia;
+}
+
+function gerarHistorico() {
+  semente = 42;
+  montarHoje();
+  historico = [{ horarios: horariosHoje, minutos: minutosHoje, tempExterna: tempExterna, umidExterna: umidExterna, tempInterna: tempInterna, umidInterna: umidInterna }];
+  for (let d = 1; d < diasHistorico; d++) {
+    historico.push(gerarDia(d));
+  }
+}
+
+// texto do dia no select: "Hoje", "Ontem" ou "seg. 09/11"
+function nomeDia(d) {
+  if (d == 0) return "Hoje";
+  if (d == 1) return "Ontem";
+  let data = dataDoDia(d);
+  let semana = data.toLocaleDateString("pt-BR", { weekday: "short" });
+  let diaMes = data.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+  return semana + " " + diaMes;
+}
+
+function preencherSelectDia() {
+  let html = "";
+  for (let d = 0; d < qtdDias; d++) {
+    html += `<option value="${d}">${nomeDia(d)}</option>`;
+  }
+  select_dia.innerHTML = html;
+}
+
+// ================== HISTÓRICO DE ALERTAS ==================
+// REGRA DE NEGÓCIO: só é alerta quando a colmeia fica MAIS DE 1 HORA seguida fora da faixa ideal.
+// saídas rápidas (até 1 hora) são ignoradas: podem ser só uma oscilação do sensor.
+let tempoMinimoAlerta = 60; // minutos
+let historicoAlertas = [];
+
+// o sensor lê a cada 10 minutos, mas o histórico guarda um ponto a cada 3 horas.
+// para medir o tempo fora da faixa, recriamos as leituras de 10 em 10 min entre um ponto e outro
+let minutosEntrePontos = 3 * 60;
+let minutosEntreLeituras = 10;
+
+// pequena oscilação do sensor, sempre igual para a mesma leitura (não muda ao recalcular)
+function ruido(n) {
+  let x = Math.sin(n * 12.9898) * 43758.5453;
+  return x - Math.floor(x) - 0.5; // número entre -0,5 e 0,5
+}
+
+// "00:00", "08:40", "21:00"...
+function formatarMinutoDoDia(minuto) {
+  let h = Math.floor(minuto / 60);
+  let m = minuto % 60;
+  return (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m;
+}
+
+function calcularHistoricoAlertas() {
+  historicoAlertas = [];
+  for (let i = 0; i < tempInterna.length; i++) {
+    // todos os pontos da colmeia em ordem: do dia mais antigo até a leitura atual
+    let pontos = [];
+    for (let d = historico.length - 1; d >= 0; d--) {
+      let dia = historico[d];
+      for (let h = 0; h < dia.minutos.length; h++) {
+        pontos.push({ d: d, minuto: dia.minutos[h], temp: dia.tempInterna[i][h], umid: dia.umidInterna[i][h] });
+      }
+    }
+
+    let aberto = null; // período fora da faixa que ainda não terminou
+    let n = 0;         // contador de leituras (usado no ruído)
+
+    for (let p = 0; p < pontos.length; p++) {
+      let a = pontos[p];
+      let b = pontos[p + 1];
+      // leituras de 10 em 10 min até o próximo ponto (no último ponto, agora, só existe a leitura atual)
+      let qtd = 1;
+      if (b) {
+        let diferenca = (a.d - b.d) * 24 * 60 + b.minuto - a.minuto;
+        qtd = Math.max(1, Math.floor(diferenca / minutosEntreLeituras));
+      }
+
+      for (let s = 0; s < qtd; s++) {
+        n++;
+        let fracao = s / qtd;
+        let temp = b ? a.temp + (b.temp - a.temp) * fracao : a.temp;
+        let umid = b ? a.umid + (b.umid - a.umid) * fracao : a.umid;
+        // a leitura atual (último ponto) fica sem ruído: igual à mostrada nos KPIs e na situação da colmeia
+        if (b) {
+          temp = arredondar1(temp + ruido(n + i * 100000) * 0.3);
+          umid = Math.round(umid + ruido(n + i * 100000 + 50000) * 2);
+        }
+        let situacao = classificar(temp, umid);
+
+        if (situacao == "Ideal") {
+          fecharAlerta(aberto, false);
+          aberto = null;
+          continue;
+        }
+
+        if (!aberto) {
+          let minutoDoDia = a.minuto + s * minutosEntreLeituras;
+          aberto = { colmeia: i, diasAtras: a.d, minuto: minutoDoDia, leituras: 0, situacao: situacao, temp: temp, umid: umid, emAndamento: false };
+        }
+        aberto.leituras++;
+        // guarda a última leitura: alertas em andamento mostram a situação atual (igual aos cards)
+        aberto.ultimaSituacao = situacao;
+        aberto.ultimaTemp = temp;
+        aberto.ultimaUmid = umid;
+        // guarda a leitura do momento mais grave do alerta
+        if (situacao == "Risco" && aberto.situacao != "Risco") {
+          aberto.situacao = "Risco";
+          aberto.temp = temp;
+          aberto.umid = umid;
+        }
+      }
+    }
+    fecharAlerta(aberto, true); // ainda fora da faixa na leitura atual
+  }
+
+  // mais recentes primeiro
+  historicoAlertas.sort(function (a, b) {
+    if (a.diasAtras != b.diasAtras) return a.diasAtras - b.diasAtras;
+    return b.minuto - a.minuto;
+  });
+
+  // tempo em alerta de cada colmeia = duração do alerta em andamento (0 se não houver)
+  minutosEmAlerta = [];
+  for (let i = 0; i < tempInterna.length; i++) minutosEmAlerta.push(0);
+  for (let a = 0; a < historicoAlertas.length; a++) {
+    let alerta = historicoAlertas[a];
+    if (alerta.emAndamento) minutosEmAlerta[alerta.colmeia] = alerta.duracao;
+  }
+}
+
+// só vira alerta se passou mais de 1 hora fora da faixa ideal
+function fecharAlerta(periodo, emAndamento) {
+  if (!periodo) return;
+  periodo.duracao = periodo.leituras * minutosEntreLeituras;
+  // alerta em andamento: dura do início até a leitura atual (agora)
+  if (emAndamento) periodo.duracao = periodo.diasAtras * 24 * 60 + minutoAgora - periodo.minuto;
+  if (periodo.duracao <= tempoMinimoAlerta) return;
+  periodo.emAndamento = emAndamento;
+  // em andamento: mostra a situação e a leitura de agora, para bater com os cards do topo.
+  // encerrado: mantém o momento mais grave do alerta
+  if (emAndamento) {
+    periodo.situacao = periodo.ultimaSituacao;
+    periodo.temp = periodo.ultimaTemp;
+    periodo.umid = periodo.ultimaUmid;
+  }
+  historicoAlertas.push(periodo);
+}
+
+// "Hoje, 12:40", "Ontem, 03:10" ou "09/11, 15:00"
+function formatarInicio(alerta) {
+  let hora = formatarMinutoDoDia(alerta.minuto);
+  if (alerta.diasAtras == 0) return "Hoje, " + hora;
+  if (alerta.diasAtras == 1) return "Ontem, " + hora;
+  let data = dataDoDia(alerta.diasAtras).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+  return data + ", " + hora;
+}
+
 // há quantos minutos cada colmeia está em alerta
-let minutosEmAlerta = [0, 100, 25, 135, 0, 90, 0, 65, 0, 0];
+// (calculado a partir do histórico, em calcularHistoricoAlertas)
+let minutosEmAlerta = [];
 
 // situação de cada colmeia: "Ideal", "Atenção" ou "Risco"
 let situacoes = [];
@@ -61,6 +363,11 @@ function formatar(numero) {
 
 
 function formatarTempo(minutos) {
+  // alertas com mais de um dia aparecem em dias (ex.: "3 dias")
+  if (minutos >= 24 * 60) {
+    let dias = Math.floor(minutos / (24 * 60));
+    return dias == 1 ? "1 dia" : dias + " dias";
+  }
   let horas = Math.floor(minutos / 60);
   let resto = minutos % 60;
   if (horas == 0) return resto + " min";
@@ -80,20 +387,20 @@ function classeCss(situacao) {
   return "estavel";
 }
 
+// situação de uma leitura de acordo com os limites configurados
+function classificar(temp, umid) {
+  if (temp < tempFrio || temp > tempCalor || umid >= umidRisco || umid < umidSeca) return "Risco";
+  if (temp < tempMin || temp > tempMax || umid < umidMin || umid > umidMax) return "Atenção";
+  return "Ideal";
+}
+
 function calcularSituacoes() {
   situacoes = [];
   for (let i = 0; i < tempInterna.length; i++) {
-    let temp = atual(tempInterna[i]);
-    let umid = atual(umidInterna[i]);
-
-    if (temp < tempFrio || temp > tempCalor || umid >= umidRisco || umid < umidSeca) {
-      situacoes.push("Risco");
-    } else if (temp < tempMin || temp > tempMax || umid < umidMin || umid > umidMax) {
-      situacoes.push("Atenção");
-    } else {
-      situacoes.push("Ideal");
-    }
+    situacoes.push(classificar(atual(tempInterna[i]), atual(umidInterna[i])));
   }
+  // os limites podem ter mudado: refaz o histórico de alertas também
+  calcularHistoricoAlertas();
 }
 
 // ================== NAVEGAÇÃO ==================
@@ -166,6 +473,7 @@ function mostrarDashboard() {
   if (selecao == "todas") {
     visao_geral.classList.remove("hidden");
     visao_individual.classList.add("hidden");
+    filtro_dia.classList.add("hidden");
     badge_situacao.classList.add("hidden");
     btn_voltar.classList.add("hidden");
     document.body.classList.remove("sem-rolagem");
@@ -174,6 +482,7 @@ function mostrarDashboard() {
   } else {
     visao_geral.classList.add("hidden");
     visao_individual.classList.remove("hidden");
+    filtro_dia.classList.remove("hidden");
     btn_voltar.classList.remove("hidden");
     document.body.classList.add("sem-rolagem");
     mostrarColmeia(Number(selecao));
@@ -186,11 +495,7 @@ function mostrarVisaoGeral() {
   let qtdAtencao = 0;
   lista_risco.innerHTML = "";
   lista_atencao.innerHTML = "";
-  tabela_alertas.innerHTML = "";
-
-  let filtroAlertas = select_alertas.value;
-  // o "Ver todas" da tabela leva para a página Colmeias com o mesmo filtro
-  link_alertas.href = filtroAlertas == "todos" ? "colmeias.html" : "colmeias.html?filtro=" + filtroAlertas;
+  let semanaEmMinutos = 7 * 24 * 60;
 
   // primeiro passa pelas colmeias em risco, depois pelas em atenção:
   // assim a lista já fica da mais crítica para a menos crítica
@@ -204,42 +509,65 @@ function mostrarVisaoGeral() {
             <strong>${nomeColmeia(i)}</strong><span>${leitura}</span><time>há ${tempo}</time>
           </button>`;
 
-        // cada card mostra no máximo 3 colmeias; a tabela embaixo mostra todas
-        if (ordem[o] == "Risco") {
-          qtdRisco++;
-          if (qtdRisco <= 3) lista_risco.innerHTML += linhaCard;
-        } else {
-          qtdAtencao++;
-          if (qtdAtencao <= 3) lista_atencao.innerHTML += linhaCard;
+        // os cards só consideram alertas da última semana
+        // e cada card mostra no máximo 3 colmeias; a tabela embaixo mostra todas
+        // só entra quem já está em alerta (mais de 1 hora fora da faixa)
+        if (minutosEmAlerta[i] > tempoMinimoAlerta && minutosEmAlerta[i] <= semanaEmMinutos) {
+          if (ordem[o] == "Risco") {
+            qtdRisco++;
+            if (qtdRisco <= 3) lista_risco.innerHTML += linhaCard;
+          } else {
+            qtdAtencao++;
+            if (qtdAtencao <= 3) lista_atencao.innerHTML += linhaCard;
+          }
         }
-
-        // a tabela respeita o filtro "Mostrar" (todos, críticos ou atenção)
-        if (filtroAlertas != "todos" && filtroAlertas != ordem[o]) continue;
-
-        tabela_alertas.innerHTML += `<tr class="linha-clicavel" onclick="abrirColmeia(${i})">
-            <td class="hive-name">${nomeColmeia(i)}</td>
-            <td><span class="status-badge ${classeCss(situacoes[i])}">${situacoes[i]}</span></td>
-            <td>${formatar(atual(tempInterna[i]))} °C</td>
-            <td>${atual(umidInterna[i])}%</td>
-            <td>${tempo}</td>
-          </tr>`;
       }
     }
   }
 
-  if (tabela_alertas.innerHTML == "") {
-    tabela_alertas.innerHTML = `<tr><td colspan="5" class="sem-alertas">Nenhum alerta neste filtro.</td></tr>`;
-  }
+  mostrarHistoricoAlertas();
 
   qtd_risco.innerHTML = qtdRisco;
   qtd_atencao.innerHTML = qtdAtencao;
   qtd_total3.innerHTML = situacoes.length;
 }
 
+// tabela com o histórico de alertas (mais recentes primeiro)
+function mostrarHistoricoAlertas() {
+  let filtroAlertas = select_alertas.value;
+  // período em dias: hoje, últimos 7, 30 ou 365 dias
+  let diasPeriodo = { dia: 1, semana: 7, mes: 30, ano: 365 };
+  let limiteDias = diasPeriodo[select_periodo.value];
+
+  let html = "";
+  for (let a = 0; a < historicoAlertas.length; a++) {
+    let alerta = historicoAlertas[a];
+    if (filtroAlertas != "todos" && filtroAlertas != alerta.situacao) continue;
+    // alertas em andamento sempre aparecem; os encerrados só se começaram dentro do período
+    if (!alerta.emAndamento && alerta.diasAtras >= limiteDias) continue;
+
+    html += `<tr class="linha-clicavel" onclick="abrirColmeia(${alerta.colmeia})">
+        <td class="hive-name">${nomeColmeia(alerta.colmeia)}</td>
+        <td><span class="status-badge ${classeCss(alerta.situacao)}">${alerta.situacao}</span></td>
+        <td>${formatarInicio(alerta)}</td>
+        <td>${formatarTempo(alerta.duracao)}</td>
+        <td>${formatar(alerta.temp)} °C</td>
+        <td>${alerta.umid}%</td>
+      </tr>`;
+  }
+
+  if (html == "") {
+    html = `<tr><td colspan="6" class="sem-alertas">Nenhum alerta neste filtro.</td></tr>`;
+  }
+  tabela_alertas.innerHTML = html;
+}
+
 // ================== COLMEIA INDIVIDUAL ==================
 function mostrarColmeia(i) {
-  let temps = tempInterna[i];
-  let umids = umidInterna[i];
+  // picos e gráficos usam o dia escolhido; os KPIs de leitura atual usam sempre hoje
+  let dia = historico[Number(select_dia.value)] || historico[0];
+  let temps = dia.tempInterna[i];
+  let umids = dia.umidInterna[i];
 
   titulo_pagina.innerHTML = nomeColmeia(i);
   badge_situacao.innerHTML = situacoes[i];
@@ -265,26 +593,30 @@ function mostrarColmeia(i) {
 
   // preenche a KPI de picos de umidade
   kpi_umid_alta.innerHTML = umids[maiorUmid] + "%";
-  kpi_hora_umid_alta.innerHTML = horarios[maiorUmid];
+  kpi_hora_umid_alta.innerHTML = dia.horarios[maiorUmid];
 
   kpi_umid_baixa.innerHTML = umids[menorUmid] + "%";
-  kpi_hora_umid_baixa.innerHTML = horarios[menorUmid];
+  kpi_hora_umid_baixa.innerHTML = dia.horarios[menorUmid];
 
 
-  kpi_temp.innerHTML = formatar(atual(temps));
+  kpi_temp.innerHTML = formatar(atual(tempInterna[i]));
   kpi_temp_ideal.innerHTML = tempMin + " °C a " + tempMax + " °C";
-  kpi_umid.innerHTML = atual(umids);
+  kpi_umid.innerHTML = atual(umidInterna[i]);
   kpi_umid_ideal.innerHTML = umidMin + "% a " + umidMax + "%";
   kpi_pico_alto.innerHTML = formatar(temps[maior]) + " °C";
-  kpi_hora_alto.innerHTML = horarios[maior];
+  kpi_hora_alto.innerHTML = dia.horarios[maior];
   kpi_pico_baixo.innerHTML = formatar(temps[menor]) + " °C";
-  kpi_hora_baixo.innerHTML = horarios[menor];
+  kpi_hora_baixo.innerHTML = dia.horarios[menor];
   kpi_temp_ext.innerHTML = formatar(atual(tempExterna)) + " °C";
   kpi_umid_ext.innerHTML = atual(umidExterna) + "%";
 
+  // o eixo X mostra os horários do dia escolhido (hoje vai só até a leitura atual)
+  graficoTemperatura.data.labels = dia.horarios;
+  graficoUmidade.data.labels = dia.horarios;
+
   // posições das linhas: 0 colmeia, 1 externo, 2 e 3 ideal, 4 e 5 risco
   graficoTemperatura.data.datasets[0].data = temps;
-  graficoTemperatura.data.datasets[1].data = tempExterna;
+  graficoTemperatura.data.datasets[1].data = dia.tempExterna;
   graficoTemperatura.data.datasets[2].data = linhaReta(tempMin);
   graficoTemperatura.data.datasets[3].data = linhaReta(tempMax);
   graficoTemperatura.data.datasets[4].data = linhaReta(tempFrio);
@@ -292,7 +624,7 @@ function mostrarColmeia(i) {
   graficoTemperatura.update();
 
   graficoUmidade.data.datasets[0].data = umids;
-  graficoUmidade.data.datasets[1].data = umidExterna;
+  graficoUmidade.data.datasets[1].data = dia.umidExterna;
   graficoUmidade.data.datasets[2].data = linhaReta(umidMin);
   graficoUmidade.data.datasets[3].data = linhaReta(umidMax);
   graficoUmidade.data.datasets[4].data = linhaReta(umidSeca);
@@ -303,7 +635,8 @@ function mostrarColmeia(i) {
 // vetor com o mesmo valor em todos os horários = uma linha reta no gráfico
 function linhaReta(valor) {
   let vetor = [];
-  for (let h = 0; h < horarios.length; h++) {
+  let dia = historico[Number(select_dia.value)] || historico[0];
+  for (let h = 0; h < dia.horarios.length; h++) {
     vetor.push(valor);
   }
   return vetor;
@@ -668,6 +1001,35 @@ window.addEventListener("storage", function(evento) {
 });
 
 
+// ================== ÚLTIMA LEITURA (indicador no header) ==================
+// os sensores enviam uma leitura a cada 10 minutos
+const INTERVALO_LEITURA = 10; // minutos
+
+// simulado: última leitura = horário atual (o mesmo "agora" usado nos dados de hoje).
+// com a API, use a data/hora da última medida salva no banco, ex.:
+// ultimaLeitura = new Date(dados[dados.length - 1].dtHora);
+let ultimaLeitura = agora;
+
+function atualizarUltimaLeitura() {
+  let minutos = Math.floor((Date.now() - ultimaLeitura.getTime()) / 60000);
+
+  hora_leitura.innerHTML = ultimaLeitura.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+
+  // até 12 min: dentro do ciclo (2 min de folga) | até 30 min: perdeu leituras | acima: sem sinal
+  if (minutos <= 12) {
+    ultima_leitura.className = "ultima-leitura";
+  } else if (minutos <= 30) {
+    ultima_leitura.className = "ultima-leitura atrasado";
+  } else {
+    ultima_leitura.className = "ultima-leitura offline";
+  }
+}
+
+atualizarUltimaLeitura();
+setInterval(atualizarUltimaLeitura, 30000); // só recalcula a cor do status, não chama a API
+
+gerarHistorico();
+preencherSelectDia();
 carregarConfiguracoes();
 calcularSituacoes();
 listarColmeias();
