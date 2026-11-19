@@ -5,7 +5,7 @@ const express = require("express");
 const cors = require("cors");
 
 const PORT = process.env.APP_PORT || 3333;
-const app = express();
+const app = express(); // teste
 
 app.use(cors());
 app.use(express.json());
