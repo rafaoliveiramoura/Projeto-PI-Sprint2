@@ -886,3 +886,11 @@ tbody tr:last-child td {
     display: none;
   }
 }
+
+.alert-row-vazia {
+  margin: 0;
+  padding: 8px 4px;
+  border-top: 1px solid #f0e6da;
+  font-size: 12px;
+  color: var(--muted);
+}

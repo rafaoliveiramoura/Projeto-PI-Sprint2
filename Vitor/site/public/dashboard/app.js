@@ -318,18 +318,31 @@ function mostrarDashboard() {
 function mostrarVisaoGeral() {
   let qtdRisco = 0;
   let qtdAtencao = 0;
-  let semanaEmMinutos = 7 * 24 * 60;
+  let agora = new Date();
 
   lista_risco.innerHTML = "";
   lista_atencao.innerHTML = "";
 
   for (let i = 0; i < situacoes.length; i++) {
-    if (minutosEmAlerta[i] > tempoMinimoAlerta && minutosEmAlerta[i] <= semanaEmMinutos) {
+    if (situacoes[i] == "Risco" || situacoes[i] == "Atenção") {
+      // volta nas leituras ate achar a ultima vez que a colmeia estava ideal
+      let leituras = leiturasInternas[i];
+      let inicio = agora;
+
+      for (let p = leituras.length - 1; p >= 0; p--) {
+        if (classificar(leituras[p].temp, leituras[p].umid) == "Ideal") {
+          break;
+        }
+        inicio = leituras[p].data;
+      }
+
+      let minutos = Math.round((agora - inicio) / 60000);
+
       let linha = `
         <button class="alert-row" onclick="abrirColmeia(${i})">
           <strong>${nomeColmeia(i)}</strong>
           <span>${formatar(tempAtual(i))} °C · ${formatarUmid(umidAtual(i))}%</span>
-          <time>há ${formatarTempo(minutosEmAlerta[i])}</time>
+          <time>há ${formatarTempo(minutos)}</time>
         </button>`;
 
       if (situacoes[i] == "Risco") {
@@ -337,13 +350,20 @@ function mostrarVisaoGeral() {
         if (qtdRisco <= 3) {
           lista_risco.innerHTML += linha;
         }
-      } else if (situacoes[i] == "Atenção") {
+      } else {
         qtdAtencao++;
         if (qtdAtencao <= 3) {
           lista_atencao.innerHTML += linha;
         }
       }
     }
+  }
+
+  if (qtdRisco == 0) {
+    lista_risco.innerHTML = `<p class="alert-row-vazia">Nenhuma colmeia em risco.</p>`;
+  }
+  if (qtdAtencao == 0) {
+    lista_atencao.innerHTML = `<p class="alert-row-vazia">Nenhuma colmeia em atenção.</p>`;
   }
 
   qtd_risco.innerHTML = qtdRisco;
