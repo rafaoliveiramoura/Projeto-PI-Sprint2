@@ -22,6 +22,11 @@ const dashboardroutes = require("./routes/dashboard");
 app.use("/", usuarioroutes);
 app.use("/contato", contatoroutes);
 app.use("/dashboard", dashboardroutes);
+const coletaMelRouter = require("./routes/coletaMel");
+
+app.use("/", usuarioroutes);
+app.use("/contato", contatoroutes);
+app.use("/coletaMel", coletaMelRouter);
 
 app.listen(PORT, () => {
     console.log(`

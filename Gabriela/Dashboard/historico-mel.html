@@ -482,7 +482,7 @@
         const totalSafra = coletasDaSafra.reduce((soma, c) => soma + c.quantidade, 0);
         const qtdExtracoes = coletasDaSafra.length;
 
-        document.getElementById("badge_safra").textContent = `Safra ${ano} Ativa`;
+        document.getElementById("badge_safra").textContent = `Safra ativa - ${ano}`;
         document.getElementById("resumo_titulo_safra").textContent = `Total da Safra ${ano}`;
         document.getElementById("resumo_total_safra").innerHTML = `${formatarKg(totalSafra)} <small>kg</small>`;
         document.getElementById("resumo_qtd_extracoes").textContent =

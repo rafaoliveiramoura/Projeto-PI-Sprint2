@@ -18,12 +18,5 @@ app.use(express.static(path.join(__dirname, "../Dashboard")));
 const coletaMelRouter = require("./src/routes/coletaMel");
 app.use("/coletaMel", coletaMelRouter);
 
-app.listen(PORTA, function () {
-    console.log(`
-=============================================================
- Servidor Tetria (Gabriela) rodando em: http://localhost:${PORTA}
- Dashboard:          http://localhost:${PORTA}/index.html
- Histórico do mel:   http://localhost:${PORTA}/historico-mel.html
-=============================================================
-`);
-});
+app.listen(3307, function ())
+

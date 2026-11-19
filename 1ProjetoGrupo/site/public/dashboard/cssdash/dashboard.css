@@ -1,4 +1,3 @@
-/* ícones de linha (SVG) */
 .icone {
   width: 16px;
   height: 16px;
@@ -6,7 +5,6 @@
   flex-shrink: 0;
 }
 
-/* ================== CORES ================== */
 :root {
   --gold: #dfad16;
   --gold-dark: #a87900;
@@ -41,7 +39,6 @@ body {
   display: none !important;
 }
 
-/* ================== MENU LATERAL ================== */
 .sidebar {
   position: fixed;
   inset: 0 auto 0 0;
@@ -155,7 +152,6 @@ body {
   margin-right: 8px;
 }
 
-/* ================== TOPO ================== */
 .main {
   margin-left: 236px;
   padding: 20px 32px 20px;
@@ -211,7 +207,6 @@ body {
   gap: 8px;
 }
 
-/* indicador da última leitura: bolinha muda de cor conforme o atraso */
 .ultima-leitura {
   display: flex;
   align-items: center;
@@ -253,7 +248,6 @@ body {
   color: var(--red);
 }
 
-/* filtro: rótulo pequeno + select sem a borda padrão do navegador */
 .filtro {
   display: flex;
   align-items: center;
@@ -316,7 +310,6 @@ body {
   font-weight: 700;
 }
 
-/* ================== PEÇAS COMUNS ================== */
 .panel {
   background: var(--paper);
   border: 1px solid var(--line);
@@ -392,7 +385,6 @@ body {
   text-decoration: underline;
 }
 
-/* tabelas */
 .table-scroll {
   overflow-x: auto;
 }
@@ -443,7 +435,6 @@ tbody tr:last-child td {
   padding: 20px;
 }
 
-/* ================== VISÃO GERAL ================== */
 .overview-alert-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -653,7 +644,6 @@ tbody tr:last-child td {
   padding-bottom: 10px;
 }
 
-/* ================== COLMEIA INDIVIDUAL ================== */
 .detail-kpis {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -714,7 +704,6 @@ tbody tr:last-child td {
   margin-top: 2px;
 }
 
-/* picos de temperatura e umidade */
 .pico-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -751,7 +740,6 @@ tbody tr:last-child td {
   font-size: 12px;
 }
 
-/* valor do sensor externo, abaixo do valor da colmeia */
 .kpi-card .externo {
   margin: 2px 0;
   font-size: 12.5px;
@@ -762,7 +750,6 @@ tbody tr:last-child td {
   font-weight: 700;
 }
 
-/* gráficos de linha */
 .detail-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -781,7 +768,6 @@ tbody tr:last-child td {
   height: 260px;
 }
 
-/* ================== TELAS MENORES ================== */
 @media (min-width: 900px) {
   body.sem-rolagem .main {
     height: 100vh;
