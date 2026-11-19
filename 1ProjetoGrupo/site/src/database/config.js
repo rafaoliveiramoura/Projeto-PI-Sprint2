@@ -8,7 +8,7 @@ const mysqlconfig = {
     port: process.env.DB_PORT || 3306
 };
 
-function executar(instrucao) {
+function executar(instrucao, valores) {
     const ambiente = process.env.AMBIENTE_PROCESSO || "desenvolvimento";
 
     if (ambiente !== "producao" && ambiente !== "desenvolvimento") {
@@ -26,7 +26,7 @@ function executar(instrucao) {
                 return;
             }
 
-            conexao.query(instrucao, function (erro, resultados) {
+            conexao.query(instrucao, valores, function (erro, resultados) {
                 conexao.end();
                 if (erro) {
                     console.error("Erro na instrução SQL:", erro.sqlMessage || erro.message);

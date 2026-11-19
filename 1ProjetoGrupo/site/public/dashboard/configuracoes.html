@@ -106,41 +106,6 @@
   </div>
 
   <script>
-    const padrao = {
-      tempMin: 33, tempMax: 36, tempFrio: 32, tempCalor: 38,
-      umidMin: 50, umidMax: 75, umidSeca: 40, umidUmida: 85
-    };
-
-    const campos = {
-      tempMin: "input_temp_min", tempMax: "input_temp_max",
-      tempFrio: "input_temp_frio", tempCalor: "input_temp_calor",
-      umidMin: "input_umid_min", umidMax: "input_umid_max",
-      umidSeca: "input_umid_seca", umidUmida: "input_umid_umida"
-    };
-
-    function obterConfiguracoes() {
-      try {
-        const salvas = JSON.parse(localStorage.getItem("tetria_configuracoes"));
-        return salvas && typeof salvas === "object" ? { ...padrao, ...salvas } : { ...padrao };
-      } catch (erro) {
-        return { ...padrao };
-      }
-    }
-
-    function preencher(valores) {
-      Object.entries(campos).forEach(([chave, id]) => {
-        document.getElementById(id).value = valores[chave];
-      });
-    }
-
-    function lerFormulario() {
-      const valores = {};
-      Object.entries(campos).forEach(([chave, id]) => {
-        const campo = document.getElementById(id);
-        valores[chave] = campo.value.trim() === "" ? NaN : Number(campo.value);
-      });
-      return valores;
-    }
 
     function validarConfiguracoes(v) {
       if (Object.values(v).some(valor => !Number.isFinite(valor))) {
@@ -181,30 +146,29 @@
     }
 
     function restaurarPadrao() {
-      preencher(padrao);
-      try {
-        localStorage.setItem("tetria_configuracoes", JSON.stringify({
-          ...padrao, umidRisco: padrao.umidUmida
-        }));
-        mostrarMensagem("Padrões restaurados e aplicados ao dashboard.");
-      } catch (erro) {
-        alert("Não foi possível restaurar as configurações.");
-      }
+      fetch('/dashboard/config', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          idUsuario: sessionStorage.ID_USUARIO,
+          TempMin: 33, TempMax: 36, AlertaFrio: 32, AlertaCalor: 38,
+          UmiMin: 50, UmiMax: 75, AlertaSeco: 40, AlertaUmi: 85
+        })
+      })
+      .then(function(resposta){
+        if(resposta.ok){
+          resposta.json().then(function(resultado){
+            alert('Configurações de volta ao padrão!')
+          })
+        }
+        else{
+          alert('Erro ao restaurar')
+        }
+      })
+      .catch(function(erro){
+        console.log(erro);
+      })
     }
-
-    function mostrarMensagem(mensagem) {
-      let aviso = document.getElementById("mensagem_configuracoes");
-      if (!aviso) {
-        aviso = document.createElement("p");
-        aviso.id = "mensagem_configuracoes";
-        aviso.setAttribute("role", "status");
-        aviso.style.cssText = "margin:14px 0 0;text-align:right;color:#2f8045;font-weight:600";
-        document.querySelector(".settings-grid").after(aviso);
-      }
-      aviso.textContent = mensagem;
-    }
-
-    preencher(obterConfiguracoes());
   </script>
 </body>
 
