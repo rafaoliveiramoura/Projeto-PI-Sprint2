@@ -81,17 +81,56 @@
 </html>
 <script>
   function entrar() {
-    var emailVar = ipt_email.value.trim();
-    var senhaVar = ipt_senha.value;
+    let email = ipt_email.value;
+    let senha = ipt_senha.value;
 
-    if (emailVar == "" || senhaVar == "") {
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML = "Por favor, preencha todos os campos!";
-      setTimeout(sumirMensagem, 5000);
-      return false;
+    if (email == "" || senha == "") {
+      mostrarErro("Por favor, preencha todos os campos!");
+    } else {
+      fetch("/usuarios/autenticar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          emailServer: email,
+          senhaServer: senha
+        })
+      })
+        .then(function (resposta) {
+          if (resposta.ok) {
+            resposta.json().then(function (usuario) {
+              sessionStorage.ID_USUARIO = usuario.id;
+              sessionStorage.NOME_USUARIO = usuario.nome;
+              sessionStorage.EMAIL_USUARIO = usuario.email;
+              sessionStorage.COD_EMPRESA = usuario.fkcodempresa;
+
+              if (usuario.idEndereco != null) {
+                sessionStorage.ID_ENDERECO = usuario.idEndereco;
+              }
+
+              window.location = "dashboard/dashboard.html";
+            });
+          } else {
+            resposta.json().then(function (dados) {
+              mostrarErro(dados.erro);
+            });
+          }
+        })
+        .catch(function (erro) {
+          console.log(erro);
+          mostrarErro("Não foi possível conectar com o servidor!");
+        });
     }
-    alert("Redirecionando para DashBoard...")
-    window.location.assign("./dashboard/dashboard.html")
-    
+  }
+
+  function mostrarErro(texto) {
+    cardErro.style.display = "block";
+    mensagem_erro.innerHTML = texto;
+    setTimeout(sumirMensagem, 5000);
+  }
+
+  function sumirMensagem() {
+    cardErro.style.display = "none";
   }
 </script>

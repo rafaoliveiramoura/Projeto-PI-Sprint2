@@ -155,7 +155,6 @@
         let mesPerda = Number(ipt_mes_perda.value);
         let valido = true;
 
-        // VALIDAÇÃO DA QUANTIDADE DE COLMEIAS
         if (ipt_qtd_colmeias.value == "") {
           erro_qtd_colmeias.innerHTML = "Digite a quantidade de colmeias.";
           valido = false;
@@ -169,7 +168,6 @@
           erro_qtd_colmeias.innerHTML = "";
         }
 
-        // VALIDAÇÃO DO VALOR DO ENXAME
         if (ipt_valor_enxame.value == "") {
           erro_valor_enxame.innerHTML = "Digite o valor do enxame.";
           valido = false;
@@ -183,7 +181,6 @@
           erro_valor_enxame.innerHTML = "";
         }
 
-        // VALIDAÇÃO DA QUANTIDADE DE MEL POR COLMEIA
         if (ipt_qtd_mel_kg.value == "") {
           erro_qtd_mel_kg.innerHTML = "Digite a quantidade de mel por colmeia.";
           valido = false;
@@ -197,7 +194,6 @@
           erro_qtd_mel_kg.innerHTML = "";
         }
 
-        // VALIDAÇÃO DO VALOR DO MEL POR KG
         if (ipt_valor_mel_kg.value == "") {
           erro_valor_mel_kg.innerHTML = "Digite o valor do mel por kg.";
           valido = false;
@@ -211,7 +207,6 @@
           erro_valor_mel_kg.innerHTML = "";
         }
 
-        // VALIDAÇÃO DA QUANTIDADE DE COLMEIAS PERDIDAS
         if (ipt_qtd_colmeias_perdidas.value == "") {
           erro_qtd_colmeias_perdidas.innerHTML =
             "Digite a quantidade de colmeias perdidas.";
@@ -232,7 +227,6 @@
           erro_qtd_colmeias_perdidas.innerHTML = "";
         }
 
-        // VALIDAÇÃO DO MÊS DA PERDA
         if (erro_qtd_colmeias_perdidas.innerHTML == "" && qtdColmeiasPerdidas > 0) {
           if (ipt_mes_perda.value == "") {
             erro_mes_perda.innerHTML = "Selecione o mês da perda.";

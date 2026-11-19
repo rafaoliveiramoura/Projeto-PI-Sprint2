@@ -1,5 +1,4 @@
 
-const { valid } = require("semver");
 const database = require("../database/config");
 
 function autenticar(email, senha) {

@@ -12,12 +12,12 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
     />
     <link rel="stylesheet" href="cssdash/dashboard.css" />
+    <link rel="stylesheet" href="cssdash/mel.css" />
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   </head>
 
   <body>
-    <!-- ================== MENU LATERAL ================== -->
     <aside class="sidebar">
       <div class="brand">
         <img class="logo" src="src/logo-tetria-icone.png" alt="Logo Tetria" />
@@ -30,6 +30,7 @@
       <nav>
         <a id="nav_dashboard" class="nav-link active" href="dashboard.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Dashboard</span></a>
         <a id="nav_colmeias" class="nav-link" href="colmeias.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z"/></svg><span>Colmeias</span></a>
+        <a id="nav_mel" class="nav-link" href="historico-mel.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11h10v8a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3v-8z"/><path d="M6 7h12v4H6z"/><path d="M9 3h6v4H9z"/><path d="M12 14v4"/></svg><span>Histórico do Mel</span></a>
         <a id="nav_configuracoes" class="nav-link" href="configuracoes.html"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Configurações</span></a>
       </nav>
 
@@ -41,9 +42,7 @@
     </aside>
 
     <main class="main">
-      <!-- ================== TOPO ================== -->
       <header class="topbar">
-        <!-- esquerda: botão voltar (só na colmeia individual), título e situação -->
         <div class="title-line">
           <button
             class="back-button hidden"
@@ -56,26 +55,29 @@
           <span class="status-badge hidden" id="badge_situacao">Ideal</span>
         </div>
 
-        <!-- direita: filtros (só no dashboard), sensor e usuário -->
         <div class="top-actions">
+          <div class="ultima-leitura" id="ultima_leitura">
+            <span class="ponto"></span>
+            <span>Atualizado às <b id="hora_leitura">--:--</b></span>
+          </div>
           <div class="selects" id="area_select">
-            <!-- um select só: visão geral ou uma colmeia, agrupadas por situação -->
             <label class="filtro">
               <span>Colmeia</span>
               <select id="select_colmeia" onchange="mostrarDashboard()">
                 <option value="todas">Todas as colmeias</option>
               </select>
             </label>
+            <label class="filtro hidden" id="filtro_dia">
+              <span>Dia</span>
+              <select id="select_dia" onchange="mostrarDashboard()"></select>
+            </label>
           </div>
           <div class="avatar">T</div>
         </div>
       </header>
 
-      <!-- ================== PÁGINA: DASHBOARD ================== -->
       <section id="dashboard">
-        <!-- ---------- visão geral (todas as colmeias) ---------- -->
         <div id="visao_geral">
-          <!-- KPIs: em risco, em atenção e total -->
           <div class="overview-alert-grid">
             <article class="alert-summary danger">
               <div class="alert-summary-head">
@@ -114,12 +116,26 @@
                 Ver todas as colmeias →
               </a>
             </article>
+
+            <article class="alert-summary honey-summary" onclick="location.href='historico-mel.html'" title="Ver o histórico completo de coletas">
+              <div class="alert-summary-head">
+                <span>Coleta de mel</span>
+                <span class="total-kpi-icon"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11h10v8a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3v-8z"/><path d="M6 7h12v4H6z"/><path d="M9 3h6v4H9z"/><path d="M12 14v4"/></svg></span>
+              </div>
+              <div class="total-kpi-body">
+                <div class="honey-badge neutro" id="kpi_mel_badge">Carregando...</div>
+                <div class="total-kpi-value" id="kpi_mel_valor">— <small>kg</small></div>
+                <p class="total-kpi-caption" id="kpi_mel_data">na última coleta</p>
+              </div>
+              <a class="total-kpi-link" href="historico-mel.html">
+                Ver histórico de coletas →
+              </a>
+            </article>
           </div>
 
-          <!-- lista de alertas (preenchida pelo JS, da mais crítica para a menos crítica) -->
           <article class="panel incidents">
             <div class="panel-heading">
-              <h3>Alertas</h3>
+              <h3>Histórico de alertas</h3>
               <div class="alertas-acoes">
                 <label class="filtro">
                   <span>Mostrar</span>
@@ -129,9 +145,15 @@
                     <option value="Atenção">Atenção</option>
                   </select>
                 </label>
-                <a class="text-button" id="link_alertas" href="colmeias.html">
-                  Ver todas →
-                </a>
+                <label class="filtro">
+                  <span>Período</span>
+                  <select id="select_periodo" onchange="mostrarVisaoGeral()">
+                    <option value="dia">Hoje</option>
+                    <option value="semana">Última semana</option>
+                    <option value="mes">Último mês</option>
+                    <option value="ano">Último ano</option>
+                  </select>
+                </label>
               </div>
             </div>
             <div class="table-scroll">
@@ -140,9 +162,10 @@
                   <tr>
                     <th>Colmeia</th>
                     <th>Situação</th>
+                    <th>Início</th>
+                    <th>Duração</th>
                     <th>Temperatura</th>
                     <th>Umidade</th>
-                    <th>Em alerta há</th>
                   </tr>
                 </thead>
                 <tbody id="tabela_alertas"></tbody>
@@ -151,9 +174,7 @@
           </article>
         </div>
 
-        <!-- ---------- colmeia individual ---------- -->
         <div id="visao_individual" class="hidden">
-          <!-- 3 KPIs (os valores são preenchidos pelo JS) -->
           <div class="detail-kpis">
             <article class="kpi-card">
               <div class="kpi-top">
@@ -221,7 +242,6 @@
             </article>
           </div>
 
-          <!-- gráficos de linha: colmeia × sensor externo -->
           <div class="detail-grid">
             <article class="panel">
               <div class="panel-heading">
@@ -244,7 +264,6 @@
         </div>
       </section>
 
-      <!-- ================== PÁGINA: COLMEIAS ================== -->
       <section id="colmeias" class="hidden">
         <div class="toolbar">
           <h3>Todas as colmeias</h3>
@@ -278,8 +297,6 @@
         </article>
       </section>
 
-      <!-- ================== PÁGINA: CONFIGURAÇÕES ================== -->
-      <!-- Limites aplicados ao monitoramento e persistidos no navegador. -->
       <section id="configuracoes" class="hidden">
         <form class="settings-grid" onsubmit="return false;">
           <article class="panel settings-panel">
@@ -366,5 +383,6 @@
     </main>
 
     <script src="app.js"></script>
+    <script src="kpi-mel.js"></script>
   </body>
 </html>

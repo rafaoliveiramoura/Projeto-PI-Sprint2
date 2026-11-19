@@ -1,42 +1,41 @@
-const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, ".env") });
+var caminho_env = ".env";
 
-const express = require("express");
-const cors = require("cors");
+require("dotenv").config({ path: caminho_env });
 
-const app = express();
-const PORT = process.env.APP_PORT || 3333;
+var express = require("express");
+var cors = require("cors");
+var path = require("path");
 
-app.use(cors());
+var PORTA_APP = process.env.APP_PORT;
+
+var app = express();
+
+var usuarioRouter = require("./routes/usuarioroutes");
+var contatoRouter = require("./routes/contato");
+var dashboardRouter = require("./routes/dashboard");
+var coletaMelRouter = require("./routes/coletaMel");
+
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-// Servir frontend da pasta public
 app.use(express.static(path.join(__dirname, "../public")));
 
-// Rotas da API
-const usuarioroutes = require("./routes/usuarioroutes");
-const contatoroutes = require("./routes/contato");
+app.use(cors());
 
-app.use("/", usuarioroutes);
-app.use("/contato", contatoroutes);
+app.use("/", usuarioRouter);
+app.use("/contato", contatoRouter);
+app.use("/dashboard", dashboardRouter);
+app.use("/coletaMel", coletaMelRouter);
 
-app.listen(PORT, () => {
+app.listen(PORTA_APP, function () {
     console.log(`
-=============================================================
- Servidor Tetria rodando em: http://localhost:${PORT}
- Frontend disponível em:     http://localhost:${PORT}/index.html
-=============================================================
-       .-""""-.                         ████████╗███████╗████████╗██████╗ ██╗ █████╗
-     .'  .--.  '.                       ╚══██╔══╝██╔════╝╚══██╔══╝██╔══██╗██║██╔══██╗
-    /   /    \\   \\                         ██║   █████╗     ██║   ██████╔╝██║███████║
-   ;   |  🐝  |   ;                        ██║   ██╔══╝     ██║   ██╔══██╗██║██╔══██║
-   |    \\    /    |                        ██║   ███████╗   ██║   ██║  ██║██║██║  ██║
-   ;     '──'     ;                        ╚═╝   ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝
-    \\            /
-     '.        .'
-       '-.__.-'                         M O N I T O R A N D O   C O L M E I A S
-=============================================================
-`);
+    =============================================================
+     Servidor Tetria rodando! Acesse: http://localhost:${PORTA_APP}
+    =============================================================
+           .-""""-.
+         .'  .--.  '.        T E T R I A
+        /   /    \   \
+       ;   |  🐝  |   ;      M O N I T O R A N D O   C O L M E I A S
+       |    \    /    |
+        '.        .'
+          '-.__.-'
+    `);
 });
-

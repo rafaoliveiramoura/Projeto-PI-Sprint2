@@ -6,7 +6,7 @@ const {
     cadastrar,
     cadastrarempresa,
     cadastrarendereco
-} = require("../controlers/controlersuser");
+} = require("../controllers/controlersuser");
 
 // Rotas de autenticação e cadastros
 router.post("/usuarios/autenticar", autenticar);

@@ -53,7 +53,7 @@
 
                 <div class="campo">
                     <label for="cpf_input">CPF</label>
-                    <input type="text" id="cpf_input" placeholder="000.000.000-00" value="894.616.690-89">
+                    <input type="text" id="cpf_input" placeholder="000.000.000-00">
                 </div>
             </div>
             <div class="email">
@@ -61,7 +61,7 @@
                 <input type="email" id="email_input" placeholder="seu@gmail.com">
 
                 <label for="tel_input">Telefone</label>
-                <input type="text" id="tel_input" placeholder="(00) 00000-0000" value="(11)99876-5432">
+                <input type="text" id="tel_input" placeholder="(00) 00000-0000">
             </div>
             <div class="senha">
                 <label for="senha_input">Senha</label>
@@ -105,7 +105,6 @@
             let tamanho = senha.length;
             let criterio = 0;
 
-            // 1. Validação de Tamanho (8 caracteres ou mais)
             if (tamanho >= 8) {
                 exibir.innerHTML = `<span style="color: #28a745;">✓ Senha com 8 caracteres</span>`;
                 criterio++;
@@ -113,7 +112,6 @@
                 exibir.innerHTML = `<span style="color: #dc3545;">✕ Pelo menos 8 caracteres</span>`;
             }
 
-            // 2. Validação de Letra Maiúscula
             if (/[A-Z]/.test(senha)) {  
                 exibir2.innerHTML = `<span style="color: #28a745;">✓ Contém letra maiúscula</span>`;
                 criterio++;
@@ -121,7 +119,6 @@
                 exibir2.innerHTML = `<span style="color: #dc3545;">✕ Deve conter uma letra Maiúscula</span>`;
             }
 
-            // 3. Validação de Letra Minúscula
             if (/[a-z]/.test(senha)) {
                 exibir3.innerHTML = `<span style="color: #28a745;">✓ Contém letra minúscula</span>`;
                 criterio++;
@@ -129,7 +126,6 @@
                 exibir3.innerHTML = `<span style="color: #dc3545;">✕ Deve conter uma letra Minúscula</span>`;
             }
 
-            // 4. Validação de Caractere Especial
             if (/[!@#$%^&*(),.?":{}|<>]/.test(senha)) {
                 exibir4.innerHTML = `<span style="color: #28a745;">✓ Contém caractere especial</span>`;
                 criterio++;
@@ -137,11 +133,10 @@
                 exibir4.innerHTML = `<span style="color: #dc3545;">✕ Deve conter um caractere especial</span>`;
             }
 
-            // 5. Avaliação do Nível da Senha
-            if (senha === "") {
+            if (senha == "") {
                 exibir5.innerHTML = `<span style="color: #dc3545; font-weight: bold;">Insegura</span>`;
                 senhaValida = false;
-            } else if (criterio === 4) {
+            } else if (criterio == 4) {
                 exibir5.innerHTML = `<span style="color: #28a745; font-weight: bold;">Forte</span>`;
                 senhaValida = true;
             } else if (criterio >= 2) {
@@ -172,16 +167,12 @@
                 return false;
             }
 
-            // Armazena dados temporariamente no sessionStorage para o fluxo de cadastro
-            sessionStorage.setItem("CADASTRO_USUARIO", JSON.stringify({
-                nome: nomeVar,
-                email: emailVar,
-                senha: senhaVar,
-                telefone: telefoneVar,
-                cpf: cpfVar
-            }));
+            sessionStorage.CADASTRO_NOME = nomeVar;
+            sessionStorage.CADASTRO_EMAIL = emailVar;
+            sessionStorage.CADASTRO_SENHA = senhaVar;
+            sessionStorage.CADASTRO_TELEFONE = telefoneVar;
+            sessionStorage.CADASTRO_CPF = cpfVar;
 
-            // Redireciona para o Passo 2: Cadastro de Empresa
             window.location.href = "cadastroempresa.html";
             return false;
         }

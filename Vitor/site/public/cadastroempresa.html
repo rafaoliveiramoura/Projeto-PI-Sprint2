@@ -48,28 +48,28 @@
             <div class="info">
                 <div class="campo">
                     <label for="nomeempresa_input">Nome Fantasia</label>
-                    <input type="text" placeholder="Nome do seu apiário ou empresa" id="nomeempresa_input" value="Apiário Flor da Serra">
+                    <input type="text" placeholder="Nome do seu apiário ou empresa" id="nomeempresa_input">
                 </div>
 
                 <div class="campo">
                     <label for="cnpj_input">CNPJ</label>
-                    <input type="text" id="cnpj_input" placeholder="00.000.000/0001-00" value="12.345.678/0001-99">
+                    <input type="text" id="cnpj_input" placeholder="00.000.000/0001-00">
                 </div>
             </div>
             <div class="email">
                 <div class="campo">
                     <label for="emailempresa_input">E-mail corporativo</label>
-                    <input type="email" id="emailempresa_input" placeholder="contato@empresa.com" value="contato@flordaserra.com.br">
+                    <input type="email" id="emailempresa_input" placeholder="contato@empresa.com">
                 </div>
                 <div class="campo">
                     <label for="telempresa_input">Telefone</label>
-                    <input type="text" id="telempresa_input" placeholder="(00) 00000-0000" value="(11)98765-4321">
+                    <input type="text" id="telempresa_input" placeholder="(00) 00000-0000">
                 </div>
             </div>
             <div class="razao-social-container">
                 <div class="campo">
                     <label for="razaosocialempresa_input">Razão Social</label>
-                    <input type="text" id="razaosocialempresa_input" placeholder="Razão social da empresa" value="Flor da Serra Apicultura e Comércio Ltda">
+                    <input type="text" id="razaosocialempresa_input" placeholder="Razão social da empresa">
                 </div>
             </div>
 
@@ -90,18 +90,63 @@
 
     <script>
         function gerarCodigoEmpresa() {
-            const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             let codigo = "EMP";
+
             for (let i = 0; i < 5; i++) {
-                codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+                codigo += caracteres[Math.floor(Math.random() * caracteres.length)];
             }
+
             return codigo;
         }
 
         function cadastrarEmpresa() {
-            alert("Redirecionando para cadastrar a endereço...")
-            window.location.assign("./endereco.html");
-            return true;
+            let nome = nomeempresa_input.value;
+            let cnpj = cnpj_input.value;
+            let email = emailempresa_input.value;
+            let telefone = telempresa_input.value;
+            let razaoSocial = razaosocialempresa_input.value;
+
+            if (sessionStorage.CADASTRO_EMAIL == undefined) {
+                alert("Preencha primeiro os seus dados pessoais!");
+                window.location = "cadastro.html";
+            } else if (nome == "" || cnpj == "" || email == "" || telefone == "" || razaoSocial == "") {
+                alert("Por favor, preencha todos os campos!");
+            } else if (sessionStorage.CADASTRO_COD_EMPRESA != undefined) {
+                window.location = "endereco.html";
+            } else {
+                let codigo = gerarCodigoEmpresa();
+
+                fetch("/empresa/cadastrar", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        nomeempresaVar: nome,
+                        razaosocialempresaVar: razaoSocial,
+                        codigoempresaVar: codigo,
+                        cnpjVar: cnpj,
+                        telefoneVar: telefone,
+                        emailempresaVar: email
+                    })
+                })
+                    .then(function (resposta) {
+                        if (resposta.ok) {
+                            sessionStorage.CADASTRO_COD_EMPRESA = codigo;
+                            alert("Empresa cadastrada! Agora cadastre o endereço.");
+                            window.location = "endereco.html";
+                        } else {
+                            resposta.json().then(function (dados) {
+                                alert(dados.erro);
+                            });
+                        }
+                    })
+                    .catch(function (erro) {
+                        console.log(erro);
+                        alert("Não foi possível conectar com o servidor!");
+                    });
+            }
         }
     </script>
 </body>

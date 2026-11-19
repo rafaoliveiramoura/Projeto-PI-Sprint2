@@ -1,18 +1,22 @@
-const express = require("express");
-const router = express.Router();
+var express = require("express");
+var router = express.Router();
 
-const {
-    autenticar,
-    cadastrar,
-    cadastrarempresa,
-    cadastrarendereco
-} = require("../controlers/controlersuser");
+var usuarioController = require("../controllers/controlersuser");
 
-// Rotas de autenticação e cadastros
-router.post("/usuarios/autenticar", autenticar);
-router.post("/usuarios/cadastrar", cadastrar);
-router.post("/empresa/cadastrar", cadastrarempresa);
-router.post("/usuarios/cadastrarenderco", cadastrarendereco);
+router.post("/usuarios/autenticar", function (req, res) {
+    usuarioController.autenticar(req, res);
+});
+
+router.post("/usuarios/cadastrar", function (req, res) {
+    usuarioController.cadastrar(req, res);
+});
+
+router.post("/empresa/cadastrar", function (req, res) {
+    usuarioController.cadastrarempresa(req, res);
+});
+
+router.post("/usuarios/cadastrarenderco", function (req, res) {
+    usuarioController.cadastrarendereco(req, res);
+});
 
 module.exports = router;
-

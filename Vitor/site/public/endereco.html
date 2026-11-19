@@ -26,31 +26,31 @@
             <form id="form-endereco" onsubmit="event.preventDefault(); concluirCadastro();">
                 <div class="input-group">
                     <label for="cep">CEP</label>
-                    <input type="text" id="cep" placeholder="00000-000" value="18600-000" required>
+                    <input type="text" id="cep" placeholder="00000-000" required>
                 </div>
                 <div class="input-group">
                     <label for="rua">Logradouro / Rua</label>
-                    <input type="text" id="rua" placeholder="Estrada, Rua ou Avenida" value="Estrada Municipal José Antônio Pereira" required>
+                    <input type="text" id="rua" placeholder="Estrada, Rua ou Avenida" required>
                 </div>
                 <div class="input-group">
                     <label for="numero">Número</label>
-                    <input type="text" id="numero" placeholder="Ex: 123 ou km 12" value="km 12" required>
+                    <input type="text" id="numero" placeholder="Ex: 123 ou km 12" required>
                 </div>
                 <div class="input-group">
                     <label for="complemento">Complemento / Apiário</label>
-                    <input type="text" id="complemento" placeholder="Ex: Sítio São José, Bloco A" value="Apiário Rio Bonito" required>
+                    <input type="text" id="complemento" placeholder="Ex: Sítio São José, Bloco A" required>
                 </div>
                 <div class="input-group">
                     <label for="bairro">Bairro</label>
-                    <input type="text" id="bairro" placeholder="Digite o bairro ou zona rural" value="Bairro Rio Bonito" required>
+                    <input type="text" id="bairro" placeholder="Digite o bairro ou zona rural" required>
                 </div>
                 <div class="input-group">
                     <label for="cidade">Cidade</label>
-                    <input type="text" id="cidade" placeholder="Sua cidade" value="Botucatu" required>
+                    <input type="text" id="cidade" placeholder="Sua cidade" required>
                 </div>
                 <div class="input-group">
                     <label for="estado">Estado (UF)</label>
-                    <input type="text" id="estado" placeholder="Ex: SP" maxlength="2" value="SP" required>
+                    <input type="text" id="estado" placeholder="Ex: SP" maxlength="2" required>
                 </div>
 
                 <div class="btn" style="margin-top: 15px;">
@@ -63,32 +63,89 @@
 
     <script>
         function concluirCadastro() {
-            var cepVar = cep.value.trim();
-            var ruaVar = rua.value.trim();
-            var numeroVar = numero.value.trim();
-            var complementoVar = complemento.value.trim();
-            var bairroVar = bairro.value.trim();
-            var cidadeVar = cidade.value.trim();
-            var estadoVar = estado.value.trim();
+            let cepVar = cep.value;
+            let ruaVar = rua.value;
+            let numeroVar = numero.value;
+            let complementoVar = complemento.value;
+            let bairroVar = bairro.value;
+            let cidadeVar = cidade.value;
+            let estadoVar = estado.value.toUpperCase();
+            let codEmpresa = sessionStorage.CADASTRO_COD_EMPRESA;
 
-            var codEmpresa = sessionStorage.getItem("CADASTRO_COD_EMPRESA");
-            var usuarioObj = JSON.parse(sessionStorage.getItem("CADASTRO_USUARIO") || "{}");
-
-            if (
-                cepVar == "" ||
-                ruaVar == "" ||
-                numeroVar == "" ||
-                complementoVar == "" ||
-                bairroVar == "" ||
-                cidadeVar == "" ||
-                estadoVar == ""
-            ) {
+            if (cepVar == "" || ruaVar == "" || numeroVar == "" || complementoVar == "" || bairroVar == "" || cidadeVar == "" || estadoVar == "") {
                 alert("Por favor, preencha todos os campos do endereço!");
-                return false;
+            } else if (codEmpresa == undefined || sessionStorage.CADASTRO_EMAIL == undefined) {
+                alert("Faltam dados dos passos anteriores, comece o cadastro de novo!");
+                window.location = "cadastro.html";
+            } else {
+                btn_concluir.disabled = true;
+
+                fetch("/usuarios/cadastrarenderco", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        cepServer: cepVar,
+                        ruaServer: ruaVar,
+                        numeroServer: numeroVar,
+                        complementoServer: complementoVar,
+                        bairroServer: bairroVar,
+                        cidadeServer: cidadeVar,
+                        estadoServer: estadoVar,
+                        fkEnderecoEmpresa: codEmpresa
+                    })
+                })
+                    .then(function (resposta) {
+                        if (resposta.ok) {
+                            cadastrarUsuario(codEmpresa);
+                        } else {
+                            btn_concluir.disabled = false;
+                            resposta.json().then(function (dados) {
+                                alert(dados.erro);
+                            });
+                        }
+                    })
+                    .catch(function (erro) {
+                        console.log(erro);
+                        btn_concluir.disabled = false;
+                        alert("Não foi possível conectar com o servidor!");
+                    });
             }
+        }
 
-
-           window.location.assign("./login.html")
+        function cadastrarUsuario(codEmpresa) {
+            fetch("/usuarios/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    nomeServer: sessionStorage.CADASTRO_NOME,
+                    emailServer: sessionStorage.CADASTRO_EMAIL,
+                    senhaServer: sessionStorage.CADASTRO_SENHA,
+                    cpfServer: sessionStorage.CADASTRO_CPF,
+                    telefoneServer: sessionStorage.CADASTRO_TELEFONE,
+                    fkEmpresaServer: codEmpresa
+                })
+            })
+                .then(function (resposta) {
+                    if (resposta.ok) {
+                        sessionStorage.clear();
+                        alert("Cadastro concluído! Faça o login.");
+                        window.location = "login.html";
+                    } else {
+                        btn_concluir.disabled = false;
+                        resposta.json().then(function (dados) {
+                            alert(dados.erro);
+                        });
+                    }
+                })
+                .catch(function (erro) {
+                    console.log(erro);
+                    btn_concluir.disabled = false;
+                    alert("Não foi possível conectar com o servidor!");
+                });
         }
     </script>
 </body>
