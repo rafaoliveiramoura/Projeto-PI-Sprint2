@@ -13,9 +13,7 @@ expressrouter.post("/usuario/validarsenha", validarsenha)
 expressrouter.post("/usuarios/cadastrarenderco", cdastrarenderço)
 
 
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "Rafael/login/login.html"));
-});
+
 
 function addUser(user){
     users.push(user);
