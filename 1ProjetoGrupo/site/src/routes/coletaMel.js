@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const coletaMelController = require("../controlers/coletaMelController");
+const coletaMelController = require("../controllers/coletaMelController");
 
 // GET  /coletaMel/listar/1  -> todas as coletas do apiário 1
 router.get("/listar/:idEndereco", function (req, res) {
