@@ -1,40 +1,34 @@
-const database = require("../database/config");
+var database = require("../database/config");
 
 function autenticar(email, senha) {
-    const instrucaoSql = `
-        SELECT idusuario, nome, email, fkcodempresa 
-        FROM usuario 
-        WHERE email = '${email}' AND senha = '${senha}';
+    var instrucaoSql = `
+        SELECT u.idusuario, u.nome, u.email, u.fkcodempresa,
+            (SELECT MIN(e.idendereco) FROM endereco e WHERE e.fkenderecoempresa = u.fkcodempresa) AS idendereco
+        FROM usuario u
+        WHERE u.email = ? AND u.senha = ?;
     `;
-    console.log("Executando a instrução SQL (autenticar): \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+    return database.executar(instrucaoSql, [email, senha]);
 }
 
 function cadastrar(nome, email, senha, cpf, telefone, fkcodempresa) {
-    const instrucaoSql = `
-        INSERT INTO usuario (nome, email, senha, cpf, telefone, fkcodempresa) 
-        VALUES ('${nome}', '${email}', '${senha}', '${cpf}', '${telefone}', '${fkcodempresa}');
+    var instrucaoSql = `
+        INSERT INTO usuario (nome, email, senha, cpf, telefone, fkcodempresa) VALUES (?, ?, ?, ?, ?, ?);
     `;
-    console.log("Executando a instrução SQL (cadastrar usuario): \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+    return database.executar(instrucaoSql, [nome, email, senha, cpf, telefone, fkcodempresa]);
 }
 
 function cadastrarempresa(nomeempresa, razaosocial, cnpj, emailempresa, telefoneempresa, codigoempresa) {
-    const instrucaoSql = `
-        INSERT INTO empresa (codempresa, nome_fantasia, razao_social, cnpj, email, telefone) 
-        VALUES ('${codigoempresa}', '${nomeempresa}', '${razaosocial}', '${cnpj}', '${emailempresa}', '${telefoneempresa}');
+    var instrucaoSql = `
+        INSERT INTO empresa (codempresa, nome_fantasia, razao_social, cnpj, email, telefone) VALUES (?, ?, ?, ?, ?, ?);
     `;
-    console.log("Executando a instrução SQL (cadastrar empresa): \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+    return database.executar(instrucaoSql, [codigoempresa, nomeempresa, razaosocial, cnpj, emailempresa, telefoneempresa]);
 }
 
 function cadastrarendereco(cep, logradouro, numero, complemento, bairro, cidade, estado, fkenderecoempresa) {
-    const instrucaoSql = `
-        INSERT INTO endereco (cep, logradouro, numero, complemento, bairro, cidade, estado, fkenderecoempresa) 
-        VALUES ('${cep}', '${logradouro}', '${numero}', '${complemento}', '${bairro}', '${cidade}', '${estado}', '${fkenderecoempresa}');
+    var instrucaoSql = `
+        INSERT INTO endereco (cep, logradouro, numero, complemento, bairro, cidade, estado, fkenderecoempresa) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
     `;
-    console.log("Executando a instrução SQL (cadastrar endereco): \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+    return database.executar(instrucaoSql, [cep, logradouro, numero, complemento, bairro, cidade, estado, fkenderecoempresa]);
 }
 
 module.exports = {
@@ -43,4 +37,3 @@ module.exports = {
     cadastrarempresa,
     cadastrarendereco
 };
-

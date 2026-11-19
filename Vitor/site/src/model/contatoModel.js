@@ -1,15 +1,12 @@
-const database = require("../database/config");
+var database = require("../database/config");
 
 function contato(solicitante, empresa, motivo, email, mensagem) {
-    const instrucaoSql = `
-        INSERT INTO contato (solicitante, empresa, motivo, email, mensagem) 
-        VALUES ('${solicitante}', '${empresa}', '${motivo}', '${email}', '${mensagem}');
+    var instrucaoSql = `
+        INSERT INTO contato (solicitante, empresa, motivo, email, mensagem) VALUES (?, ?, ?, ?, ?);
     `;
-    console.log("Executando a instrução SQL (contato): \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+    return database.executar(instrucaoSql, [solicitante, empresa, motivo, email, mensagem]);
 }
 
 module.exports = {
     contato
 };
-

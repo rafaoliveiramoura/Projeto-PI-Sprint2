@@ -127,57 +127,51 @@
       </div>
     </footer>
     <script>
-      function limparFormulario() {
-        document.getElementById("formulario").reset();
-      }
-
       function entrar_contato() {
-        let nomeLet = nome_input.value.trim();
-        let empresaLet = empresa_input.value.trim();
-        let motivoContatoLet = select_contatinhos.value;
-        let emailLet = email_input.value.trim();
-        let mensagemContatoLet = textarea_mensagem.value.trim();
+        let nome = nome_input.value;
+        let empresa = empresa_input.value;
+        let motivo = select_contatinhos.value;
+        let email = email_input.value;
+        let mensagem = textarea_mensagem.value;
 
-        if (nomeLet == '') {
-          alert('Por favor, informe seu nome!');
-        } else if (empresaLet == '') {
-          alert('Por favor, informe sua empresa ou apiário!');
-        } else if (motivoContatoLet == '') {
-          alert('Selecione o motivo do contato!');
-        } else if (emailLet == '') {
-          alert('Por favor, informe seu e-mail!');
-        } else if (mensagemContatoLet == '') {
-          alert('Por favor, escreva sua mensagem!');
+        if (nome == "") {
+          alert("Por favor, informe seu nome!");
+        } else if (empresa == "") {
+          alert("Por favor, informe sua empresa ou apiário!");
+        } else if (motivo == "") {
+          alert("Selecione o motivo do contato!");
+        } else if (email == "") {
+          alert("Por favor, informe seu e-mail!");
+        } else if (mensagem == "") {
+          alert("Por favor, escreva sua mensagem!");
         } else {
-          const endpoint = (window.location.port === "3333") ? "/contato" : "http://localhost:3333/contato";
-
-          fetch(endpoint, {
+          fetch("/contato", {
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "application/json"
             },
             body: JSON.stringify({
-              nomeServer: nomeLet,
-              empresaServer: empresaLet,
-              motivoContatoServer: motivoContatoLet,
-              emailServer: emailLet,
-              mensagemContatoServer: mensagemContatoLet
-            }),
+              nomeServer: nome,
+              empresaServer: empresa,
+              motivoContatoServer: motivo,
+              emailServer: email,
+              mensagemContatoServer: mensagem
+            })
           })
-          .then(function (resposta) {
-            if (resposta.ok) {
-              alert('Mensagem enviada com sucesso à equipe da Tetria!\nEm breve entraremos em contato.');
-              limparFormulario();
-            } else {
-              throw new Error("Houve um erro ao tentar enviar o contato!");
-            }
-          })
-          .catch(function (erro) {
-            console.log(`#ERRO: ${erro}`);
-            alert('Não foi possível enviar a mensagem no momento. Verifique sua conexão ou tente mais tarde.');
-          });
-
-          return false;
+            .then(function (resposta) {
+              if (resposta.ok) {
+                alert("Mensagem enviada com sucesso à equipe da Tetria!\nEm breve entraremos em contato.");
+                formulario.reset();
+              } else {
+                resposta.json().then(function (dados) {
+                  alert(dados.erro);
+                });
+              }
+            })
+            .catch(function (erro) {
+              console.log(erro);
+              alert("Não foi possível enviar a mensagem no momento. Tente mais tarde.");
+            });
         }
       }
     </script>
