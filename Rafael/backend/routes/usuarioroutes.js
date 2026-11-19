@@ -13,6 +13,8 @@ expressrouter.post("/usuario/validarsenha", validarsenha)
 expressrouter.post("/usuarios/cadastrarenderco", cdastrarenderço)
 
 
+
+
 function addUser(user){
     users.push(user);
 }
@@ -47,6 +49,7 @@ expressrouter.get("usuario/validarsenha", validarsenha, (res) =>{
         
     }
 })
+
 
 module.exports = {
     expressrouter,
