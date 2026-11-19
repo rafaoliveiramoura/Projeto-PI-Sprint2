@@ -9,7 +9,7 @@ const SERIAL_BAUD_RATE = 9600;
 const SERVIDOR_PORTA = 3300;
 
 // habilita ou desabilita a inserção de dados no banco de dados
-const HABILITAR_OPERACAO_INSERIR = true;
+const HABILITAR_OPERACAO_INSERIR = false;
 const MODO_MOCK = true; // Altere para false quando for usar o Arduino real
 
 // função para simulação de dados (MOCK)
@@ -38,8 +38,8 @@ const serialMock = async (valoresSensorAnalogico, valoresSensorDigital) => {
         if (HABILITAR_OPERACAO_INSERIR) {
             try {
                 await poolBancoDados.execute(
-                    'INSERT INTO medida (outro, lm35_temperatura) VALUES (?, ?)',
-                    [sensorDigital, sensorAnalogico]
+                 'INSERT INTO coleta_dados (temperatura,umidade,fksensor) VALUES (?, ?,?)',
+                    [sensorDigital, sensorAnalogico, 1 ]
                 );
                 console.log("Valores Mock inseridos no banco!");
             } catch (err) {
@@ -100,8 +100,8 @@ const serial = async (
         if (HABILITAR_OPERACAO_INSERIR) {
             try {
                 await poolBancoDados.execute(
-                    'INSERT INTO medida (outro, lm35_temperatura) VALUES (?, ?)',
-                    [sensorDigital, sensorAnalogico ]
+                    'INSERT INTO coleta_dados (temperatura,umidade,fksensor) VALUES (?, ?,?)',
+                    [sensorDigital, sensorAnalogico, 1 ]
                 );
                 console.log("valores inseridos no banco: ", sensorAnalogico, sensorDigital );
             } catch (err) {
