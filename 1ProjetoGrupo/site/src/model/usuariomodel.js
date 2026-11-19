@@ -2,9 +2,11 @@ const database = require("../database/config");
 
 function autenticar(email, senha) {
     const instrucaoSql = `
-        SELECT idusuario, nome, email, fkcodempresa 
-        FROM usuario 
-        WHERE email = '${email}' AND senha = '${senha}';
+        SELECT u.idusuario, u.nome, u.email, u.fkcodempresa,
+            (SELECT MIN(e.idendereco) FROM endereco e
+              WHERE e.fkenderecoempresa = u.fkcodempresa) AS idendereco
+        FROM usuario u
+        WHERE u.email = '${email}' AND u.senha = '${senha}';
     `;
     console.log("Executando a instrução SQL (autenticar): \n" + instrucaoSql);
     return database.executar(instrucaoSql);

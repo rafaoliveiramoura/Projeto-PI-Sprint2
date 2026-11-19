@@ -90,8 +90,41 @@
       setTimeout(sumirMensagem, 5000);
       return false;
     }
-    alert("Redirecionando para DashBoard...")
-    window.location.assign("./dashboard/dashboard.html")
-    
+    fetch("/usuarios/autenticar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ emailServer: emailVar, senhaServer: senhaVar })
+    })
+      .then(function (resposta) {
+        if (!resposta.ok) {
+          return resposta.text().then(function (texto) {
+            throw new Error(texto || "Erro ao fazer login");
+          });
+        }
+        return resposta.json();
+      })
+      .then(function (usuario) {
+        sessionStorage.setItem("ID_USUARIO", usuario.id);
+        sessionStorage.setItem("NOME_USUARIO", usuario.nome);
+        sessionStorage.setItem("EMAIL_USUARIO", usuario.email);
+        sessionStorage.setItem("COD_EMPRESA", usuario.fkcodempresa);
+        if (usuario.idEndereco) {
+          sessionStorage.setItem("ID_ENDERECO", usuario.idEndereco);
+        } else {
+          sessionStorage.removeItem("ID_ENDERECO");
+        }
+        window.location.assign("./dashboard/dashboard.html");
+      })
+      .catch(function (erro) {
+        cardErro.style.display = "block";
+        mensagem_erro.innerHTML = erro.message;
+        setTimeout(sumirMensagem, 5000);
+      });
+
+    return false;
+  }
+
+  function sumirMensagem() {
+    cardErro.style.display = "none";
   }
 </script>

@@ -105,42 +105,95 @@
   </div>
 
   <script>
+    var idEndereco = sessionStorage.getItem("ID_ENDERECO");
 
-    function validarConfiguracoes(v) {
-      if (Object.values(v).some(valor => !Number.isFinite(valor))) {
-        return "Preencha todos os campos com números válidos.";
+    fetch('/dashboard/config/' + idEndereco)
+    .then(function(resposta){
+      if(resposta.status == 200){
+        resposta.json().then(function(config){
+          input_temp_min.value = config.temp_min_ideal;
+          input_temp_max.value = config.temp_max_ideal;
+          input_temp_frio.value = config.temp_alerta_frio;
+          input_temp_calor.value = config.temp_alerta_calor;
+          input_umid_min.value = config.umid_min_ideal;
+          input_umid_max.value = config.umid_max_ideal;
+          input_umid_seca.value = config.umid_alerta_seco;
+          input_umid_umida.value = config.umid_alerta_excessiva;
+        })
       }
-      if (!(v.tempFrio < v.tempMin && v.tempMin < v.tempMax && v.tempMax < v.tempCalor)) {
-        return "Temperatura: o alerta de frio deve ser menor que a faixa ideal, e o alerta de calor deve ser maior.";
-      }
-      if (!(v.umidSeca >= 0 && v.umidSeca < v.umidMin &&
-            v.umidMin < v.umidMax && v.umidMax < v.umidUmida &&
-            v.umidUmida <= 100)) {
-        return "Umidade: use seca < mínimo ideal < máximo ideal < excessiva (até 100%).";
-      }
-      if (v.tempFrio < -20 || v.tempCalor > 80 || v.tempMin < -20 || v.tempMax > 80) {
-        return "Informe temperaturas entre -20 °C e 80 °C.";
-      }
-      return "";
-    }
+    })
+    .catch(function(erro){
+      console.log(erro);
+    })
 
     function salvarConfiguracoes() {
-      const valores = lerFormulario();
-      const erro = validarConfiguracoes(valores);
-      if (erro) {
-        alert(erro);
+      var tempMin = Number(input_temp_min.value);
+      var tempMax = Number(input_temp_max.value);
+      var tempFrio = Number(input_temp_frio.value);
+      var tempCalor = Number(input_temp_calor.value);
+      var umidMin = Number(input_umid_min.value);
+      var umidMax = Number(input_umid_max.value);
+      var umidSeca = Number(input_umid_seca.value);
+      var umidUmida = Number(input_umid_umida.value);
+
+      if (input_temp_min.value == "" || input_temp_max.value == "" || input_temp_frio.value == "" || input_temp_calor.value == "" ||
+          input_umid_min.value == "" || input_umid_max.value == "" || input_umid_seca.value == "" || input_umid_umida.value == "") {
+        alert("Preencha todos os campos!");
         return;
       }
-      try {
-        const dados = {
-          ...valores,
-          umidRisco: valores.umidUmida
-        };
-        localStorage.setItem("tetria_configuracoes", JSON.stringify(dados));
-        mostrarMensagem("Configurações salvas e aplicadas ao dashboard.");
-      } catch (erro) {
-        alert("Não foi possível salvar. Verifique se o navegador permite armazenamento local.");
+      if (tempMin >= tempMax) {
+        alert("A temperatura mínima deve ser menor que a máxima!");
+        return;
       }
+      if (tempFrio >= tempMin) {
+        alert("O alerta de frio deve ser menor que a temperatura mínima!");
+        return;
+      }
+      if (tempCalor <= tempMax) {
+        alert("O alerta de calor deve ser maior que a temperatura máxima!");
+        return;
+      }
+      if (umidMin >= umidMax) {
+        alert("A umidade mínima deve ser menor que a máxima!");
+        return;
+      }
+      if (umidSeca >= umidMin) {
+        alert("O alerta de ar seco deve ser menor que a umidade mínima!");
+        return;
+      }
+      if (umidUmida <= umidMax) {
+        alert("O alerta de umidade excessiva deve ser maior que a umidade máxima!");
+        return;
+      }
+      if (umidSeca < 0 || umidUmida > 100) {
+        alert("A umidade deve ficar entre 0% e 100%!");
+        return;
+      }
+
+      fetch('/dashboard/config', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          idEndereco: idEndereco,
+          TempMin: tempMin, TempMax: tempMax, AlertaFrio: tempFrio, AlertaCalor: tempCalor,
+          UmiMin: umidMin, UmiMax: umidMax, AlertaSeco: umidSeca, AlertaUmi: umidUmida
+        })
+      })
+      .then(function(resposta){
+        if(resposta.ok){
+          localStorage.setItem("tetria_configuracoes", JSON.stringify({
+            tempMin: tempMin, tempMax: tempMax, tempFrio: tempFrio, tempCalor: tempCalor,
+            umidMin: umidMin, umidMax: umidMax, umidSeca: umidSeca, umidRisco: umidUmida
+          }));
+          alert('Configurações salvas!')
+        }
+        else{
+          alert('Erro ao salvar')
+        }
+      })
+      .catch(function(erro){
+        console.log(erro);
+      })
     }
 
     function restaurarPadrao() {
@@ -148,16 +201,23 @@
         method: 'PUT',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({
-          idUsuario: sessionStorage.ID_USUARIO,
+          idEndereco: idEndereco,
           TempMin: 33, TempMax: 36, AlertaFrio: 32, AlertaCalor: 38,
           UmiMin: 50, UmiMax: 75, AlertaSeco: 40, AlertaUmi: 85
         })
       })
       .then(function(resposta){
         if(resposta.ok){
-          resposta.json().then(function(resultado){
-            alert('Configurações de volta ao padrão!')
-          })
+          input_temp_min.value = 33;
+          input_temp_max.value = 36;
+          input_temp_frio.value = 32;
+          input_temp_calor.value = 38;
+          input_umid_min.value = 50;
+          input_umid_max.value = 75;
+          input_umid_seca.value = 40;
+          input_umid_umida.value = 85;
+          localStorage.removeItem("tetria_configuracoes");
+          alert('Configurações de volta ao padrão!')
         }
         else{
           alert('Erro ao restaurar')
