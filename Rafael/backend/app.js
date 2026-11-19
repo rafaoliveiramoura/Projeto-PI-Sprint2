@@ -8,7 +8,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "Rafael/login/login.html")))
+app.use(express.static(path.join(__dirname, "Rafael")))
 
 const {expressrouter: usuariosrouter} = require("./routes/usuarioroutes");
 const dashgeralrouter = require("./routes/dashGeralModel");
