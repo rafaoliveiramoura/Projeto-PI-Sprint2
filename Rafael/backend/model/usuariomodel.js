@@ -23,7 +23,7 @@ function cadastrar(nome, email, senha, cpf, telefone) {
 
     // Cadasatrando o admin da empresa
     var instrucaoSql = `
-        INSERT INTO Usuario2 (nome, email, senha, cpf, telefone) VALUES ('${nome}', '${email}', '${senha}', '${cpf}', '${telefone}');
+        INSERT INTO users (nome, email, senha, cpf, telefone) VALUES ('${nome}', '${email}', '${senha}', '${cpf}', '${telefone}');
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -48,8 +48,18 @@ function cdastrarenderço(cep, rua, numero, bairro, cidade, estado, fkEmpresa){
         SELECT id, email, senha FROM users WHERE  email = '${email}'  AND senha = '${senha}';
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    let resultado = await database.executar(instrucaoSql);
-    return (resultado && resultado.length > 0) ? resultado[0].senha : null
+    if (resultado && resultado.length > 0){
+        let usuario = resultado[0]
+        return {
+            id: usuario.id,
+            email: usuario.email,
+            senha: usuario.senha
+        }
+    }
+    else {
+        console.error("Usuario não encotrado no BD")
+    }
+   
     
 }
 
@@ -58,5 +68,6 @@ module.exports = {
     cadastrar,
     cadastrarempres,
     validarsenha,
-    cdastrarenderço
+    cdastrarenderço,
+    
 };
