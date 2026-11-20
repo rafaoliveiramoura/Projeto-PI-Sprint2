@@ -914,9 +914,15 @@ window.addEventListener("storage", function(evento) {
 
 const INTERVALO_LEITURA = 10;
 
-let ultimaLeitura = agora;
+let ultimaLeitura = null;
 
 function atualizarUltimaLeitura() {
+  if (!ultimaLeitura) {
+    hora_leitura.innerHTML = "--:--";
+    ultima_leitura.className = "ultima-leitura offline";
+    return;
+  }
+
   let minutos = Math.floor((Date.now() - ultimaLeitura.getTime()) / 60000);
 
   hora_leitura.innerHTML = ultimaLeitura.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
