@@ -30,14 +30,14 @@ function cadastrar(nome, email, senha, cpf, telefone) {
 
 //Cadastro das empresas
 function cadastrarempres (nomeempresa, emailempresa, telefoneempresa, codigo, cnpj, razaosocial){
-    var entre = `INSERT INTO Empresa (nome_fantasia, razao_social, cnpj, email, telefone, codEmpresa) VALUES ('${nomeempresa}', '${razaosocial}', '${cnpj}', '${emailempresa}', '${telefoneempresa}', '${codigo}')`
+    var entre = `INSERT INTO empresa (codempresa, nome_fantasia, razao_social, cnpj, email, telefone) VALUES ('${codigo}', '${nomeempresa}', '${razaosocial}', '${cnpj}', '${emailempresa}', '${telefoneempresa}')`
     console.log("Executando a instrução SQL: \n" + entre)
     return database.executar(entre)
 }
 
 //cadastro do endereço
 function cdastrarenderço(cep, rua, numero, bairro, cidade, estado, fkEmpresa){
-    var endereco = `INSERT INTO Endereco (cep, logradouro, numero, bairro, cidade, estado, fkEnderecoEmpresa) VALUES ('${cep}', '${rua}', '${numero}', '${bairro}', '${cidade}', '${estado}', ${fkEmpresa})`
+    var endereco = `INSERT INTO endereco (cep, logradouro, numero, bairro, cidade, estado, fkEnderecoEmpresa) VALUES ('${cep}', '${rua}', '${numero}', '${bairro}', '${cidade}', '${estado}', ${fkEmpresa})`
     console.log(`Inserindo o endereço: ${endereco}`)
     return database.executar(endereco);
 }
@@ -68,5 +68,5 @@ module.exports = {
     cadastrarempres,
     validarsenha,
     cdastrarenderço,
-    
+    autenticarempres
 };
