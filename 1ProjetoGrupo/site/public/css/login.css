@@ -19,6 +19,7 @@ body{
     gap: 12px;
 }
 
+/* ===== Formulário (esquerda) ===== */
 .login-container {
     flex: 0.85;
     display: flex;
@@ -145,6 +146,7 @@ body{
     text-decoration: underline;
 }
 
+/* ===== Painel visual (direita) ===== */
 .imagem-container {
     flex: 1.15;
     position: relative;
@@ -241,14 +243,9 @@ body{
     background: #C68E17;
 }
 
+/* ===== Responsivo ===== */
 @media (max-width: 900px) {
     .imagem-container { display: none; }
     .main-wrapper { padding: 0; }
     .login-container { flex: 1; padding: 30px 20px; }
-}
-
-@media (max-width: 480px) {
-    .login-container { padding: 24px 16px; }
-    .form-login { max-width: 100%; }
-    .btn button { width: 100%; }
 }
