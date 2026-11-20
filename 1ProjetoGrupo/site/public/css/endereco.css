@@ -129,9 +129,3 @@ body {
     .main-wrapper { padding: 0; }
     .cadastro-container { flex: 1; padding: 30px 20px; }
 }
-
-@media (max-width: 480px) {
-    .cadastro-container { padding: 24px 16px; }
-    #form-endereco { max-width: 100%; }
-    .btn button { width: 100%; }
-}

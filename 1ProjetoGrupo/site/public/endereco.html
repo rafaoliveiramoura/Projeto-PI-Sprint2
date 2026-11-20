@@ -1,14 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tetria | Cadastro de Endereço</title>
+    <title>Endereço</title>
     <link rel="stylesheet" href="css/endereco.css">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -16,45 +12,38 @@
         <div class="cadastro-container">
 
             <div class="header">
-                <a href="index.html">
-                    <img src="assets/tetria-logo-transparente.png" alt="Logo Tetria" style="max-height: 40px; margin-bottom: 10px;">
-                </a>
-                <h1>Localização do Apiário</h1>
-                <span>Passo 3 de 3: Endereço da instalação ou empresa</span>
+                <h1>Meu Endereço</h1>
+                <span>Complete as informações</span>
             </div>
 
-            <form id="form-endereco" onsubmit="event.preventDefault(); concluirCadastro();">
+            <form id="form-endereco">
                 <div class="input-group">
                     <label for="cep">CEP</label>
-                    <input type="text" id="cep" placeholder="00000-000" value="18600-000" required>
+                    <input type="text" id="cep" placeholder="00000-000" required>
                 </div>
                 <div class="input-group">
-                    <label for="rua">Logradouro / Rua</label>
-                    <input type="text" id="rua" placeholder="Estrada, Rua ou Avenida" value="Estrada Municipal José Antônio Pereira" required>
+                    <label for="rua">Rua/Avenida</label>
+                    <input type="text" id="rua" placeholder="Digite o nome da rua" required>
                 </div>
                 <div class="input-group">
                     <label for="numero">Número</label>
-                    <input type="text" id="numero" placeholder="Ex: 123 ou km 12" value="km 12" required>
-                </div>
-                <div class="input-group">
-                    <label for="complemento">Complemento / Apiário</label>
-                    <input type="text" id="complemento" placeholder="Ex: Sítio São José, Bloco A" value="Apiário Rio Bonito" required>
+                    <input type="text" id="numero" placeholder="Ex: 123" required>
                 </div>
                 <div class="input-group">
                     <label for="bairro">Bairro</label>
-                    <input type="text" id="bairro" placeholder="Digite o bairro ou zona rural" value="Bairro Rio Bonito" required>
+                    <input type="text" id="bairro" placeholder="Digite seu bairro" required>
                 </div>
                 <div class="input-group">
                     <label for="cidade">Cidade</label>
-                    <input type="text" id="cidade" placeholder="Sua cidade" value="Botucatu" required>
+                    <input type="text" id="cidade" placeholder="Sua cidade" required>
                 </div>
                 <div class="input-group">
-                    <label for="estado">Estado (UF)</label>
-                    <input type="text" id="estado" placeholder="Ex: SP" maxlength="2" value="SP" required>
+                    <label for="estado">Estado</label>
+                    <input type="text" id="estado" placeholder="Ex: SP" maxlength="2" required>
                 </div>
 
-                <div class="btn" style="margin-top: 15px;">
-                    <button type="submit" id="btn_concluir">Finalizar Cadastro</button>
+                <div class="btn">
+                    <button type="submit">Salvar Endereço</button>
                 </div>
             </form>
 
@@ -62,34 +51,76 @@
     </div>
 
     <script>
-        function concluirCadastro() {
-            var cepVar = cep.value.trim();
-            var ruaVar = rua.value.trim();
-            var numeroVar = numero.value.trim();
-            var complementoVar = complemento.value.trim();
-            var bairroVar = bairro.value.trim();
-            var cidadeVar = cidade.value.trim();
-            var estadoVar = estado.value.trim();
+        document.getElementById('form-endereco').addEventListener('submit', function(e) {
+            e.preventDefault();
+            cadastrar();
+        });
 
-            var codEmpresa = sessionStorage.getItem("CADASTRO_COD_EMPRESA");
-            var usuarioObj = JSON.parse(sessionStorage.getItem("CADASTRO_USUARIO") || "{}");
+         let listaEmpresasCadastradas = [];
 
-            if (
-                cepVar == "" ||
-                ruaVar == "" ||
-                numeroVar == "" ||
-                complementoVar == "" ||
-                bairroVar == "" ||
-                cidadeVar == "" ||
-                estadoVar == ""
-            ) {
-                alert("Por favor, preencha todos os campos do endereço!");
-                return false;
-            }
+  function cadastrar() {
 
+    //Recupere o valor da nova input pelo nome do id
+    var cepVar = cep.value;
+    var ruaVar = rua.value;
+    var numeroVar = numero.value;
+    var bairroVar = bairro.value;
+    var cidadeVar = cidade.value;
+    var estadoVar = estado.value;
 
-           window.location.assign("./login.html")
+    // O ID da empresa deve vir de algum lugar (ex: localStorage) para vincular o endereço
+    var fkEmpresa =  1;
+
+    // Verificando se há algum campo em branco
+    if (
+      cepVar == "" ||
+      ruaVar == "" ||
+      numeroVar == "" ||
+      bairroVar == "" ||
+      cidadeVar == "" ||
+      estadoVar == "") {
+      alert("Por favor, preencha todos os campos!");
+      return false;
+    }
+
+    // Enviando o valor da nova input
+    fetch("http://127.0.0.1:3333/usuarios/cadastrarenderco", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cepServer: cepVar,
+        ruaServer: ruaVar,
+        numeroServer: numeroVar,
+        bairroServer: bairroVar,
+        cidadeServer: cidadeVar,
+        estadoServer: estadoVar,
+        fkEnderecoEmpresa: fkEmpresa
+      }),
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          alert("Endereço salvo com sucesso!");
+          setTimeout(() => {
+            window.location = "../login/logi.html"; // Redireciona para login após completar tudo
+          }, 2000);
+        } else {
+          throw new Error("Houve um erro ao tentar realizar o cadastro!");
         }
+      })
+      .catch(function (erro) {
+        console.log(`#ERRO: ${erro}`);
+        alert(erro.message);
+      });
+
+    return false;
+  }
+
+
+  function sumirMensagem() {
+    cardErro.style.display = "none";
+  }
     </script>
 </body>
 </html>

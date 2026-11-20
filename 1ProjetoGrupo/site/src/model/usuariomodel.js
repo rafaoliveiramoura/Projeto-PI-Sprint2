@@ -68,6 +68,5 @@ module.exports = {
     cadastrarempres,
     validarsenha,
     cdastrarenderço,
-    autenticarempres
     
 };
