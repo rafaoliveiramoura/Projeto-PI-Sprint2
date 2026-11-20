@@ -1,6 +1,6 @@
 const express = require("express")
 const expressrouter = express.Router()
-const {cadastrar, autenticar, autenticarempresa, cadastrarempresa, validarsenha, cdastrarenderço} = require("../controlers/controlersuser")
+const {cadastrar, autenticar, autenticarempresa, cadastrarempresa, validarsenha, cdastrarenderço} = require("../controllers/controlersuser")
 let users = []
 let empresa = []
 let endereco = []

@@ -31,7 +31,6 @@ function cadastrar(req, res) {
     const quantidade = Number(String(req.body.quantidadeServer || "").replace(",", "."));
     const idEndereco = Number(req.body.idEnderecoServer);
 
-    // a data vem do <input type="date"> no formato AAAA-MM-DD
     if (!/^\d{4}-\d{2}-\d{2}$/.test(dataColeta) || isNaN(new Date(dataColeta + "T00:00:00"))) {
         return res.status(400).send("A data da coleta está inválida!");
     }

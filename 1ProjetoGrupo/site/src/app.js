@@ -18,14 +18,14 @@ app.use(express.static(path.join(__dirname, "../public")));
 const usuarioroutes = require("./routes/usuarioroutes");
 const contatoroutes = require("./routes/contato");
 const dashboardroutes = require("./routes/dashboard");
+const dashGeralRoutes = require("./routes/dashGeral");
+const coletaMelRouter = require("./routes/coletaMel");
+
 
 app.use("/", usuarioroutes);
 app.use("/contato", contatoroutes);
 app.use("/dashboard", dashboardroutes);
-const coletaMelRouter = require("./routes/coletaMel");
-
-app.use("/", usuarioroutes);
-app.use("/contato", contatoroutes);
+app.use("/dashgeral", dashGeralRoutes);
 app.use("/coletaMel", coletaMelRouter);
 
 app.listen(PORT, () => {

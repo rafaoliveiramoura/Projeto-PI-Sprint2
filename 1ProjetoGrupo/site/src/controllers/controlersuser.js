@@ -70,11 +70,10 @@ function autenticarempresa(req, res) {
 
 
 function cadastrarempresa(req, res) {
-    // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
     var nomeempresa = req.body.nomeempresaVar;
     var emailempresa = req.body.emailempresaVar;
     var codigo = req.body.codigoempresaVar;
-    var cnpj = req.body.cnpjVar || ""; // Se vier undefined, vira string vazia
+    var cnpj = req.body.cnpjVar || ""; 
     var telefoneempresa = req.body.telefoneVar;
     var razaosocial = req.body.razaosocialempresaVar;
 
@@ -85,7 +84,6 @@ function cadastrarempresa(req, res) {
     } else if (telefoneempresa == undefined) {
         res.status(400).send("Seu telefone está undefined!");
     } else {
-        // Removida a validação obrigatória de CPF pois não existe no HTML
         usuarioModel.cadastrarempres(nomeempresa, emailempresa, telefoneempresa, codigo, cnpj, razaosocial)
             .then(
                 function (resultadoemprea) {
@@ -105,11 +103,10 @@ function cadastrarempresa(req, res) {
 }
 
 function cadastrar(req, res) {
-    // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
     var nome = req.body.nomeServer;
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
-    var cpf = req.body.cpfServer || ""; // Se vier undefined, vira string vazia
+    var cpf = req.body.cpfServer || ""; 
     let telefone = req.body.telefoneServer;
 
     if (nome == undefined) {
@@ -121,7 +118,6 @@ function cadastrar(req, res) {
     } else if (telefone == undefined) {
         res.status(400).send("Sua telefone está undefined!");
     } else {
-        // Removida a validação obrigatória de CPF pois não existe no HTML
         usuarioModel.cadastrar(nome, email, senha, cpf, telefone)
             .then(
                 function (resultado) {
@@ -141,7 +137,6 @@ function cadastrar(req, res) {
 }
 
 function cdastrarenderço(req, res) {
-    // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
     var cep = req.body.cepServer;
     var rua = req.body.ruaServer;
     var numero = req.body.numeroServer;
