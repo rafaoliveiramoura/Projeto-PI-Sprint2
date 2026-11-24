@@ -1,3 +1,22 @@
+// =====================================================================
+//  Dashboard Tetria — todos os dados vêm do banco (tabela coleta_dados)
+//  Rotas usadas (src/routes/dashboard.js):
+//    GET /dashboard/colmeias/:idEndereco         -> última leitura de cada colmeia + sensor externo
+//    GET /dashboard/medidas/:idColmeia?data=...  -> leituras do dia (gráficos e picos)
+//    GET /dashboard/leituras/:idEndereco?dias=N  -> leituras do período (histórico de alertas)
+//    GET /dashboard/config/:idEndereco           -> limites configurados
+// =====================================================================
+
+const ID_ENDERECO = sessionStorage.getItem("ID_ENDERECO") || 1;
+
+const INTERVALO_ATUALIZACAO = 2 * 1000;    // busca leituras novas a cada 2 s (mesmo ritmo do sensor)
+const INTERVALO_PICOS = 10 * 1000;         // picos do dia (consulta mais pesada) a cada 10 s
+const INTERVALO_ALERTAS = 60 * 1000;       // recalcula o histórico de alertas a cada 1 min
+const PONTOS_TEMPO_REAL = 30;              // gráfico ao vivo mostra as últimas 30 leituras (~1 min)
+const MINUTOS_POR_BLOCO = 10;              // o back-end agrupa as leituras em blocos de 10 min
+const MINUTOS_SEM_LEITURA = 30;            // depois disso sem leitura o alerta é encerrado
+const tempoMinimoAlerta = 60;              // só vira alerta no histórico se durar mais que isso
+
 let tempMin = 33;
 let tempMax = 36;
 let tempFrio = 32;
@@ -7,98 +26,38 @@ let umidMax = 75;
 let umidRisco = 85;
 let umidSeca = 40;
 
-let agora = new Date();
-let minutoAgora = agora.getHours() * 60 + agora.getMinutes();
-
-let horarios = ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00"];
-
-let tempExternaBase = [29.2, 28.6, 28.1, 30.4, 32.6, 33.8, 32.1, 30.3];
-let umidExternaBase = [74, 76, 78, 71, 64, 60, 65, 70];
-
-let tempInternaBase = [
-  [34.2, 33.9, 33.6, 34.3, 35.2, 35.6, 35.1, 34.9],
-  [36.8, 36.2, 35.9, 37.0, 38.3, 39.4, 39.1, 38.9],
-  [35.4, 35.0, 34.8, 35.6, 36.5, 37.2, 37.0, 36.9],
-  [33.0, 32.4, 31.8, 32.6, 33.1, 33.4, 32.2, 31.4],
-  [33.8, 33.4, 33.2, 33.9, 34.6, 34.9, 34.4, 34.1],
-  [34.0, 33.7, 33.5, 34.2, 35.0, 35.3, 34.9, 34.7],
-  [34.8, 34.5, 34.3, 35.0, 35.7, 35.9, 35.8, 35.6],
-  [36.5, 36.0, 35.8, 36.9, 38.2, 39.3, 39.1, 38.9],
-  [33.9, 33.6, 33.4, 34.0, 34.6, 34.8, 34.5, 34.2],
-  [34.6, 34.3, 34.1, 34.9, 35.6, 35.9, 35.7, 35.5],
-];
-let umidInternaBase = [
-  [65, 66, 67, 64, 61, 60, 62, 63],
-  [64, 65, 66, 67, 68, 69, 70, 71],
-  [63, 64, 65, 62, 60, 59, 61, 62],
-  [60, 62, 63, 59, 55, 53, 54, 55],
-  [60, 61, 62, 59, 57, 56, 57, 58],
-  [74, 76, 78, 75, 72, 73, 77, 79],
-  [68, 69, 70, 67, 65, 64, 67, 69],
-  [72, 73, 74, 73, 75, 76, 77, 78],
-  [57, 58, 59, 56, 53, 52, 53, 54],
-  [72, 73, 74, 71, 69, 68, 71, 73],
-];
-
-let horariosHoje = [];
-let minutosHoje = [];
-let tempExterna = [];
-let umidExterna = [];
-let tempInterna = [];
-let umidInterna = [];
-
-function valorNoMinuto(vetor, minuto) {
-  let p = Math.floor(minuto / minutosEntrePontos);
-  let fracao = (minuto % minutosEntrePontos) / minutosEntrePontos;
-  let antes = vetor[p];
-  let depois = vetor[(p + 1) % vetor.length];
-  return antes + (depois - antes) * fracao;
-}
-
-function montarHoje() {
-  minutosHoje = [];
-  for (let h = 0; h < horarios.length && h * minutosEntrePontos < minutoAgora; h++) {
-    minutosHoje.push(h * minutosEntrePontos);
-  }
-  minutosHoje.push(minutoAgora);
-
-  horariosHoje = [];
-  tempExterna = [];
-  umidExterna = [];
-  tempInterna = [];
-  umidInterna = [];
-  for (let i = 0; i < tempInternaBase.length; i++) {
-    tempInterna.push([]);
-    umidInterna.push([]);
-  }
-
-  for (let m = 0; m < minutosHoje.length; m++) {
-    let minuto = minutosHoje[m];
-    horariosHoje.push(formatarMinutoDoDia(minuto));
-    tempExterna.push(arredondar1(valorNoMinuto(tempExternaBase, minuto)));
-    umidExterna.push(Math.round(valorNoMinuto(umidExternaBase, minuto)));
-    for (let i = 0; i < tempInternaBase.length; i++) {
-      tempInterna[i].push(arredondar1(valorNoMinuto(tempInternaBase[i], minuto)));
-      umidInterna[i].push(Math.round(valorNoMinuto(umidInternaBase[i], minuto)));
-    }
-  }
-}
 let qtdDias = 7;
-let diasHistorico = 365;
-let historico = [];
 
-let semente = 42;
-function aleatorio() {
-  semente = (semente * 9301 + 49297) % 233280;
-  return semente / 233280;
+let colmeias = [];          // [{ id, nome, temp, umid, dtHora }]
+let externo = null;         // { temp, umid, dtHora }
+let situacoes = [];         // situação atual de cada colmeia (mesma ordem de "colmeias")
+let leiturasPeriodo = [];   // leituras usadas no histórico de alertas
+let historicoAlertas = [];
+let minutosEmAlerta = {};   // por id da colmeia
+let ultimaLeitura = null;
+let requisicaoMedidas = 0;  // evita que uma resposta antiga sobrescreva a mais nova
+let carregandoColmeias = false;
+let picosCarregados = { chave: null, quando: 0 }; // qual colmeia/dia já teve os picos buscados
+
+// ---------------------------------------------------------------------
+//  Utilitários
+// ---------------------------------------------------------------------
+
+function numero(valor) {
+  if (valor === null || valor === undefined || valor === "") return null;
+  return Number(valor);
 }
 
-function arredondar1(valor) {
-  return Math.round(valor * 10) / 10;
+function buscarJson(url) {
+  return fetch(url).then(function (resposta) {
+    if (resposta.status === 204) return null;
+    if (!resposta.ok) throw new Error(url + " -> HTTP " + resposta.status);
+    return resposta.json();
+  });
 }
 
-function limitarUmid(valor) {
-  return Math.min(100, Math.max(0, Math.round(valor)));
+function doisDigitos(n) {
+  return (n < 10 ? "0" : "") + n;
 }
 
 function dataDoDia(d) {
@@ -108,71 +67,35 @@ function dataDoDia(d) {
   return data;
 }
 
-function estacao(d) {
-  let data = dataDoDia(d);
-  let inicioAno = new Date(data.getFullYear(), 0, 1);
-  let diaDoAno = Math.floor((data - inicioAno) / 86400000);
-  return Math.cos((2 * Math.PI * (diaDoAno - 15)) / 365);
+function dataISO(data) {
+  return data.getFullYear() + "-" + doisDigitos(data.getMonth() + 1) + "-" + doisDigitos(data.getDate());
 }
 
-function umidadeBase(i) {
-  let soma = 0;
-  for (let h = 0; h < umidInternaBase[i].length; h++) soma += umidInternaBase[i][h];
-  return Math.min(68, Math.max(56, soma / umidInternaBase[i].length));
+function formatarHora(data) {
+  return doisDigitos(data.getHours()) + ":" + doisDigitos(data.getMinutes());
 }
 
-function gerarDia(d) {
-  let difTemp = 2.5 * (estacao(d) - estacao(0)) + (aleatorio() - 0.5) * 2;
-  let difUmid = 8 * (estacao(d) - estacao(0)) + (aleatorio() - 0.5) * 8;
-
-  let dia = { horarios: horarios, minutos: [], tempExterna: [], umidExterna: [], tempInterna: [], umidInterna: [] };
-  let somaExt = 0;
-  for (let h = 0; h < horarios.length; h++) {
-    dia.minutos.push(h * minutosEntrePontos);
-    dia.tempExterna.push(arredondar1(tempExternaBase[h] + difTemp + (aleatorio() - 0.5) * 0.8));
-    dia.umidExterna.push(limitarUmid(umidExternaBase[h] + difUmid + (aleatorio() - 0.5) * 4));
-    somaExt += dia.tempExterna[h];
-  }
-  let mediaExt = somaExt / horarios.length;
-
-  for (let i = 0; i < tempInternaBase.length; i++) {
-    let temps = [];
-    let umids = [];
-    for (let h = 0; h < horarios.length; h++) {
-      temps.push(34.6 + 0.2 * (dia.tempExterna[h] - mediaExt) + 0.15 * difTemp + (aleatorio() - 0.5) * 0.6);
-      umids.push(umidadeBase(i) + 0.4 * difUmid + (aleatorio() - 0.5) * 4);
-    }
-
-    if (aleatorio() < 0.03) {
-      let tipo = Math.floor(aleatorio() * 4);
-      let inicio = Math.floor(aleatorio() * 6);
-      let duracao = 1 + Math.floor(aleatorio() * 3);
-      let forca = aleatorio();
-      for (let h = inicio; h < inicio + duracao && h < horarios.length; h++) {
-        if (tipo == 0) temps[h] += 2.5 + forca * 2;
-        if (tipo == 1) temps[h] -= 2 + forca * 1.5;
-        if (tipo == 2) umids[h] += 14 + forca * 8;
-        if (tipo == 3) umids[h] -= 16 + forca * 8;
-      }
-    }
-
-    for (let h = 0; h < horarios.length; h++) {
-      temps[h] = arredondar1(temps[h]);
-      umids[h] = limitarUmid(umids[h]);
-    }
-    dia.tempInterna.push(temps);
-    dia.umidInterna.push(umids);
-  }
-  return dia;
+function formatar(valor) {
+  if (valor === null || valor === undefined || isNaN(valor)) return "--";
+  return Number(valor).toFixed(1).replace(".", ",");
 }
 
-function gerarHistorico() {
-  semente = 42;
-  montarHoje();
-  historico = [{ horarios: horariosHoje, minutos: minutosHoje, tempExterna: tempExterna, umidExterna: umidExterna, tempInterna: tempInterna, umidInterna: umidInterna }];
-  for (let d = 1; d < diasHistorico; d++) {
-    historico.push(gerarDia(d));
+function formatarUmid(valor) {
+  if (valor === null || valor === undefined || isNaN(valor)) return "--";
+  return Math.round(valor);
+}
+
+function formatarTempo(minutos) {
+  minutos = Math.round(minutos);
+  if (minutos >= 24 * 60) {
+    let dias = Math.floor(minutos / (24 * 60));
+    return dias == 1 ? "1 dia" : dias + " dias";
   }
+  let horas = Math.floor(minutos / 60);
+  let resto = minutos % 60;
+  if (horas == 0) return resto + " min";
+  if (resto < 10) return horas + "h0" + resto;
+  return horas + "h" + resto;
 }
 
 function nomeDia(d) {
@@ -192,164 +115,208 @@ function preencherSelectDia() {
   select_dia.innerHTML = html;
 }
 
-let tempoMinimoAlerta = 60;
-let historicoAlertas = [];
-
-let minutosEntrePontos = 3 * 60;
-let minutosEntreLeituras = 10;
-
-function ruido(n) {
-  let x = Math.sin(n * 12.9898) * 43758.5453;
-  return x - Math.floor(x) - 0.5;
+function buscarColmeia(id) {
+  return colmeias.find(function (c) { return c.id == id; });
 }
 
-function formatarMinutoDoDia(minuto) {
-  let h = Math.floor(minuto / 60);
-  let m = minuto % 60;
-  return (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m;
-}
-
-function calcularHistoricoAlertas() {
-  historicoAlertas = [];
-  for (let i = 0; i < tempInterna.length; i++) {
-    let pontos = [];
-    for (let d = historico.length - 1; d >= 0; d--) {
-      let dia = historico[d];
-      for (let h = 0; h < dia.minutos.length; h++) {
-        pontos.push({ d: d, minuto: dia.minutos[h], temp: dia.tempInterna[i][h], umid: dia.umidInterna[i][h] });
-      }
-    }
-
-    let aberto = null;
-    let n = 0;
-
-    for (let p = 0; p < pontos.length; p++) {
-      let a = pontos[p];
-      let b = pontos[p + 1];
-      let qtd = 1;
-      if (b) {
-        let diferenca = (a.d - b.d) * 24 * 60 + b.minuto - a.minuto;
-        qtd = Math.max(1, Math.floor(diferenca / minutosEntreLeituras));
-      }
-
-      for (let s = 0; s < qtd; s++) {
-        n++;
-        let fracao = s / qtd;
-        let temp = b ? a.temp + (b.temp - a.temp) * fracao : a.temp;
-        let umid = b ? a.umid + (b.umid - a.umid) * fracao : a.umid;
-        if (b) {
-          temp = arredondar1(temp + ruido(n + i * 100000) * 0.3);
-          umid = Math.round(umid + ruido(n + i * 100000 + 50000) * 2);
-        }
-        let situacao = classificar(temp, umid);
-
-        if (situacao == "Ideal") {
-          fecharAlerta(aberto, false);
-          aberto = null;
-          continue;
-        }
-
-        if (!aberto) {
-          let minutoDoDia = a.minuto + s * minutosEntreLeituras;
-          aberto = { colmeia: i, diasAtras: a.d, minuto: minutoDoDia, leituras: 0, situacao: situacao, temp: temp, umid: umid, emAndamento: false };
-        }
-        aberto.leituras++;
-        aberto.ultimaSituacao = situacao;
-        aberto.ultimaTemp = temp;
-        aberto.ultimaUmid = umid;
-        if (situacao == "Risco" && aberto.situacao != "Risco") {
-          aberto.situacao = "Risco";
-          aberto.temp = temp;
-          aberto.umid = umid;
-        }
-      }
-    }
-    fecharAlerta(aberto, true);
-  }
-
-  historicoAlertas.sort(function (a, b) {
-    if (a.diasAtras != b.diasAtras) return a.diasAtras - b.diasAtras;
-    return b.minuto - a.minuto;
-  });
-
-  minutosEmAlerta = [];
-  for (let i = 0; i < tempInterna.length; i++) minutosEmAlerta.push(0);
-  for (let a = 0; a < historicoAlertas.length; a++) {
-    let alerta = historicoAlertas[a];
-    if (alerta.emAndamento) minutosEmAlerta[alerta.colmeia] = alerta.duracao;
-  }
-}
-
-function fecharAlerta(periodo, emAndamento) {
-  if (!periodo) return;
-  periodo.duracao = periodo.leituras * minutosEntreLeituras;
-  if (emAndamento) periodo.duracao = periodo.diasAtras * 24 * 60 + minutoAgora - periodo.minuto;
-  if (periodo.duracao <= tempoMinimoAlerta) return;
-  periodo.emAndamento = emAndamento;
-  if (emAndamento) {
-    periodo.situacao = periodo.ultimaSituacao;
-    periodo.temp = periodo.ultimaTemp;
-    periodo.umid = periodo.ultimaUmid;
-  }
-  historicoAlertas.push(periodo);
-}
-
-function formatarInicio(alerta) {
-  let hora = formatarMinutoDoDia(alerta.minuto);
-  if (alerta.diasAtras == 0) return "Hoje, " + hora;
-  if (alerta.diasAtras == 1) return "Ontem, " + hora;
-  let data = dataDoDia(alerta.diasAtras).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
-  return data + ", " + hora;
-}
-
-let minutosEmAlerta = [];
-
-let situacoes = [];
-
-function nomeColmeia(i) {
-  if (i + 1 < 10) return "Colmeia 0" + (i + 1);
-  return "Colmeia " + (i + 1);
-}
-
-function formatar(numero) {
-  return numero.toFixed(1).replace(".", ",");
-}
-
-function formatarTempo(minutos) {
-  if (minutos >= 24 * 60) {
-    let dias = Math.floor(minutos / (24 * 60));
-    return dias == 1 ? "1 dia" : dias + " dias";
-  }
-  let horas = Math.floor(minutos / 60);
-  let resto = minutos % 60;
-  if (horas == 0) return resto + " min";
-  if (resto < 10) return horas + "h0" + resto;
-  return horas + "h" + resto;
-}
-
-function atual(vetor) {
-  return vetor[vetor.length - 1];
+function nomeColmeia(id) {
+  let colmeia = buscarColmeia(id);
+  return colmeia ? colmeia.nome : "Colmeia " + id;
 }
 
 function classeCss(situacao) {
   if (situacao == "Risco") return "risco";
   if (situacao == "Atenção") return "atencao";
+  if (situacao == "Sem dados") return "";
   return "estavel";
 }
 
 function classificar(temp, umid) {
+  if (temp === null || umid === null) return "Sem dados";
   if (temp < tempFrio || temp > tempCalor || umid >= umidRisco || umid < umidSeca) return "Risco";
   if (temp < tempMin || temp > tempMax || umid < umidMin || umid > umidMax) return "Atenção";
   return "Ideal";
 }
 
-function calcularSituacoes() {
-  situacoes = [];
-  for (let i = 0; i < tempInterna.length; i++) {
-    situacoes.push(classificar(atual(tempInterna[i]), atual(umidInterna[i])));
-  }
-  calcularHistoricoAlertas();
+// ---------------------------------------------------------------------
+//  Busca no banco
+// ---------------------------------------------------------------------
+
+function carregarColmeias() {
+  if (carregandoColmeias) return Promise.resolve(); // a anterior ainda não respondeu
+  carregandoColmeias = true;
+
+  return buscarJson(`/dashboard/colmeias/${ID_ENDERECO}`)
+    .then(function (dados) {
+      colmeias = (dados ? dados.colmeias : []).map(function (c) {
+        return {
+          id: c.idcolmeia,
+          nome: c.codigo,
+          temp: numero(c.temperatura),
+          umid: numero(c.umidade),
+          dtHora: c.dt_hora ? new Date(c.dt_hora) : null
+        };
+      });
+
+      externo = dados && dados.externo ? {
+        temp: numero(dados.externo.temperatura),
+        umid: numero(dados.externo.umidade),
+        dtHora: new Date(dados.externo.dt_hora)
+      } : null;
+
+      ultimaLeitura = null;
+      colmeias.concat(externo ? [externo] : []).forEach(function (c) {
+        if (c.dtHora && (!ultimaLeitura || c.dtHora > ultimaLeitura)) ultimaLeitura = c.dtHora;
+      });
+
+      calcularSituacoes();
+      atualizarUltimaLeitura();
+      listarColmeias();
+      filtrarColmeias();
+    })
+    .catch(function (erro) {
+      console.error("Erro ao buscar as colmeias:", erro);
+    })
+    .finally(function () {
+      carregandoColmeias = false;
+    });
 }
+
+function diasDoPeriodo() {
+  let diasPeriodo = { dia: 1, semana: 7, mes: 30, ano: 365 };
+  return diasPeriodo[select_periodo.value] || 7;
+}
+
+function carregarAlertas() {
+  return buscarJson(`/dashboard/leituras/${ID_ENDERECO}?dias=${diasDoPeriodo()}`)
+    .then(function (leituras) {
+      leiturasPeriodo = leituras || [];
+      calcularHistoricoAlertas();
+      if (select_colmeia.value == "todas") mostrarVisaoGeral();
+    })
+    .catch(function (erro) {
+      console.error("Erro ao buscar o histórico de alertas:", erro);
+    });
+}
+
+function carregarConfiguracoesDoBanco() {
+  return buscarJson(`/dashboard/config/${ID_ENDERECO}`)
+    .then(function (config) {
+      if (!config) return;
+      const valores = {
+        tempMin: Number(config.temp_min_ideal),
+        tempMax: Number(config.temp_max_ideal),
+        tempFrio: Number(config.temp_alerta_frio),
+        tempCalor: Number(config.temp_alerta_calor),
+        umidMin: Number(config.umid_min_ideal),
+        umidMax: Number(config.umid_max_ideal),
+        umidSeca: Number(config.umid_alerta_seco),
+        umidRisco: Number(config.umid_alerta_excessiva)
+      };
+      if (validarConfiguracoes(valores)) return;
+      localStorage.setItem("tetria_configuracoes", JSON.stringify(valores));
+      carregarConfiguracoes();
+    })
+    .catch(function (erro) {
+      console.warn("Configurações do banco indisponíveis, usando as salvas no navegador.", erro);
+    });
+}
+
+// ---------------------------------------------------------------------
+//  Situação e alertas
+// ---------------------------------------------------------------------
+
+function calcularSituacoes() {
+  situacoes = colmeias.map(function (c) {
+    return classificar(c.temp, c.umid);
+  });
+}
+
+function calcularHistoricoAlertas() {
+  historicoAlertas = [];
+  minutosEmAlerta = {};
+  let agora = Date.now();
+
+  let porColmeia = {};
+  leiturasPeriodo.forEach(function (l) {
+    if (!porColmeia[l.idcolmeia]) porColmeia[l.idcolmeia] = [];
+    porColmeia[l.idcolmeia].push(l);
+  });
+
+  Object.keys(porColmeia).forEach(function (id) {
+    let aberto = null;
+    let anterior = null;
+
+    porColmeia[id].forEach(function (l) {
+      let inicio = new Date(l.bloco);
+      let temp = numero(l.temperatura);
+      let umid = numero(l.umidade);
+      let situacao = classificar(temp, umid);
+
+      // buraco grande sem leituras: encerra o alerta que estava aberto
+      if (aberto && anterior && (inicio - anterior) / 60000 > MINUTOS_POR_BLOCO + MINUTOS_SEM_LEITURA) {
+        fecharAlerta(aberto, false);
+        aberto = null;
+      }
+      anterior = inicio;
+
+      if (situacao == "Ideal" || situacao == "Sem dados") {
+        fecharAlerta(aberto, false);
+        aberto = null;
+        return;
+      }
+
+      if (!aberto) {
+        aberto = { colmeia: Number(id), inicio: inicio, situacao: situacao, temp: temp, umid: umid };
+      }
+      aberto.fim = new Date(inicio.getTime() + MINUTOS_POR_BLOCO * 60000);
+      aberto.ultimaSituacao = situacao;
+      aberto.ultimaTemp = temp;
+      aberto.ultimaUmid = umid;
+      if (situacao == "Risco" && aberto.situacao != "Risco") {
+        aberto.situacao = "Risco";
+        aberto.temp = temp;
+        aberto.umid = umid;
+      }
+    });
+
+    let aindaAtivo = aberto && (agora - aberto.fim) / 60000 <= MINUTOS_SEM_LEITURA;
+    fecharAlerta(aberto, aindaAtivo);
+  });
+
+  historicoAlertas.sort(function (a, b) {
+    return b.inicio - a.inicio;
+  });
+}
+
+function fecharAlerta(periodo, emAndamento) {
+  if (!periodo) return;
+  let fim = emAndamento ? new Date() : periodo.fim;
+  periodo.duracao = (fim - periodo.inicio) / 60000;
+  periodo.emAndamento = emAndamento;
+  if (emAndamento) {
+    periodo.situacao = periodo.ultimaSituacao;
+    periodo.temp = periodo.ultimaTemp;
+    periodo.umid = periodo.ultimaUmid;
+    minutosEmAlerta[periodo.colmeia] = periodo.duracao;
+  }
+  if (periodo.duracao <= tempoMinimoAlerta) return;
+  historicoAlertas.push(periodo);
+}
+
+function formatarInicio(alerta) {
+  let hora = formatarHora(alerta.inicio);
+  let dia = new Date(alerta.inicio);
+  dia.setHours(0, 0, 0, 0);
+  let diasAtras = Math.round((dataDoDia(0) - dia) / 86400000);
+  if (diasAtras == 0) return "Hoje, " + hora;
+  if (diasAtras == 1) return "Ontem, " + hora;
+  return alerta.inicio.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }) + ", " + hora;
+}
+
+// ---------------------------------------------------------------------
+//  Telas
+// ---------------------------------------------------------------------
 
 function mostrarPagina(pagina) {
   ["dashboard", "colmeias", "configuracoes"].forEach((nome) => {
@@ -377,6 +344,26 @@ function verColmeias(filtro) {
   mostrarPagina("colmeias");
 }
 
+function listarColmeias() {
+  let filtro = select_status.value;
+  let html = "";
+
+  for (let i = 0; i < colmeias.length; i++) {
+    if (filtro == "todas" || situacoes[i] == filtro) {
+      let c = colmeias[i];
+      html += `<tr class="linha-clicavel" onclick="abrirColmeia(${c.id})">
+          <td class="hive-name">${c.nome}</td>
+          <td>${formatar(c.temp)} °C</td>
+          <td>${formatar(externo ? externo.temp : null)} °C</td>
+          <td>${formatarUmid(c.umid)}%</td>
+          <td>${formatarUmid(externo ? externo.umid : null)}%</td>
+          <td><span class="status-badge ${classeCss(situacoes[i])}">${situacoes[i]}</span></td>
+        </tr>`;
+    }
+  }
+  tabela_colmeias.innerHTML = html;
+}
+
 function filtrarColmeias() {
   let selecaoAnterior = select_colmeia.value;
   let html = '<option value="todas">Todas as colmeias</option>';
@@ -385,26 +372,31 @@ function filtrarColmeias() {
     ["Risco", "Em risco"],
     ["Atenção", "Em atenção"],
     ["Ideal", "Ideal"],
+    ["Sem dados", "Sem leituras"]
   ];
   for (let g = 0; g < grupos.length; g++) {
     let opcoes = "";
-    for (let i = 0; i < situacoes.length; i++) {
+    for (let i = 0; i < colmeias.length; i++) {
       if (situacoes[i] == grupos[g][0]) {
-        opcoes += `<option value="${i}">${nomeColmeia(i)}</option>`;
+        opcoes += `<option value="${colmeias[i].id}">${colmeias[i].nome}</option>`;
       }
     }
     if (opcoes != "") html += `<optgroup label="${grupos[g][1]}">${opcoes}</optgroup>`;
   }
 
-  select_colmeia.innerHTML = html;
-  select_colmeia.value = selecaoAnterior || "todas";
-  if (select_colmeia.value == "") select_colmeia.value = "todas";
+  // só redesenha o select se algo mudou (senão ele fecharia sozinho a cada atualização)
+  if (select_colmeia.dataset.html !== html) {
+    select_colmeia.dataset.html = html;
+    select_colmeia.innerHTML = html;
+    select_colmeia.value = selecaoAnterior || "todas";
+    if (select_colmeia.value == "") select_colmeia.value = "todas";
+  }
   mostrarDashboard();
 }
 
-function abrirColmeia(i) {
+function abrirColmeia(id) {
   filtrarColmeias();
-  select_colmeia.value = i;
+  select_colmeia.value = id;
   mostrarPagina("dashboard");
 }
 
@@ -430,6 +422,7 @@ function mostrarDashboard() {
     visao_individual.classList.remove("hidden");
     filtro_dia.classList.remove("hidden");
     btn_voltar.classList.remove("hidden");
+    badge_situacao.classList.remove("hidden");
     document.body.classList.add("sem-rolagem");
     mostrarColmeia(Number(selecao));
   }
@@ -438,58 +431,57 @@ function mostrarDashboard() {
 function mostrarVisaoGeral() {
   let qtdRisco = 0;
   let qtdAtencao = 0;
-  lista_risco.innerHTML = "";
-  lista_atencao.innerHTML = "";
-  let semanaEmMinutos = 7 * 24 * 60;
+  let htmlRisco = "";
+  let htmlAtencao = "";
 
   let ordem = ["Risco", "Atenção"];
   for (let o = 0; o < ordem.length; o++) {
-    for (let i = 0; i < situacoes.length; i++) {
-      if (situacoes[i] == ordem[o]) {
-        let leitura = formatar(atual(tempInterna[i])) + " °C · " + atual(umidInterna[i]) + "%";
-        let tempo = formatarTempo(minutosEmAlerta[i]);
-        let linhaCard = `<button class="alert-row" onclick="abrirColmeia(${i})">
-            <strong>${nomeColmeia(i)}</strong><span>${leitura}</span><time>há ${tempo}</time>
-          </button>`;
+    for (let i = 0; i < colmeias.length; i++) {
+      if (situacoes[i] != ordem[o]) continue;
 
-        if (minutosEmAlerta[i] > tempoMinimoAlerta && minutosEmAlerta[i] <= semanaEmMinutos) {
-          if (ordem[o] == "Risco") {
-            qtdRisco++;
-            if (qtdRisco <= 3) lista_risco.innerHTML += linhaCard;
-          } else {
-            qtdAtencao++;
-            if (qtdAtencao <= 3) lista_atencao.innerHTML += linhaCard;
-          }
-        }
+      let c = colmeias[i];
+      let leitura = formatar(c.temp) + " °C · " + formatarUmid(c.umid) + "%";
+      let tempo = minutosEmAlerta[c.id] ? "há " + formatarTempo(minutosEmAlerta[c.id]) : "agora";
+      let linhaCard = `<button class="alert-row" onclick="abrirColmeia(${c.id})">
+          <strong>${c.nome}</strong><span>${leitura}</span><time>${tempo}</time>
+        </button>`;
+
+      if (ordem[o] == "Risco") {
+        qtdRisco++;
+        if (qtdRisco <= 3) htmlRisco += linhaCard;
+      } else {
+        qtdAtencao++;
+        if (qtdAtencao <= 3) htmlAtencao += linhaCard;
       }
     }
   }
 
+  lista_risco.innerHTML = htmlRisco;
+  lista_atencao.innerHTML = htmlAtencao;
   mostrarHistoricoAlertas();
 
   qtd_risco.innerHTML = qtdRisco;
   qtd_atencao.innerHTML = qtdAtencao;
-  qtd_total3.innerHTML = situacoes.length;
+  qtd_total3.innerHTML = colmeias.length;
 }
 
 function mostrarHistoricoAlertas() {
   let filtroAlertas = select_alertas.value;
-  let diasPeriodo = { dia: 1, semana: 7, mes: 30, ano: 365 };
-  let limiteDias = diasPeriodo[select_periodo.value];
+  let limite = Date.now() - diasDoPeriodo() * 24 * 60 * 60000;
 
   let html = "";
   for (let a = 0; a < historicoAlertas.length; a++) {
     let alerta = historicoAlertas[a];
     if (filtroAlertas != "todos" && filtroAlertas != alerta.situacao) continue;
-    if (!alerta.emAndamento && alerta.diasAtras >= limiteDias) continue;
+    if (!alerta.emAndamento && alerta.inicio.getTime() < limite) continue;
 
     html += `<tr class="linha-clicavel" onclick="abrirColmeia(${alerta.colmeia})">
         <td class="hive-name">${nomeColmeia(alerta.colmeia)}</td>
         <td><span class="status-badge ${classeCss(alerta.situacao)}">${alerta.situacao}</span></td>
         <td>${formatarInicio(alerta)}</td>
-        <td>${formatarTempo(alerta.duracao)}</td>
+        <td>${formatarTempo(alerta.duracao)}${alerta.emAndamento ? " (em andamento)" : ""}</td>
         <td>${formatar(alerta.temp)} °C</td>
-        <td>${alerta.umid}%</td>
+        <td>${formatarUmid(alerta.umid)}%</td>
       </tr>`;
   }
 
@@ -499,93 +491,141 @@ function mostrarHistoricoAlertas() {
   tabela_alertas.innerHTML = html;
 }
 
-function mostrarColmeia(i) {
-  let dia = historico[Number(select_dia.value)] || historico[0];
-  let temps = dia.tempInterna[i];
-  let umids = dia.umidInterna[i];
+function mostrarColmeia(id) {
+  let colmeia = buscarColmeia(id);
+  if (!colmeia) return;
 
-  titulo_pagina.innerHTML = nomeColmeia(i);
-  badge_situacao.innerHTML = situacoes[i];
-  badge_situacao.className = "status-badge " + classeCss(situacoes[i]);
+  let indice = colmeias.indexOf(colmeia);
+  titulo_pagina.innerHTML = colmeia.nome;
+  badge_situacao.innerHTML = situacoes[indice];
+  badge_situacao.className = "status-badge " + classeCss(situacoes[indice]);
 
-  let maior = 0;
-  let menor = 0;
-  for (let p = 1; p < temps.length; p++) {
-    if (temps[p] > temps[maior]) maior = p;
-    if (temps[p] < temps[menor]) menor = p;
-  }
-
-  let maiorUmid = 0;
-  let menorUmid = 0;
-
-  for (let p = 1; p < umids.length; p++) {
-    if (umids[p] > umids[maiorUmid]) maiorUmid = p;
-    if (umids[p] < umids[menorUmid]) menorUmid = p;
-  }
-
-  kpi_umid_alta.innerHTML = umids[maiorUmid] + "%";
-  kpi_hora_umid_alta.innerHTML = dia.horarios[maiorUmid];
-
-  kpi_umid_baixa.innerHTML = umids[menorUmid] + "%";
-  kpi_hora_umid_baixa.innerHTML = dia.horarios[menorUmid];
-
-  kpi_temp.innerHTML = formatar(atual(tempInterna[i]));
+  // KPIs de leitura atual (última leitura gravada)
+  kpi_temp.innerHTML = formatar(colmeia.temp);
+  kpi_umid.innerHTML = formatarUmid(colmeia.umid);
+  kpi_temp_ext.innerHTML = formatar(externo ? externo.temp : null) + " °C";
+  kpi_umid_ext.innerHTML = formatarUmid(externo ? externo.umid : null) + "%";
   kpi_temp_ideal.innerHTML = tempMin + " °C a " + tempMax + " °C";
-  kpi_umid.innerHTML = atual(umidInterna[i]);
   kpi_umid_ideal.innerHTML = umidMin + "% a " + umidMax + "%";
-  kpi_pico_alto.innerHTML = formatar(temps[maior]) + " °C";
-  kpi_hora_alto.innerHTML = dia.horarios[maior];
-  kpi_pico_baixo.innerHTML = formatar(temps[menor]) + " °C";
-  kpi_hora_baixo.innerHTML = dia.horarios[menor];
-  kpi_temp_ext.innerHTML = formatar(atual(tempExterna)) + " °C";
-  kpi_umid_ext.innerHTML = atual(umidExterna) + "%";
 
-  graficoTemperatura.data.labels = dia.horarios;
-  graficoUmidade.data.labels = dia.horarios;
+  let diasAtras = Number(select_dia.value) || 0;
+  let data = dataISO(dataDoDia(diasAtras));
+  let chave = id + "|" + data;
+  let minhaRequisicao = ++requisicaoMedidas;
 
-  graficoTemperatura.data.datasets[0].data = temps;
-  graficoTemperatura.data.datasets[1].data = dia.tempExterna;
-  graficoTemperatura.data.datasets[2].data = linhaReta(tempMin);
-  graficoTemperatura.data.datasets[3].data = linhaReta(tempMax);
-  graficoTemperatura.data.datasets[4].data = linhaReta(tempFrio);
-  graficoTemperatura.data.datasets[5].data = linhaReta(tempCalor);
+  // picos do dia: consulta agregada, não precisa rodar a cada 2 s
+  let precisaPicos = picosCarregados.chave !== chave ||
+    (diasAtras == 0 && Date.now() - picosCarregados.quando >= INTERVALO_PICOS);
+
+  if (diasAtras == 0) {
+    // HOJE: gráfico ao vivo com as últimas leituras, atualizado a cada 2 s
+    buscarJson(`/dashboard/tempo-real/${id}?limite=${PONTOS_TEMPO_REAL}`)
+      .then(function (linhas) {
+        if (minhaRequisicao !== requisicaoMedidas) return; // chegou uma mais nova
+        linhas = linhas || [];
+        desenharGrafico(
+          linhas.map(function (l) { return l.horario; }),
+          linhas.map(function (l) { return numero(l.temperatura); }),
+          linhas.map(function (l) { return numero(l.temp_externa); }),
+          linhas.map(function (l) { return numero(l.umidade); }),
+          linhas.map(function (l) { return numero(l.umid_externa); })
+        );
+      })
+      .catch(function (erro) {
+        console.error("Erro ao buscar as leituras em tempo real:", erro);
+      });
+  }
+
+  if (!precisaPicos) return;
+  picosCarregados = { chave: chave, quando: Date.now() };
+
+  buscarJson(`/dashboard/medidas/${id}?data=${data}`)
+    .then(function (linhas) {
+      if (picosCarregados.chave !== chave) return; // usuário já trocou de colmeia/dia
+      desenharDia(linhas || [], diasAtras > 0);
+    })
+    .catch(function (erro) {
+      picosCarregados = { chave: null, quando: 0 }; // tenta de novo na próxima
+      console.error("Erro ao buscar as medidas da colmeia:", erro);
+    });
+}
+
+// dias anteriores: gráfico do dia inteiro em blocos de 10 min; em todos os dias: picos
+function desenharDia(linhas, desenharGraficoDoDia) {
+  let interno = {};
+  let externoDia = {};
+  let horariosSet = {};
+
+  linhas.forEach(function (l) {
+    horariosSet[l.horario] = true;
+    if (l.tipo == "externo") externoDia[l.horario] = l;
+    else interno[l.horario] = l;
+  });
+
+  let horarios = Object.keys(horariosSet).sort();
+  let valor = function (mapa, h, campo) {
+    return mapa[h] ? numero(mapa[h][campo]) : null;
+  };
+
+  if (desenharGraficoDoDia) {
+    desenharGrafico(
+      horarios,
+      horarios.map(function (h) { return valor(interno, h, "temperatura"); }),
+      horarios.map(function (h) { return valor(externoDia, h, "temperatura"); }),
+      horarios.map(function (h) { return valor(interno, h, "umidade"); }),
+      horarios.map(function (h) { return valor(externoDia, h, "umidade"); })
+    );
+  }
+
+  // picos do dia (usando o máximo/mínimo real de cada bloco)
+  let picoTemp = null, baixaTemp = null, picoUmid = null, baixaUmid = null;
+  horarios.forEach(function (h) {
+    let l = interno[h];
+    if (!l) return;
+    if (!picoTemp || numero(l.temp_max) > picoTemp.v) picoTemp = { v: numero(l.temp_max), h: h };
+    if (!baixaTemp || numero(l.temp_min) < baixaTemp.v) baixaTemp = { v: numero(l.temp_min), h: h };
+    if (!picoUmid || numero(l.umid_max) > picoUmid.v) picoUmid = { v: numero(l.umid_max), h: h };
+    if (!baixaUmid || numero(l.umid_min) < baixaUmid.v) baixaUmid = { v: numero(l.umid_min), h: h };
+  });
+
+  kpi_pico_alto.innerHTML = picoTemp ? formatar(picoTemp.v) + " °C" : "--";
+  kpi_hora_alto.innerHTML = picoTemp ? picoTemp.h : "--:--";
+  kpi_pico_baixo.innerHTML = baixaTemp ? formatar(baixaTemp.v) + " °C" : "--";
+  kpi_hora_baixo.innerHTML = baixaTemp ? baixaTemp.h : "--:--";
+  kpi_umid_alta.innerHTML = picoUmid ? formatarUmid(picoUmid.v) + "%" : "--";
+  kpi_hora_umid_alta.innerHTML = picoUmid ? picoUmid.h : "--:--";
+  kpi_umid_baixa.innerHTML = baixaUmid ? formatarUmid(baixaUmid.v) + "%" : "--";
+  kpi_hora_umid_baixa.innerHTML = baixaUmid ? baixaUmid.h : "--:--";
+
+}
+
+function desenharGrafico(horarios, tempInterna, tempExterna, umidInterna, umidExterna) {
+  let reta = function (v) {
+    return horarios.map(function () { return v; });
+  };
+
+  graficoTemperatura.data.labels = horarios;
+  graficoTemperatura.data.datasets[0].data = tempInterna;
+  graficoTemperatura.data.datasets[1].data = tempExterna;
+  graficoTemperatura.data.datasets[2].data = reta(tempMin);
+  graficoTemperatura.data.datasets[3].data = reta(tempMax);
+  graficoTemperatura.data.datasets[4].data = reta(tempFrio);
+  graficoTemperatura.data.datasets[5].data = reta(tempCalor);
   graficoTemperatura.update();
 
-  graficoUmidade.data.datasets[0].data = umids;
-  graficoUmidade.data.datasets[1].data = dia.umidExterna;
-  graficoUmidade.data.datasets[2].data = linhaReta(umidMin);
-  graficoUmidade.data.datasets[3].data = linhaReta(umidMax);
-  graficoUmidade.data.datasets[4].data = linhaReta(umidSeca);
-  graficoUmidade.data.datasets[5].data = linhaReta(umidRisco);
+  graficoUmidade.data.labels = horarios;
+  graficoUmidade.data.datasets[0].data = umidInterna;
+  graficoUmidade.data.datasets[1].data = umidExterna;
+  graficoUmidade.data.datasets[2].data = reta(umidMin);
+  graficoUmidade.data.datasets[3].data = reta(umidMax);
+  graficoUmidade.data.datasets[4].data = reta(umidSeca);
+  graficoUmidade.data.datasets[5].data = reta(umidRisco);
   graficoUmidade.update();
 }
 
-function linhaReta(valor) {
-  let vetor = [];
-  let dia = historico[Number(select_dia.value)] || historico[0];
-  for (let h = 0; h < dia.horarios.length; h++) {
-    vetor.push(valor);
-  }
-  return vetor;
-}
-
-function listarColmeias() {
-  let filtro = select_status.value;
-  tabela_colmeias.innerHTML = "";
-
-  for (let i = 0; i < situacoes.length; i++) {
-    if (filtro == "todas" || situacoes[i] == filtro) {
-      tabela_colmeias.innerHTML += `<tr class="linha-clicavel" onclick="abrirColmeia(${i})">
-          <td class="hive-name">${nomeColmeia(i)}</td>
-          <td>${formatar(atual(tempInterna[i]))} °C</td>
-          <td>${formatar(atual(tempExterna))} °C</td>
-          <td>${atual(umidInterna[i])}%</td>
-          <td>${atual(umidExterna)}%</td>
-          <td><span class="status-badge ${classeCss(situacoes[i])}">${situacoes[i]}</span></td>
-        </tr>`;
-    }
-  }
-}
+// ---------------------------------------------------------------------
+//  Gráficos
+// ---------------------------------------------------------------------
 
 Chart.defaults.font.family = "Inter";
 Chart.defaults.color = "#857a70";
@@ -603,7 +643,7 @@ function criarGraficoLinha(idCanvas, minimo, maximo) {
     type: "line",
 
     data: {
-      labels: horarios,
+      labels: [],
       datasets: [
         {
           label: "Interna",
@@ -613,7 +653,8 @@ function criarGraficoLinha(idCanvas, minimo, maximo) {
           borderWidth: 2.5,
           tension: 0.35,
           fill: false,
-          pointRadius: 3,
+          spanGaps: true,
+          pointRadius: 2,
           pointBackgroundColor: "#ffffff",
           pointBorderColor: corColmeia,
           pointBorderWidth: 2
@@ -627,7 +668,8 @@ function criarGraficoLinha(idCanvas, minimo, maximo) {
           borderWidth: 2,
           tension: 0.35,
           fill: false,
-          pointRadius: 2.5,
+          spanGaps: true,
+          pointRadius: 1.5,
           pointBackgroundColor: "#ffffff",
           pointBorderColor: corExterno,
           pointBorderWidth: 1.5
@@ -680,6 +722,7 @@ function criarGraficoLinha(idCanvas, minimo, maximo) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      animation: false,
 
       interaction: {
         mode: "index",
@@ -719,7 +762,10 @@ function criarGraficoLinha(idCanvas, minimo, maximo) {
             family: "Inter"
           },
           padding: 10,
-          cornerRadius: 6
+          cornerRadius: 6,
+          filter: function (item) {
+            return item.datasetIndex < 2;
+          }
         }
       },
 
@@ -731,20 +777,24 @@ function criarGraficoLinha(idCanvas, minimo, maximo) {
 
           ticks: {
             color: "#716b63",
+            maxTicksLimit: 12,
             font: {
               family: "Inter",
               size: 11
             },
 
             callback: function(value) {
-              return this.getLabelForValue(value).replace(":00", "h");
+              // "14:00" -> "14h" (visão do dia); "14:03:22" (tempo real) fica como está
+              let rotulo = this.getLabelForValue(value);
+              return /^\d{2}:00$/.test(rotulo) ? rotulo.replace(":00", "h") : rotulo;
             }
           }
         },
 
         y: {
-          min: minimo,
-          max: maximo,
+          // "suggested": a escala aumenta sozinha se a leitura passar desses valores
+          suggestedMin: minimo,
+          suggestedMax: maximo,
 
           grid: {
             color: "#f0e8dd"
@@ -769,6 +819,10 @@ function criarGraficoLinha(idCanvas, minimo, maximo) {
 
 let graficoTemperatura = criarGraficoLinha("graficoTemperatura", 26, 42);
 let graficoUmidade = criarGraficoLinha("graficoUmidade", 40, 90);
+
+// ---------------------------------------------------------------------
+//  Configurações (limites ideais / de risco)
+// ---------------------------------------------------------------------
 
 const configuracaoPadrao = {
   tempMin: 33, tempMax: 36, tempFrio: 32, tempCalor: 38,
@@ -861,14 +915,31 @@ function validarConfiguracoes(valores) {
 }
 
 function atualizarMonitoramentoComConfiguracoes() {
+  picosCarregados = { chave: null, quando: 0 }; // redesenha o gráfico com as novas faixas
   calcularSituacoes();
+  calcularHistoricoAlertas();
   listarColmeias();
   filtrarColmeias();
+}
 
-  const selecao = document.getElementById("select_colmeia");
-  if (selecao && selecao.value !== "todas") {
-    mostrarDashboard();
-  }
+function salvarConfiguracoesNoBanco(valores) {
+  return fetch("/dashboard/config", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      idEndereco: ID_ENDERECO,
+      TempMin: valores.tempMin,
+      TempMax: valores.tempMax,
+      AlertaFrio: valores.tempFrio,
+      AlertaCalor: valores.tempCalor,
+      UmiMin: valores.umidMin,
+      UmiMax: valores.umidMax,
+      AlertaSeco: valores.umidSeca,
+      AlertaUmi: valores.umidRisco
+    })
+  }).catch(function (erro) {
+    console.warn("Não foi possível salvar as configurações no banco.", erro);
+  });
 }
 
 function salvarConfiguracoes() {
@@ -887,6 +958,7 @@ function salvarConfiguracoes() {
     return;
   }
 
+  salvarConfiguracoesNoBanco(novo);
   carregarConfiguracoes();
   atualizarMonitoramentoComConfiguracoes();
   alert("Configurações salvas e aplicadas ao Dashboard!");
@@ -900,6 +972,7 @@ function restaurarPadrao() {
     return;
   }
 
+  salvarConfiguracoesNoBanco(configuracaoPadrao);
   carregarConfiguracoes();
   atualizarMonitoramentoComConfiguracoes();
   alert("Valores padrão restaurados e aplicados ao Dashboard!");
@@ -912,14 +985,19 @@ window.addEventListener("storage", function(evento) {
   }
 });
 
-const INTERVALO_LEITURA = 10;
-
-let ultimaLeitura = agora;
+// ---------------------------------------------------------------------
+//  "Atualizado às" (horário da última leitura gravada no banco)
+// ---------------------------------------------------------------------
 
 function atualizarUltimaLeitura() {
-  let minutos = Math.floor((Date.now() - ultimaLeitura.getTime()) / 60000);
+  if (!ultimaLeitura) {
+    hora_leitura.innerHTML = "--:--";
+    ultima_leitura.className = "ultima-leitura offline";
+    return;
+  }
 
-  hora_leitura.innerHTML = ultimaLeitura.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+  let minutos = Math.floor((Date.now() - ultimaLeitura.getTime()) / 60000);
+  hora_leitura.innerHTML = ultimaLeitura.toLocaleTimeString("pt-BR");
 
   if (minutos <= 12) {
     ultima_leitura.className = "ultima-leitura";
@@ -930,22 +1008,24 @@ function atualizarUltimaLeitura() {
   }
 }
 
-atualizarUltimaLeitura();
-setInterval(atualizarUltimaLeitura, 30000);
+// ---------------------------------------------------------------------
+//  Inicialização
+// ---------------------------------------------------------------------
 
-gerarHistorico();
 preencherSelectDia();
 carregarConfiguracoes();
-calcularSituacoes();
-listarColmeias();
-filtrarColmeias();
 
-let colmeiaDaUrl = new URLSearchParams(location.search).get("colmeia");
-if (colmeiaDaUrl !== null && tempInterna[Number(colmeiaDaUrl)]) {
-  abrirColmeia(Number(colmeiaDaUrl));
-}
+carregarConfiguracoesDoBanco()
+  .then(carregarColmeias)
+  .then(function () {
+    // dashboard.html?colmeia=N (vindo da página de colmeias, N = posição na lista)
+    let colmeiaDaUrl = new URLSearchParams(location.search).get("colmeia");
+    if (colmeiaDaUrl !== null && colmeias[Number(colmeiaDaUrl)]) {
+      abrirColmeia(colmeias[Number(colmeiaDaUrl)].id);
+    }
+    return carregarAlertas();
+  });
 
-app.use(express.static(path.join(__dirname, "../Dashboard")));
-
-const coletaMelRouter = require("./src/routes/coletaMel");
-app.use("/coletaMel", coletaMelRouter);
+setInterval(carregarColmeias, INTERVALO_ATUALIZACAO);
+setInterval(carregarAlertas, INTERVALO_ALERTAS);
+setInterval(atualizarUltimaLeitura, 30000);
