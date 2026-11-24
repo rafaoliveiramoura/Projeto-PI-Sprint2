@@ -10,7 +10,17 @@ const SERVIDOR_PORTA = 3300;
 
 // habilita ou desabilita a inserção de dados no banco de dados
 const HABILITAR_OPERACAO_INSERIR = true;
-const MODO_MOCK = true; // Altere para false quando for usar o Arduino real
+
+// false (padrão) = MODO HÍBRIDO: o Arduino real grava na colmeia 1 (sensor 1)
+//                  e o mock simula as colmeias 2-10 e o sensor externo (11).
+// true           = tudo simulado (use quando o Arduino não estiver conectado).
+const MODO_MOCK = false;
+const ID_SENSOR_ARDUINO = 1;
+
+// fabricantes de placas/chips USB-serial comuns (Arduino original e clones)
+//   2341/2a03 = Arduino, 1a86 = CH340 (clones), 10c4 = CP210x, 0403 = FTDI
+const VENDORS_ARDUINO = ['2341', '2a03', '1a86', '10c4', '0403'];
+const INTERVALO_RECONEXAO = 3000; // tenta achar o Arduino de novo a cada 3 s se cair
 
 // ---------------------------------------------------------------------
 // perfis do MOCK (ids da tabela sensor: 1-10 internos, 11 externo)
@@ -56,7 +66,10 @@ function gerarLeiturasMock() {
     const externo = climaExterno(new Date());
     const variacaoExterna = externo.temp - 24; // colmeias sentem um pouco o calor de fora
 
-    return PERFIS_MOCK.map(p => {
+    // no modo híbrido o sensor do Arduino não é simulado
+    const perfis = MODO_MOCK ? PERFIS_MOCK : PERFIS_MOCK.filter(p => p.idSensor !== ID_SENSOR_ARDUINO);
+
+    return perfis.map(p => {
         const estado = estadoMock[p.idSensor];
         if (p.idSensor === ID_SENSOR_EXTERNO_MOCK) {
             estado.temp = proximoValor(estado.temp, externo.temp, p.temp, 0.25);
@@ -75,24 +88,20 @@ function gerarLeiturasMock() {
 
 // função para simulação de dados (MOCK)
 const serialMock = async (valoresSensorAnalogico, valoresSensorDigital) => {
-    console.log("--- MODO MOCK ATIVADO: Simulando dados do Arduino ---");
+    console.log(MODO_MOCK
+        ? "--- MODO MOCK ATIVADO: simulando todos os sensores ---"
+        : `--- MODO HÍBRIDO: Arduino real no sensor ${ID_SENSOR_ARDUINO}, mock nos demais ---`);
 
-    let poolBancoDados = mysql.createPool(
-        {
-            host: process.env.DB_HOST,
-            database: process.env.DB_DATABASE,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            port: process.env.DB_PORT
-        }
-    ).promise();
+    const poolBancoDados = criarPool();
 
     setInterval(async () => {
         const leituras = gerarLeiturasMock();
 
-        // o gráfico da própria API (index.html) mostra o sensor 1
-        valoresSensorAnalogico.push(leituras[0].temperatura);
-        valoresSensorDigital.push(leituras[0].umidade);
+        // o gráfico da própria API (index.html) mostra o sensor 1 (no híbrido quem alimenta é o Arduino)
+        if (MODO_MOCK) {
+            valoresSensorAnalogico.push(leituras[0].temperatura);
+            valoresSensorDigital.push(leituras[0].umidade);
+        }
 
         console.log("Mock Data ->", leituras.map(l => `S${l.idSensor}: ${l.temperatura}°C ${l.umidade}%`).join(" | "));
 
@@ -112,13 +121,9 @@ const serialMock = async (valoresSensorAnalogico, valoresSensorDigital) => {
     }, 2000);
 }
 
-// função para comunicação serial real
-const serial = async (
-    valoresSensorAnalogico,
-    valoresSensorDigital,
-) => {
-    // conexão com o banco de dados MySQL
-    let poolBancoDados = mysql.createPool(
+// conexão com o banco de dados MySQL
+function criarPool() {
+    return mysql.createPool(
         {
             host: process.env.DB_HOST,
             database: process.env.DB_DATABASE,
@@ -127,56 +132,98 @@ const serial = async (
             port: process.env.DB_PORT
         }
     ).promise();
+}
 
-    // lista as portas seriais disponíveis e procura pelo Arduino
+// procura a porta do Arduino (ARDUINO_PORTA no .env força uma porta, ex.: COM3)
+async function encontrarPortaArduino() {
+    if (process.env.ARDUINO_PORTA) return process.env.ARDUINO_PORTA;
     const portas = await serialport.SerialPort.list();
-    const portaArduino = portas.find((porta) => porta.vendorId == 2341 && porta.productId == 43);
-    if (!portaArduino) {
-        throw new Error('O arduino não foi encontrado em nenhuma porta serial');
-    }
-
-    // configura a porta serial com o baud rate especificado
-    const arduino = new serialport.SerialPort(
-        {
-            path: portaArduino.path,
-            baudRate: SERIAL_BAUD_RATE
-        }
+    const porta = portas.find((p) =>
+        VENDORS_ARDUINO.includes(String(p.vendorId || '').toLowerCase()) ||
+        /arduino|wch|ch340/i.test(p.manufacturer || '')
     );
+    if (!porta) {
+        const lista = portas.map(p => `${p.path} (${p.manufacturer || '?'} ${p.vendorId || ''})`).join(', ');
+        throw new Error('Arduino não encontrado. Portas disponíveis: ' + (lista || 'nenhuma'));
+    }
+    return porta.path;
+}
 
-    // evento quando a porta serial é aberta
-    arduino.on('open', () => {
-        console.log(`A leitura do arduino foi iniciada na porta ${portaArduino.path} utilizando Baud Rate de ${SERIAL_BAUD_RATE}`);
-    });
+// "62.00; 34.50" -> { umidade: 62, temperatura: 34.5 }; linhas de erro do sketch viram null
+function interpretarLinha(linha) {
+    const partes = String(linha).split(';').map(v => v.trim());
+    if (partes.length < 2) return null;
+    const umidade = parseFloat(partes[0]);
+    const temperatura = parseFloat(partes[1]);
+    if (!Number.isFinite(umidade) || !Number.isFinite(temperatura)) return null;
+    if (umidade < 0 || umidade > 100 || temperatura < -40 || temperatura > 80) return null;
+    return { umidade, temperatura };
+}
 
-    // processa os dados recebidos do Arduino
-    arduino.pipe(new serialport.ReadlineParser({ delimiter: '\r\n' })).on('data', async (data) => {
-        console.log(data);
-        const valores = data.split(';');
-        const sensorAnalogico = parseFloat(valores[1]);
-        const sensorDigital = parseInt(valores[0]);
+// guarda só as últimas leituras para o gráfico da própria API
+function guardar(lista, valor) {
+    lista.push(valor);
+    if (lista.length > 100) lista.shift();
+}
 
-        // armazena os valores dos sensores nos arrays correspondentes
-        valoresSensorAnalogico.push(sensorAnalogico);
-        valoresSensorDigital.push(sensorDigital);
+// função para comunicação serial real (grava no sensor ID_SENSOR_ARDUINO = colmeia 1)
+// se o Arduino não for encontrado ou o cabo for desconectado, tenta de novo sozinho
+const serial = (valoresSensorAnalogico, valoresSensorDigital) => {
+    const poolBancoDados = criarPool();
 
-        // insere os dados no banco de dados (se habilitado)
-        if (HABILITAR_OPERACAO_INSERIR) {
-            try {
-                await poolBancoDados.execute(
-                    'INSERT INTO coleta_dados (umidade, temperatura, fksensor) VALUES (?, ?, ?)',
-                    [sensorDigital, sensorAnalogico , 1]
-                );
-                console.log("valores inseridos no banco: ", sensorAnalogico, sensorDigital );
-            } catch (err) {
-                console.error("Erro ao inserir dados reais no banco:", err.message);
-            }
+    const conectar = async () => {
+        let caminho;
+        try {
+            caminho = await encontrarPortaArduino();
+        } catch (err) {
+            console.error(err.message + ` — tentando de novo em ${INTERVALO_RECONEXAO / 1000} s`);
+            setTimeout(conectar, INTERVALO_RECONEXAO);
+            return;
         }
-    });
 
-    // evento para lidar com erros na comunicação serial
-    arduino.on('error', (mensagem) => {
-        console.error(`Erro no arduino (Mensagem: ${mensagem}`)
-    });
+        const arduino = new serialport.SerialPort({ path: caminho, baudRate: SERIAL_BAUD_RATE });
+        let reconectando = false;
+        const reconectar = () => {
+            if (reconectando) return;
+            reconectando = true;
+            console.error(`Conexão com o Arduino perdida — tentando de novo em ${INTERVALO_RECONEXAO / 1000} s`);
+            setTimeout(conectar, INTERVALO_RECONEXAO);
+        };
+
+        arduino.on('open', () => {
+            console.log(`A leitura do arduino foi iniciada na porta ${caminho} utilizando Baud Rate de ${SERIAL_BAUD_RATE} (sensor ${ID_SENSOR_ARDUINO})`);
+        });
+        arduino.on('error', (erro) => {
+            console.error(`Erro no arduino: ${erro.message}`);
+            reconectar();
+        });
+        arduino.on('close', reconectar);
+
+        arduino.pipe(new serialport.ReadlineParser({ delimiter: '\n' })).on('data', async (data) => {
+            const leitura = interpretarLinha(data);
+            if (!leitura) {
+                console.warn('Linha ignorada do Arduino:', String(data).trim());
+                return;
+            }
+
+            guardar(valoresSensorAnalogico, leitura.temperatura);
+            guardar(valoresSensorDigital, leitura.umidade);
+
+            if (HABILITAR_OPERACAO_INSERIR) {
+                try {
+                    await poolBancoDados.execute(
+                        'INSERT INTO coleta_dados (umidade, temperatura, fksensor) VALUES (?, ?, ?)',
+                        [leitura.umidade, leitura.temperatura, ID_SENSOR_ARDUINO]
+                    );
+                    console.log(`Arduino -> S${ID_SENSOR_ARDUINO}: ${leitura.temperatura}°C ${leitura.umidade}%`);
+                } catch (err) {
+                    console.error("Erro ao inserir dados reais no banco:", err.message);
+                }
+            }
+        });
+    };
+
+    conectar();
 }
 
 // função para criar e configurar o servidor web
@@ -213,23 +260,11 @@ const servidor = (
     const valoresSensorAnalogico = [];
     const valoresSensorDigital = []
 
-    // inicia a comunicação serial ou simulação
-    if (MODO_MOCK) {
-        await serialMock(
-            valoresSensorAnalogico,
-            valoresSensorDigital
-        );
-    } else {
-        try {
-            await serial(
-                valoresSensorAnalogico,
-                valoresSensorDigital
-            );
-        } catch (err) {
-            console.error("Erro ao iniciar serial:", err.message);
-            process.exit(1);
-        }
+    // MODO_MOCK: tudo simulado. Híbrido: Arduino real na colmeia 1 + mock no resto
+    if (!MODO_MOCK) {
+        serial(valoresSensorAnalogico, valoresSensorDigital);
     }
+    await serialMock(valoresSensorAnalogico, valoresSensorDigital);
 
     // inicia o servidor web
     servidor(
