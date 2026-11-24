@@ -14,19 +14,29 @@ app.use(express.urlencoded({ extended: false }));
 // Servir frontend da pasta public
 app.use(express.static(path.join(__dirname, "../public")));
 
-// Rotas da API
+// Importação das rotas da API
 const usuarioroutes = require("./routes/usuarioroutes");
 const contatoroutes = require("./routes/contato");
 const dashboardroutes = require("./routes/dashboard");
+<<<<<<< HEAD
+const coletaMelRouter = require("./routes/coletaMel");
+const kpiRouter = require("./routes/kpiteste"); 
+=======
+const dashGeralRoutes = require("./routes/dashGeral");
+const coletaMelRouter = require("./routes/coletaMel");
 
+>>>>>>> 1601ae112cf5226292650cf7b7c701db4cc2b750
+
+// Registro das rotas da API
 app.use("/", usuarioroutes);
 app.use("/contato", contatoroutes);
 app.use("/dashboard", dashboardroutes);
-const coletaMelRouter = require("./routes/coletaMel");
-
-app.use("/", usuarioroutes);
-app.use("/contato", contatoroutes);
+<<<<<<< HEAD
+=======
+app.use("/dashgeral", dashGeralRoutes);
+>>>>>>> 1601ae112cf5226292650cf7b7c701db4cc2b750
 app.use("/coletaMel", coletaMelRouter);
+app.use("/kpi", kpiRouter);
 
 app.listen(PORT, () => {
     console.log(`

@@ -1,18 +1,44 @@
 const express = require("express");
-const router = express.Router();
+const expressrouter = express.Router();
+const { cadastrar, autenticar, autenticarempresa, cadastrarempresa, validarsenha, cdastrarenderço } = require("../controllers/controlersuser.js");
 
-const {
-    autenticar,
-    cadastrar,
-    cadastrarempresa,
-    cadastrarendereco
-} = require("../controllers/controlersuser");
+let users = [];
+let empresa = [];
+let endereco = [];
 
-// Rotas de autenticação e cadastros
-router.post("/usuarios/autenticar", autenticar);
-router.post("/usuarios/cadastrar", cadastrar);
-router.post("/empresa/cadastrar", cadastrarempresa);
-router.post("/usuarios/cadastrarenderco", cadastrarendereco);
+expressrouter.post("/usuarios/cadastrar", cadastrar);
+expressrouter.post("/usuarios/autenticar", autenticar);
+expressrouter.post("/empresa/autenticar", autenticarempresa);
+expressrouter.post("/empresa/cadastrar", cadastrarempresa);
+expressrouter.post("/usuario/validarsenha", validarsenha);
+expressrouter.post("/usuarios/cadastrarenderco", cdastrarenderço);
 
-module.exports = router;
+expressrouter.get("/user", (req, res) => {
+    res.json(users);
+});
 
+expressrouter.get("/empresa/cadastrar", (req, res) => {
+    try {
+        res.json(empresa);
+    } catch (erro) {
+        res.status(500).send({ erro: "Não foi encontrada nenhuma empresa" });
+    }
+});
+
+expressrouter.get("/usuarios/cadastrarenderco", (req, res) => {
+    try {
+        res.json(endereco);
+    } catch (erro) {
+        res.status(500).send({ erro: "Não foi encontrado nenhum endereço" });
+    }
+});
+
+expressrouter.get("/usuario/validarsenha", validarsenha, (req, res) => {
+    try {
+        res.sendStatus(200);
+    } catch (error) {
+        res.status(500).send({ erro: "Erro ao validar senha" });
+    }
+});
+
+module.exports = expressrouter;

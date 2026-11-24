@@ -380,9 +380,41 @@
           </div>
         </form>
       </section>
+      <article class="alert-summary total-summary" style="border: 2px dashed #f59e0b;">
+  <div class="alert-summary-head">
+    <span>Teste Banco (KPI)</span>
+    <span class="alert-action">View kpiteste</span>
+  </div>
+  <div class="total-kpi-body">
+    <div class="total-kpi-value" id="kpi_teste_banco">Carregando...</div>
+    <p class="total-kpi-caption">valor vindo do MySQL</p>
+  </div>
+</article>
+
     </main>
 
     <script src="app.js"></script>
     <script src="kpi-mel.js"></script>
   </body>
 </html>
+<script>
+  function buscarKpiTeste() {
+    fetch("/kpi/kpi-total", { cache: "no-store" })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          resposta.json().then(function (dados) {
+            console.log("Retorno do banco:", dados);
+            document.getElementById("kpi_teste_banco").innerText = dados.kpi;
+          });
+        } else {
+          document.getElementById("kpi_teste_banco").innerText = "Erro " + resposta.status;
+        }
+      })
+      .catch(function (erro) {
+        console.error("Erro no fetch:", erro);
+        document.getElementById("kpi_teste_banco").innerText = "Falha na conexão";
+      });
+  }
+
+  window.addEventListener("load", buscarKpiTeste);
+</script>
