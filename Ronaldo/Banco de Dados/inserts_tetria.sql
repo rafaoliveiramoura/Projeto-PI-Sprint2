@@ -20,6 +20,8 @@ INSERT INTO funcionario (nome, cpf, telefone, fkcodempresa, fkresponsavel) VALUE
 ('Camila Alves', '538.261.749-11', '(14)98765-1010', 'emp00005', 9);
 
 INSERT INTO login (email, senha, fkfuncionario) VALUES
+('admin@tetria.com', 'admin123', 1),
+('t@t.com', 'teste123', 1),
 ('joao.silva@meldovaledourado.com.br', 'joao123', 1),
 ('beatriz.lima@meldovaledourado.com.br', 'bia123', 2),
 ('maria.santos@flordelaranjeira.com.br', 'maria123', 3),
